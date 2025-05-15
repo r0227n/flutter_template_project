@@ -115,33 +115,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
           
-      - name: Configure commitlint
+      - name: Setup GitHub CLI
         run: |
-          # Install commitlint dependencies
-          npm init -y
-          npm install --save-dev @commitlint/cli @commitlint/config-conventional
-          
-          # Create commitlint configuration file
-          cat > commitlint.config.js << 'EOF'
-          module.exports = {
-            extends: ['@commitlint/config-conventional'],
-            rules: {
-              'type-enum': [
-                2,
-                'always',
-                [
-                  'build', 'chore', 'ci', 'docs', 'feat', 'fix', 'perf',
-                  'refactor', 'revert', 'style', 'test'
-                ]
-              ]
-            }
-          };
-          EOF
-          
-          # Create pre-commit hook
-          mkdir -p .husky
-          npx husky-init
-          npx husky add .husky/commit-msg 'npx --no -- commitlint --edit $1'
+          # Install GitHub CLI if not already installed
+          if ! command -v gh &> /dev/null; then
+            curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+            echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+            sudo apt update
+            sudo apt install gh
+          fi
 
       - name: Commit changes
         run: |
