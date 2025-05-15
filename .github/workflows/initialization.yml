@@ -40,24 +40,17 @@ jobs:
     outputs:
       flutter_version: ${{ steps.flutter-version.outputs.version }}
     permissions:
-      contents: read
+      contents: write
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
       - name: Get latest Flutter version
         id: flutter-version
         run: |
           # Get the latest Flutter version
           LATEST_VERSION=$(curl -s https://storage.googleapis.com/flutter_infra_release/releases/releases_linux.json | jq -r '.releases[0].version')
           echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
-
-  initialize_project:
-    needs: [condition, setup_flutter]
-    if: needs.condition.outputs.execute == 'true'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
       
       - name: Setup FVM
         run: |
@@ -66,8 +59,8 @@ jobs:
           
       - name: Install specific Flutter version using FVM
         run: |
-          fvm install ${{ needs.setup_flutter.outputs.flutter_version }}
-          fvm use ${{ needs.setup_flutter.outputs.flutter_version }}
+          fvm install ${{ steps.flutter-version.outputs.version }}
+          fvm use ${{ steps.flutter-version.outputs.version }}
       
       - name: Create directory structure
         run: |
@@ -114,6 +107,16 @@ jobs:
             rules:
               - riverpod_lint
           EOF
+
+  initialize_project:
+    needs: [condition, setup_flutter]
+    if: needs.condition.outputs.execute == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
           
       - name: Configure commitlint
         run: |
