@@ -1,0 +1,193 @@
+name: Project Initialization
+
+on:
+  create:
+    # This makes the workflow run automatically when the repository is created from the template
+
+jobs:
+  condition:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    permissions: {}
+    outputs:
+      execute: ${{ steps.condition.outputs.execute }}
+      repo_name: ${{ steps.repo-info.outputs.name }}
+      repo_owner: ${{ steps.repo-info.outputs.owner }}
+    steps:
+      - id: condition
+        run: |
+          if [[ "${{ github.event.repository.name }}" != "flutter-mobile-project-template" ]]; then
+            echo "execute=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "execute=false" >> "$GITHUB_OUTPUT"
+          fi
+      
+      - id: repo-info
+        if: steps.condition.outputs.execute == 'true'
+        run: |
+          echo "name=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)" >> $GITHUB_OUTPUT
+          echo "owner=$(echo $GITHUB_REPOSITORY | cut -d'/' -f1)" >> $GITHUB_OUTPUT
+
+  setup_flutter:
+    needs: condition
+    if: needs.condition.outputs.execute == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      flutter_version: ${{ steps.flutter-version.outputs.version }}
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
+      - name: Get latest Flutter version
+        id: flutter-version
+        run: |
+          # Get the latest Flutter version
+          LATEST_VERSION=$(curl -s https://storage.googleapis.com/flutter_infra_release/releases/releases_linux.json | jq -r '.releases[0].version')
+          echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
+      
+      - name: Setup FVM
+        run: |
+          dart pub global activate fvm
+          echo "::add-path::$HOME/.pub-cache/bin"
+          
+      - name: Install specific Flutter version using FVM
+        run: |
+          fvm install ${{ steps.flutter-version.outputs.version }}
+          fvm use ${{ steps.flutter-version.outputs.version }}
+      
+      - name: Create directory structure
+        run: |
+          # Remove everything except .git, .github, and LICENSE
+          find . -mindepth 1 -not -path "./.git*" -not -path "./LICENSE" -exec rm -rf {} +
+          # Create docs and apps directories
+          mkdir -p docs
+          mkdir -p apps
+          
+      - name: Create Flutter project
+        working-directory: ./apps
+        run: |
+          # Create full-platform Flutter project in apps directory
+          fvm flutter create --platforms=ios,android,web,macos,linux,windows --project-name ${{ needs.condition.outputs.repo_name }} .
+          
+      - name: Add required packages
+        working-directory: ./apps
+        run: |
+          # Add regular dependencies
+          fvm flutter pub add hooks_riverpod
+          fvm flutter pub add flutter_hooks
+          fvm flutter pub add riverpod_annotation
+          fvm flutter pub add go_router
+          
+          # Add dev dependencies
+          fvm flutter pub add riverpod_generator --dev
+          fvm flutter pub add build_runner --dev
+          fvm flutter pub add custom_lint --dev
+          fvm flutter pub add riverpod_lint --dev
+          fvm flutter pub add go_router_builder --dev
+          
+      - name: Configure analyzer for riverpod_lint
+        working-directory: ./apps
+        run: |
+          # Create or update analysis_options.yaml
+          cat > analysis_options.yaml << 'EOF'
+          include: package:flutter_lints/flutter.yaml
+
+          analyzer:
+            plugins:
+              - custom_lint
+              
+          custom_lint:
+            rules:
+              - riverpod_lint
+          EOF
+
+  initialize_project:
+    needs: [condition, setup_flutter]
+    if: needs.condition.outputs.execute == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+          
+      - name: Commit changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "GitHub Actions"
+          git add .
+          git commit -m "feat: initialize Flutter project with required packages and configuration"
+          
+          git push origin main
+
+  setup_branch_and_protection:
+    needs: [condition, initialize_project]
+    if: needs.condition.outputs.execute == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+          
+      - name: Create develop branch
+        run: |
+          # Create and push develop branch
+          git checkout -b develop
+          git push -u origin develop
+          
+      - name: Set branch protection rules
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Get repository owner and name
+          REPO_OWNER="${{ needs.condition.outputs.repo_owner }}"
+          REPO_NAME="${{ needs.condition.outputs.repo_name }}"
+          
+          # Set branch protection for main branch
+          gh api --method PUT /repos/$REPO_OWNER/$REPO_NAME/branches/main/protection \
+            -f required_status_checks='{"strict":true,"contexts":[]}' \
+            -f enforce_admins=false \
+            -f required_pull_request_reviews='{"dismissal_restrictions":{},"dismiss_stale_reviews":true,"require_code_owner_reviews":true}' \
+            -f restrictions='{"users":[],"teams":[],"apps":[]}' \
+            -f allow_force_pushes=false \
+            -f allow_deletions=false
+            
+          # Set branch protection for develop branch
+          gh api --method PUT /repos/$REPO_OWNER/$REPO_NAME/branches/develop/protection \
+            -f required_status_checks='{"strict":true,"contexts":[]}' \
+            -f enforce_admins=false \
+            -f required_pull_request_reviews='{"dismissal_restrictions":{},"dismiss_stale_reviews":true,"require_code_owner_reviews":true}' \
+            -f restrictions='{"users":[],"teams":[],"apps":[]}' \
+            -f allow_force_pushes=false \
+            -f allow_deletions=false
+      
+      - name: Set default branch to develop
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Get repository owner and name
+          REPO_OWNER="${{ needs.condition.outputs.repo_owner }}"
+          REPO_NAME="${{ needs.condition.outputs.repo_name }}"
+          
+          # Set default branch to develop
+          gh api --method PATCH /repos/$REPO_OWNER/$REPO_NAME \
+            -f default_branch=develop
+            
+      - name: Delete initialization workflow file
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Delete the initialization workflow file as it's no longer needed
+          rm -f .github/workflows/initialization.yml
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "GitHub Actions"
+          git add .github/workflows/initialization.yml
+          git commit -m "chore: remove initialization workflow after completion"
+
+          git push origin main
