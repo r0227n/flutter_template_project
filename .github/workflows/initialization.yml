@@ -50,11 +50,10 @@ jobs:
           LATEST_VERSION=$(curl -s https://storage.googleapis.com/flutter_infra_release/releases/releases_linux.json | jq -r '.releases[0].version')
           echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
           
-      - name: Install specific Flutter version using FVM
-        run: |
-          curl -fsSL https://fvm.app/install.sh | bash
-          fvm install ${{ steps.flutter-version.outputs.version }}
-          fvm use ${{ steps.flutter-version.outputs.version }}
+      - name: Setup FVM
+        uses: ./.github/actions/setup-fvm
+        with:
+          flutter-version-override: ${{ steps.flutter-version.outputs.version }}
       
       - name: Create directory structure
         run: |
