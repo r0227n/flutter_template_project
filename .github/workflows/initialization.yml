@@ -1,7 +1,7 @@
 name: Project Initialization
 
 on:
-  push:
+  create:
     branches:
       - main
 
@@ -133,6 +133,8 @@ jobs:
     timeout-minutes: 10
     permissions:
       contents: write
+      administration: write
+      pull-requests: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
