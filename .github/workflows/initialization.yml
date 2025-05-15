@@ -49,14 +49,10 @@ jobs:
           # Get the latest Flutter version
           LATEST_VERSION=$(curl -s https://storage.googleapis.com/flutter_infra_release/releases/releases_linux.json | jq -r '.releases[0].version')
           echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
-      
-      - name: Setup FVM
-        run: |
-          dart pub global activate fvm
-          echo "::add-path::$HOME/.pub-cache/bin"
           
       - name: Install specific Flutter version using FVM
         run: |
+          curl -fsSL https://fvm.app/install.sh | bash
           fvm install ${{ steps.flutter-version.outputs.version }}
           fvm use ${{ steps.flutter-version.outputs.version }}
       
