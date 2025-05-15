@@ -66,18 +66,10 @@ jobs:
         working-directory: ./apps
         run: |
           # Add regular dependencies
-          flutter pub add hooks_riverpod
-          flutter pub add flutter_hooks
-          flutter pub add riverpod_annotation
-          flutter pub add go_router
+          flutter pub add hooks_riverpod flutter_hooks riverpod_annotation go_router
           
           # Add dev dependencies
-          flutter pub add riverpod_generator --dev
-          flutter pub add build_runner --dev
-          flutter pub add custom_lint --dev
-          flutter pub add riverpod_lint --dev
-          flutter pub add go_router_builder --dev
-          
+          flutter pub add riverpod_generator build_runner custom_lint riverpod_lint go_router_builder --dev
       - name: Configure analyzer for riverpod_lint
         working-directory: ./apps
         run: |
@@ -107,8 +99,8 @@ jobs:
           
       - name: Commit changes
         run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "GitHub Actions"
+          git config user.name github-actions
+          git config user.email github-actions@github.com
 
           # Get Flutter version and update fvm config
           cd ./apps
@@ -187,8 +179,8 @@ jobs:
         run: |
           # Delete the initialization workflow file as it's no longer needed
           rm -f .github/workflows/initialization.yml
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "GitHub Actions"
+          git config user.name github-actions
+          git config user.email github-actions@github.com
           git add .github/workflows/initialization.yml
           git commit -m "chore: remove initialization workflow after completion"
 
