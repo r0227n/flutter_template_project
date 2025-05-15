@@ -140,3 +140,35 @@ jobs:
           # Use gh auth to ensure we're authenticated before pushing
           echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
           gh repo sync
+          
+      - name: Create develop branch
+        run: |
+          # Create and push develop branch
+          git checkout -b develop
+          git push -u origin develop
+          
+      - name: Set branch protection rules
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Get repository owner and name
+          REPO_OWNER=$(echo $GITHUB_REPOSITORY | cut -d'/' -f1)
+          REPO_NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)
+          
+          # Set branch protection for main branch
+          gh api --method PUT /repos/$REPO_OWNER/$REPO_NAME/branches/main/protection \
+            -f required_status_checks='{"strict":true,"contexts":[]}' \
+            -f enforce_admins=false \
+            -f required_pull_request_reviews='{"dismissal_restrictions":{},"dismiss_stale_reviews":true,"require_code_owner_reviews":true}' \
+            -f restrictions='{"users":[],"teams":[],"apps":[]}' \
+            -f allow_force_pushes=false \
+            -f allow_deletions=false
+            
+          # Set branch protection for develop branch
+          gh api --method PUT /repos/$REPO_OWNER/$REPO_NAME/branches/develop/protection \
+            -f required_status_checks='{"strict":true,"contexts":[]}' \
+            -f enforce_admins=false \
+            -f required_pull_request_reviews='{"dismissal_restrictions":{},"dismiss_stale_reviews":true,"require_code_owner_reviews":true}' \
+            -f restrictions='{"users":[],"teams":[],"apps":[]}' \
+            -f allow_force_pushes=false \
+            -f allow_deletions=false
