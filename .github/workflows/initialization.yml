@@ -33,14 +33,28 @@ jobs:
           echo "name=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)" >> $GITHUB_OUTPUT
           echo "owner=$(echo $GITHUB_REPOSITORY | cut -d'/' -f1)" >> $GITHUB_OUTPUT
 
-  setup:
+  setup_flutter:
     needs: condition
     if: needs.condition.outputs.execute == 'true'
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     outputs:
       flutter_version: ${{ steps.flutter-version.outputs.version }}
+    permissions:
+      contents: read
+    steps:
+      - name: Get latest Flutter version
+        id: flutter-version
+        run: |
+          # Get the latest Flutter version
+          LATEST_VERSION=$(curl -s https://storage.googleapis.com/flutter_infra_release/releases/releases_linux.json | jq -r '.releases[0].version')
+          echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
+
+  initialize_project:
+    needs: [condition, setup_flutter]
+    if: needs.condition.outputs.execute == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -50,34 +64,10 @@ jobs:
           dart pub global activate fvm
           echo "::add-path::$HOME/.pub-cache/bin"
           
-      - name: Get latest Flutter version
-        id: flutter-version
-        run: |
-          # Get the latest Flutter version
-          LATEST_VERSION=$(curl -s https://storage.googleapis.com/flutter_infra_release/releases/releases_linux.json | jq -r '.releases[0].version')
-          echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
-          
       - name: Install specific Flutter version using FVM
         run: |
-          fvm install ${{ steps.flutter-version.outputs.version }}
-          fvm use ${{ steps.flutter-version.outputs.version }}
-
-  create_project:
-    needs: [condition, setup]
-    if: needs.condition.outputs.execute == 'true'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      
-      - name: Setup FVM with specific Flutter version
-        run: |
-          dart pub global activate fvm
-          echo "::add-path::$HOME/.pub-cache/bin"
-          fvm install ${{ needs.setup.outputs.flutter_version }}
-          fvm use ${{ needs.setup.outputs.flutter_version }}
+          fvm install ${{ needs.setup_flutter.outputs.flutter_version }}
+          fvm use ${{ needs.setup_flutter.outputs.flutter_version }}
       
       - name: Create directory structure
         run: |
@@ -92,33 +82,6 @@ jobs:
         run: |
           # Create full-platform Flutter project in apps directory
           fvm flutter create --platforms=ios,android,web,macos,linux,windows --project-name ${{ needs.condition.outputs.repo_name }} .
-      
-      - name: Upload project files
-        uses: actions/upload-artifact@v3
-        with:
-          name: project-files
-          path: |
-            ./apps
-            ./docs
-
-  install_packages:
-    needs: [condition, setup, create_project]
-    if: needs.condition.outputs.execute == 'true'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Download project files
-        uses: actions/download-artifact@v3
-        with:
-          name: project-files
-          
-      - name: Setup FVM with specific Flutter version
-        run: |
-          dart pub global activate fvm
-          echo "::add-path::$HOME/.pub-cache/bin"
-          fvm install ${{ needs.setup.outputs.flutter_version }}
-          fvm use ${{ needs.setup.outputs.flutter_version }}
           
       - name: Add required packages
         working-directory: ./apps
@@ -151,25 +114,7 @@ jobs:
             rules:
               - riverpod_lint
           EOF
-      
-      - name: Upload configured project
-        uses: actions/upload-artifact@v3
-        with:
-          name: configured-project
-          path: |
-            ./apps
-            ./docs
-
-  setup_commitlint:
-    needs: [condition]
-    if: needs.condition.outputs.execute == 'true'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      
+          
       - name: Configure commitlint
         run: |
           # Install commitlint dependencies
@@ -198,47 +143,6 @@ jobs:
           npx husky-init
           npx husky add .husky/commit-msg 'npx --no -- commitlint --edit $1'
       
-      - name: Upload commitlint config
-        uses: actions/upload-artifact@v3
-        with:
-          name: commitlint-config
-          path: |
-            ./commitlint.config.js
-            ./package.json
-            ./package-lock.json
-            ./.husky
-
-  git_operations:
-    needs: [condition, install_packages, setup_commitlint]
-    if: needs.condition.outputs.execute == 'true'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-      repository-projects: write
-      admin: write
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      
-      - name: Download all artifacts
-        uses: actions/download-artifact@v3
-        with:
-          path: ./artifacts
-      
-      - name: Move artifacts to correct locations
-        run: |
-          # Move configured project files
-          cp -R ./artifacts/configured-project/apps .
-          cp -R ./artifacts/configured-project/docs .
-          
-          # Move commitlint config
-          cp ./artifacts/commitlint-config/commitlint.config.js .
-          cp ./artifacts/commitlint-config/package.json .
-          cp ./artifacts/commitlint-config/package-lock.json .
-          mkdir -p .husky
-          cp -R ./artifacts/commitlint-config/.husky .
-      
       - name: Setup GitHub CLI
         run: |
           # Install GitHub CLI if not already installed
@@ -258,6 +162,29 @@ jobs:
           # Use gh auth to ensure we're authenticated before pushing
           echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
           gh repo sync
+
+  setup_branch_and_protection:
+    needs: [condition, initialize_project]
+    if: needs.condition.outputs.execute == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      repository-projects: write
+      admin: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
+      - name: Setup GitHub CLI
+        run: |
+          # Install GitHub CLI if not already installed
+          if ! command -v gh &> /dev/null; then
+            curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+            echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+            sudo apt update
+            sudo apt install gh
+          fi
           
       - name: Create develop branch
         run: |
