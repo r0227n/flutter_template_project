@@ -1,0 +1,13 @@
+{
+    "name": "flutter_template_project",
+    "version": "1.0.0",
+    "description": "Flutter template project with commit linting",
+    "private": true,
+    "scripts": {
+        "commitlint": "commitlint --edit"
+    },
+    "devDependencies": {
+        "@commitlint/cli": "^18.0.0",
+        "@commitlint/config-conventional": "^18.0.0"
+    }
+}

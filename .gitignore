@@ -56,3 +56,6 @@ coverage/
 値n
 # Node.js
 node_modules/
+
+# Package lock
+package-lock.json
