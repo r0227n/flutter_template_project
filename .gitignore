@@ -44,7 +44,6 @@ app.*.map.json
 /android/app/release
 
 # FVM
-.fvm/flutter_sdk
 
 # Generated files
 *.g.dart
@@ -59,3 +58,6 @@ node_modules/
 
 # Package lock
 package-lock.json
+
+# FVM Version Cache
+.fvm/
