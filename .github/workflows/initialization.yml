@@ -1,0 +1,100 @@
+name: Project Initialization
+
+on:
+  workflow_dispatch:
+    # This makes the workflow manually triggerable from the Actions tab
+    # since it should only be run once after creating a project from the template
+
+jobs:
+  initialize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Extract repository name
+        id: repo-name
+        run: echo "name=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)" >> $GITHUB_OUTPUT
+
+      - name: Setup FVM
+        run: |
+          dart pub global activate fvm
+          echo "::add-path::$HOME/.pub-cache/bin"
+          
+      - name: Install latest Flutter version using FVM
+        run: |
+          fvm install stable
+          fvm use stable
+      
+      - name: Create Flutter project
+        run: |
+          # Remove everything except .git, .github, and LICENSE
+          find . -mindepth 1 -not -path "./.git*" -not -path "./LICENSE" -exec rm -rf {} +
+          # Create full-platform Flutter project
+          fvm flutter create --platforms=ios,android,web,macos,linux,windows --project-name ${{ steps.repo-name.outputs.name }} .
+          
+      - name: Add required packages
+        run: |
+          # Add regular dependencies
+          fvm flutter pub add hooks_riverpod
+          fvm flutter pub add flutter_hooks
+          fvm flutter pub add riverpod_annotation
+          fvm flutter pub add go_router
+          
+          # Add dev dependencies
+          fvm flutter pub add riverpod_generator --dev
+          fvm flutter pub add build_runner --dev
+          fvm flutter pub add custom_lint --dev
+          fvm flutter pub add riverpod_lint --dev
+          fvm flutter pub add go_router_builder --dev
+          
+      - name: Configure analyzer for riverpod_lint
+        run: |
+          # Create or update analysis_options.yaml
+          cat > analysis_options.yaml << 'EOF'
+          include: package:flutter_lints/flutter.yaml
+
+          analyzer:
+            plugins:
+              - custom_lint
+              
+          custom_lint:
+            rules:
+              - riverpod_lint
+          EOF
+          
+      - name: Configure commitlint
+        run: |
+          # Install commitlint dependencies
+          npm init -y
+          npm install --save-dev @commitlint/cli @commitlint/config-conventional
+          
+          # Create commitlint configuration file
+          cat > commitlint.config.js << 'EOF'
+          module.exports = {
+            extends: ['@commitlint/config-conventional'],
+            rules: {
+              'type-enum': [
+                2,
+                'always',
+                [
+                  'build', 'chore', 'ci', 'docs', 'feat', 'fix', 'perf',
+                  'refactor', 'revert', 'style', 'test'
+                ]
+              ]
+            }
+          };
+          EOF
+          
+          # Create pre-commit hook
+          mkdir -p .husky
+          npx husky-init
+          npx husky add .husky/commit-msg 'npx --no -- commitlint --edit $1'
+      
+      - name: Commit changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "GitHub Actions"
+          git add .
+          git commit -m "feat: initialize Flutter project with required packages and configuration"
+          git push
