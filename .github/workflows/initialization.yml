@@ -60,23 +60,23 @@ jobs:
         working-directory: ./apps
         run: |
           # Create full-platform Flutter project in apps directory
-          fvm flutter create --platforms=ios,android,web,macos,linux,windows --project-name ${{ needs.condition.outputs.repo_name }} .
+          flutter create --platforms=ios,android,web,macos,linux,windows .
           
       - name: Add required packages
         working-directory: ./apps
         run: |
           # Add regular dependencies
-          fvm flutter pub add hooks_riverpod
-          fvm flutter pub add flutter_hooks
-          fvm flutter pub add riverpod_annotation
-          fvm flutter pub add go_router
+          flutter pub add hooks_riverpod
+          flutter pub add flutter_hooks
+          flutter pub add riverpod_annotation
+          flutter pub add go_router
           
           # Add dev dependencies
-          fvm flutter pub add riverpod_generator --dev
-          fvm flutter pub add build_runner --dev
-          fvm flutter pub add custom_lint --dev
-          fvm flutter pub add riverpod_lint --dev
-          fvm flutter pub add go_router_builder --dev
+          flutter pub add riverpod_generator --dev
+          flutter pub add build_runner --dev
+          flutter pub add custom_lint --dev
+          flutter pub add riverpod_lint --dev
+          flutter pub add go_router_builder --dev
           
       - name: Configure analyzer for riverpod_lint
         working-directory: ./apps
@@ -112,7 +112,7 @@ jobs:
 
           # Get Flutter version and update fvm config
           cd ./apps
-          FLUTTER_VERSION=$(fvm flutter --version | head -n 1 | awk '{print $2}')
+          FLUTTER_VERSION=$(flutter --version | head -n 1 | awk '{print $2}')
           echo "Flutter version: $FLUTTER_VERSION"
           
           # Create or update .fvmrc file with the detected version
