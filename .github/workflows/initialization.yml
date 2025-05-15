@@ -1,12 +1,26 @@
 name: Project Initialization
 
 on:
-  workflow_dispatch:
-    # This makes the workflow manually triggerable from the Actions tab
-    # since it should only be run once after creating a project from the template
+  create:
+    # This makes the workflow run automatically when the repository is created from the template
 
 jobs:
+  condition:
+    runs-on: ubuntu-22.04
+    outputs:
+      execute: ${{ steps.condition.outputs.execute }}
+    steps:
+      - id: condition
+        run: |
+          if [[ "${{ github.event.repository.name }}" != "flutter-mobile-project-template" ]]; then
+            echo "execute=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "execute=false" >> "$GITHUB_OUTPUT"
+          fi
+
   initialize:
+    needs: condition
+    if: needs.condition.outputs.execute == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
