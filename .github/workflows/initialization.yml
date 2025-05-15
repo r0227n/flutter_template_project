@@ -85,17 +85,6 @@ jobs:
             rules:
               - riverpod_lint
           EOF
-
-  initialize_project:
-    needs: [condition, setup_flutter]
-    if: needs.condition.outputs.execute == 'true'
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
           
       - name: Commit changes
         run: |
@@ -119,7 +108,7 @@ jobs:
           git push origin main
 
   setup_branch_and_protection:
-    needs: [condition, initialize_project]
+    needs: [condition]
     if: needs.condition.outputs.execute == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
