@@ -35,10 +35,17 @@ jobs:
           dart pub global activate fvm
           echo "::add-path::$HOME/.pub-cache/bin"
           
-      - name: Install latest Flutter version using FVM
+      - name: Get latest Flutter version
+        id: flutter-version
         run: |
-          fvm install stable
-          fvm use stable
+          # Get the latest Flutter version
+          LATEST_VERSION=$(curl -s https://storage.googleapis.com/flutter_infra_release/releases/releases_linux.json | jq -r '.releases[0].version')
+          echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
+          
+      - name: Install specific Flutter version using FVM
+        run: |
+          fvm install ${{ steps.flutter-version.outputs.version }}
+          fvm use ${{ steps.flutter-version.outputs.version }}
       
       - name: Create directory structure
         run: |
@@ -49,16 +56,14 @@ jobs:
           mkdir -p apps
           
       - name: Create Flutter project
+        working-directory: ./apps
         run: |
           # Create full-platform Flutter project in apps directory
-          cd apps
           fvm flutter create --platforms=ios,android,web,macos,linux,windows --project-name ${{ steps.repo-name.outputs.name }} .
           
       - name: Add required packages
+        working-directory: ./apps
         run: |
-          # Change to apps directory
-          cd apps
-          
           # Add regular dependencies
           fvm flutter pub add hooks_riverpod
           fvm flutter pub add flutter_hooks
@@ -73,10 +78,8 @@ jobs:
           fvm flutter pub add go_router_builder --dev
           
       - name: Configure analyzer for riverpod_lint
+        working-directory: ./apps
         run: |
-          # Change to apps directory
-          cd apps
-          
           # Create or update analysis_options.yaml
           cat > analysis_options.yaml << 'EOF'
           include: package:flutter_lints/flutter.yaml
