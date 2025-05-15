@@ -1,4 +1,4 @@
-# Auto detect text files and perform LF normalization
+いt# # Auto detect text files and perform LF normalization
 * text=auto
 
 # Dart files
@@ -8,6 +8,11 @@
 *.yaml linguist-language=YAML
 *.yml linguist-language=YAML
 *.json linguist-language=JSON
+
+# Generated files (freezed, etc.)
+*.freezed.dart linguist-generated=true
+*.g.dart linguist-generated=true
+*.gr.dart linguist-generated=true
 
 # Denote all files that are truly binary and should not be modified
 *.png binary

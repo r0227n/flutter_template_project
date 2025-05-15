@@ -53,3 +53,6 @@ app.*.map.json
 
 # Coverage
 coverage/
+
+# Node.js
+node_modules/
