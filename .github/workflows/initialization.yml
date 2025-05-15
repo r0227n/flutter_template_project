@@ -1,8 +1,10 @@
 name: Project Initialization
 
 on:
-  create:
-    # This makes the workflow run automatically when the repository is created from the template
+  push:
+    branches:
+      - main
+
 
 jobs:
   condition:
@@ -16,7 +18,7 @@ jobs:
     steps:
       - id: condition
         run: |
-          if [[ "${{ github.event.repository.name }}" != "flutter-mobile-project-template" ]]; then
+          if [[ "${{ github.event.repository.name }}" != "flutter_template_project" ]]; then
             echo "execute=true" >> "$GITHUB_OUTPUT"
           else
             echo "execute=false" >> "$GITHUB_OUTPUT"
