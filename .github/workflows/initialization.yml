@@ -4,16 +4,11 @@ on:
   create:
     # This makes the workflow run automatically when the repository is created from the template
 
-# Add global permissions for the workflow
-permissions:
-  contents: write
-  pull-requests: write
-  repository-projects: write
-  admin: write
-
 jobs:
   condition:
     runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    permissions: {}
     outputs:
       execute: ${{ steps.condition.outputs.execute }}
       repo_name: ${{ steps.repo-info.outputs.name }}
@@ -37,6 +32,7 @@ jobs:
     needs: condition
     if: needs.condition.outputs.execute == 'true'
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     outputs:
       flutter_version: ${{ steps.flutter-version.outputs.version }}
     permissions:
@@ -112,6 +108,7 @@ jobs:
     needs: [condition, setup_flutter]
     if: needs.condition.outputs.execute == 'true'
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: write
     steps:
@@ -170,10 +167,9 @@ jobs:
     needs: [condition, initialize_project]
     if: needs.condition.outputs.execute == 'true'
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: write
-      pull-requests: write
-      repository-projects: write
       admin: write
     steps:
       - name: Checkout repository
