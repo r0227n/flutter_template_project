@@ -40,15 +40,25 @@ jobs:
           fvm install stable
           fvm use stable
       
-      - name: Create Flutter project
+      - name: Create directory structure
         run: |
           # Remove everything except .git, .github, and LICENSE
           find . -mindepth 1 -not -path "./.git*" -not -path "./LICENSE" -exec rm -rf {} +
-          # Create full-platform Flutter project
+          # Create docs and apps directories
+          mkdir -p docs
+          mkdir -p apps
+          
+      - name: Create Flutter project
+        run: |
+          # Create full-platform Flutter project in apps directory
+          cd apps
           fvm flutter create --platforms=ios,android,web,macos,linux,windows --project-name ${{ steps.repo-name.outputs.name }} .
           
       - name: Add required packages
         run: |
+          # Change to apps directory
+          cd apps
+          
           # Add regular dependencies
           fvm flutter pub add hooks_riverpod
           fvm flutter pub add flutter_hooks
@@ -64,6 +74,9 @@ jobs:
           
       - name: Configure analyzer for riverpod_lint
         run: |
+          # Change to apps directory
+          cd apps
+          
           # Create or update analysis_options.yaml
           cat > analysis_options.yaml << 'EOF'
           include: package:flutter_lints/flutter.yaml
