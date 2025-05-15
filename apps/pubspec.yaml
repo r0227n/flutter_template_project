@@ -13,11 +13,35 @@ dependencies:
 
   cupertino_icons: ^1.0.8
 
+  # state management
+  hooks_riverpod: ^2.6.1
+  flutter_hooks: ^0.21.2
+  riverpod_annotation: ^2.6.1
+
+  # annotation
+  freezed_annotation: ^3.0.0
+  json_annotation: ^4.9.0
+
+  # navigation
+  go_router: ^15.1.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  # lints
   flutter_lints: ^5.0.0
+  custom_lint: ^0.7.5
+  riverpod_lint: ^2.6.5
+  freezed_lint: ^0.0.9
+
+  # code generation
+  riverpod_generator: ^2.6.5
+  build_runner: ^2.4.15
+  go_router_builder: ^2.9.0
+  json_serializable: ^6.9.5
+
+  freezed: ^3.0.6
 
 flutter:
 
