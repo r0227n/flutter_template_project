@@ -42,18 +42,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-        
-      - name: Get latest Flutter version
-        id: flutter-version
-        run: |
-          # Get the latest Flutter version
-          LATEST_VERSION=$(curl -s https://storage.googleapis.com/flutter_infra_release/releases/releases_linux.json | jq -r '.releases[0].version')
-          echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
           
       - name: Setup FVM
         uses: ./.github/actions/setup-fvm
         with:
-          flutter-version-override: ${{ steps.flutter-version.outputs.version }}
+          flutter-version-override: 'stable'
       
       - name: Create directory structure
         run: |
@@ -116,6 +109,18 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "GitHub Actions"
+
+          # Get Flutter version and update fvm config
+          cd ./apps
+          FLUTTER_VERSION=$(fvm flutter --version | head -n 1 | awk '{print $2}')
+          echo "Flutter version: $FLUTTER_VERSION"
+          
+          # Create or update .fvmrc file with the detected version
+          echo "{\"flutterSdkVersion\": \"$FLUTTER_VERSION\"}" > .fvmrc
+          
+          # Return to the repository root
+          cd ..
+
           git add .
           git commit -m "feat: initialize Flutter project with required packages and configuration"
           
