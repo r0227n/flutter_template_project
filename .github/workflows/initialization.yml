@@ -3,7 +3,7 @@ name: Project Initialization
 on:
   push:
     branches:
-      - main
+      - setup
 
 
 jobs:
