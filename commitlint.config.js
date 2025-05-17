@@ -14,5 +14,7 @@ module.exports = {
       'never',
       ['upper-case']
     ]
-  }
+  },
+  defaultIgnores: true,
+  helpUrl: 'https://github.com/r0227n/flutter_template_project/blob/main/docs/commitlint-rules.md'
 };
