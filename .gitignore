@@ -44,6 +44,7 @@ app.*.map.json
 /android/app/release
 
 # FVM
+.fvm/flutter_sdk
 
 # Generated files
 *.g.dart
