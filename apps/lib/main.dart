@@ -7,7 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // 保存されたLocaleがあるかチェック
   final savedLocale = await LocaleService.getSavedLocale();
   if (savedLocale != null) {

@@ -10,11 +10,11 @@ class LocaleService {
   static Future<AppLocale?> getSavedLocale() async {
     final prefs = await SharedPreferences.getInstance();
     final localeCode = prefs.getString(_localeKey);
-    
+
     if (localeCode == null) {
       return null;
     }
-    
+
     // AppLocaleからlocaleCodeに対応するものを取得
     try {
       return AppLocale.values.firstWhere(
