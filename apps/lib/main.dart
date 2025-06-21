@@ -1,4 +1,4 @@
-import 'package:apps/i18n/strings.g.dart';
+import 'package:apps/i18n/translations.g.dart';
 import 'package:apps/router/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
