@@ -3,6 +3,7 @@ import 'package:apps/router/app_router.dart';
 import 'package:apps/theme/app_theme.dart';
 import 'package:apps/theme/theme_provider.dart';
 import 'package:apps/services/locale_service.dart';
+import 'package:debug/debug.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -18,7 +19,27 @@ Future<void> main() async {
     await LocaleSettings.useDeviceLocale();
   }
 
-  runApp(ProviderScope(child: TranslationProvider(child: const MyApp())));
+  // Create a temporary container to get the talker instance
+  final tempContainer = ProviderContainer();
+  final talker = tempContainer.read(talkerProvider);
+  tempContainer.dispose();
+  
+  final appContainer = ProviderContainer(
+    observers: DebugConfig.shouldEnableTalker
+        ? [TalkerRiverpodObserver(talker: talker)]
+        : [],
+  );
+  
+  runApp(
+    UncontrolledProviderScope(
+      container: appContainer,
+      child: TranslationProvider(
+        child: const ShakeDetectorWidget(
+          child: MyApp(),
+        ),
+      ),
+    ),
+  );
 }
 
 class MyApp extends ConsumerWidget {

@@ -11,6 +11,8 @@ resolution: workspace
 
 dependencies:
   cupertino_icons: ^1.0.8
+  debug:
+    path: ../packages/debug
   flutter:
     sdk: flutter
   flutter_hooks: ^0.21.2
