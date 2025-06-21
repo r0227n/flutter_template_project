@@ -13,7 +13,7 @@ void main() {
       await LocaleSettings.setLocale(AppLocale.ja);
       expect(LocaleSettings.currentLocale, AppLocale.ja);
 
-      // Set to English and verify it persists  
+      // Set to English and verify it persists
       await LocaleSettings.setLocale(AppLocale.en);
       expect(LocaleSettings.currentLocale, AppLocale.en);
 
@@ -28,7 +28,7 @@ void main() {
       final jaTranslations = LocaleSettings.instance.currentTranslations;
       expect(jaTranslations.hello, equals('こんにちは'));
 
-      // Test English translations  
+      // Test English translations
       await LocaleSettings.setLocale(AppLocale.en);
       final enTranslations = LocaleSettings.instance.currentTranslations;
       expect(enTranslations.hello, equals('Hello'));
@@ -46,7 +46,7 @@ void main() {
     testWidgets('HomePage displays counter correctly', (tester) async {
       // Test just the HomePage widget with Japanese locale
       await LocaleSettings.setLocale(AppLocale.ja);
-      
+
       await tester.pumpWidget(
         MaterialApp(
           home: TranslationProvider(
@@ -71,7 +71,7 @@ void main() {
     testWidgets('App structure test', (tester) async {
       // Set locale first
       await LocaleSettings.setLocale(AppLocale.ja);
-      
+
       // Build the app with proper providers
       await tester.pumpWidget(
         ProviderScope(
