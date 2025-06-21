@@ -20,7 +20,7 @@ class LocaleService {
       return AppLocale.values.firstWhere(
         (locale) => locale.languageCode == localeCode,
       );
-    } catch (e) {
+    } on Exception {
       return null;
     }
   }
