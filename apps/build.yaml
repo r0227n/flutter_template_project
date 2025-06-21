@@ -1,0 +1,9 @@
+targets:
+  $default:
+    builders:
+      slang_build_runner:
+        options:
+          base_locale: ja
+          input_directory: lib/i18n
+          input_file_pattern: .i18n.json
+          output_directory: lib/i18n
