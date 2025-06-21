@@ -25,7 +25,7 @@ class MyApp extends ConsumerWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       locale: TranslationProvider.of(context).flutterLocale, // use provider
-      supportedLocales: AppLocaleUtils.supportedLocales,
+      supportedLocales: AppLocale.values.map((locale) => locale.flutterLocale),
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
       routerConfig: router,
     );
