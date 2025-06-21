@@ -1,8 +1,10 @@
 import 'package:apps/i18n/translations.g.dart';
+import 'package:apps/providers/theme_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({required this.title, super.key});
 
   final String title;
@@ -14,10 +16,10 @@ class HomePage extends StatefulWidget {
   }
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  ConsumerState<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends ConsumerState<HomePage> {
   var _counter = 0;
 
   void _incrementCounter() {
@@ -28,18 +30,87 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode = ref.watch(themeModeNotifierProvider);
+    
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
+        actions: [
+          PopupMenuButton<ThemeModeEnum>(
+            icon: const Icon(Icons.brightness_6),
+            onSelected: (mode) {
+              ref.read(themeModeNotifierProvider.notifier).setTheme(mode);
+            },
+            itemBuilder: (context) {
+              return ThemeModeEnum.values.map((mode) {
+                return PopupMenuItem<ThemeModeEnum>(
+                  value: mode,
+                  child: Row(
+                    children: [
+                      Icon(
+                        switch (mode) {
+                          ThemeModeEnum.light => Icons.light_mode,
+                          ThemeModeEnum.dark => Icons.dark_mode,
+                          ThemeModeEnum.system => Icons.brightness_auto,
+                        },
+                      ),
+                      const SizedBox(width: 8),
+                      Text(mode.displayName),
+                      const SizedBox(width: 8),
+                      if (themeMode == mode) const Icon(Icons.check),
+                    ],
+                  ),
+                );
+              }).toList();
+            },
+          ),
+        ],
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Card(
+              margin: const EdgeInsets.all(16),
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.palette,
+                      size: 48,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'テーマ切り替えデモ',
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      '現在のテーマ: ${themeMode.displayName}',
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                    const SizedBox(height: 16),
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        ref
+                            .read(themeModeNotifierProvider.notifier)
+                            .toggleTheme();
+                      },
+                      icon: const Icon(Icons.swap_horiz),
+                      label: const Text('テーマ切り替え'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 32),
             Text(t.hello),
+            const SizedBox(height: 16),
             Text(
-              '$_counter',
+              'カウンター: $_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
           ],
