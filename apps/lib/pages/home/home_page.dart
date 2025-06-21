@@ -1,4 +1,5 @@
 import 'package:apps/i18n/translations.g.dart';
+import 'package:apps/widgets/version_text.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -42,6 +43,9 @@ class _HomePageState extends State<HomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            const SizedBox(height: 32),
+            const Text('Tap version to view licenses:'),
+            const VersionText(),
           ],
         ),
       ),
