@@ -4,6 +4,10 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
+concurrency:
+  group: check-pr-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   WORKING_DIR: apps
 
@@ -13,6 +17,7 @@ jobs:
     runs-on: ubuntu-24.04
     
     steps:
+      # https://github.com/actions/checkout
       - name: Checkout code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       
@@ -38,6 +43,7 @@ jobs:
       files_exists: ${{ steps.check_i18n_files.outputs.files_exists }}
     
     steps:
+      # https://github.com/actions/checkout
       - name: Checkout code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       
@@ -55,6 +61,7 @@ jobs:
     if: needs.check-i18n-files.outputs.files_exists == 'true'
     
     steps:
+      # https://github.com/actions/checkout  ss
       - name: Checkout code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       
