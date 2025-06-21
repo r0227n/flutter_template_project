@@ -1,4 +1,4 @@
-import 'package:apps/pages/home_page.dart';
+import 'package:apps/pages/home/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -12,6 +12,6 @@ class HomeRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const MyHomePage(title: 'Flutter Demo Home Page');
+    return const HomePage(title: 'Flutter Demo Home Page');
   }
 }
