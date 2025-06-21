@@ -55,7 +55,7 @@ export ERROR_ONLY_OUTPUT=false          # エラー以外も表示
 ### 基本フロー（/linearコマンド使用）
 1. **コマンド実行**: `claude` → `/linear` または `/linear <Issue ID>` 実行
 2. **Issue選択**: 対話形式でIssue ID選択（引数指定時はスキップ）
-3. **ブランチ作成**: 新規作業ブランチをgit worktreeで作成
+3. **ブランチ作成**: リモートのデフォルトブランチから新規作業ブランチをgit worktreeで作成
 4. **並列実行**: 非同期でタスクを実行
 5. **自動PR作成**: 作業完了時に日本語でPRを作成
 6. **完了通知**: アラームで作業完了を通知
@@ -77,9 +77,10 @@ INPUT:
 
 #### Phase 2: 環境準備
 ```
-1. git worktree add で新しい作業ディレクトリを作成
-2. fvm use でプロジェクト指定のFlutterバージョンを設定
-3. 依存関係のインストール (flutter pub get)
+1. リモートリポジトリから最新のデフォルトブランチを取得
+2. git worktree add でリモートブランチから新しい作業ディレクトリを作成
+3. fvm use でプロジェクト指定のFlutterバージョンを設定
+4. 依存関係のインストール (flutter pub get)
 ```
 
 #### Phase 3: 非同期実行
