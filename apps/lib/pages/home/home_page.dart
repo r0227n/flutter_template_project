@@ -1,5 +1,5 @@
 import 'package:apps/i18n/translations.g.dart';
-import 'package:apps/providers/theme_provider.dart';
+import 'package:apps/theme/theme_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -31,32 +31,32 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     final themeMode = ref.watch(themeModeNotifierProvider);
-    
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
         actions: [
-          PopupMenuButton<ThemeModeEnum>(
+          PopupMenuButton<ThemeMode>(
             icon: const Icon(Icons.brightness_6),
             onSelected: (mode) {
               ref.read(themeModeNotifierProvider.notifier).setTheme(mode);
             },
             itemBuilder: (context) {
-              return ThemeModeEnum.values.map((mode) {
-                return PopupMenuItem<ThemeModeEnum>(
+              return ThemeMode.values.map((mode) {
+                return PopupMenuItem<ThemeMode>(
                   value: mode,
                   child: Row(
                     children: [
                       Icon(
                         switch (mode) {
-                          ThemeModeEnum.light => Icons.light_mode,
-                          ThemeModeEnum.dark => Icons.dark_mode,
-                          ThemeModeEnum.system => Icons.brightness_auto,
+                          ThemeMode.light => Icons.light_mode,
+                          ThemeMode.dark => Icons.dark_mode,
+                          ThemeMode.system => Icons.brightness_auto,
                         },
                       ),
                       const SizedBox(width: 8),
-                      Text(mode.displayName),
+                      Text(mode.name),
                       const SizedBox(width: 8),
                       if (themeMode == mode) const Icon(Icons.check),
                     ],
@@ -89,7 +89,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      '現在のテーマ: ${themeMode.displayName}',
+                      '現在のテーマ: ${themeMode.name}',
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     const SizedBox(height: 16),

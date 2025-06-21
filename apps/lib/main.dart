@@ -1,7 +1,7 @@
 import 'package:apps/i18n/translations.g.dart';
-import 'package:apps/providers/theme_provider.dart';
 import 'package:apps/router/app_router.dart';
 import 'package:apps/theme/app_theme.dart';
+import 'package:apps/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -24,9 +24,9 @@ class MyApp extends ConsumerWidget {
 
     return MaterialApp.router(
       title: 'Flutter Demo',
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: themeMode.flutterThemeMode,
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: themeMode,
       locale: TranslationProvider.of(context).flutterLocale, // use provider
       supportedLocales: AppLocale.values.map((locale) => locale.flutterLocale),
       localizationsDelegates: GlobalMaterialLocalizations.delegates,

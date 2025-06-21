@@ -1,59 +1,95 @@
 import 'package:flutter/material.dart';
 
-class AppTheme {
-  static ThemeData get lightTheme {
+class AppThemeData {
+  const AppThemeData({
+    this.seedColor = Colors.deepPurple,
+    this.cardElevation = 2.0,
+    this.appBarElevation = 0.0,
+    this.cardBorderRadius = const BorderRadius.all(Radius.circular(12)),
+    this.buttonBorderRadius = const BorderRadius.all(Radius.circular(8)),
+    this.buttonPadding = const EdgeInsets.symmetric(
+      horizontal: 24,
+      vertical: 12,
+    ),
+  });
+  final Color seedColor;
+  final double cardElevation;
+  final double appBarElevation;
+  final BorderRadius cardBorderRadius;
+  final BorderRadius buttonBorderRadius;
+  final EdgeInsets buttonPadding;
+
+  AppThemeData copyWith({
+    Color? seedColor,
+    double? cardElevation,
+    double? appBarElevation,
+    BorderRadius? cardBorderRadius,
+    BorderRadius? buttonBorderRadius,
+    EdgeInsets? buttonPadding,
+  }) {
+    return AppThemeData(
+      seedColor: seedColor ?? this.seedColor,
+      cardElevation: cardElevation ?? this.cardElevation,
+      appBarElevation: appBarElevation ?? this.appBarElevation,
+      cardBorderRadius: cardBorderRadius ?? this.cardBorderRadius,
+      buttonBorderRadius: buttonBorderRadius ?? this.buttonBorderRadius,
+      buttonPadding: buttonPadding ?? this.buttonPadding,
+    );
+  }
+
+  ThemeData toLightTheme() {
     return ThemeData(
-      useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(
-        seedColor: Colors.deepPurple,
-        brightness: Brightness.light,
+        seedColor: seedColor,
       ),
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         centerTitle: true,
-        elevation: 0,
+        elevation: appBarElevation,
       ),
       cardTheme: CardThemeData(
-        elevation: 2,
+        elevation: cardElevation,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: cardBorderRadius,
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          padding: buttonPadding,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: buttonBorderRadius,
           ),
         ),
       ),
     );
   }
 
-  static ThemeData get darkTheme {
+  ThemeData toDarkTheme() {
     return ThemeData(
-      useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(
-        seedColor: Colors.deepPurple,
+        seedColor: seedColor,
         brightness: Brightness.dark,
       ),
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         centerTitle: true,
-        elevation: 0,
+        elevation: appBarElevation,
       ),
       cardTheme: CardThemeData(
-        elevation: 2,
+        elevation: cardElevation,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: cardBorderRadius,
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          padding: buttonPadding,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: buttonBorderRadius,
           ),
         ),
       ),
     );
   }
 }
+
+ThemeData get lightTheme => const AppThemeData().toLightTheme();
+ThemeData get darkTheme => const AppThemeData().toDarkTheme();
