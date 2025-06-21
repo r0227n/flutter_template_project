@@ -21,6 +21,7 @@
 
 ### 環境変数
 ```bash
+export ENABLE_BACKGROUND_TASKS=1
 export ENABLE_BACKGROUND_TASKS=true
 export FLUTTER_VERSION_MANAGEMENT=fvm
 export TASK_MANAGEMENT_SYSTEM=linear
