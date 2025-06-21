@@ -1,0 +1,53 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Flutter (Debug)",
+            "type": "dart",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/apps",
+            "program": "lib/main.dart",
+            "args": [],
+            "console": "debugConsole",
+            "debugExternalPackageLibraries": false,
+            "debugSdkLibraries": false
+        },
+        {
+            "name": "Flutter (Profile)",
+            "type": "dart",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/apps",
+            "program": "lib/main.dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "Flutter (Release)",
+            "type": "dart",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/apps",
+            "program": "lib/main.dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "Flutter Web (Debug)",
+            "type": "dart",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/apps",
+            "program": "lib/main.dart",
+            "args": ["-d", "web-server"],
+            "flutterMode": "debug"
+        },
+        {
+            "name": "Flutter Test",
+            "type": "dart",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/apps",
+            "program": "test/",
+            "console": "debugConsole",
+            "args": ["--reporter", "expanded"]
+        }
+    ]
+}
