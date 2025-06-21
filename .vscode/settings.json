@@ -1,3 +1,19 @@
 {
-  "dart.flutterSdkPath": ".fvm/versions/3.32.2"
+  "dart.flutterSdkPath": ".fvm/versions/3.32.2",
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true
+  },
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false,
+  "explorer.fileNesting.patterns": {
+    "*.dart": "${capture}.g.dart, ${capture}.freezed.dart, ${capture}.config.dart, ${capture}.gr.dart",
+    "pubspec.yaml": "pubspec.lock, .flutter-plugins, .flutter-plugins-dependencies, .packages, .metadata",
+    "analysis_options.yaml": "analysis_options.yaml",
+    ".gitignore": ".gitattributes, .gitmodules, .gitmessage, .mailmap, .git-blame*"
+  }
 }
