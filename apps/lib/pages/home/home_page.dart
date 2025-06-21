@@ -1,6 +1,7 @@
-import 'package:apps/i18n/translations.g.dart';
+import 'package:app_preferences/app_preferences.dart';
+import 'package:apps/i18n/translations.g.dart' as i18n;
+import 'package:apps/router/routes.dart';
 import 'package:apps/theme/theme_provider.dart';
-import 'package:apps/services/locale_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -29,9 +30,11 @@ class _HomePageState extends ConsumerState<HomePage> {
     });
   }
 
-  Future<void> _changeLanguage(AppLocale locale) async {
-    await LocaleService.saveLocale(locale);
-    await LocaleSettings.setLocale(locale);
+  Future<void> _changeLanguage(i18n.AppLocale locale) async {
+    // Convert from i18n AppLocale to Flutter Locale
+    final flutterLocale = locale.flutterLocale;
+    await ref.read(appLocaleProvider.notifier).setLocale(flutterLocale);
+    await i18n.LocaleSettings.setLocale(locale);
     setState(() {});
   }
 
@@ -43,12 +46,18 @@ class _HomePageState extends ConsumerState<HomePage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
+        actions: [
+          IconButton(
+            onPressed: () => const SettingsRoute().go(context),
+            icon: const Icon(Icons.settings),
+          ),
+        ],
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(t.hello),
+            Text(i18n.t.hello),
             Text(
               'カウンター: $_counter',
               style: Theme.of(context).textTheme.headlineMedium,

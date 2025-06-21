@@ -51,6 +51,31 @@ class TranslationsEn implements Translations {
   // Translations
   @override
   String get hello => 'Hello';
+  @override
+  late final _TranslationsSettingsEn settings = _TranslationsSettingsEn._(
+    _root,
+  );
+}
+
+// Path: settings
+class _TranslationsSettingsEn implements TranslationsSettingsJa {
+  _TranslationsSettingsEn._(this._root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get title => 'Settings';
+  @override
+  String get language => 'Language';
+  @override
+  String get theme => 'Theme';
+  @override
+  String get theme_system => 'System';
+  @override
+  String get theme_light => 'Light';
+  @override
+  String get theme_dark => 'Dark';
 }
 
 /// Flat map(s) containing all translations.
@@ -60,6 +85,18 @@ extension on TranslationsEn {
     switch (path) {
       case 'hello':
         return 'Hello';
+      case 'settings.title':
+        return 'Settings';
+      case 'settings.language':
+        return 'Language';
+      case 'settings.theme':
+        return 'Theme';
+      case 'settings.theme_system':
+        return 'System';
+      case 'settings.theme_light':
+        return 'Light';
+      case 'settings.theme_dark':
+        return 'Dark';
       default:
         return null;
     }

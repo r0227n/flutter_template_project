@@ -54,6 +54,22 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 
   // Translations
   String get hello => 'こんにちは';
+  late final TranslationsSettingsJa settings = TranslationsSettingsJa._(_root);
+}
+
+// Path: settings
+class TranslationsSettingsJa {
+  TranslationsSettingsJa._(this._root);
+
+  final Translations _root; // ignore: unused_field
+
+  // Translations
+  String get title => '設定';
+  String get language => '言語';
+  String get theme => 'テーマ';
+  String get theme_system => 'システム';
+  String get theme_light => 'ライト';
+  String get theme_dark => 'ダーク';
 }
 
 /// Flat map(s) containing all translations.
@@ -63,6 +79,18 @@ extension on Translations {
     switch (path) {
       case 'hello':
         return 'こんにちは';
+      case 'settings.title':
+        return '設定';
+      case 'settings.language':
+        return '言語';
+      case 'settings.theme':
+        return 'テーマ';
+      case 'settings.theme_system':
+        return 'システム';
+      case 'settings.theme_light':
+        return 'ライト';
+      case 'settings.theme_dark':
+        return 'ダーク';
       default:
         return null;
     }
