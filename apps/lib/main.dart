@@ -1,12 +1,20 @@
 import 'package:apps/i18n/translations.g.dart';
 import 'package:apps/router/app_router.dart';
+import 'package:apps/services/locale_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await LocaleSettings.useDeviceLocale();
+  
+  // 保存されたLocaleがあるかチェック
+  final savedLocale = await LocaleService.getSavedLocale();
+  if (savedLocale != null) {
+    await LocaleSettings.setLocaleRaw(savedLocale.languageCode);
+  } else {
+    await LocaleSettings.useDeviceLocale();
+  }
 
   runApp(ProviderScope(child: TranslationProvider(child: const MyApp())));
 }
