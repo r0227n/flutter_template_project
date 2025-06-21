@@ -31,3 +31,35 @@ jobs:
         working-directory: ${{ env.WORKING_DIR }}
         run: |
           dart format --set-exit-if-changed .
+
+  i18n-validation:
+    name: i18n Validation
+    runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.changed_files, '.i18n.json')
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Flutter with FVM
+        uses: ./.github/actions/setup-fvm
+      
+      - name: Get dependencies
+        working-directory: ${{ env.WORKING_DIR }}
+        run: flutter pub get
+      
+      - name: Check for i18n file changes
+        id: check_i18n
+        run: |
+          if git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep -E '\.i18n\.json$'; then
+            echo "i18n_changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "i18n_changed=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Run slang analyze
+        if: steps.check_i18n.outputs.i18n_changed == 'true'
+        working-directory: ${{ env.WORKING_DIR }}
+        run: dart run slang analyze
