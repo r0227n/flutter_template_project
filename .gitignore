@@ -46,11 +46,6 @@ app.*.map.json
 # FVM
 .fvm/flutter_sdk
 
-# Generated files
-*.g.dart
-*.freezed.dart
-*.gr.dart
-
 # Coverage
 coverage/
 値n
