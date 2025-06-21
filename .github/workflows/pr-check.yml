@@ -21,16 +21,16 @@ jobs:
       
       - name: Get dependencies
         working-directory: ${{ env.WORKING_DIR }}
-        run: flutter pub get
+        run: fvm flutter pub get
       
       - name: Run Flutter Analyze
         working-directory: ${{ env.WORKING_DIR }}
-        run: flutter analyze
+        run: fvm flutter analyze
       
       - name: Check Dart Format
         working-directory: ${{ env.WORKING_DIR }}
         run: |
-          dart format --set-exit-if-changed .
+          fvm dart format --set-exit-if-changed .
 
   i18n-validation:
     name: i18n Validation
