@@ -1,5 +1,7 @@
 import 'package:apps/i18n/translations.g.dart';
 import 'package:apps/router/app_router.dart';
+import 'package:apps/theme/app_theme.dart';
+import 'package:apps/theme/theme_provider.dart';
 import 'package:apps/services/locale_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -26,12 +28,13 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(appRouterProvider);
+    final themeMode = ref.watch(themeModeNotifierProvider);
 
     return MaterialApp.router(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: themeMode,
       locale: TranslationProvider.of(context).flutterLocale, // use provider
       supportedLocales: AppLocale.values.map((locale) => locale.flutterLocale),
       localizationsDelegates: GlobalMaterialLocalizations.delegates,

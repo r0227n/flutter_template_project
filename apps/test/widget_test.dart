@@ -48,15 +48,22 @@ void main() {
       await LocaleSettings.setLocale(AppLocale.ja);
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: TranslationProvider(
-            child: const HomePage(title: 'Test App'),
+        ProviderScope(
+          child: MaterialApp(
+            home: TranslationProvider(
+              child: const HomePage(title: 'Test App'),
+            ),
           ),
         ),
       );
 
+      // Wait for widget to settle
+      await tester.pumpAndSettle();
+
       // Verify that our counter starts at 0
-      expect(find.text('0'), findsOneWidget);
+      expect(find.text('カウンター: 0'), findsOneWidget);
+      
+      // Verify the hello text exists
       expect(find.text('こんにちは'), findsOneWidget);
 
       // Tap the '+' icon and trigger a frame
@@ -64,8 +71,8 @@ void main() {
       await tester.pump();
 
       // Verify that our counter has incremented
-      expect(find.text('1'), findsOneWidget);
-      expect(find.text('0'), findsNothing);
+      expect(find.text('カウンター: 1'), findsOneWidget);
+      expect(find.text('カウンター: 0'), findsNothing);
     });
 
     testWidgets('App structure test', (tester) async {
@@ -82,10 +89,74 @@ void main() {
       );
 
       // Wait briefly for routing to settle
-      await tester.pump();
+      await tester.pumpAndSettle();
 
       // Verify basic app structure exists
       expect(find.byType(MaterialApp), findsOneWidget);
+    });
+
+    testWidgets('Theme switching test', (tester) async {
+      // Set locale first
+      await LocaleSettings.setLocale(AppLocale.ja);
+
+      // Build the app with proper providers
+      await tester.pumpWidget(
+        ProviderScope(
+          child: TranslationProvider(
+            child: const MyApp(),
+          ),
+        ),
+      );
+
+      // Wait for app to load
+      await tester.pumpAndSettle();
+
+      // Look for theme toggle button and test if it exists
+      final themeButton = find.byIcon(Icons.brightness_6);
+      expect(themeButton, findsOneWidget);
+      
+      // Tap theme toggle button
+      await tester.tap(themeButton);
+      await tester.pumpAndSettle();
+
+      // Check if popup menu items exist
+      expect(find.byType(PopupMenuItem<ThemeMode>), findsNWidgets(3));
+      
+      // Select dark theme
+      await tester.tap(find.text('dark'));
+      await tester.pumpAndSettle();
+      
+      // Verify theme toggle button still exists
+      expect(find.byIcon(Icons.brightness_6), findsOneWidget);
+    });
+
+    testWidgets('Theme toggle button test', (tester) async {
+      // Set locale first
+      await LocaleSettings.setLocale(AppLocale.ja);
+
+      // Build HomePage directly
+      await tester.pumpWidget(
+        ProviderScope(
+          child: MaterialApp(
+            home: TranslationProvider(
+              child: const HomePage(title: 'Test App'),
+            ),
+          ),
+        ),
+      );
+
+      // Wait for widget to settle
+      await tester.pumpAndSettle();
+
+      // Find and tap theme toggle button
+      final toggleButton = find.text('テーマ切り替え');
+      expect(toggleButton, findsOneWidget);
+      
+      await tester.tap(toggleButton);
+      await tester.pumpAndSettle();
+      
+      // Theme should have changed - verify button still exists
+      expect(find.text('テーマ切り替え'), findsOneWidget);
     });
   });
 }
