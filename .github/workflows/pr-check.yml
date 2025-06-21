@@ -1,0 +1,33 @@
+name: PR Check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+env:
+  WORKING_DIR: apps
+
+jobs:
+  analyze-and-format:
+    name: Analyze and Format Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Flutter with FVM
+        uses: ./.github/actions/setup-fvm
+      
+      - name: Get dependencies
+        working-directory: ${{ env.WORKING_DIR }}
+        run: flutter pub get
+      
+      - name: Run Flutter Analyze
+        working-directory: ${{ env.WORKING_DIR }}
+        run: flutter analyze
+      
+      - name: Check Dart Format
+        working-directory: ${{ env.WORKING_DIR }}
+        run: |
+          dart format --set-exit-if-changed .
