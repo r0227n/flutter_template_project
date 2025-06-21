@@ -1,7 +1,10 @@
-include: package:flutter_lints/flutter.yaml
+include: package:yumemi_lints/flutter/3.32/recommended.yaml
 
 analyzer:
   errors:
     invalid_annotation_target: ignore
   plugins:
     - custom_lint
+
+formatter:
+  trailing_commas: preserve
