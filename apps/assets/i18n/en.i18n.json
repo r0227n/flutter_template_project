@@ -1,3 +1,10 @@
 {
-  "hello": "Hello"
+  "hello": "Hello",
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "theme": "Theme",
+    "version": "Version",
+    "licenses": "Licenses"
+  }
 }

@@ -9,3 +9,4 @@ dev_dependencies:
 
 workspace:
   - apps
+  - packages/app_preferences
