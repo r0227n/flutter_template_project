@@ -1,4 +1,4 @@
-name: 'Setup FVM'
+name: 'Setup Flutter'
 description: 'Sets up Flutter Version Management (FVM) with the correct Flutter version'
 
 inputs:

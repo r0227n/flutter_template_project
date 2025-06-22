@@ -66,5 +66,4 @@ jobs:
         uses: ./.github/actions/setup-fvm
       
       - name: Run slang analyze
-        working-directory: ${{ env.WORKING_DIR }}
-        run: dart run slang analyze
+        run: melos run analyze:slang
