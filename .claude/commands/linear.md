@@ -31,7 +31,7 @@ Linear Issueを処理するためのカスタムコマンドです。
 # ↓ 以下が自動実行される（確認なし）
 # ✅ Issue ID検証: ABC-123, XYZ-456
 # ✅ Linear API存在確認: 完了
-# ✅ git worktree作成: feature/ABC-123 (origin/main), feature/XYZ-456 (origin/main)
+# ✅ git worktree作成: feature/ABC-123, feature/XYZ-456
 # ✅ Flutter環境設定: 完了
 # 🚀 並列実行開始: バックグラウンドで処理中...
 # ⏰ 完了時にアラーム通知予定
@@ -45,16 +45,72 @@ Linear Issueを処理するためのカスタムコマンドです。
 - git worktreeで専用ブランチ作成
 - Issue内容に基づいた実装・テスト・ドキュメント作成
 - 日本語でのPR作成
+- **GitHub Actions監視**: `.github/workflows/check-pr.yml`の全チェック正常終了を確認
 - Linear IssueのIn Reviewステータス更新
 - 完了アラーム通知
 
-## 設定
+## 完了条件
+
+以下の全ての条件を満たした場合にタスク完了：
+
+1. ✅ コード実装完了
+2. ✅ テスト実行成功
+3. ✅ コード品質チェック通過
+4. ✅ PR作成完了
+5. ✅ **GitHub Actions (check-pr.yml) 全チェック正常終了**
+6. ✅ Linear Issue状態更新完了
+
+### GitHub Actions連携
 
 ```bash
-# 自動実行時の動作設定
-AUTO_CONFIRM_WITH_ARGS=true    # 引数ありの場合は確認をスキップ
-SILENT_MODE_WITH_ARGS=false    # 進捗表示は継続
-ERROR_ONLY_OUTPUT=false        # エラー以外も表示
+# PR作成後の自動監視
+🔄 PR作成 → GitHub Actions自動実行
+👀 check-pr.yml実行状況を監視
+✅ 全チェック正常終了 → タスク完了
+❌ チェック失敗 → 自動修正試行 → 再実行
+```
+
+## 並列実行時の分離処理
+
+### 自動分離機能
+
+引数でIssue IDが指定された場合、プロジェクト内に独立した作業環境を作成：
+
+```bash
+/linear ABC-123
+# ↓ 自動分離処理
+# 📁 作業ディレクトリ作成: .claude-workspaces/ABC-123
+# 🔗 git worktree作成: feature/ABC-123
+# 💾 Claude メモリ分離: SESSION_ABC-123
+# 📋 セッション識別子: .claude-session
+# ✅ Flutter環境セットアップ: fvm + pub get
+# 🚀 独立プロセスで実行開始（プロジェクトルートから制御）
+```
+
+### 競合防止
+
+- **重複実行チェック**: 同一Issue IDの並列実行を防止
+- **リソース監視**: CPU/メモリ使用率80%超過時は待機
+- **ファイルロック**: .lock ファイルによる排他制御
+- **プロジェクト内分離**: `.claude-workspaces/` でgit管理対象外
+
+### 分離確認
+
+```bash
+# 実行中タスク確認
+/linear-running
+
+# 作業領域確認
+ls .claude-workspaces/
+# ABC-123/  XYZ-456/
+```
+
+### .gitignore設定
+
+```
+.claude-workspaces/
+*.lock
+.claude-session
 ```
 
 ## 実行例
@@ -81,7 +137,7 @@ ERROR_ONLY_OUTPUT=false        # エラー以外も表示
 ✅ Issue ID検証: ABC-123
 ✅ Linear API確認: Issue存在確認済み
 ✅ 権限確認: 処理可能
-✅ git worktree作成: feature/ABC-123-user-auth (origin/main)
+✅ git worktree作成: feature/ABC-123-user-auth
 ✅ Flutter環境設定: fvm 3.24.0 適用済み
 🚀 バックグラウンド実行開始...
 📝 実装中: ユーザー認証機能
