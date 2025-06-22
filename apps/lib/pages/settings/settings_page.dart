@@ -23,11 +23,7 @@ class SettingsPage extends ConsumerWidget {
         children: [
           ListTile(
             title: Text(t.settings.language),
-            subtitle: LocaleDisplayText(
-              systemLabel: t.settings.theme_system,
-              japaneseLabel: '日本語',
-              englishLabel: 'English',
-            ),
+            subtitle: const LocaleText(),
             trailing: const Icon(Icons.chevron_right),
             onTap: () => _showLanguageDialog(context, t),
           ),
@@ -35,11 +31,7 @@ class SettingsPage extends ConsumerWidget {
 
           ListTile(
             title: Text(t.settings.theme),
-            subtitle: ThemeDisplayText(
-              systemLabel: t.settings.theme_system,
-              lightLabel: t.settings.theme_light,
-              darkLabel: t.settings.theme_dark,
-            ),
+            subtitle: const ThemeText(),
             trailing: const Icon(Icons.chevron_right),
             onTap: () => _showThemeDialog(context, t),
           ),

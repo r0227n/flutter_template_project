@@ -17,5 +17,5 @@ export 'src/ui/dialogs/locale_selection_dialog.dart';
 export 'src/ui/dialogs/selection_dialog.dart';
 export 'src/ui/dialogs/theme_selection_dialog.dart';
 export 'src/ui/helpers/dialog_helpers.dart';
-export 'src/ui/utils/settings_display_utils.dart';
-export 'src/ui/widgets/preference_display_widgets.dart';
+export 'src/ui/widgets/locale_text.dart';
+export 'src/ui/widgets/theme_text.dart';
