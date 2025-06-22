@@ -5,6 +5,7 @@
 このプロジェクトはFlutterを使用したモバイルアプリケーション開発プロジェクトです。Claude Codeを使用して、Linear Issue管理システムと連携した自動化開発ワークフローを実現します。
 
 ### 技術スタック
+
 - **フレームワーク**: Flutter
 - **バージョン管理**: fvm (Flutter Version Management)
 - **タスク管理**: Linear (MCP連携済み)
@@ -14,12 +15,14 @@
 ## 環境設定
 
 ### 必須要件
+
 - Flutter SDK (fvmで管理)
 - Git worktree対応
 - Linear MCP設定完了
 - Claude Code ENABLE_BACKGROUND_TASKS有効化
 
 ### 環境変数
+
 ```bash
 export ENABLE_BACKGROUND_TASKS=1
 export ENABLE_BACKGROUND_TASKS=true
@@ -38,11 +41,13 @@ export ERROR_ONLY_OUTPUT=false          # エラー以外も表示
 ## カスタムスラッシュコマンド設定
 
 ### 利用可能なコマンド
+
 - `/linear` - Linear Issue処理（対話式・自動実行）
 - `/linear-list` - 利用可能Issue一覧表示
 - `/linear-status` - Linear連携状況確認
 
 ### コマンドファイル配置
+
 ```
 .claude/
 └── commands/
@@ -54,6 +59,7 @@ export ERROR_ONLY_OUTPUT=false          # エラー以外も表示
 ## ワークフロー定義
 
 ### 基本フロー（/linearコマンド使用）
+
 1. **コマンド実行**: `claude` → `/linear` または `/linear <Issue ID>` 実行
 2. **Issue選択**: 対話形式でIssue ID選択（引数指定時はスキップ）
 3. **ブランチ作成**: リモートのデフォルトブランチから新規作業ブランチをgit worktreeで作成
@@ -64,8 +70,9 @@ export ERROR_ONLY_OUTPUT=false          # エラー以外も表示
 ### 詳細ワークフロー
 
 #### Phase 1: タスク初期化
+
 ```
-INPUT: 
+INPUT:
 - 対話形式: `/linear` → Issue ID選択プロンプト
 - 自動実行: `/linear ABC-123` → 確認なしで即座に開始
 ↓
@@ -77,6 +84,7 @@ INPUT:
 ```
 
 #### Phase 2: 環境準備
+
 ```
 1. リモートリポジトリから最新のデフォルトブランチを取得
 2. git worktree add でリモートブランチから新しい作業ディレクトリを作成
@@ -85,6 +93,7 @@ INPUT:
 ```
 
 #### Phase 3: 非同期実行
+
 ```
 ENABLE_BACKGROUND_TASKS = true で以下を並列実行:
 - コード実装
@@ -94,6 +103,7 @@ ENABLE_BACKGROUND_TASKS = true で以下を並列実行:
 ```
 
 #### Phase 4: 完了処理
+
 ```
 1. 全ての作業が完了次第
 2. 変更をコミット
@@ -105,6 +115,7 @@ ENABLE_BACKGROUND_TASKS = true で以下を並列実行:
 ## コマンド実行例
 
 ### 対話形式での実行（推奨）
+
 ```bash
 # Claude Code対話モードを開始
 claude
@@ -117,14 +128,15 @@ claude
 # 1) ABC-123: ユーザー認証機能の実装 (High, To Do)
 # 2) XYZ-456: バグ修正: ログイン時のエラー処理 (Urgent, In Progress)
 # 3) FEAT-789: 新機能: プッシュ通知 (Normal, To Do)
-# 
+#
 # ? 処理するIssueを選択してください [1-3, または複数選択]: 1,3
 # ? 選択したIssue: ABC-123, FEAT-789 で実行しますか？ [Y/n]: y
-# 
+#
 # 🚀 並列実行を開始しています...
 ```
 
 ### 直接指定での実行（自動実行）
+
 ```bash
 # Claude Code対話モード
 claude
@@ -150,6 +162,7 @@ claude
 ```
 
 ### 補助コマンド
+
 ```bash
 # Issue一覧確認
 /linear-list
@@ -161,6 +174,7 @@ claude
 ## 対話式実行の詳細仕様
 
 ### 対話フローの設定
+
 ```bash
 # デフォルト設定で対話モード有効
 export INTERACTIVE_MODE=true
@@ -170,6 +184,7 @@ export ISSUE_PREVIEW=true       # Issue内容プレビュー表示
 ```
 
 ### 入力検証とエラーハンドリング
+
 ```
 対話時の検証項目:
 1. Issue ID形式チェック (例: ABC-123)
@@ -180,6 +195,7 @@ export ISSUE_PREVIEW=true       # Issue内容プレビュー表示
 ```
 
 ### 対話UIのカスタマイズ
+
 ```bash
 # 対話モード（引数なし）- 詳細確認あり
 /linear
@@ -187,7 +203,7 @@ export ISSUE_PREVIEW=true       # Issue内容プレビュー表示
 > 1) ABC-123: ユーザー認証機能の実装
 >    ステータス: To Do | 優先度: High | 担当者: あなた
 >    📝 説明: OAuth2.0を使用したログイン機能の実装
-> 
+>
 > ? 処理するIssueを選択してください: 1
 > ? このIssueを処理しますか？ [Y/n]: y
 
@@ -209,32 +225,40 @@ export ISSUE_PREVIEW=true       # Issue内容プレビュー表示
 ## 自動化ルール
 
 ### PR作成ルール
+
 - **タイトル**: `[ABC-123] Issue タイトルをそのまま使用`
 - **説明文**: 日本語で以下の内容を含む
+
   ```markdown
   ## 変更内容
+
   - 実装した機能の詳細
   - 修正したバグの内容
-  
+
   ## 関連Issue
+
   - Closes #{Linear Issue URL}
-  
+
   ## テスト
+
   - 実行したテストの概要
   - テスト結果
-  
+
   ## チェックリスト
+
   - [ ] コードレビュー準備完了
   - [ ] テスト実行済み
   - [ ] ドキュメント更新済み
   ```
 
 ### 並列実行ルール
+
 - 各git worktreeは独立したFlutter環境を持つ
 - 同時に複数のIssueを処理可能
 - リソース競合を避けるため、重要度に応じて優先度を調整
 
 ### 完了通知ルール
+
 - システムアラーム音で通知
 - 通知内容: "Issue ABC-123の作業が完了しました。PRが作成されています。"
 
@@ -243,6 +267,7 @@ export ISSUE_PREVIEW=true       # Issue内容プレビュー表示
 ### よくある問題と解決方法
 
 #### 1. Linear API接続エラー
+
 ```bash
 # Linear連携状況確認
 /linear-status
@@ -252,6 +277,7 @@ export ISSUE_PREVIEW=true       # Issue内容プレビュー表示
 ```
 
 #### 2. fvmバージョン競合
+
 ```bash
 # Flutterバージョンを再設定
 fvm use [project_flutter_version]
@@ -260,6 +286,7 @@ flutter pub get
 ```
 
 #### 3. git worktree作成失敗
+
 ```bash
 # 既存のworktreeを確認・削除
 git worktree list
@@ -267,6 +294,7 @@ git worktree remove [worktree_path]
 ```
 
 #### 4. バックグラウンドタスクが動作しない
+
 ```bash
 # 環境変数を確認
 echo $ENABLE_BACKGROUND_TASKS
@@ -276,15 +304,18 @@ export ENABLE_BACKGROUND_TASKS=true
 ## 設定カスタマイズ
 
 ### 通知設定
+
 - アラーム音の変更: システム設定で調整
 - 通知タイミング: PR作成完了時
 
 ### 品質管理
+
 - 自動テスト実行: 全てのコミット前に実行
 - コード静的解析: dart analyze自動実行
 - フォーマット: dart format自動適用
 
 ### パフォーマンス最適化
+
 - 並列実行数制限: CPU使用率に応じて調整
 - メモリ使用量監視: 大量のworktree作成時の制御
 

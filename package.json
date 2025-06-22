@@ -4,10 +4,13 @@
     "description": "Flutter template project with commit linting",
     "private": true,
     "scripts": {
-        "commitlint": "commitlint --edit"
+        "commitlint": "commitlint --edit",
+        "lint": "prettier --check '**/*.{yml,yaml,md}'",
+        "format": "prettier --write '**/*.{yml,yaml,md}'"
     },
     "devDependencies": {
         "@commitlint/cli": "^18.0.0",
-        "@commitlint/config-conventional": "^18.0.0"
+        "@commitlint/config-conventional": "^18.0.0",
+        "prettier": "^3.0.0"
     }
 }
