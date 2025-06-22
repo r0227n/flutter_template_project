@@ -3,6 +3,8 @@
   "settings": {
     "title": "設定",
     "language": "言語",
-    "theme": "テーマ"
+    "theme": "テーマ",
+    "version": "バージョン",
+    "licenses": "ライセンス"
   }
 }

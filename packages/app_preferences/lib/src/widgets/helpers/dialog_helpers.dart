@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:app_preferences/i18n/strings.g.dart' as app_prefs;
-import 'package:app_preferences/src/ui/dialogs/locale_selection_dialog.dart';
-import 'package:app_preferences/src/ui/dialogs/theme_selection_dialog.dart';
+import 'package:app_preferences/src/widgets/dialogs/locale_selection_dialog.dart';
+import 'package:app_preferences/src/widgets/dialogs/theme_selection_dialog.dart';
 import 'package:flutter/material.dart';
 
 /// Helper methods for showing app preferences dialogs

@@ -3,6 +3,8 @@
   "settings": {
     "title": "Settings",
     "language": "Language",
-    "theme": "Theme"
+    "theme": "Theme",
+    "version": "Version",
+    "licenses": "Licenses"
   }
 }

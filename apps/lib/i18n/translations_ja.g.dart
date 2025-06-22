@@ -67,6 +67,8 @@ class TranslationsSettingsJa {
   String get title => '設定';
   String get language => '言語';
   String get theme => 'テーマ';
+  String get version => 'バージョン';
+  String get licenses => 'ライセンス';
 }
 
 /// Flat map(s) containing all translations.
@@ -82,6 +84,10 @@ extension on Translations {
         return '言語';
       case 'settings.theme':
         return 'テーマ';
+      case 'settings.version':
+        return 'バージョン';
+      case 'settings.licenses':
+        return 'ライセンス';
       default:
         return null;
     }

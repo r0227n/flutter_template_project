@@ -70,6 +70,10 @@ class _TranslationsSettingsEn implements TranslationsSettingsJa {
   String get language => 'Language';
   @override
   String get theme => 'Theme';
+  @override
+  String get version => 'Version';
+  @override
+  String get licenses => 'Licenses';
 }
 
 /// Flat map(s) containing all translations.
@@ -85,6 +89,10 @@ extension on TranslationsEn {
         return 'Language';
       case 'settings.theme':
         return 'Theme';
+      case 'settings.version':
+        return 'Version';
+      case 'settings.licenses':
+        return 'Licenses';
       default:
         return null;
     }
