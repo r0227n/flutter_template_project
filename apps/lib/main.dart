@@ -1,29 +1,20 @@
-import 'package:debug/debug.dart';
-import 'package:apps/i18n/translations.g.dart' as i18n;
+import 'package:app_preferences/app_preferences.dart';
+import 'package:apps/i18n/translations.g.dart';
 import 'package:apps/router/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:talker_flutter/talker_flutter.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize locale
-  await i18n.LocaleSettings.useDeviceLocale();
-
-  // Create provider container with debug observers
-  final container = ProviderContainer(
-    observers: DebugConfig.shouldEnableTalker ? [TalkerRiverpodObserver(talker: Talker())] : [],
-  );
+  await LocaleSettings.useDeviceLocale();
 
   runApp(
     ProviderScope(
-      parent: container,
-      child: i18n.TranslationProvider(
-        child: DebugConfig.shouldEnableShakeDetector
-            ? ShakeDetectorWidget(child: const MyApp())
-            : const MyApp(),
+      child: TranslationProvider(
+        child: const MyApp(),
       ),
     ),
   );
@@ -35,23 +26,31 @@ class MyApp extends ConsumerWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final router = ref.watch(appRouterProvider);
-    final talker = ref.watch(talkerProvider);
+    final locale = ref.watch(appLocalePreferenceProvider);
+    final themeMode = ref.watch(appThemePreferenceProvider);
 
     return MaterialApp.router(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      locale: i18n.TranslationProvider.of(context).flutterLocale,
-      supportedLocales: i18n.AppLocale.values
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: AppLocale.values
           .map((locale) => locale.flutterLocale),
-      localizationsDelegates: GlobalMaterialLocalizations.delegates,
-      routerConfig: router,
-      navigatorObservers: DebugConfig.shouldEnableTalker
-          ? [TalkerRouteObserver(talker)]
-          : [],
+      locale: locale.when(
+        data: (locale) => locale,
+        loading: () => const Locale('en'),
+        error: (_, __) => const Locale('en'),
+      ),
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: themeMode.when(
+        data: (mode) => mode,
+        loading: () => ThemeMode.system,
+        error: (_, __) => ThemeMode.system,
+      ),
+      routerConfig: ref.watch(appRouterProvider),
     );
   }
 }
