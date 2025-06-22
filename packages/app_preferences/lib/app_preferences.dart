@@ -1,8 +1,6 @@
 library app_preferences;
 
-// Models
-export 'src/models/app_locale_preference.dart';
-export 'src/models/app_theme_preference.dart';
+export 'package:shared_preferences/shared_preferences.dart';
 
 // Providers
 export 'src/providers/app_preferences_provider.dart';
