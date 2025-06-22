@@ -34,17 +34,7 @@ scripts:
   # Run tests for all packages
   test:
     description: Run tests for all packages
-    run: melos exec --fail-fast -- "flutter test"
-    
-  # Build APK for apps
-  build:apk:
-    description: Build APK for all apps
-    run: melos exec --scope="*app*" -- "flutter build apk"
-    
-  # Build iOS for apps
-  build:ios:
-    description: Build iOS for all apps
-    run: melos exec --scope="*app*" -- "flutter build ios --no-codesign"
+    run: melos exec --fail-fast --concurrency=1 -- "flutter test"
 
 environment:
   sdk: ">=3.6.0 <4.0.0"

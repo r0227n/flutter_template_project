@@ -29,3 +29,17 @@ runs:
         flutter-version: ${{ steps.fvm-config-action.outputs.FLUTTER_VERSION }}
         channel: ${{ steps.fvm-config-action.outputs.FLUTTER_CHANNEL }}
         cache: true
+
+    # Parse melos version from pubspec.yaml
+    - name: Get melos version
+      id: melos-version
+      shell: bash
+      run: |
+        MELOS_VERSION=$(grep "melos:" pubspec.yaml | sed 's/.*melos: \^\([0-9\.]*\)/\1/')
+        echo "version=$MELOS_VERSION" >> $GITHUB_OUTPUT
+
+    # Setup melos
+    - name: Setup melos
+      uses: bluefireteam/melos-action@c7dcb921b23cc520cace360b95d02b37bf09cdaa # v3.0.0
+      with:
+        melos-version: ${{ steps.melos-version.outputs.version }}

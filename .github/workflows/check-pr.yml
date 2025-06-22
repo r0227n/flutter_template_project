@@ -24,17 +24,14 @@ jobs:
       - name: Setup Flutter with FVM
         uses: ./.github/actions/setup-fvm
       
-      - name: Get dependencies
-        working-directory: ${{ env.WORKING_DIR }}
-        run: flutter pub get
+      - name: Run melos analyze
+        run: melos run analyze
       
-      - name: Run Flutter Analyze
-        working-directory: ${{ env.WORKING_DIR }}
-        run: flutter analyze
+      - name: Run melos test
+        run: melos run test
       
       - name: Check Dart Format
-        working-directory: ${{ env.WORKING_DIR }}
-        run: dart format --set-exit-if-changed .
+        run: melos run format --set-exit-if-changed
 
   check-i18n-files:
     name: Check i18n Files
@@ -67,10 +64,6 @@ jobs:
       
       - name: Setup Flutter with FVM
         uses: ./.github/actions/setup-fvm
-      
-      - name: Get dependencies
-        working-directory: ${{ env.WORKING_DIR }}
-        run: flutter pub get
       
       - name: Run slang analyze
         working-directory: ${{ env.WORKING_DIR }}

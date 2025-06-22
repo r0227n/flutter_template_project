@@ -1,7 +1,7 @@
 name: app_preferences
 description: Application preferences management package for locale and theme settings.
 version: 0.0.1
-publish_to: 'none'
+publish_to: "none"
 
 environment:
   sdk: ^3.8.1
@@ -22,6 +22,7 @@ dependencies:
   slang_flutter: ^4.7.0
 
 flutter:
+  uses-material-design: true
   assets:
     - assets/i18n/
 
