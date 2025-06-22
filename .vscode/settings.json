@@ -8,6 +8,17 @@
     "**/.DS_Store": true,
     "**/Thumbs.db": true
   },
+  "search.exclude": {
+    "**/*.g.dart": true,
+    "**/*.freezed.dart": true,
+    "**/translations.g.dart": true,
+    "**/*.gr.dart": true,
+    "**/*.config.dart": true,
+    "**/app_router.g.dart": true
+  },
+  "search.useReplacePreview": true,
+  "search.searchOnType": true,
+  "search.searchOnTypeDebouncePeriod": 300,
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.expand": false,
   "explorer.fileNesting.patterns": {
