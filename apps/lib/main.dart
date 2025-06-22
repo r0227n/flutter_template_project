@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app_preferences/app_preferences.dart';
+import 'package:app_preferences/app_prefs_translations.dart' as app_prefs;
 import 'package:apps/i18n/translations.g.dart';
 import 'package:apps/router/app_router.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,9 @@ Future<void> main() async {
         sharedPreferencesProvider.overrideWithValue(prefs),
       ],
       child: TranslationProvider(
-        child: const MyApp(),
+        child: app_prefs.TranslationProvider(
+          child: const MyApp(),
+        ),
       ),
     ),
   );

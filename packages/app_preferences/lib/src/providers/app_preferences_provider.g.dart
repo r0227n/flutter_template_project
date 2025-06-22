@@ -8,7 +8,9 @@ part of 'app_preferences_provider.dart';
 
 String _$sharedPreferencesHash() => r'91d3d8d16af3d747cec711b8a095a63e20df9b7c';
 
-/// See also [sharedPreferences].
+/// Provides access to shared preferences
+///
+/// Copied from [sharedPreferences].
 @ProviderFor(sharedPreferences)
 final sharedPreferencesProvider =
     AutoDisposeProvider<SharedPreferences>.internal(
@@ -24,9 +26,13 @@ final sharedPreferencesProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef SharedPreferencesRef = AutoDisposeProviderRef<SharedPreferences>;
-String _$appLocaleProviderHash() => r'59663c2e59abd6fefc6d033e81a9d616fb89ce03';
+String _$appLocaleProviderHash() => r'5ef599be9c03cf2a9e778332a7ca43103494063a';
 
-/// See also [AppLocaleProvider].
+/// Locale providers
+///
+/// Provides locale management functionality
+///
+/// Copied from [AppLocaleProvider].
 @ProviderFor(AppLocaleProvider)
 final appLocaleProviderProvider =
     AutoDisposeAsyncNotifierProvider<AppLocaleProvider, Locale>.internal(
@@ -42,7 +48,11 @@ final appLocaleProviderProvider =
 typedef _$AppLocaleProvider = AutoDisposeAsyncNotifier<Locale>;
 String _$appThemeProviderHash() => r'04ad1f520a92387683cd75c890fb6f9f6dc36fef';
 
-/// See also [AppThemeProvider].
+/// Theme providers
+///
+/// Provides theme management functionality
+///
+/// Copied from [AppThemeProvider].
 @ProviderFor(AppThemeProvider)
 final appThemeProviderProvider =
     AutoDisposeAsyncNotifierProvider<AppThemeProvider, ThemeMode>.internal(
