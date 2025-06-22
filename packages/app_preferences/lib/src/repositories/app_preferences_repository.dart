@@ -43,7 +43,7 @@ class AppPreferencesRepository {
 
   /// Key used for storing locale preferences in SharedPreferences
   static const _localeKey = 'app_locale';
-  
+
   /// Key used for storing theme preferences in SharedPreferences
   static const _themeKey = 'app_theme';
 
@@ -115,12 +115,12 @@ class AppPreferencesRepository {
   /// Retrieves the stored theme mode preference
   ///
   /// Reads the theme mode preference from SharedPreferences and converts
-  /// it from string format to [ThemeMode] enum. Returns null if no 
+  /// it from string format to [ThemeMode] enum. Returns null if no
   /// preference is stored or if an invalid value is found.
   ///
   /// Returns:
   /// A [Future<ThemeMode?>] representing the stored theme mode, or null
-/// if not found
+  /// if not found
   ///
   /// Example:
   /// ```dart
@@ -150,7 +150,7 @@ class AppPreferencesRepository {
 
   /// Stores the theme mode preference
   ///
-  /// Converts the theme mode to string format and stores it in 
+  /// Converts the theme mode to string format and stores it in
   /// SharedPreferences. Supports system, light, and dark theme modes.
   ///
   /// Parameters:

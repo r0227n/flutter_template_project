@@ -156,13 +156,13 @@ class _SelectionOptionTile<T> extends StatelessWidget {
 
   /// The selection option to display
   final SelectionOption<T> option;
-  
+
   /// The currently selected value
   final T? currentValue;
-  
+
   /// Callback when this option is selected
   final Future<void> Function(T value) onChanged;
-  
+
   /// Optional value selector for complex object comparison
   final Object? Function(T value)? valueSelector;
 

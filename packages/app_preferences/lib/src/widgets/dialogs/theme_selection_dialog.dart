@@ -43,19 +43,19 @@ class ThemeSelectionDialog extends ConsumerWidget {
 
   /// The dialog title
   final String title;
-  
+
   /// Label for the system theme option
   final String systemLabel;
-  
+
   /// Label for the light theme option
   final String lightLabel;
-  
+
   /// Label for the dark theme option
   final String darkLabel;
-  
+
   /// Label for the cancel button
   final String cancelLabel;
-  
+
   /// Optional icon to display in the dialog title
   final Widget? icon;
 

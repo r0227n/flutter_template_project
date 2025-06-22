@@ -22,7 +22,7 @@ class LocaleOption with Diagnosticable {
 
   /// The language code for this locale (e.g., 'en', 'ja', 'es')
   final String languageCode;
-  
+
   /// The display name shown to users (e.g., 'English', '日本語', 'Español')
   final String displayName;
 
@@ -74,16 +74,16 @@ class LocaleSelectionDialog extends ConsumerWidget {
 
   /// The dialog title
   final String title;
-  
+
   /// List of available locale options
   final List<LocaleOption> availableLocales;
-  
+
   /// Label for the cancel button
   final String cancelLabel;
-  
+
   /// Optional callback called when locale changes (for custom app logic)
   final Future<void> Function(String languageCode)? onLocaleChanged;
-  
+
   /// Optional icon to display in the dialog title
   final Widget? icon;
 

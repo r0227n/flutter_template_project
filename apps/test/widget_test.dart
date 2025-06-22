@@ -159,13 +159,15 @@ void main() {
       // Find and verify the settings icon button can be tapped
       final settingsIcon = find.byIcon(Icons.settings);
       expect(settingsIcon, findsOneWidget);
-      
+
       // The tap itself might fail due to routing, but the button should be tappable
       // We'll just verify it exists and is interactive
-      final iconButton = tester.widget<IconButton>(find.ancestor(
-        of: settingsIcon,
-        matching: find.byType(IconButton),
-      ));
+      final iconButton = tester.widget<IconButton>(
+        find.ancestor(
+          of: settingsIcon,
+          matching: find.byType(IconButton),
+        ),
+      );
       expect(iconButton.onPressed, isNotNull);
     });
   });

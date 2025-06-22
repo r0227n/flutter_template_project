@@ -7,10 +7,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 part 'app_preferences_provider.g.dart';
 
 /// Provides access to SharedPreferences instance
-/// 
-/// This provider should be overridden in main.dart with the actual 
+///
+/// This provider should be overridden in main.dart with the actual
 /// SharedPreferences instance during app initialization.
-/// 
+///
 /// Example usage:
 /// ```dart
 /// ProviderScope(
@@ -119,7 +119,7 @@ class AppThemeProvider extends _$AppThemeProvider {
 
   /// Sets the theme mode preference and updates the state
   ///
-  /// Stores the new theme mode preference in SharedPreferences and 
+  /// Stores the new theme mode preference in SharedPreferences and
   /// invalidates the provider state to trigger UI updates.
   ///
   /// Parameters:
@@ -139,8 +139,8 @@ class AppThemeProvider extends _$AppThemeProvider {
 
   /// Clears the stored theme mode preference and resets to default
   ///
-  /// Removes the theme mode preference from SharedPreferences and 
-  /// invalidates the provider state, causing it to fall back to 
+  /// Removes the theme mode preference from SharedPreferences and
+  /// invalidates the provider state, causing it to fall back to
   /// the default system theme mode.
   Future<void> clearTheme() async {
     final repository = ref.read(appPreferencesRepositoryProvider);
