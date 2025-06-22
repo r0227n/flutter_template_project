@@ -11,7 +11,7 @@ class SettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final t = Translations.of(context);
-    
+
     // TranslationProvider is now available as:
     // app_prefs.TranslationProvider
 
