@@ -32,6 +32,7 @@ claude
 ```
 
 この場合、確認なしで即座に作業が開始されます。Claude Codeが自動的に：
+
 - 新しいブランチを作成
 - 必要なコードを実装
 - テストを作成・実行
@@ -47,47 +48,47 @@ flowchart TD
     A["/linear ABC-123 実行"] --> B{Issue ID検証}
     B -->|有効| C[Linear API呼び出し]
     B -->|無効| Z[エラー表示]
-    
+
     C --> D[Issue詳細取得]
     D --> E[作業環境準備]
-    
+
     E --> F[作業ディレクトリ作成<br/>.claude-workspaces/ABC-123/]
     F --> G[git worktree作成<br/>feature/ABC-123ブランチ]
     G --> H[Flutter環境セットアップ<br/>fvm use & flutter pub get]
-    
+
     H --> I[バックグラウンド実行開始]
-    
+
     I --> J[並列処理]
     J --> K[コード実装]
     J --> L[テスト作成]
     J --> M[ドキュメント更新]
-    
+
     K --> N[コード品質チェック]
     L --> N
     M --> N
-    
+
     N --> O[dart analyze実行]
     N --> P[dart format実行]
     N --> Q[テスト実行]
-    
+
     O --> R{全チェック成功?}
     P --> R
     Q --> R
-    
+
     R -->|はい| S[git commit実行]
     R -->|いいえ| T[自動修正試行]
     T --> N
-    
+
     S --> U[PR作成<br/>日本語説明文]
     U --> V[GitHub Actions監視]
-    
+
     V --> W{CI/CD成功?}
     W -->|はい| X[Linear Issue更新<br/>ステータス: In Review]
     W -->|いいえ| Y[エラー修正&再実行]
     Y --> S
-    
+
     X --> AA[アラーム通知<br/>作業完了]
-    
+
     style A fill:#e1f5fe
     style AA fill:#c8e6c9
     style Z fill:#ffcdd2
@@ -97,21 +98,25 @@ flowchart TD
 #### 処理の詳細説明
 
 1. **初期検証フェーズ**
+
    - Issue ID形式の検証（ABC-123形式）
    - Linear APIでIssueの存在確認
    - アクセス権限の確認
 
 2. **環境準備フェーズ**
+
    - プロジェクト内に独立した作業ディレクトリを作成
    - git worktreeで新しいブランチを作成
    - Flutter/Dartの依存関係をインストール
 
 3. **実装フェーズ（並列実行）**
+
    - Issue内容を解析してコード実装
    - 対応するテストコード作成
    - 必要に応じてドキュメント更新
 
 4. **品質保証フェーズ**
+
    - 静的解析（dart analyze）
    - コードフォーマット（dart format）
    - 自動テスト実行
@@ -152,24 +157,24 @@ claude
 
 CLAUDE.mdに記載されている環境変数の詳細説明：
 
-| 環境変数名 | 設定値 | 説明 | 重要度 |
-|-----------|--------|------|--------|
-| `ENABLE_BACKGROUND_TASKS` | `true` | バックグラウンドでタスクを実行（必須） | 🔴 必須 |
-| `FLUTTER_VERSION_MANAGEMENT` | `fvm` | Flutterバージョン管理ツールを指定 | 🟡 推奨 |
-| `TASK_MANAGEMENT_SYSTEM` | `linear` | タスク管理システムにLinearを使用 | 🔴 必須 |
-| `PARALLEL_DEVELOPMENT` | `git_worktree` | 並列開発にgit worktreeを使用 | 🟡 推奨 |
-| `PR_LANGUAGE` | `japanese` | PRの説明文を日本語で作成 | 🟢 任意 |
-| `COMPLETION_NOTIFICATION` | `alarm` | 作業完了時にアラームで通知 | 🟢 任意 |
-| `INTERACTIVE_MODE` | `true` | 対話形式でIssueを選択可能 | 🟡 推奨 |
-| `ISSUE_SELECTION_UI` | `enabled` | Issue選択UIを有効化 | 🟢 任意 |
-| `AUTO_CONFIRM_WITH_ARGS` | `true` | 引数ありの場合は確認をスキップ | 🟡 推奨 |
-| `SILENT_MODE_WITH_ARGS` | `false` | 進捗表示は継続（無音モードではない） | 🟢 任意 |
-| `ERROR_ONLY_OUTPUT` | `false` | エラー以外も表示（エラーのみ表示ではない） | 🟢 任意 |
-| `CLAUDE_ISOLATION_MODE` | `true` | 並列実行時の作業分離を有効化 | 🔴 必須 |
-| `CLAUDE_WORKSPACE_DIR` | `".claude-workspaces"` | プロジェクト内作業ディレクトリの場所 | 🟡 推奨 |
-| `CLAUDE_MEMORY_ISOLATION` | `true` | メモリ・コンテキスト分離を有効化 | 🔴 必須 |
-| `GITHUB_ACTIONS_CHECK` | `true` | GitHub Actions完了チェックを有効化 | 🟡 推奨 |
-| `CHECK_PR_WORKFLOW` | `"check-pr.yml"` | 監視対象のワークフローファイル名 | 🟡 推奨 |
+| 環境変数名                   | 設定値                 | 説明                                       | 重要度  |
+| ---------------------------- | ---------------------- | ------------------------------------------ | ------- |
+| `ENABLE_BACKGROUND_TASKS`    | `true`                 | バックグラウンドでタスクを実行（必須）     | 🔴 必須 |
+| `FLUTTER_VERSION_MANAGEMENT` | `fvm`                  | Flutterバージョン管理ツールを指定          | 🟡 推奨 |
+| `TASK_MANAGEMENT_SYSTEM`     | `linear`               | タスク管理システムにLinearを使用           | 🔴 必須 |
+| `PARALLEL_DEVELOPMENT`       | `git_worktree`         | 並列開発にgit worktreeを使用               | 🟡 推奨 |
+| `PR_LANGUAGE`                | `japanese`             | PRの説明文を日本語で作成                   | 🟢 任意 |
+| `COMPLETION_NOTIFICATION`    | `alarm`                | 作業完了時にアラームで通知                 | 🟢 任意 |
+| `INTERACTIVE_MODE`           | `true`                 | 対話形式でIssueを選択可能                  | 🟡 推奨 |
+| `ISSUE_SELECTION_UI`         | `enabled`              | Issue選択UIを有効化                        | 🟢 任意 |
+| `AUTO_CONFIRM_WITH_ARGS`     | `true`                 | 引数ありの場合は確認をスキップ             | 🟡 推奨 |
+| `SILENT_MODE_WITH_ARGS`      | `false`                | 進捗表示は継続（無音モードではない）       | 🟢 任意 |
+| `ERROR_ONLY_OUTPUT`          | `false`                | エラー以外も表示（エラーのみ表示ではない） | 🟢 任意 |
+| `CLAUDE_ISOLATION_MODE`      | `true`                 | 並列実行時の作業分離を有効化               | 🔴 必須 |
+| `CLAUDE_WORKSPACE_DIR`       | `".claude-workspaces"` | プロジェクト内作業ディレクトリの場所       | 🟡 推奨 |
+| `CLAUDE_MEMORY_ISOLATION`    | `true`                 | メモリ・コンテキスト分離を有効化           | 🔴 必須 |
+| `GITHUB_ACTIONS_CHECK`       | `true`                 | GitHub Actions完了チェックを有効化         | 🟡 推奨 |
+| `CHECK_PR_WORKFLOW`          | `"check-pr.yml"`       | 監視対象のワークフローファイル名           | 🟡 推奨 |
 
 ### 設定の重要度について
 
@@ -224,6 +229,7 @@ flutter pub get
 #### 並列実行時の問題
 
 作業ディレクトリが残っている場合：
+
 ```bash
 # 既存のworktreeを確認
 git worktree list

@@ -133,7 +133,7 @@ export CHECK_PR_WORKFLOW="check-pr.yml" # 監視対象ワークフローファ�
 - **Providers**: `app_preferences/lib/src/providers/`に配置
 - **コード生成**: `@riverpod`アノテーションを使用し、`melos run gen`で生成
 - **AsyncValue**: 非同期操作の状態管理に使用
-- **Provider Types**: 
+- **Provider Types**:
   - `StateNotifierProvider`: 状態変更を伴うロジック
   - `FutureProvider`: 非同期データの取得
   - `StreamProvider`: リアルタイムデータストリーム
@@ -645,20 +645,24 @@ export ENABLE_BACKGROUND_TASKS=true
 ## 開発上の注意事項
 
 ### コード生成
+
 - 新しいモデルクラスやプロバイダーを追加した後は必ず`melos run gen`を実行
 - 生成ファイル(`*.g.dart`, `*.freezed.dart`)は直接編集しない
 
 ### テスト
+
 - 新機能追加時は対応するウィジェットテストを`app/test/`に追加
 - `melos run test`で全パッケージのテストを実行
 
 ### Git Workflow
+
 - コミットメッセージは[Conventional Commits](https://www.conventionalcommits.org/)形式を使用
 - **ブランチ名**: `feature/ISSUE_ID` 形式のみ使用（日本語・英語説明文は含めない）
 - PRチェックは`.github/workflows/check-pr.yml`で自動実行
 - 分析、フォーマット、テスト、i18n検証が含まれる
 
 ### パッケージ管理
+
 - 新しい依存関係は該当するパッケージの`pubspec.yaml`に追加
 - Workspace resolutionにより、全パッケージで同じバージョンが使用される
 - `melos run get`で全パッケージの依存関係を一括更新

@@ -35,6 +35,11 @@ melos:
       description: Get dependencies for all packages
       run: melos exec -- "flutter pub get"
 
+    # Lint YAML and Markdown files using prettier
+    lint:
+      description: Lint YAML and Markdown files
+      run: npm run lint
+
     # Analyze all packages
     analyze:
       description: Analyze all packages
@@ -49,6 +54,11 @@ melos:
     format:
       description: Format all packages
       run: melos exec -- "dart format ."
+
+    # Format YAML and Markdown files using prettier
+    format:prettier:
+      description: Format YAML and Markdown files
+      run: npm run format
 
     # Run tests for all packages
     test:

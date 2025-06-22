@@ -150,23 +150,23 @@ flowchart LR
 ```mermaid
 flowchart TD
     A[テスト実装開始] --> B{テストの種類}
-    
+
     B -->|Unit Test| C[ユニットテスト]
     B -->|Widget Test| D[ウィジェットテスト]
     B -->|Integration Test| E[統合テスト]
-    
+
     C --> C1[プロバイダーテスト]
     C --> C2[リポジトリテスト]
     C --> C3[ユーティリティテスト]
-    
+
     D --> D1[UIコンポーネントテスト]
     D --> D2[ユーザーインタラクションテスト]
     D --> D3[状態変化テスト]
-    
+
     E --> E1[ワークフローテスト]
     E --> E2[外部依存関係テスト]
     E --> E3[パフォーマンステスト]
-    
+
     C1 --> F[コード品質チェック]
     C2 --> F
     C3 --> F
@@ -176,19 +176,19 @@ flowchart TD
     E1 --> F
     E2 --> F
     E3 --> F
-    
+
     F --> G[静的解析]
     F --> H[フォーマット]
     F --> I[カバレッジ確認]
-    
+
     G --> J{品質基準<br/>クリア？}
     H --> J
     I --> J
-    
+
     J -->|Yes| K[テスト完了]
     J -->|No| L[修正・改善]
     L --> C
-    
+
     %% スタイル定義
     classDef testType fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
     classDef testDetail fill:#f8bbd9,stroke:#c2185b,stroke-width:1px
@@ -208,7 +208,7 @@ flowchart LR
     subgraph "開発者"
         A[コード変更] --> B[git push]
     end
-    
+
     subgraph "GitHub Actions"
         B --> C[PR作成/更新]
         C --> D[packages/**<br/>パス検出]
@@ -222,21 +222,21 @@ flowchart LR
         K -->|Yes| L[✅ マージ可能]
         K -->|No| M[❌ 修正が必要]
     end
-    
+
     subgraph "品質ゲート"
         N[コードカバレッジ<br/>80%以上]
         O[複雑度チェック<br/>適切なレベル]
         P[依存関係チェック<br/>循環依存なし]
     end
-    
+
     H -.-> N
     I -.-> O
     I -.-> P
-    
+
     M --> Q[開発者へ通知]
     Q --> R[修正作業]
     R --> A
-    
+
     %% スタイル定義
     classDef developer fill:#e1f5fe,stroke:#0277bd,stroke-width:2px
     classDef ci fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
@@ -259,31 +259,31 @@ flowchart TB
         subgraph "Public API Layer"
             API[package_name.dart<br/>公開インターフェース]
         end
-        
+
         subgraph "Presentation Layer"
             W1[Widgets]
             W2[Dialogs]
             W3[UI Components]
         end
-        
+
         subgraph "Business Logic Layer"
             P1[Providers<br/>@riverpod]
             P2[Notifiers]
             P3[State Management]
         end
-        
+
         subgraph "Data Layer"
             R1[Repositories]
             R2[Interfaces]
             R3[Data Sources]
         end
-        
+
         subgraph "Domain Layer"
             M1[Models]
             M2[Entities]
             M3[Value Objects]
         end
-        
+
         subgraph "Infrastructure"
             U1[Utils]
             U2[Extensions]
@@ -291,13 +291,13 @@ flowchart TB
             E1[Exceptions]
         end
     end
-    
+
     subgraph "External Dependencies"
         EXT1[SharedPreferences]
         EXT2[HTTP Client]
         EXT3[External APIs]
     end
-    
+
     %% 依存関係
     API --> W1
     API --> P1
@@ -319,7 +319,7 @@ flowchart TB
     W1 --> U3
     P1 --> E1
     R1 --> E1
-    
+
     %% スタイル定義
     classDef publicAPI fill:#e3f2fd,stroke:#1976d2,stroke-width:3px
     classDef presentation fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px

@@ -9,15 +9,18 @@ packagesディレクトリには、メインアプリケーションから切り
 ## パッケージ一覧
 
 ### app_preferences
+
 アプリケーションの設定管理を担当するパッケージです。
 
 **主な機能：**
+
 - 言語設定（日本語/英語）の管理
 - テーマ設定（システム/ライト/ダーク）の管理
 - SharedPreferencesを使用した設定の永続化
 - 設定変更用のダイアログとUI表示コンポーネント
 
 **技術仕様：**
+
 - Riverpod による状態管理
 - slang による型安全な多言語対応
 - Material 3 デザインシステム対応
@@ -77,7 +80,7 @@ EOF
 workspace:
   - apps
   - packages/app_preferences
-  - packages/[新しいパッケージ名]  # この行を追加
+  - packages/[新しいパッケージ名] # この行を追加
 ```
 
 依存関係を解決：
@@ -181,6 +184,7 @@ dart run slang analyze
 新しいパッケージをメインアプリで使用するには：
 
 1. **依存関係の追加**：
+
    ```yaml
    # apps/pubspec.yaml
    dependencies:
@@ -189,6 +193,7 @@ dart run slang analyze
    ```
 
 2. **初期化処理**：
+
    ```dart
    // main.dart で初期化
    await SomePackageInitializer.initialize();
@@ -225,34 +230,43 @@ dart run slang analyze
 ### 主要コンポーネント
 
 **プロバイダー:**
+
 - `AppLocaleProvider`: 言語設定の管理
 - `AppThemeProvider`: テーマ設定の管理
 
 **ウィジェット:**
+
 - `LocaleText`: 現在の言語表示
 - `ThemeText`: 現在のテーマ表示
 - `SelectionDialog`: 設定選択ダイアログ
 
 **リポジトリ:**
+
 - `AppPreferencesRepository`: SharedPreferences の抽象化
 
 ## よくある質問
 
 ### Q: 新機能をパッケージにするか、メインアプリに直接実装するか迷います
+
 **A:** 以下の条件を満たす場合、パッケージ化を検討してください：
+
 - 複数の画面で使用される
 - 独立してテストできる
 - 他のアプリでも再利用の可能性がある
 - 特定のドメイン知識を含む
 
 ### Q: パッケージのバージョン管理はどうすればよいですか？
-**A:** 
+
+**A:**
+
 - `pubspec.yaml` でバージョンを管理
 - `CHANGELOG.md` で変更内容を記録
 - セマンティックバージョニングに従う
 
 ### Q: パッケージを削除したい場合は？
+
 **A:**
+
 1. 使用箇所を特定し、代替実装に移行
 2. 依存関係をすべて削除
 3. ワークスペース設定から除外
