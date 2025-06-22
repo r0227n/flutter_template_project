@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app_preferences/app_preferences.dart';
 import 'package:apps/i18n/translations.g.dart';
 import 'package:apps/router/app_router.dart';
@@ -8,10 +10,22 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final (_, prefs) = await (
-    LocaleSettings.useDeviceLocale(),
-    SharedPreferences.getInstance(),
-  ).wait;
+  final prefs = await SharedPreferences.getInstance();
+
+  // Initialize locale from stored preferences or use device locale as fallback
+  await AppPreferencesInitializer.initializeLocale(
+    prefs: prefs,
+    onLocaleFound: (languageCode) async {
+      final appLocale = AppLocale.values.firstWhere(
+        (locale) => locale.languageCode == languageCode,
+        orElse: () => AppLocale.ja,
+      );
+      await LocaleSettings.setLocale(appLocale);
+    },
+    onUseDeviceLocale: () async {
+      await LocaleSettings.useDeviceLocale();
+    },
+  );
 
   runApp(
     ProviderScope(
@@ -33,6 +47,7 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final locale = ref.watch(appLocaleProviderProvider);
     final themeMode = ref.watch(appThemeProviderProvider);
+    final router = ref.watch(appRouterProvider);
 
     return MaterialApp.router(
       title: 'Flutter Demo',
@@ -42,19 +57,17 @@ class MyApp extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: AppLocale.values.map((locale) => locale.flutterLocale),
-      locale: locale.when(
-        data: (locale) => locale,
-        loading: () => const Locale('en'),
-        error: (_, __) => const Locale('en'),
-      ),
+      locale: switch (locale) {
+        AsyncData(value: final locale) => locale,
+        _ => const Locale('ja'),
+      },
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: themeMode.when(
-        data: (mode) => mode,
-        loading: () => ThemeMode.system,
-        error: (_, __) => ThemeMode.system,
-      ),
-      routerConfig: ref.watch(appRouterProvider),
+      themeMode: switch (themeMode) {
+        AsyncData(value: final mode) => mode,
+        _ => ThemeMode.system,
+      },
+      routerConfig: router,
     );
   }
 }
