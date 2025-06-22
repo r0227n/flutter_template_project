@@ -35,7 +35,7 @@ runs:
       id: melos-version
       shell: bash
       run: |
-        MELOS_VERSION=$(grep "melos:" pubspec.yaml | sed 's/.*melos: \^\([0-9\.]*\)/\1/')
+        MELOS_VERSION=$(grep "melos:" pubspec.yaml | head -1 | awk '{print $2}' | sed 's/\^//')
         echo "version=$MELOS_VERSION" >> $GITHUB_OUTPUT
 
     # Setup melos
