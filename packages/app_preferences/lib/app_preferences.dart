@@ -1,5 +1,3 @@
-library app_preferences;
-
 export 'package:shared_preferences/shared_preferences.dart';
 
 // Providers
