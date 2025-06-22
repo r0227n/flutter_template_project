@@ -36,8 +36,8 @@ class _HomePageState extends ConsumerState<HomePage> {
         title: Text(widget.title),
         actions: [
           IconButton(
-            onPressed: () {
-              SettingsRoute().push(context);
+            onPressed: () async {
+              await const SettingsRoute().push<void>(context);
             },
             icon: const Icon(Icons.settings),
           ),
