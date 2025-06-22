@@ -65,6 +65,7 @@ flutter_template_project/
 ### 必要な環境
 
 #### Flutter開発環境
+
 ```bash
 # Flutter SDKの確認
 flutter --version
@@ -84,12 +85,14 @@ flutter pub run build_runner build --delete-conflicting-outputs
 ```
 
 #### 必要なツール
+
 - **Git**: バージョン管理
 - **jq**: JSON処理（設定ファイル読み込み用）
 - **Linear API Key**: チケット情報取得用
 - **Claude Code**: AIエージェント
 
 #### MCPサーバーのセットアップ
+
 ```bash
 # Linear MCPサーバーのインストール
 npm install @modelcontextprotocol/server-linear
@@ -130,6 +133,7 @@ chmod +x scripts/manage-flutter-tasks.sh
 ### 2. 設定ファイルの配置
 
 #### `.claude/config.json`
+
 ```json
 {
   "project": {
@@ -141,7 +145,7 @@ chmod +x scripts/manage-flutter-tasks.sh
     "default": "flutter-feature",
     "available": [
       "flutter-feature",
-      "flutter-ui", 
+      "flutter-ui",
       "flutter-bugfix",
       "flutter-performance"
     ]
@@ -179,6 +183,7 @@ chmod +x scripts/manage-flutter-tasks.sh
 ### 基本的な使用方法
 
 #### 新機能開発の開始
+
 ```bash
 # 基本形式
 ./scripts/start-flutter-task.sh --ticket=FEAT-123
@@ -195,17 +200,18 @@ chmod +x scripts/manage-flutter-tasks.sh
 
 #### コマンドオプション
 
-| オプション | 説明 | 例 |
-|-----------|------|-----|
-| `--ticket` | Linearチケット番号（必須） | `--ticket=FEAT-123` |
-| `--workflow` | 使用するワークフロー | `--workflow=flutter-ui` |
-| `--platform` | 対象プラットフォーム | `--platform=android` |
-| `--device` | 対象デバイス | `--device="Pixel 7"` |
-| `--foreground` | フォアグラウンド実行 | `--foreground` |
+| オプション     | 説明                       | 例                      |
+| -------------- | -------------------------- | ----------------------- |
+| `--ticket`     | Linearチケット番号（必須） | `--ticket=FEAT-123`     |
+| `--workflow`   | 使用するワークフロー       | `--workflow=flutter-ui` |
+| `--platform`   | 対象プラットフォーム       | `--platform=android`    |
+| `--device`     | 対象デバイス               | `--device="Pixel 7"`    |
+| `--foreground` | フォアグラウンド実行       | `--foreground`          |
 
 ### 実行例
 
 #### UI改善タスク
+
 ```bash
 ./scripts/start-flutter-task.sh \
   --ticket=UI-456 \
@@ -214,6 +220,7 @@ chmod +x scripts/manage-flutter-tasks.sh
 ```
 
 #### バグ修正タスク
+
 ```bash
 ./scripts/start-flutter-task.sh \
   --ticket=BUG-789 \
@@ -222,6 +229,7 @@ chmod +x scripts/manage-flutter-tasks.sh
 ```
 
 #### パフォーマンス改善
+
 ```bash
 ./scripts/start-flutter-task.sh \
   --ticket=PERF-101 \
@@ -253,27 +261,31 @@ Manage task:
 ### 進行中タスクの確認
 
 #### 全タスクの一覧表示
+
 ```bash
 ./scripts/manage-flutter-tasks.sh list
 ```
 
 出力例：
+
 ```
 🚀 Active Flutter Claude Code processes:
 ========================================
 📋 Ticket: FEAT-123 | 🔧 Workflow: flutter-feature | 📱 Platform: android
    PID: 12345 | Status: 🟢 Running | CPU: 15.2% | MEM: 8.1%
 
-📋 Ticket: UI-456 | 🔧 Workflow: flutter-ui | 📱 Platform: all  
+📋 Ticket: UI-456 | 🔧 Workflow: flutter-ui | 📱 Platform: all
    PID: 12346 | Status: 🟢 Running | CPU: 8.7% | MEM: 5.3%
 ```
 
 #### 特定タスクの詳細状況
+
 ```bash
 ./scripts/manage-flutter-tasks.sh status FEAT-123
 ```
 
 出力例：
+
 ```
 📊 Flutter Development Status for ticket FEAT-123:
 ==================================================
@@ -298,11 +310,13 @@ Manage task:
 ### ログの監視
 
 #### リアルタイムログ監視
+
 ```bash
 ./scripts/manage-flutter-tasks.sh logs FEAT-123
 ```
 
 #### ログファイルの直接確認
+
 ```bash
 tail -f logs/claude-flutter-FEAT-123.log
 ```
@@ -310,12 +324,14 @@ tail -f logs/claude-flutter-FEAT-123.log
 ### テストとビルド
 
 #### テスト実行
+
 ```bash
 # 特定チケットのテスト実行
 ./scripts/manage-flutter-tasks.sh test FEAT-123
 ```
 
 #### ビルド実行
+
 ```bash
 # Android APKビルド
 ./scripts/manage-flutter-tasks.sh build FEAT-123 android
@@ -328,6 +344,7 @@ tail -f logs/claude-flutter-FEAT-123.log
 ```
 
 #### スクリーンショット撮影
+
 ```bash
 ./scripts/manage-flutter-tasks.sh screenshot FEAT-123
 ```
@@ -335,16 +352,19 @@ tail -f logs/claude-flutter-FEAT-123.log
 ### タスクの制御
 
 #### タスクの停止
+
 ```bash
 ./scripts/manage-flutter-tasks.sh stop FEAT-123
 ```
 
 #### タスクの再起動
+
 ```bash
 ./scripts/manage-flutter-tasks.sh restart FEAT-123
 ```
 
 #### 環境確認
+
 ```bash
 # Flutter環境の確認
 ./scripts/manage-flutter-tasks.sh doctor
@@ -354,6 +374,7 @@ tail -f logs/claude-flutter-FEAT-123.log
 ```
 
 #### クリーンアップ
+
 ```bash
 # 停止済みプロセスと古いファイルの削除
 ./scripts/manage-flutter-tasks.sh cleanup
@@ -362,14 +383,17 @@ tail -f logs/claude-flutter-FEAT-123.log
 ## ワークフローの種類
 
 ### 1. flutter-feature（機能開発）
+
 新機能の実装を行うワークフローです。
 
 **適用ケース:**
+
 - 新しい画面・機能の追加
 - 新しいWidgetの実装
 - API連携の実装
 
 **実行フロー:**
+
 1. 環境確認（5分）
 2. チケット情報収集（10分）
 3. コードベース調査（15分）
@@ -379,27 +403,33 @@ tail -f logs/claude-flutter-FEAT-123.log
 7. PR作成（20分）
 
 ### 2. flutter-ui（UI改善）
+
 既存UIの改善・調整を行うワークフローです。
 
 **適用ケース:**
+
 - デザインの更新
 - レスポンシブ対応
 - アクセシビリティ改善
 - アニメーション追加
 
 ### 3. flutter-bugfix（バグ修正）
+
 バグの特定と修正を行うワークフローです。
 
 **適用ケース:**
+
 - 機能不具合の修正
 - UIの表示問題
 - パフォーマンス問題
 - クラッシュの修正
 
 ### 4. flutter-performance（パフォーマンス最適化）
+
 アプリのパフォーマンス改善を行うワークフローです。
 
 **適用ケース:**
+
 - 60fps維持の最適化
 - メモリ使用量削減
 - 起動時間短縮
@@ -412,6 +442,7 @@ tail -f logs/claude-flutter-FEAT-123.log
 #### 1. Flutter環境の問題
 
 **問題:** `flutter doctor`でエラーが表示される
+
 ```bash
 # 解決方法
 flutter doctor -v  # 詳細エラーを確認
@@ -422,6 +453,7 @@ flutter pub get    # 依存関係再取得
 #### 2. Git Worktreeの競合
 
 **問題:** ブランチやworktreeで競合が発生
+
 ```bash
 # 解決方法
 git fetch origin main
@@ -432,6 +464,7 @@ git rebase main
 #### 3. Claude Codeプロセスの停止
 
 **問題:** タスクが予期せず停止している
+
 ```bash
 # 状況確認
 ./scripts/manage-flutter-tasks.sh status FEAT-123
@@ -446,6 +479,7 @@ git rebase main
 #### 4. 依存関係の問題
 
 **問題:** `flutter pub get`が失敗する
+
 ```bash
 # 解決方法
 cd worktrees/feature-FEAT-123
@@ -459,6 +493,7 @@ flutter pub get
 **問題:** プラットフォーム固有のビルドが失敗する
 
 **Android:**
+
 ```bash
 cd android
 ./gradlew clean
@@ -468,6 +503,7 @@ flutter build apk --debug
 ```
 
 **iOS:**
+
 ```bash
 cd ios
 pod deintegrate
@@ -480,6 +516,7 @@ flutter build ios --debug --no-codesign
 ### デバッグ方法
 
 #### 詳細ログの確認
+
 ```bash
 # Claude Codeの実行ログ
 tail -f logs/claude-flutter-FEAT-123.log
@@ -490,12 +527,14 @@ flutter logs
 ```
 
 #### 手動でのステップ実行
+
 ```bash
 # フォアグラウンドでの実行（デバッグ用）
 ./scripts/start-flutter-task.sh --ticket=FEAT-123 --foreground
 ```
 
 #### 環境の再確認
+
 ```bash
 # Flutter環境の詳細確認
 ./scripts/manage-flutter-tasks.sh doctor
@@ -509,12 +548,14 @@ flutter logs
 ### 1. タスク管理
 
 #### チケット命名規則
+
 - **機能開発**: `FEAT-XXX`
 - **UI改善**: `UI-XXX`
 - **バグ修正**: `BUG-XXX`
 - **パフォーマンス**: `PERF-XXX`
 
 #### 並行実行の制限
+
 ```bash
 # 同時実行数の確認
 ./scripts/manage-flutter-tasks.sh list | grep "Running" | wc -l
@@ -525,6 +566,7 @@ flutter logs
 ### 2. 品質管理
 
 #### 定期的な確認
+
 ```bash
 # 1時間ごとの進捗確認
 ./scripts/manage-flutter-tasks.sh list
@@ -534,6 +576,7 @@ flutter logs
 ```
 
 #### コード品質の維持
+
 - 自動テストの実行確認
 - Flutter Analyzeの通過確認
 - スクリーンショットでのUI確認
@@ -541,12 +584,14 @@ flutter logs
 ### 3. リソース管理
 
 #### メモリとCPU使用量の監視
+
 ```bash
 # システムリソースの確認
 top -p $(cat pids/claude-flutter-*.pid | tr '\n' ',' | sed 's/,$//')
 ```
 
 #### ディスク容量の管理
+
 ```bash
 # 定期的なクリーンアップ
 ./scripts/manage-flutter-tasks.sh cleanup
@@ -558,22 +603,26 @@ git worktree prune
 ### 4. セキュリティ
 
 #### 機密情報の管理
+
 - API Keyは環境変数で管理
 - `.gitignore`に機密ファイルを追加
 - ログファイルの機密情報フィルタリング
 
 #### アクセス制御
+
 - Linear API Keyの適切な権限設定
 - GitHub Access Tokenの最小権限付与
 
 ### 5. チーム協業
 
 #### コミュニケーション
+
 - 進捗はLinearで自動報告
 - 問題発生時はSlack通知設定
 - PR作成時のレビュー依頼自動化
 
 #### ドキュメント管理
+
 - ワークフローの定期的な更新
 - 設定ファイルの変更履歴管理
 - トラブルシューティング情報の蓄積
@@ -585,11 +634,13 @@ git worktree prune
 ### A. コマンドリファレンス
 
 #### タスク開始コマンド
+
 ```bash
 ./scripts/start-flutter-task.sh [OPTIONS] TICKET_ID
 ```
 
 #### タスク管理コマンド
+
 ```bash
 ./scripts/manage-flutter-tasks.sh {list|stop|logs|status|test|build|screenshot|cleanup|restart|devices|doctor} [TICKET_ID] [PLATFORM]
 ```

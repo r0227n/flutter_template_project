@@ -29,12 +29,12 @@ melos:
       description: Run build_runner for all packages
       run: |
         melos exec --depends-on="build_runner" -- "dart run build_runner build --delete-conflicting-outputs"
-      
+
     # Clean and get dependencies for all packages
     get:
       description: Get dependencies for all packages
       run: melos exec -- "flutter pub get"
-      
+
     # Analyze all packages
     analyze:
       description: Analyze all packages
@@ -44,16 +44,16 @@ melos:
     analyze:slang:
       description: Analyze slang translations
       run: melos exec -- "dart run slang analyze"
-      
+
     # Format all packages
     format:
       description: Format all packages
       run: melos exec -- "dart format ."
-      
+
     # Run tests for all packages
     test:
       description: Run tests for all packages
-      run: melos exec --fail-fast --concurrency=1 -- "flutter test" 
+      run: melos exec --fail-fast --concurrency=1 -- "flutter test"
 
     # Check if formatting is correct (for CI)
     ci:format:
@@ -61,5 +61,5 @@ melos:
       run: melos exec -- "dart format --output=none --set-exit-if-changed ."
 
   environment:
-    sdk: ">=3.6.0 <4.0.0"
-    flutter: ">=3.0.0"
+    sdk: '>=3.6.0 <4.0.0'
+    flutter: '>=3.0.0'

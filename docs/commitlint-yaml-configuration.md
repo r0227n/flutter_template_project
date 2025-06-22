@@ -51,7 +51,7 @@ extends:
 
 ```yaml
 type-enum:
-  - 2      # エラーレベル（2 = error）
+  - 2 # エラーレベル（2 = error）
   - always # 常に適用
   - - build
     - chore
@@ -67,6 +67,7 @@ type-enum:
 ```
 
 **設定値の説明：**
+
 - **レベル**: `2` （エラー）- ルール違反時にコミットを拒否
 - **条件**: `always` - 常にこのルールを適用
 - **値**: 許可されるコミットタイプのリスト
@@ -75,12 +76,13 @@ type-enum:
 
 ```yaml
 subject-case:
-  - 2     # エラーレベル（2 = error）
+  - 2 # エラーレベル（2 = error）
   - never # 指定した形式を禁止
   - - upper-case # 大文字での開始を禁止
 ```
 
 **設定値の説明：**
+
 - **レベル**: `2` （エラー）- ルール違反時にコミットを拒否
 - **条件**: `never` - 指定した形式を禁止
 - **値**: `upper-case` - コミット件名の大文字での開始を禁止
@@ -90,16 +92,18 @@ subject-case:
 ### 1. 可読性の向上
 
 **JavaScript形式（従来）:**
+
 ```javascript
 module.exports = {
   extends: ['@commitlint/config-conventional'],
   rules: {
-    'type-enum': [2, 'always', ['build', 'chore', 'ci']]
-  }
-};
+    'type-enum': [2, 'always', ['build', 'chore', 'ci']],
+  },
+}
 ```
 
 **YAML形式（現在）:**
+
 ```yaml
 extends:
   - '@commitlint/config-conventional'
@@ -125,16 +129,16 @@ extends:
 rules:
   # コミットタイプの制限
   type-enum:
-    - 2      # エラーレベル
+    - 2 # エラーレベル
     - always # 常に適用
-    - - build   # ビルド関連
-      - chore   # その他
-      - ci      # CI/CD関連
+    - - build # ビルド関連
+      - chore # その他
+      - ci # CI/CD関連
       # ... 以下省略
-  
+
   # 件名の大文字小文字制御
   subject-case:
-    - 2     # エラーレベル
+    - 2 # エラーレベル
     - never # 禁止
     - - upper-case # 大文字開始を禁止
 ```
@@ -159,7 +163,7 @@ rules:
   subject-max-length:
     - 2
     - always
-    - 50  # 50文字以内
+    - 50 # 50文字以内
 ```
 
 ### スコープの必須化
@@ -168,7 +172,7 @@ rules:
 rules:
   scope-empty:
     - 2
-    - never  # スコープを必須にする
+    - never # スコープを必須にする
 ```
 
 ### 日本語対応
@@ -176,7 +180,7 @@ rules:
 ```yaml
 rules:
   subject-case:
-    - 0  # 日本語使用時は大文字小文字チェックを無効化
+    - 0 # 日本語使用時は大文字小文字チェックを無効化
 ```
 
 ## 検証とテスト
@@ -203,10 +207,12 @@ npx commitlint --print-config
 ### よくある問題
 
 1. **YAML構文エラー**
+
    - インデントが正しいか確認
    - タブではなくスペースを使用
 
 2. **ルール設定エラー**
+
    - エラーレベル（0, 1, 2）の設定確認
    - 条件（always, never）の設定確認
 

@@ -85,6 +85,7 @@ fvm flutter pub run build_runner build --delete-conflicting-outputs
 ```
 
 使用可能なタイプ：
+
 - `build`: ビルドシステムまたは外部依存関係に影響する変更
 - `chore`: その他の変更（ソースやテストの変更を含まない）
 - `ci`: CI設定ファイルとスクリプトの変更
