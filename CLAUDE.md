@@ -23,7 +23,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```
 flutter_template_project/
-├── apps/                        # メインFlutterアプリケーション
+├── app/                         # メインFlutterアプリケーション
 │   ├── lib/
 │   │   ├── main.dart           # エントリーポイント
 │   │   ├── pages/              # UIページ (home_page.dart, settings_page.dart)
@@ -85,14 +85,14 @@ melos run ci:format
 
 ```bash
 # アプリケーション実行
-cd apps && fvm flutter run
+cd app && fvm flutter run
 
 # テスト実行（単一ファイル）
-cd apps && fvm flutter test test/widget_test.dart
+cd app && fvm flutter test test/widget_test.dart
 
 # ビルド
-cd apps && fvm flutter build apk
-cd apps && fvm flutter build ios --no-codesign
+cd app && fvm flutter build apk
+cd app && fvm flutter build ios --no-codesign
 ```
 
 ### Node.js関連コマンド
@@ -140,13 +140,13 @@ export CHECK_PR_WORKFLOW="check-pr.yml" # 監視対象ワークフローファ�
 
 ### Navigation: go_router
 
-- **ルート定義**: `apps/lib/router/app_routes.dart`
+- **ルート定義**: `app/lib/router/app_routes.dart`
 - **型安全ルーティング**: `@TypedGoRoute`アノテーションで型安全を実現
 - **遷移例**: `HomePageRoute().go(context)`
 
 ### Internationalization: slang
 
-- **翻訳ファイル**: `apps/assets/i18n/`に`ja.i18n.json`と`en.i18n.json`を配置
+- **翻訳ファイル**: `app/assets/i18n/`に`ja.i18n.json`と`en.i18n.json`を配置
 - **型安全アクセス**: `context.i18n.someKey`で翻訳文字列にアクセス
 - **動的切り替え**: LocaleSettingsを使用して実行時に言語切り替え可能
 
@@ -649,7 +649,7 @@ export ENABLE_BACKGROUND_TASKS=true
 - 生成ファイル(`*.g.dart`, `*.freezed.dart`)は直接編集しない
 
 ### テスト
-- 新機能追加時は対応するウィジェットテストを`apps/test/`に追加
+- 新機能追加時は対応するウィジェットテストを`app/test/`に追加
 - `melos run test`で全パッケージのテストを実行
 
 ### Git Workflow
