@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:app_preferences/src/providers/app_preferences_provider.dart';
-import 'package:app_preferences/src/ui/dialogs/selection_dialog.dart';
+import 'package:app_preferences/src/widgets/dialogs/selection_dialog.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -45,13 +45,19 @@ class LocaleSelectionDialog extends ConsumerWidget {
     super.debugFillProperties(properties);
     properties
       ..add(StringProperty('title', title))
-      ..add(IterableProperty<LocaleOption>(
-        'availableLocales', 
-        availableLocales,
-      ))
+      ..add(
+        IterableProperty<LocaleOption>(
+          'availableLocales',
+          availableLocales,
+        ),
+      )
       ..add(StringProperty('cancelLabel', cancelLabel))
-      ..add(DiagnosticsProperty<Future<void> Function(String)?>
-          ('onLocaleChanged', onLocaleChanged));
+      ..add(
+        DiagnosticsProperty<Future<void> Function(String)?>(
+          'onLocaleChanged',
+          onLocaleChanged,
+        ),
+      );
   }
 
   @override

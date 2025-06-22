@@ -12,10 +12,5 @@ export 'src/repositories/app_preferences_repository.dart';
 // Theme
 export 'src/theme/app_theme.dart';
 
-// UI Components
-export 'src/ui/dialogs/locale_selection_dialog.dart';
-export 'src/ui/dialogs/selection_dialog.dart';
-export 'src/ui/dialogs/theme_selection_dialog.dart';
-export 'src/ui/helpers/dialog_helpers.dart';
-export 'src/ui/widgets/locale_text.dart';
-export 'src/ui/widgets/theme_text.dart';
+// All UI Components (widgets, dialogs, helpers)
+export 'widgets.dart';

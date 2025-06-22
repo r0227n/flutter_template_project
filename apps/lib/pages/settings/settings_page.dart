@@ -37,6 +37,21 @@ class SettingsPage extends ConsumerWidget {
           ),
           const Divider(),
 
+          ListTile(
+            title: Text(t.settings.version),
+            subtitle: const VersionText(),
+            trailing: const Icon(Icons.info_outline),
+            // Version is display-only
+          ),
+          const Divider(),
+
+          ListTile(
+            title: Text(t.settings.licenses),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => showLicense(context),
+          ),
+          const Divider(),
+
           // Demo: Using app_preferences translations directly
           ListTile(
             title: const Text('App Preferences Translations Demo'),
