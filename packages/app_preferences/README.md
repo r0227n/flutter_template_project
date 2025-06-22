@@ -94,7 +94,7 @@ class MyWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final localeAsync = ref.watch(appLocaleProviderProvider);
-    
+
     return switch (localeAsync) {
       AsyncData(:final value) => Text('現在のロケール: ${value.languageCode}'),
       AsyncError(:final error) => Text('エラー: $error'),
@@ -117,7 +117,7 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeModeAsync = ref.watch(appThemeProviderProvider);
-    
+
     return switch (themeModeAsync) {
       AsyncData(:final value) => MaterialApp(
         theme: AppTheme.lightTheme,
@@ -182,11 +182,13 @@ await PreferencesDialogHelpers.showLocaleSelectionDialog(
 `PreferencesDialogHelpers` クラスは、設定ダイアログの表示を簡単にするヘルパーメソッドを提供します：
 
 **テーマ選択ダイアログ**
+
 - システム・ライト・ダークテーマの選択
 - カスタムラベルとアイコンの指定可能
 - 自動的にテーマ設定が更新される
 
-**ロケール選択ダイアログ**  
+**ロケール選択ダイアログ**
+
 - 利用可能な言語の選択
 - デフォルトで日本語・英語をサポート
 - カスタムロケールオプションの追加可能

@@ -23,13 +23,13 @@ jobs:
 
       - name: Setup Flutter with FVM
         uses: ./.github/actions/setup-flutter
-      
+
       - name: Run melos analyze
         run: melos run analyze
-      
+
       - name: Run melos test
         run: melos run test
-      
+
       - name: Check melos format
         run: melos run ci:format
 
@@ -78,7 +78,7 @@ jobs:
 
       - name: Setup Flutter with FVM
         uses: ./.github/actions/setup-flutter
-      
+
       - name: Run slang analyze
         run: melos run analyze:slang
 
