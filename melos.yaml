@@ -1,0 +1,51 @@
+name: flutter_template_project
+
+packages:
+  - apps/
+  - packages/**
+
+command:
+  clean:
+    hooks:
+      pre: melos exec -- "flutter clean"
+
+scripts:
+  # Generate code for all packages using build_runner
+  gen:
+    description: Run build_runner for all packages
+    run: |
+      melos exec --depends-on="build_runner" -- "dart run build_runner build --delete-conflicting-outputs"
+    
+  # Clean and get dependencies for all packages
+  get:
+    description: Get dependencies for all packages
+    run: melos exec -- "flutter pub get"
+    
+  # Analyze all packages
+  analyze:
+    description: Analyze all packages
+    run: melos exec -- "dart analyze"
+    
+  # Format all packages
+  format:
+    description: Format all packages
+    run: melos exec -- "dart format ."
+    
+  # Run tests for all packages
+  test:
+    description: Run tests for all packages
+    run: melos exec --fail-fast -- "flutter test"
+    
+  # Build APK for apps
+  build:apk:
+    description: Build APK for all apps
+    run: melos exec --scope="*app*" -- "flutter build apk"
+    
+  # Build iOS for apps
+  build:ios:
+    description: Build iOS for all apps
+    run: melos exec --scope="*app*" -- "flutter build ios --no-codesign"
+
+environment:
+  sdk: ">=3.6.0 <4.0.0"
+  flutter: ">=3.0.0"

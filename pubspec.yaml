@@ -4,5 +4,8 @@ publish_to: none
 environment:
   sdk: ^3.6.0
 
+dev_dependencies:
+  melos: ^6.3.3
+
 workspace:
   - apps
