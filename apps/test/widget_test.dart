@@ -54,8 +54,9 @@ void main() {
       expect(find.text('Flutter Template'), findsOneWidget);
     });
 
-    testWidgets('Floating action button exists and is tappable',
-        (tester) async {
+    testWidgets('Floating action button exists and is tappable', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         ProviderScope(
           child: TranslationProvider(
@@ -187,8 +188,9 @@ void main() {
       expect(find.byType(MaterialApp), findsOneWidget);
     });
 
-    testWidgets('Theme toggle button appears in Japanese locale',
-        (tester) async {
+    testWidgets('Theme toggle button appears in Japanese locale', (
+      tester,
+    ) async {
       // Set locale to Japanese
       await LocaleSettings.setLocale(AppLocale.ja);
 

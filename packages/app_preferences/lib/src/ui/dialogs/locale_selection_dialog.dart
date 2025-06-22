@@ -46,7 +46,9 @@ class LocaleSelectionDialog extends ConsumerWidget {
     properties
       ..add(StringProperty('title', title))
       ..add(IterableProperty<LocaleOption>(
-          'availableLocales', availableLocales))
+        'availableLocales', 
+        availableLocales,
+      ))
       ..add(StringProperty('cancelLabel', cancelLabel))
       ..add(DiagnosticsProperty<Future<void> Function(String)?>
           ('onLocaleChanged', onLocaleChanged));

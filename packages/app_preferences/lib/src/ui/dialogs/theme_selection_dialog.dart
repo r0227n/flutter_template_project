@@ -39,9 +39,18 @@ class ThemeSelectionDialog extends ConsumerWidget {
     return SelectionDialog<ThemeMode>(
       title: title,
       options: [
-        SelectionOption(value: ThemeMode.system, displayText: systemLabel),
-        SelectionOption(value: ThemeMode.light, displayText: lightLabel),
-        SelectionOption(value: ThemeMode.dark, displayText: darkLabel),
+        SelectionOption(
+          value: ThemeMode.system,
+          displayText: systemLabel,
+        ),
+        SelectionOption(
+          value: ThemeMode.light,
+          displayText: lightLabel,
+        ),
+        SelectionOption(
+          value: ThemeMode.dark,
+          displayText: darkLabel,
+        ),
       ],
       currentValue: currentTheme,
       onChanged: (themeMode) async {

@@ -7,9 +7,11 @@ part of 'app_preferences_repository.dart';
 // **************************************************************************
 
 String _$appPreferencesRepositoryHash() =>
-    r'0508db5911de055ff0836e3bf96f146de8d271a9';
+    r'70f9f013d024973fe76a29fb3fa41a355aed5281';
 
-/// See also [appPreferencesRepository].
+/// Provides the app preferences repository
+///
+/// Copied from [appPreferencesRepository].
 @ProviderFor(appPreferencesRepository)
 final appPreferencesRepositoryProvider =
     AutoDisposeProvider<AppPreferencesRepository>.internal(

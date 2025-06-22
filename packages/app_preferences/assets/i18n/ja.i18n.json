@@ -1,0 +1,15 @@
+{
+  "locale": {
+    "system": "システム",
+    "japanese": "日本語",
+    "english": "English"
+  },
+  "theme": {
+    "system": "システム",
+    "light": "ライト",
+    "dark": "ダーク"
+  },
+  "dialog": {
+    "cancel": "キャンセル"
+  }
+}
