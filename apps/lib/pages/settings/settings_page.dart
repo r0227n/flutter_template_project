@@ -1,6 +1,6 @@
+import 'package:apps/i18n/translations.g.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:apps/i18n/translations.g.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
@@ -30,7 +30,7 @@ class SettingsPage extends ConsumerWidget {
             },
           ),
           const Divider(),
-          
+
           ListTile(
             title: Text(t.settings.theme),
             subtitle: const Text('System'),

@@ -13,7 +13,8 @@ part 'routes.g.dart';
     ),
   ],
 )
-class HomeRoute extends GoRouteData {
+@immutable
+class HomeRoute extends GoRouteData with _$HomeRoute {
   const HomeRoute();
 
   @override
@@ -22,7 +23,8 @@ class HomeRoute extends GoRouteData {
   }
 }
 
-class SettingsRoute extends GoRouteData {
+@immutable
+class SettingsRoute extends GoRouteData with _$SettingsRoute {
   const SettingsRoute();
 
   @override

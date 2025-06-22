@@ -8,11 +8,16 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize locale
-  await LocaleSettings.useDeviceLocale();
+  final (_, prefs) = await (
+    LocaleSettings.useDeviceLocale(),
+    SharedPreferences.getInstance(),
+  ).wait;
 
   runApp(
     ProviderScope(
+      overrides: [
+        sharedPreferencesProvider.overrideWithValue(prefs),
+      ],
       child: TranslationProvider(
         child: const MyApp(),
       ),
@@ -26,8 +31,8 @@ class MyApp extends ConsumerWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final locale = ref.watch(appLocalePreferenceProvider);
-    final themeMode = ref.watch(appThemePreferenceProvider);
+    final locale = ref.watch(appLocaleProviderProvider);
+    final themeMode = ref.watch(appThemeProviderProvider);
 
     return MaterialApp.router(
       title: 'Flutter Demo',
@@ -36,8 +41,7 @@ class MyApp extends ConsumerWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: AppLocale.values
-          .map((locale) => locale.flutterLocale),
+      supportedLocales: AppLocale.values.map((locale) => locale.flutterLocale),
       locale: locale.when(
         data: (locale) => locale,
         loading: () => const Locale('en'),

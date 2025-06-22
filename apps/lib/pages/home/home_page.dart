@@ -28,17 +28,17 @@ class _HomePageState extends ConsumerState<HomePage> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
         actions: [
           IconButton(
-            onPressed: () => const SettingsRoute().go(context),
+            onPressed: () {
+              SettingsRoute().push(context);
+            },
             icon: const Icon(Icons.settings),
           ),
         ],
