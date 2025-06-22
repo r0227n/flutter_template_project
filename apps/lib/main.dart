@@ -1,5 +1,5 @@
 import 'package:debug/debug.dart';
-import 'package:apps/i18n/translations.g.dart' as i18n;
+import 'package:apps/i18n/translations.g.dart';
 import 'package:apps/router/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -10,7 +10,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize locale
-  await i18n.LocaleSettings.useDeviceLocale();
+  await LocaleSettings.useDeviceLocale();
 
   // Create provider container with debug observers
   final container = ProviderContainer(
@@ -20,7 +20,7 @@ Future<void> main() async {
   runApp(
     ProviderScope(
       parent: container,
-      child: i18n.TranslationProvider(
+      child: TranslationProvider(
         child: DebugConfig.shouldEnableShakeDetector
             ? ShakeDetectorWidget(child: const MyApp())
             : const MyApp(),
@@ -44,8 +44,8 @@ class MyApp extends ConsumerWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      locale: i18n.TranslationProvider.of(context).flutterLocale,
-      supportedLocales: i18n.AppLocale.values
+      locale: TranslationProvider.of(context).flutterLocale,
+      supportedLocales: AppLocale.values
           .map((locale) => locale.flutterLocale),
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
       routerConfig: router,

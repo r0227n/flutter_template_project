@@ -1,4 +1,4 @@
-import 'package:apps/i18n/translations.g.dart' as i18n;
+import 'package:apps/i18n/translations.g.dart';
 import 'package:apps/router/routes.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +47,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(i18n.t.hello),
+            Text(t.hello),
             Text(
               'カウンター: $_counter',
               style: Theme.of(context).textTheme.headlineMedium,
