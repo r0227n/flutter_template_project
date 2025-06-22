@@ -9,6 +9,29 @@ import 'package:flutter/material.dart';
 ///
 /// This is a reusable AlertDialog that displays a list of selectable options
 /// with radio buttons and handles the selection logic.
+///
+/// This dialog supports generic types to handle different data types while
+/// maintaining type safety. The dialog automatically closes when an option
+/// is selected and calls the provided callback.
+///
+/// Example usage:
+/// ```dart
+/// await showDialog<void>(
+///   context: context,
+///   builder: (context) => SelectionDialog<Locale>(
+///     title: 'Select Language',
+///     options: [
+///       SelectionOption(value: Locale('en'), displayText: 'English'),
+///       SelectionOption(value: Locale('ja'), displayText: '日本語'),
+///     ],
+///     currentValue: currentLocale,
+///     onChanged: (locale) async {
+///       await updateLocale(locale);
+///     },
+///     cancelLabel: 'Cancel',
+///   ),
+/// );
+/// ```
 class SelectionDialog<T> extends StatelessWidget {
   const SelectionDialog({
     required this.title,
@@ -43,30 +66,12 @@ class SelectionDialog<T> extends StatelessWidget {
   /// Optional icon to display in the dialog title
   final Widget? icon;
 
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(StringProperty('title', title));
-    properties.add(IterableProperty<SelectionOption<T>>('options', options));
-    properties.add(DiagnosticsProperty<T?>('currentValue', currentValue));
-    properties.add(StringProperty('cancelLabel', cancelLabel));
-    properties.add(
-      ObjectFlagProperty<Future<void> Function(T value)?>.has(
-        'onChanged',
-        onChanged,
-      ),
-    );
-    properties.add(
-      ObjectFlagProperty<Object? Function(T value)?>.has(
-        'valueSelector',
-        valueSelector,
-      ),
-    );
-    properties.add(
-      DiagnosticsProperty<Widget?>('icon', icon),
-    );
-  }
-
+  /// Builds the selection dialog UI
+  ///
+  /// Creates an AlertDialog with:
+  /// - Optional icon in the title
+  /// - Radio button list for options
+  /// - Cancel button to dismiss without selection
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -93,9 +98,36 @@ class SelectionDialog<T> extends StatelessWidget {
       ],
     );
   }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(StringProperty('title', title));
+    properties.add(IterableProperty<SelectionOption<T>>('options', options));
+    properties.add(DiagnosticsProperty<T?>('currentValue', currentValue));
+    properties.add(StringProperty('cancelLabel', cancelLabel));
+    properties.add(
+      ObjectFlagProperty<Future<void> Function(T value)?>.has(
+        'onChanged',
+        onChanged,
+      ),
+    );
+    properties.add(
+      ObjectFlagProperty<Object? Function(T value)?>.has(
+        'valueSelector',
+        valueSelector,
+      ),
+    );
+    properties.add(
+      DiagnosticsProperty<Widget?>('icon', icon),
+    );
+  }
 }
 
 /// Configuration for a selection option
+///
+/// Represents a single selectable item in a [SelectionDialog].
+/// Contains both the actual value and the display text shown to the user.
 class SelectionOption<T> {
   const SelectionOption({
     required this.value,
@@ -110,6 +142,10 @@ class SelectionOption<T> {
 }
 
 /// A radio list tile for selection options
+///
+/// Internal widget that renders a single option as a radio button.
+/// Handles the selection logic and automatically dismisses the dialog
+/// when an option is selected.
 class _SelectionOptionTile<T> extends StatelessWidget {
   const _SelectionOptionTile({
     required this.option,
@@ -118,9 +154,16 @@ class _SelectionOptionTile<T> extends StatelessWidget {
     this.valueSelector,
   });
 
+  /// The selection option to display
   final SelectionOption<T> option;
+  
+  /// The currently selected value
   final T? currentValue;
+  
+  /// Callback when this option is selected
   final Future<void> Function(T value) onChanged;
+  
+  /// Optional value selector for complex object comparison
   final Object? Function(T value)? valueSelector;
 
   @override
@@ -142,6 +185,11 @@ class _SelectionOptionTile<T> extends StatelessWidget {
     );
   }
 
+  /// Builds the radio list tile
+  ///
+  /// Uses [valueSelector] if provided to compare values, otherwise
+  /// compares the values directly. Automatically closes the dialog
+  /// when selected.
   @override
   Widget build(BuildContext context) {
     // Use valueSelector if provided, otherwise use the value directly
