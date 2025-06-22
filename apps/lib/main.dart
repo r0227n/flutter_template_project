@@ -1,32 +1,32 @@
-import 'package:app_preferences/app_preferences.dart';
+import 'package:debug/debug.dart';
 import 'package:apps/i18n/translations.g.dart' as i18n;
 import 'package:apps/router/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize app preferences and set up initial locale
-  final container = ProviderContainer();
-  
-  try {
-    // Wait for shared preferences to be initialized
-    await container.read(sharedPreferencesProvider.future);
-    
-    // Check if there's a saved locale preference
-    final savedLocale = container.read(appLocaleProvider);
-    if (savedLocale != null) {
-      await i18n.LocaleSettings.setLocaleRaw(savedLocale.languageCode);
-    } else {
-      await i18n.LocaleSettings.useDeviceLocale();
-    }
-  } finally {
-    container.dispose();
-  }
+  // Initialize locale
+  await i18n.LocaleSettings.useDeviceLocale();
 
-  runApp(ProviderScope(child: i18n.TranslationProvider(child: const MyApp())));
+  // Create provider container with debug observers
+  final container = ProviderContainer(
+    observers: DebugConfig.shouldEnableTalker ? [TalkerRiverpodObserver()] : [],
+  );
+
+  runApp(
+    ProviderScope(
+      parent: container,
+      child: i18n.TranslationProvider(
+        child: DebugConfig.shouldEnableShakeDetector
+            ? ShakeDetectorWidget(child: const MyApp())
+            : const MyApp(),
+      ),
+    ),
+  );
 }
 
 class MyApp extends ConsumerWidget {
@@ -36,18 +36,22 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(appRouterProvider);
-    final themeMode = ref.watch(appThemeProvider);
+    final talker = ref.watch(talkerProvider);
 
     return MaterialApp.router(
       title: 'Flutter Demo',
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: themeMode,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
       locale: i18n.TranslationProvider.of(context).flutterLocale,
       supportedLocales: i18n.AppLocale.values
           .map((locale) => locale.flutterLocale),
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
       routerConfig: router,
+      navigatorObservers: DebugConfig.shouldEnableTalker
+          ? [TalkerRouteObserver(talker)]
+          : [],
     );
   }
 }
