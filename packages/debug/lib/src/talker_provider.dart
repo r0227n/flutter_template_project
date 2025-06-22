@@ -24,5 +24,5 @@ class TalkerRiverpodObserver extends ProviderObserver with TalkerRiverpodLoggerM
   final Talker? _talker;
 
   @override
-  Talker get talker => _talker ?? TalkerFlutter.instance;
+  Talker get talker => _talker ?? Talker();
 }
