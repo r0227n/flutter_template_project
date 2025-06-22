@@ -6,10 +6,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 part 'app_preferences_provider.g.dart';
 
+/// Provides access to shared preferences
 @riverpod
 SharedPreferences sharedPreferences(Ref ref) => throw UnimplementedError();
 
-// Locale providers
+/// Locale providers
+///
+/// Provides locale management functionality
 @riverpod
 class AppLocaleProvider extends _$AppLocaleProvider {
   @override
@@ -25,6 +28,7 @@ class AppLocaleProvider extends _$AppLocaleProvider {
     return const Locale('en');
   }
 
+  /// Sets the locale preference
   Future<void> setLocale(Locale locale) async {
     final repository = ref.read(appPreferencesRepositoryProvider);
 
@@ -32,6 +36,7 @@ class AppLocaleProvider extends _$AppLocaleProvider {
     ref.invalidateSelf();
   }
 
+  /// Clears the locale preference
   Future<void> clearLocale() async {
     final repository = ref.read(appPreferencesRepositoryProvider);
     await repository.clearLocale();
@@ -39,7 +44,9 @@ class AppLocaleProvider extends _$AppLocaleProvider {
   }
 }
 
-// Theme providers
+/// Theme providers
+///
+/// Provides theme management functionality
 @riverpod
 class AppThemeProvider extends _$AppThemeProvider {
   @override
@@ -55,6 +62,7 @@ class AppThemeProvider extends _$AppThemeProvider {
     return ThemeMode.system;
   }
 
+  /// Sets the theme mode preference
   Future<void> setThemeMode(ThemeMode mode) async {
     final repository = ref.read(appPreferencesRepositoryProvider);
 
@@ -62,6 +70,7 @@ class AppThemeProvider extends _$AppThemeProvider {
     ref.invalidateSelf();
   }
 
+  /// Clears the theme preference
   Future<void> clearTheme() async {
     final repository = ref.read(appPreferencesRepositoryProvider);
     await repository.clearTheme();
