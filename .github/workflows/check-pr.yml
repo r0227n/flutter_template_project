@@ -3,11 +3,6 @@ name: PR Check
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-  push:
-    paths:
-      - '**.yml'
-      - '**.yaml'
-      - '**.md'
 
 concurrency:
   group: check-pr-${{ github.ref }}
@@ -84,7 +79,6 @@ jobs:
   lint-yaml-markdown:
     name: Lint YAML and Markdown
     runs-on: ubuntu-24.04
-    if: contains(github.event.head_commit.modified, '.yml') || contains(github.event.head_commit.modified, '.yaml') || contains(github.event.head_commit.modified, '.md') || contains(github.event.head_commit.added, '.yml') || contains(github.event.head_commit.added, '.yaml') || contains(github.event.head_commit.added, '.md')
 
     steps:
       - name: Checkout code
