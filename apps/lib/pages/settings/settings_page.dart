@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:app_preferences/app_preferences.dart';
 import 'package:app_preferences/app_preferences.dart' as app_prefs;
 import 'package:apps/i18n/translations.g.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +23,7 @@ class SettingsPage extends ConsumerWidget {
         children: [
           ListTile(
             title: Text(t.settings.language),
-            subtitle: const LocaleText(),
+            subtitle: const app_prefs.LocaleText(),
             trailing: const Icon(Icons.chevron_right),
             onTap: () => _showLanguageDialog(context, t),
           ),
@@ -32,7 +31,7 @@ class SettingsPage extends ConsumerWidget {
 
           ListTile(
             title: Text(t.settings.theme),
-            subtitle: const ThemeText(),
+            subtitle: const app_prefs.ThemeText(),
             trailing: const Icon(Icons.chevron_right),
             onTap: () => _showThemeDialog(context, t),
           ),
@@ -40,7 +39,7 @@ class SettingsPage extends ConsumerWidget {
 
           ListTile(
             title: Text(t.settings.version),
-            subtitle: const VersionText(),
+            subtitle: const app_prefs.VersionText(),
             trailing: const Icon(Icons.info_outline),
             // Version is display-only
           ),
@@ -49,7 +48,11 @@ class SettingsPage extends ConsumerWidget {
           ListTile(
             title: Text(t.settings.licenses),
             trailing: const Icon(Icons.chevron_right),
-            onTap: () => showLicense(context),
+            onTap: () => showLicensePage(
+              context: context,
+              applicationName: 'Flutter Template',
+              applicationVersion: '1.0.0',
+            ),
           ),
           const Divider(),
         ],
@@ -61,7 +64,7 @@ class SettingsPage extends ConsumerWidget {
     BuildContext context,
     Translations t,
   ) async {
-    await PreferencesDialogHelpers.showLocaleSelectionDialog(
+    await app_prefs.PreferencesDialogHelpers.showLocaleSelectionDialog(
       context: context,
 
       title: t.settings.language,
@@ -80,7 +83,7 @@ class SettingsPage extends ConsumerWidget {
     BuildContext context,
     Translations t,
   ) async {
-    await PreferencesDialogHelpers.showThemeSelectionDialog(
+    await app_prefs.PreferencesDialogHelpers.showThemeSelectionDialog(
       context: context,
 
       title: t.settings.theme,

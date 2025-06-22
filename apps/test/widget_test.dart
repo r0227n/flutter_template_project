@@ -6,7 +6,7 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:app_preferences/app_preferences.dart';
-import 'package:apps/i18n/translations.g.dart';
+import 'package:apps/i18n/translations.g.dart' as app_translations;
 import 'package:apps/pages/home/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -18,7 +18,7 @@ void main() {
       // Build our app and trigger a frame.
       await tester.pumpWidget(
         ProviderScope(
-          child: TranslationProvider(
+          child: app_translations.TranslationProvider(
             child: const MaterialApp(
               home: HomePage(title: 'Flutter Template'),
             ),
@@ -42,7 +42,7 @@ void main() {
     testWidgets('App displays correct title', (tester) async {
       await tester.pumpWidget(
         ProviderScope(
-          child: TranslationProvider(
+          child: app_translations.TranslationProvider(
             child: const MaterialApp(
               home: HomePage(title: 'Flutter Template'),
             ),
@@ -59,7 +59,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         ProviderScope(
-          child: TranslationProvider(
+          child: app_translations.TranslationProvider(
             child: const MaterialApp(
               home: HomePage(title: 'Flutter Template'),
             ),
@@ -82,7 +82,7 @@ void main() {
     testWidgets('AppBar shows correct styling', (tester) async {
       await tester.pumpWidget(
         ProviderScope(
-          child: TranslationProvider(
+          child: app_translations.TranslationProvider(
             child: const MaterialApp(
               home: HomePage(title: 'Flutter Template'),
             ),
@@ -109,7 +109,7 @@ void main() {
     testWidgets('App respects system theme', (tester) async {
       await tester.pumpWidget(
         ProviderScope(
-          child: TranslationProvider(
+          child: app_translations.TranslationProvider(
             child: const MaterialApp(
               home: HomePage(title: 'Flutter Template'),
             ),
@@ -131,7 +131,7 @@ void main() {
     testWidgets('Settings icon exists in AppBar', (tester) async {
       await tester.pumpWidget(
         ProviderScope(
-          child: TranslationProvider(
+          child: app_translations.TranslationProvider(
             child: const MaterialApp(
               home: HomePage(title: 'Flutter Template'),
             ),
@@ -147,7 +147,7 @@ void main() {
     testWidgets('Settings navigation works', (tester) async {
       await tester.pumpWidget(
         ProviderScope(
-          child: TranslationProvider(
+          child: app_translations.TranslationProvider(
             child: const MaterialApp(
               home: HomePage(title: 'Flutter Template'),
             ),
@@ -176,7 +176,7 @@ void main() {
           overrides: [
             sharedPreferencesProvider.overrideWithValue(prefs),
           ],
-          child: TranslationProvider(
+          child: app_translations.TranslationProvider(
             child: const MaterialApp(
               home: HomePage(title: 'Flutter Template'),
             ),
@@ -192,11 +192,13 @@ void main() {
       tester,
     ) async {
       // Set locale to Japanese
-      await LocaleSettings.setLocale(AppLocale.ja);
+      await app_translations.LocaleSettings.setLocale(
+        app_translations.AppLocale.ja,
+      );
 
       await tester.pumpWidget(
         ProviderScope(
-          child: TranslationProvider(
+          child: app_translations.TranslationProvider(
             child: const MaterialApp(
               home: HomePage(title: 'Flutter Template'),
             ),
