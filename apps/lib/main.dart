@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:app_preferences/app_preferences.dart';
-import 'package:app_preferences/app_prefs_translations.dart' as app_prefs;
+import 'package:app_preferences/app_preferences.dart' as prefs;
 import 'package:apps/i18n/translations.g.dart';
 import 'package:apps/router/app_router.dart';
 import 'package:flutter/material.dart';
@@ -11,11 +10,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final prefs = await SharedPreferences.getInstance();
+  final sharedPrefs = await prefs.SharedPreferences.getInstance();
 
   // Initialize locale from stored preferences or use device locale as fallback
-  await AppPreferencesInitializer.initializeLocale(
-    prefs: prefs,
+  await prefs.AppPreferencesInitializer.initializeLocale(
+    prefs: sharedPrefs,
     onLocaleFound: (languageCode) async {
       final appLocale = AppLocale.values.firstWhere(
         (locale) => locale.languageCode == languageCode,
@@ -31,10 +30,10 @@ Future<void> main() async {
   runApp(
     ProviderScope(
       overrides: [
-        sharedPreferencesProvider.overrideWithValue(prefs),
+        prefs.sharedPreferencesProvider.overrideWithValue(sharedPrefs),
       ],
       child: TranslationProvider(
-        child: app_prefs.TranslationProvider(
+        child: prefs.TranslationProvider(
           child: const MyApp(),
         ),
       ),
@@ -48,8 +47,8 @@ class MyApp extends ConsumerWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final locale = ref.watch(appLocaleProviderProvider);
-    final themeMode = ref.watch(appThemeProviderProvider);
+    final locale = ref.watch(prefs.appLocaleProviderProvider);
+    final themeMode = ref.watch(prefs.appThemeProviderProvider);
     final router = ref.watch(appRouterProvider);
 
     return MaterialApp.router(
@@ -64,8 +63,8 @@ class MyApp extends ConsumerWidget {
         AsyncData(value: final locale) => locale,
         _ => const Locale('ja'),
       },
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
+      theme: prefs.AppTheme.lightTheme,
+      darkTheme: prefs.AppTheme.darkTheme,
       themeMode: switch (themeMode) {
         AsyncData(value: final mode) => mode,
         _ => ThemeMode.system,

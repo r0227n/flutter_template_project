@@ -1,5 +1,8 @@
 export 'package:shared_preferences/shared_preferences.dart';
 
+// Translations (TranslationProvider only)
+export 'i18n/strings.g.dart' show TranslationProvider;
+
 // Initialization
 export 'src/app_preferences_initializer.dart';
 

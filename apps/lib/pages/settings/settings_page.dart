@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:app_preferences/app_preferences.dart';
-import 'package:app_preferences/app_prefs_translations.dart' as app_prefs;
+import 'package:app_preferences/app_preferences.dart' as app_prefs;
 import 'package:apps/i18n/translations.g.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -12,8 +12,9 @@ class SettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final t = Translations.of(context);
-    // App preferences translations are now available as:
-    // final appPrefsT = AppPrefsTranslations.of(context);
+    
+    // TranslationProvider is now available as:
+    // app_prefs.TranslationProvider
 
     return Scaffold(
       appBar: AppBar(
@@ -51,24 +52,6 @@ class SettingsPage extends ConsumerWidget {
             onTap: () => showLicense(context),
           ),
           const Divider(),
-
-          // Demo: Using app_preferences translations directly
-          ListTile(
-            title: const Text('App Preferences Translations Demo'),
-            subtitle: Builder(
-              builder: (context) {
-                final appPrefsT = app_prefs.Translations.of(context);
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Locale System: ${appPrefsT.locale['system']}'),
-                    Text('Theme Light: ${appPrefsT.theme['light']}'),
-                    Text('Dialog Cancel: ${appPrefsT.dialog.cancel}'),
-                  ],
-                );
-              },
-            ),
-          ),
         ],
       ),
     );
