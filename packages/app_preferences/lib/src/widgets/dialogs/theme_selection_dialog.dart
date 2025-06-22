@@ -12,6 +12,7 @@ class ThemeSelectionDialog extends ConsumerWidget {
     required this.lightLabel,
     required this.darkLabel,
     required this.cancelLabel,
+    this.icon,
     super.key,
   });
 
@@ -20,6 +21,7 @@ class ThemeSelectionDialog extends ConsumerWidget {
   final String lightLabel;
   final String darkLabel;
   final String cancelLabel;
+  final Widget? icon;
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -29,7 +31,8 @@ class ThemeSelectionDialog extends ConsumerWidget {
       ..add(StringProperty('systemLabel', systemLabel))
       ..add(StringProperty('lightLabel', lightLabel))
       ..add(StringProperty('darkLabel', darkLabel))
-      ..add(StringProperty('cancelLabel', cancelLabel));
+      ..add(StringProperty('cancelLabel', cancelLabel))
+      ..add(DiagnosticsProperty<Widget?>('icon', icon));
   }
 
   @override
@@ -38,6 +41,7 @@ class ThemeSelectionDialog extends ConsumerWidget {
 
     return SelectionDialog<ThemeMode>(
       title: title,
+      icon: icon,
       options: [
         SelectionOption(
           value: ThemeMode.system,

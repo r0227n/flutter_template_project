@@ -20,6 +20,7 @@ class PreferencesDialogHelpers {
     String? lightLabel,
     String? darkLabel,
     String? cancelLabel,
+    Widget icon = const Icon(Icons.palette),
   }) async {
     final t = app_prefs.Translations.of(context);
 
@@ -31,6 +32,7 @@ class PreferencesDialogHelpers {
         lightLabel: lightLabel ?? t.theme['light']!,
         darkLabel: darkLabel ?? t.theme['dark']!,
         cancelLabel: cancelLabel ?? t.dialog.cancel,
+        icon: icon,
       ),
     );
   }
@@ -45,6 +47,7 @@ class PreferencesDialogHelpers {
     required String title,
     List<LocaleOption>? availableLocales,
     String? cancelLabel,
+    Widget icon = const Icon(Icons.language),
     Future<void> Function(String languageCode)? onLocaleChanged,
   }) async {
     final t = app_prefs.Translations.of(context);
@@ -63,6 +66,7 @@ class PreferencesDialogHelpers {
         availableLocales: locales,
         cancelLabel: cancelLabel ?? t.dialog.cancel,
         onLocaleChanged: onLocaleChanged,
+        icon: icon,
       ),
     );
   }
