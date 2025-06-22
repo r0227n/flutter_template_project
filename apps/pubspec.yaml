@@ -12,7 +12,6 @@ resolution: workspace
 dependencies:
   app_preferences:
     path: ../packages/app_preferences
-  build_verify: ^3.1.1
   cupertino_icons: ^1.0.8
   flutter:
     sdk: flutter

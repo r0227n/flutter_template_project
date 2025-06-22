@@ -69,9 +69,9 @@ class PreferencesDialogHelpers {
       context: context,
       builder: (context) => ThemeSelectionDialog(
         title: title,
-        systemLabel: systemLabel ?? t.theme['system']!,
-        lightLabel: lightLabel ?? t.theme['light']!,
-        darkLabel: darkLabel ?? t.theme['dark']!,
+        systemLabel: systemLabel ?? t.theme.system,
+        lightLabel: lightLabel ?? t.theme.light,
+        darkLabel: darkLabel ?? t.theme.dark,
         cancelLabel: cancelLabel ?? t.dialog.cancel,
         icon: icon,
       ),
@@ -122,8 +122,8 @@ class PreferencesDialogHelpers {
     final locales =
         availableLocales ??
         [
-          LocaleOption(languageCode: 'ja', displayName: t.locale['japanese']!),
-          LocaleOption(languageCode: 'en', displayName: t.locale['english']!),
+          LocaleOption(languageCode: 'ja', displayName: t.locale.japanese),
+          LocaleOption(languageCode: 'en', displayName: t.locale.english),
         ];
 
     await showDialog<void>(

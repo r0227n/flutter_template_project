@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 /// theme configuration for both light and dark modes. It uses Material 3 design
 /// principles and provides consistent theming across the application.
 ///
-/// The theme is built using a seed color (deep purple) that generates a 
+/// The theme is built using a seed color (deep purple) that generates a
 /// cohesive color scheme for both light and dark variants.
 ///
 /// Example usage:

@@ -58,7 +58,7 @@ class ThemeText extends ConsumerWidget {
   /// Maps theme modes to their localized display names:
   /// - [ThemeMode.system] -> 'System' from translations
   /// - [ThemeMode.light] -> 'Light' from translations
-  /// - [ThemeMode.dark] -> 'Dark' from translations  
+  /// - [ThemeMode.dark] -> 'Dark' from translations
   /// - null -> 'System' from translations (fallback)
   ///
   /// Parameters:
@@ -68,12 +68,12 @@ class ThemeText extends ConsumerWidget {
   /// Returns the appropriate display text for the theme mode.
   String _getThemeDisplayText(ThemeMode? themeMode, app_prefs.Translations t) {
     if (themeMode == null) {
-      return t.theme['system']!;
+      return t.theme.system;
     }
     return switch (themeMode) {
-      ThemeMode.system => t.theme['system']!,
-      ThemeMode.light => t.theme['light']!,
-      ThemeMode.dark => t.theme['dark']!,
+      ThemeMode.system => t.theme.system,
+      ThemeMode.light => t.theme.light,
+      ThemeMode.dark => t.theme.dark,
     };
   }
 
