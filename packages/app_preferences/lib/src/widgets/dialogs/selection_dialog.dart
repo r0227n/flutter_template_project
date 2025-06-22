@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 /// A generic selection dialog component
-/// 
+///
 /// This is a reusable AlertDialog that displays a list of selectable options
 /// with radio buttons and handles the selection logic.
 class SelectionDialog<T> extends StatelessWidget {
@@ -17,6 +17,7 @@ class SelectionDialog<T> extends StatelessWidget {
     required this.onChanged,
     required this.cancelLabel,
     this.valueSelector,
+    this.icon,
     super.key,
   });
 
@@ -39,6 +40,9 @@ class SelectionDialog<T> extends StatelessWidget {
   /// If null, uses the value directly for comparison
   final Object? Function(T value)? valueSelector;
 
+  /// Optional icon to display in the dialog title
+  final Widget? icon;
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
@@ -46,19 +50,27 @@ class SelectionDialog<T> extends StatelessWidget {
     properties.add(IterableProperty<SelectionOption<T>>('options', options));
     properties.add(DiagnosticsProperty<T?>('currentValue', currentValue));
     properties.add(StringProperty('cancelLabel', cancelLabel));
-    properties.add(ObjectFlagProperty<Future<void> Function(T value)?>.has(
-      'onChanged',
-      onChanged,
-    ));
-    properties.add(ObjectFlagProperty<Object? Function(T value)?>.has(
-      'valueSelector',
-      valueSelector,
-    ));
+    properties.add(
+      ObjectFlagProperty<Future<void> Function(T value)?>.has(
+        'onChanged',
+        onChanged,
+      ),
+    );
+    properties.add(
+      ObjectFlagProperty<Object? Function(T value)?>.has(
+        'valueSelector',
+        valueSelector,
+      ),
+    );
+    properties.add(
+      DiagnosticsProperty<Widget?>('icon', icon),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      icon: icon,
       title: Text(title),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -116,14 +128,18 @@ class _SelectionOptionTile<T> extends StatelessWidget {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<SelectionOption<T>>('option', option));
     properties.add(DiagnosticsProperty<T?>('currentValue', currentValue));
-    properties.add(ObjectFlagProperty<Future<void> Function(T value)?>.has(
-      'onChanged',
-      onChanged,
-    ));
-    properties.add(ObjectFlagProperty<Object? Function(T value)?>.has(
-      'valueSelector',
-      valueSelector,
-    ));
+    properties.add(
+      ObjectFlagProperty<Future<void> Function(T value)?>.has(
+        'onChanged',
+        onChanged,
+      ),
+    );
+    properties.add(
+      ObjectFlagProperty<Object? Function(T value)?>.has(
+        'valueSelector',
+        valueSelector,
+      ),
+    );
   }
 
   @override

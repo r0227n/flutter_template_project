@@ -32,6 +32,7 @@ class LocaleSelectionDialog extends ConsumerWidget {
     required this.availableLocales,
     required this.cancelLabel,
     this.onLocaleChanged,
+    this.icon,
     super.key,
   });
 
@@ -39,6 +40,7 @@ class LocaleSelectionDialog extends ConsumerWidget {
   final List<LocaleOption> availableLocales;
   final String cancelLabel;
   final Future<void> Function(String languageCode)? onLocaleChanged;
+  final Widget? icon;
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -57,7 +59,8 @@ class LocaleSelectionDialog extends ConsumerWidget {
           'onLocaleChanged',
           onLocaleChanged,
         ),
-      );
+      )
+      ..add(DiagnosticsProperty<Widget?>('icon', icon));
   }
 
   @override
@@ -66,6 +69,7 @@ class LocaleSelectionDialog extends ConsumerWidget {
 
     return SelectionDialog<LocaleOption>(
       title: title,
+      icon: icon,
       options: availableLocales
           .map(
             (locale) => SelectionOption<LocaleOption>(
