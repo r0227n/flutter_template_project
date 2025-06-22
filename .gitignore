@@ -46,9 +46,6 @@ app.*.map.json
 # Node.js
 node_modules/
 
-# Package lock
-package-lock.json
-
 # FVM Version Cache
 .fvm/
 
