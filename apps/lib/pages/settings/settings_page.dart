@@ -11,8 +11,6 @@ class SettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final t = Translations.of(context);
-    final currentLocale = ref.watch(appLocaleProviderProvider);
-    final currentTheme = ref.watch(appThemeProviderProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -22,7 +20,7 @@ class SettingsPage extends ConsumerWidget {
         children: [
           ListTile(
             title: Text(t.settings.language),
-            subtitle: Text(_getLocaleDisplayName(currentLocale.valueOrNull)),
+            subtitle: const LocaleDisplayText(),
             trailing: const Icon(Icons.chevron_right),
             onTap: () => _showLanguageDialog(context, ref, t),
           ),
@@ -30,7 +28,11 @@ class SettingsPage extends ConsumerWidget {
 
           ListTile(
             title: Text(t.settings.theme),
-            subtitle: Text(_getThemeDisplayName(currentTheme.valueOrNull, t)),
+            subtitle: ThemeDisplayText(
+              systemLabel: t.settings.theme_system,
+              lightLabel: t.settings.theme_light,
+              darkLabel: t.settings.theme_dark,
+            ),
             trailing: const Icon(Icons.chevron_right),
             onTap: () => _showThemeDialog(context, ref, t),
           ),
@@ -39,99 +41,28 @@ class SettingsPage extends ConsumerWidget {
     );
   }
 
-  String _getLocaleDisplayName(Locale? locale) {
-    if (locale == null) {
-      return 'System';
-    }
-    return switch (locale.languageCode) {
-      'ja' => '日本語',
-      'en' => 'English',
-      _ => locale.languageCode,
-    };
-  }
-
-  String _getThemeDisplayName(ThemeMode? themeMode, Translations t) {
-    if (themeMode == null) {
-      return 'System';
-    }
-    return switch (themeMode) {
-      ThemeMode.system => t.settings.theme_system,
-      ThemeMode.light => t.settings.theme_light,
-      ThemeMode.dark => t.settings.theme_dark,
-    };
-  }
-
   Future<void> _showLanguageDialog(
     BuildContext context,
     WidgetRef ref,
     Translations t,
   ) async {
-    final currentLocale = ref.read(appLocaleProviderProvider).valueOrNull;
-
-    await showDialog<void>(
+    await PreferencesDialogHelpers.showLocaleSelectionDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(t.settings.language),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            RadioListTile<String>(
-              title: const Text('日本語'),
-              value: 'ja',
-              groupValue: currentLocale?.languageCode,
-              onChanged: (value) async {
-                if (value != null) {
-                  final newLocale = Locale(value);
-                  await ref
-                      .read(appLocaleProviderProvider.notifier)
-                      .setLocale(newLocale);
-                  
-                  // Update slang locale settings for immediate UI update
-                  final appLocale = AppLocale.values.firstWhere(
-                    (locale) => locale.languageCode == value,
-                    orElse: () => AppLocale.ja,
-                  );
-                  unawaited(LocaleSettings.setLocale(appLocale));
-                  
-                  if (context.mounted) {
-                    Navigator.of(context).pop();
-                  }
-                }
-              },
-            ),
-            RadioListTile<String>(
-              title: const Text('English'),
-              value: 'en',
-              groupValue: currentLocale?.languageCode,
-              onChanged: (value) async {
-                if (value != null) {
-                  final newLocale = Locale(value);
-                  await ref
-                      .read(appLocaleProviderProvider.notifier)
-                      .setLocale(newLocale);
-                  
-                  // Update slang locale settings for immediate UI update
-                  final appLocale = AppLocale.values.firstWhere(
-                    (locale) => locale.languageCode == value,
-                    orElse: () => AppLocale.ja,
-                  );
-                  unawaited(LocaleSettings.setLocale(appLocale));
-                  
-                  if (context.mounted) {
-                    Navigator.of(context).pop();
-                  }
-                }
-              },
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(t.settings.cancel),
-          ),
-        ],
-      ),
+      ref: ref,
+      title: t.settings.language,
+      availableLocales: const [
+        LocaleOption(languageCode: 'ja', displayName: '日本語'),
+        LocaleOption(languageCode: 'en', displayName: 'English'),
+      ],
+      cancelLabel: t.settings.cancel,
+      onLocaleChanged: (languageCode) async {
+        // Update slang locale settings for immediate UI update
+        final appLocale = AppLocale.values.firstWhere(
+          (locale) => locale.languageCode == languageCode,
+          orElse: () => AppLocale.ja,
+        );
+        unawaited(LocaleSettings.setLocale(appLocale));
+      },
     );
   }
 
@@ -140,69 +71,14 @@ class SettingsPage extends ConsumerWidget {
     WidgetRef ref,
     Translations t,
   ) async {
-    final currentTheme = ref.read(appThemeProviderProvider).valueOrNull;
-
-    await showDialog<void>(
+    await PreferencesDialogHelpers.showThemeSelectionDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(t.settings.theme),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            RadioListTile<ThemeMode>(
-              title: Text(t.settings.theme_system),
-              value: ThemeMode.system,
-              groupValue: currentTheme,
-              onChanged: (value) async {
-                if (value != null) {
-                  await ref
-                      .read(appThemeProviderProvider.notifier)
-                      .setThemeMode(value);
-                  if (context.mounted) {
-                    Navigator.of(context).pop();
-                  }
-                }
-              },
-            ),
-            RadioListTile<ThemeMode>(
-              title: Text(t.settings.theme_light),
-              value: ThemeMode.light,
-              groupValue: currentTheme,
-              onChanged: (value) async {
-                if (value != null) {
-                  await ref
-                      .read(appThemeProviderProvider.notifier)
-                      .setThemeMode(value);
-                  if (context.mounted) {
-                    Navigator.of(context).pop();
-                  }
-                }
-              },
-            ),
-            RadioListTile<ThemeMode>(
-              title: Text(t.settings.theme_dark),
-              value: ThemeMode.dark,
-              groupValue: currentTheme,
-              onChanged: (value) async {
-                if (value != null) {
-                  await ref
-                      .read(appThemeProviderProvider.notifier)
-                      .setThemeMode(value);
-                  if (context.mounted) {
-                    Navigator.of(context).pop();
-                  }
-                }
-              },
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(t.settings.cancel),
-          ),
-        ],
-      ),
+      ref: ref,
+      title: t.settings.theme,
+      systemLabel: t.settings.theme_system,
+      lightLabel: t.settings.theme_light,
+      darkLabel: t.settings.theme_dark,
+      cancelLabel: t.settings.cancel,
     );
   }
 }

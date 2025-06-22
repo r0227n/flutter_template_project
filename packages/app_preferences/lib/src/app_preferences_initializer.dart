@@ -6,10 +6,10 @@ class AppPreferencesInitializer {
   const AppPreferencesInitializer._();
 
   /// Initializes locale settings from stored preferences
-  /// 
+  ///
   /// This method should be called during app startup before running the app.
   /// It reads the stored locale preference and calls the appropriate callback.
-  /// 
+  ///
   /// Example usage:
   /// ```dart
   /// final prefs = await SharedPreferences.getInstance();
