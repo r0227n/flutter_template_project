@@ -10,8 +10,8 @@ environment:
 resolution: workspace
 
 dependencies:
-  debug:
-    path: ../packages/debug
+  app_preferences:
+    path: ../packages/app_preferences
   cupertino_icons: ^1.0.8
   flutter:
     sdk: flutter
