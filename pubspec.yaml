@@ -53,7 +53,12 @@ melos:
     # Run tests for all packages
     test:
       description: Run tests for all packages
-      run: melos exec --fail-fast --concurrency=1 -- "flutter test"    
+      run: melos exec --fail-fast --concurrency=1 -- "flutter test" 
+
+    # Check if formatting is correct (for CI)
+    ci:format:
+      description: Check if all packages are formatted correctly
+      run: melos exec -- "dart format --output=none --set-exit-if-changed ."
 
   environment:
     sdk: ">=3.6.0 <4.0.0"

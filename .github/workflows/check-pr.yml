@@ -30,8 +30,8 @@ jobs:
       - name: Run melos test
         run: melos run test
       
-      - name: Check Dart Format
-        run: melos run format --set-exit-if-changed
+      - name: Check melos format
+        run: melos run ci:format
 
   check-i18n-files:
     name: Check i18n Files
