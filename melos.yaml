@@ -25,6 +25,11 @@ scripts:
   analyze:
     description: Analyze all packages
     run: melos exec -- "dart analyze"
+
+  # Check slang translations
+  analyze:slang:
+    description: Analyze slang translations
+    run: melos exec -- "dart run slang analyze"
     
   # Format all packages
   format:
@@ -34,7 +39,7 @@ scripts:
   # Run tests for all packages
   test:
     description: Run tests for all packages
-    run: melos exec --fail-fast --concurrency=1 -- "flutter test"
+    run: melos exec --fail-fast --concurrency=1 -- "flutter test"    
 
 environment:
   sdk: ">=3.6.0 <4.0.0"
