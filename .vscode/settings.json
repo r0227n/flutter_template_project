@@ -32,6 +32,17 @@
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit"
   },
+  "[dart]": {
+    "editor.defaultFormatter": "Dart-Code.dart-code",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "dart.addConstModifier": "explicit",
+      "source.organizeImports": "explicit"
+    }
+  },
+  "dart.previewFlutterUiGuides": true,
+  "dart.previewFlutterUiGuidesCustomTracking": true,
   "[yaml]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
