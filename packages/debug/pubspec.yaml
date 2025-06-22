@@ -1,0 +1,24 @@
+name: debug
+description: "Debug package with Talker logging and shake detection"
+version: 0.0.1
+publish_to: 'none'
+
+environment:
+  sdk: ^3.8.1
+  flutter: ^3.32.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  talker_flutter: ^4.9.1
+  talker_logger: ^4.9.1
+  talker_riverpod_logger: ^1.1.5
+  shake: ^2.2.0
+  flutter_riverpod: ^2.6.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
