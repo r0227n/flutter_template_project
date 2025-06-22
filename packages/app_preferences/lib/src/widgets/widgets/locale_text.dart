@@ -58,7 +58,7 @@ class LocaleText extends ConsumerWidget {
   ///
   /// Maps locale language codes to their localized display names:
   /// - 'ja' -> Japanese name from translations
-  /// - 'en' -> English name from translations  
+  /// - 'en' -> English name from translations
   /// - null -> 'System' from translations
   /// - others -> Raw language code as fallback
   ///
@@ -69,11 +69,11 @@ class LocaleText extends ConsumerWidget {
   /// Returns the appropriate display text for the locale.
   String _getLocaleDisplayText(Locale? locale, app_prefs.Translations t) {
     if (locale == null) {
-      return t.locale['system']!;
+      return t.locale.system;
     }
     return switch (locale.languageCode) {
-      'ja' => t.locale['japanese']!,
-      'en' => t.locale['english']!,
+      'ja' => t.locale.japanese,
+      'en' => t.locale.english,
       _ => locale.languageCode,
     };
   }

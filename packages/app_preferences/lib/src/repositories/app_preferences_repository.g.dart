@@ -9,7 +9,14 @@ part of 'app_preferences_repository.dart';
 String _$appPreferencesRepositoryHash() =>
     r'70f9f013d024973fe76a29fb3fa41a355aed5281';
 
-/// Provides the app preferences repository
+/// Provides the app preferences repository instance
+///
+/// This provider creates and configures an [AppPreferencesRepository] instance
+/// with the SharedPreferences dependency injected from
+/// [sharedPreferencesProvider].
+///
+/// Returns:
+/// A configured [AppPreferencesRepository] instance
 ///
 /// Copied from [appPreferencesRepository].
 @ProviderFor(appPreferencesRepository)

@@ -35,16 +35,11 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
              overrides: overrides ?? {},
              cardinalResolver: cardinalResolver,
              ordinalResolver: ordinalResolver,
-           ) {
-    $meta.setFlatMapFunction(_flatMapFunction);
-  }
+           );
 
   /// Metadata for the translations of <ja>.
   @override
   final TranslationMetadata<AppLocale, Translations> $meta;
-
-  /// Access flat map
-  dynamic operator [](String key) => $meta.getTranslation(key);
 
   late final Translations _root = this; // ignore: unused_field
 
@@ -69,27 +64,4 @@ class TranslationsSettingsJa {
   String get theme => 'テーマ';
   String get version => 'バージョン';
   String get licenses => 'ライセンス';
-}
-
-/// Flat map(s) containing all translations.
-/// Only for edge cases! For simple maps, use the map function of this library.
-extension on Translations {
-  dynamic _flatMapFunction(String path) {
-    switch (path) {
-      case 'hello':
-        return 'こんにちは';
-      case 'settings.title':
-        return '設定';
-      case 'settings.language':
-        return '言語';
-      case 'settings.theme':
-        return 'テーマ';
-      case 'settings.version':
-        return 'バージョン';
-      case 'settings.licenses':
-        return 'ライセンス';
-      default:
-        return null;
-    }
-  }
 }
