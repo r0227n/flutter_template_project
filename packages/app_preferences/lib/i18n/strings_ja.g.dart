@@ -4,7 +4,7 @@
 // coverage:ignore-file
 // ignore_for_file: type=lint, unused_import
 
-part of 'translations.g.dart';
+part of 'strings.g.dart';
 
 // Path: <root>
 typedef TranslationsJa = Translations; // ignore: unused_element
@@ -48,20 +48,41 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
   }) => Translations(meta: meta ?? this.$meta);
 
   // Translations
-  String get hello => 'こんにちは';
-  late final TranslationsSettingsJa settings = TranslationsSettingsJa._(_root);
+  late final TranslationsLocaleJa locale = TranslationsLocaleJa.internal(_root);
+  late final TranslationsThemeJa theme = TranslationsThemeJa.internal(_root);
+  late final TranslationsDialogJa dialog = TranslationsDialogJa.internal(_root);
 }
 
-// Path: settings
-class TranslationsSettingsJa {
-  TranslationsSettingsJa._(this._root);
+// Path: locale
+class TranslationsLocaleJa {
+  TranslationsLocaleJa.internal(this._root);
 
   final Translations _root; // ignore: unused_field
 
   // Translations
-  String get title => '設定';
-  String get language => '言語';
-  String get theme => 'テーマ';
-  String get version => 'バージョン';
-  String get licenses => 'ライセンス';
+  String get system => 'システム';
+  String get japanese => '日本語';
+  String get english => 'English';
+}
+
+// Path: theme
+class TranslationsThemeJa {
+  TranslationsThemeJa.internal(this._root);
+
+  final Translations _root; // ignore: unused_field
+
+  // Translations
+  String get system => 'システム';
+  String get light => 'ライト';
+  String get dark => 'ダーク';
+}
+
+// Path: dialog
+class TranslationsDialogJa {
+  TranslationsDialogJa.internal(this._root);
+
+  final Translations _root; // ignore: unused_field
+
+  // Translations
+  String get cancel => 'キャンセル';
 }

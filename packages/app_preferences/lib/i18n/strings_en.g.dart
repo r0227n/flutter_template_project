@@ -7,10 +7,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:slang/generated.dart';
-import 'translations.g.dart';
+import 'strings.g.dart';
 
 // Path: <root>
-class TranslationsEn implements Translations {
+class TranslationsEn extends Translations {
   /// You can call this constructor and build your own translation instance of this locale.
   /// Constructing via the enum [AppLocale.build] is preferred.
   TranslationsEn({
@@ -29,7 +29,11 @@ class TranslationsEn implements Translations {
              overrides: overrides ?? {},
              cardinalResolver: cardinalResolver,
              ordinalResolver: ordinalResolver,
-           );
+           ),
+       super(
+         cardinalResolver: cardinalResolver,
+         ordinalResolver: ordinalResolver,
+       );
 
   /// Metadata for the translations of <en>.
   @override
@@ -44,28 +48,56 @@ class TranslationsEn implements Translations {
 
   // Translations
   @override
-  String get hello => 'Hello';
+  late final _TranslationsLocaleEn locale = _TranslationsLocaleEn._(_root);
   @override
-  late final _TranslationsSettingsEn settings = _TranslationsSettingsEn._(
-    _root,
-  );
+  late final _TranslationsThemeEn theme = _TranslationsThemeEn._(_root);
+  @override
+  late final _TranslationsDialogEn dialog = _TranslationsDialogEn._(_root);
 }
 
-// Path: settings
-class _TranslationsSettingsEn implements TranslationsSettingsJa {
-  _TranslationsSettingsEn._(this._root);
+// Path: locale
+class _TranslationsLocaleEn extends TranslationsLocaleJa {
+  _TranslationsLocaleEn._(TranslationsEn root)
+    : this._root = root,
+      super.internal(root);
 
   final TranslationsEn _root; // ignore: unused_field
 
   // Translations
   @override
-  String get title => 'Settings';
+  String get system => 'System';
   @override
-  String get language => 'Language';
+  String get japanese => '日本語';
   @override
-  String get theme => 'Theme';
+  String get english => 'English';
+}
+
+// Path: theme
+class _TranslationsThemeEn extends TranslationsThemeJa {
+  _TranslationsThemeEn._(TranslationsEn root)
+    : this._root = root,
+      super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
   @override
-  String get version => 'Version';
+  String get system => 'System';
   @override
-  String get licenses => 'Licenses';
+  String get light => 'Light';
+  @override
+  String get dark => 'Dark';
+}
+
+// Path: dialog
+class _TranslationsDialogEn extends TranslationsDialogJa {
+  _TranslationsDialogEn._(TranslationsEn root)
+    : this._root = root,
+      super.internal(root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get cancel => 'Cancel';
 }

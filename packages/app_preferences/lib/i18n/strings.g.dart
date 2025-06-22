@@ -4,7 +4,7 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 12 (6 per locale)
+/// Strings: 14 (7 per locale)
 
 // coverage:ignore-file
 // ignore_for_file: type=lint, unused_import
@@ -15,8 +15,8 @@ import 'package:slang/generated.dart';
 import 'package:slang_flutter/slang_flutter.dart';
 export 'package:slang_flutter/slang_flutter.dart';
 
-import 'translations_en.g.dart' deferred as l_en;
-part 'translations_ja.g.dart';
+import 'strings_en.g.dart' deferred as l_en;
+part 'strings_ja.g.dart';
 
 /// Supported locales.
 ///

@@ -22,19 +22,16 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Setup Flutter with FVM
-        uses: ./.github/actions/setup-fvm
-
-      - name: Get dependencies
-        working-directory: ${{ env.WORKING_DIR }}
-        run: flutter pub get
-
-      - name: Run Flutter Analyze
-        working-directory: ${{ env.WORKING_DIR }}
-        run: flutter analyze
-
-      - name: Check Dart Format
-        working-directory: ${{ env.WORKING_DIR }}
-        run: dart format --set-exit-if-changed .
+        uses: ./.github/actions/setup-flutter
+      
+      - name: Run melos analyze
+        run: melos run analyze
+      
+      - name: Run melos test
+        run: melos run test
+      
+      - name: Check melos format
+        run: melos run ci:format
 
   check-file-changes:
     name: Check File Changes
@@ -93,15 +90,10 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Setup Flutter with FVM
-        uses: ./.github/actions/setup-fvm
-
-      - name: Get dependencies
-        working-directory: ${{ env.WORKING_DIR }}
-        run: flutter pub get
-
+        uses: ./.github/actions/setup-flutter
+      
       - name: Run slang analyze
-        working-directory: ${{ env.WORKING_DIR }}
-        run: dart run slang analyze
+        run: melos run analyze:slang
 
   lint-yaml-markdown:
     name: Lint YAML and Markdown

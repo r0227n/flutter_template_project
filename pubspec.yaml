@@ -4,5 +4,62 @@ publish_to: none
 environment:
   sdk: ^3.6.0
 
+dev_dependencies:
+  melos: ^7.0.0-dev.9
+
 workspace:
   - apps
+  - packages/app_preferences
+
+melos:
+  name: flutter_template_project
+
+  packages:
+    - apps/
+    - packages/**
+
+  command:
+    clean:
+      hooks:
+        pre: melos exec -- "flutter clean"
+
+  scripts:
+    # Generate code for all packages using build_runner
+    gen:
+      description: Run build_runner for all packages
+      run: |
+        melos exec --depends-on="build_runner" -- "dart run build_runner build --delete-conflicting-outputs"
+      
+    # Clean and get dependencies for all packages
+    get:
+      description: Get dependencies for all packages
+      run: melos exec -- "flutter pub get"
+      
+    # Analyze all packages
+    analyze:
+      description: Analyze all packages
+      run: melos exec -- "dart analyze"
+
+    # Check slang translations
+    analyze:slang:
+      description: Analyze slang translations
+      run: melos exec -- "dart run slang analyze"
+      
+    # Format all packages
+    format:
+      description: Format all packages
+      run: melos exec -- "dart format ."
+      
+    # Run tests for all packages
+    test:
+      description: Run tests for all packages
+      run: melos exec --fail-fast --concurrency=1 -- "flutter test" 
+
+    # Check if formatting is correct (for CI)
+    ci:format:
+      description: Check if all packages are formatted correctly
+      run: melos exec -- "dart format --output=none --set-exit-if-changed ."
+
+  environment:
+    sdk: ">=3.6.0 <4.0.0"
+    flutter: ">=3.0.0"
