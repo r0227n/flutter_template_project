@@ -6,4 +6,4 @@ environment:
 
 workspace:
   - apps
-  - packages/debug
+  - packages/app_preferences
