@@ -67,9 +67,6 @@ class TranslationsSettingsJa {
   String get title => '設定';
   String get language => '言語';
   String get theme => 'テーマ';
-  String get theme_system => 'システム';
-  String get theme_light => 'ライト';
-  String get theme_dark => 'ダーク';
 }
 
 /// Flat map(s) containing all translations.
@@ -85,12 +82,6 @@ extension on Translations {
         return '言語';
       case 'settings.theme':
         return 'テーマ';
-      case 'settings.theme_system':
-        return 'システム';
-      case 'settings.theme_light':
-        return 'ライト';
-      case 'settings.theme_dark':
-        return 'ダーク';
       default:
         return null;
     }

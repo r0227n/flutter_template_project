@@ -70,12 +70,6 @@ class _TranslationsSettingsEn implements TranslationsSettingsJa {
   String get language => 'Language';
   @override
   String get theme => 'Theme';
-  @override
-  String get theme_system => 'System';
-  @override
-  String get theme_light => 'Light';
-  @override
-  String get theme_dark => 'Dark';
 }
 
 /// Flat map(s) containing all translations.
@@ -91,12 +85,6 @@ extension on TranslationsEn {
         return 'Language';
       case 'settings.theme':
         return 'Theme';
-      case 'settings.theme_system':
-        return 'System';
-      case 'settings.theme_light':
-        return 'Light';
-      case 'settings.theme_dark':
-        return 'Dark';
       default:
         return null;
     }
