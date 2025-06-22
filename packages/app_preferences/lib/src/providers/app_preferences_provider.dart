@@ -1,33 +1,34 @@
+import 'package:app_preferences/src/repositories/app_preferences_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../models/app_locale_preference.dart';
-import '../models/app_theme_preference.dart';
-import '../repositories/app_preferences_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'app_preferences_provider.g.dart';
 
+@riverpod
+SharedPreferences sharedPreferences(Ref ref) => throw UnimplementedError();
+
 // Locale providers
 @riverpod
-class AppLocalePreference extends _$AppLocalePreference {
+class AppLocaleProvider extends _$AppLocaleProvider {
   @override
   Future<Locale> build() async {
     final repository = ref.read(appPreferencesRepositoryProvider);
-    final localePreference = await repository.getLocale();
-    
-    if (localePreference != null) {
-      return localePreference.toLocale();
+    final locale = await repository.getLocale();
+
+    if (locale != null) {
+      return locale;
     }
-    
+
     // Default to English if no preference is stored
     return const Locale('en');
   }
 
   Future<void> setLocale(Locale locale) async {
     final repository = ref.read(appPreferencesRepositoryProvider);
-    final localePreference = AppLocalePreference.fromLocale(locale);
-    
-    await repository.setLocale(localePreference);
+
+    await repository.setLocale(locale);
     ref.invalidateSelf();
   }
 
@@ -40,25 +41,24 @@ class AppLocalePreference extends _$AppLocalePreference {
 
 // Theme providers
 @riverpod
-class AppThemePreference extends _$AppThemePreference {
+class AppThemeProvider extends _$AppThemeProvider {
   @override
   Future<ThemeMode> build() async {
     final repository = ref.read(appPreferencesRepositoryProvider);
-    final themePreference = await repository.getTheme();
-    
-    if (themePreference != null) {
-      return themePreference.mode;
+    final themeMode = await repository.getTheme();
+
+    if (themeMode != null) {
+      return themeMode;
     }
-    
+
     // Default to system theme mode if no preference is stored
     return ThemeMode.system;
   }
 
   Future<void> setThemeMode(ThemeMode mode) async {
     final repository = ref.read(appPreferencesRepositoryProvider);
-    final themePreference = AppThemePreference(mode: mode);
-    
-    await repository.setTheme(themePreference);
+
+    await repository.setTheme(mode);
     ref.invalidateSelf();
   }
 
