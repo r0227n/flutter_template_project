@@ -95,4 +95,29 @@ class AppPreferencesRepository {
   Future<void> clearTheme() async {
     await _prefs.remove(_themeKey);
   }
+
+  /// Initialization methods
+  ///
+  /// Initializes locale settings from stored preferences
+  /// This should be called during app startup before running the app
+  Future<void> initializeLocale({
+    required Future<void> Function(String languageCode) onLocaleFound,
+    required Future<void> Function() onUseDeviceLocale,
+  }) async {
+    final localeJson = _prefs.getString(_localeKey);
+
+    if (localeJson != null) {
+      try {
+        final json = jsonDecode(localeJson) as Map<String, dynamic>;
+        final languageCode = json['languageCode'] as String;
+        await onLocaleFound(languageCode);
+      } on Exception {
+        // If there's an error reading stored locale, use device locale
+        await onUseDeviceLocale();
+      }
+    } else {
+      // No stored locale, use device locale
+      await onUseDeviceLocale();
+    }
+  }
 }

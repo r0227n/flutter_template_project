@@ -24,8 +24,9 @@ class AppLocaleProvider extends _$AppLocaleProvider {
       return locale;
     }
 
-    // Default to English if no preference is stored
-    return const Locale('en');
+    // Default to Japanese if no preference is stored
+    // (matching main.dart default)
+    return const Locale('ja');
   }
 
   /// Sets the locale preference
