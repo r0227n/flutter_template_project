@@ -1,14 +1,14 @@
 # File-to-Issue Processing Command - Claude 4 Best Practices
 
-**IMPORTANT**: This command implements AI Review-First design following Claude 4 best practices for automated Linear Issue creation.
+**IMPORTANT**: This command implements AI Review-First design following Claude 4 best practices for automated Linear Issue creation with GitHub Issue Template compliance.
 
 ## Overview
 
-Convert bullet-point files into Linear Issues using AI Review-First methodology. This command reads local files, transforms content into ISSUE_TEMPLATE format, provides translation workflow, and creates Linear Issues automatically.
+Convert bullet-point files into Linear Issues using AI Review-First methodology. This command reads local files, transforms content into structured GitHub ISSUE_TEMPLATE format, provides translation workflow, and creates Linear Issues automatically.
 
 ## Core Principles (Claude 4 Best Practices)
 
-**Reference**: `docs/CLAUDE_4_BEST_PRACTICES.md`
+**Reference**: `docs/CLAUDE_4_BEST_PRACTICES.md` and `.github/ISSUE_TEMPLATE/feature.yml`
 
 ### AI Review-First Methodology
 
@@ -20,7 +20,7 @@ Convert bullet-point files into Linear Issues using AI Review-First methodology.
 ### Clear Instructions
 
 - Eliminate ambiguity in file parsing and template conversion
-- Define specific deliverables: structured Japanese content → English translation → Linear Issue
+- Define specific deliverables: structured Japanese content → GitHub template format → English translation → Linear Issue
 - Provide structured review templates for content quality
 
 ### Structured Quality Assessment
@@ -46,10 +46,7 @@ Constraint: Summarize findings within 400 characters
 
 1. **Argument Validation**: Check if file path is provided
 2. **Early Termination**: If no arguments, display "⏺ Please provide a file path as an argument" in red, skip "Update Todos" phase, and terminate immediately
-3. Prompt for file path input (if arguments provided)
-4. Display file content preview
-5. Show parsed bullet points
-6. Confirm before processing
+3. **No further processing** when no arguments provided
 
 ### Direct Mode (With File Path)
 
@@ -62,6 +59,7 @@ Constraint: Summarize findings within 400 characters
 - **No confirmation prompts** - immediate execution
 - Validate file path and accessibility
 - Begin content transformation automatically
+- Generate GitHub Issue Template compliant structure
 
 ## AI Review-First Processing Flow
 
@@ -73,10 +71,10 @@ Constraint: Summarize findings within 400 characters
 
 1. **File Access Validation**: Verify file exists and is readable
 2. **Content Parsing**: Extract bullet points and structure
-3. **Template Conversion**: Transform to ISSUE_TEMPLATE format in Japanese
-4. **Initial Quality Check**: Validate content structure
+3. **Template Conversion**: Transform to GitHub ISSUE_TEMPLATE format in Japanese
+4. **Initial Quality Check**: Validate content structure against feature.yml
 
-**Quality Gate**: Well-formed Japanese ISSUE_TEMPLATE content
+**Quality Gate**: Well-formed Japanese GitHub ISSUE_TEMPLATE content
 
 ### Phase 2: Critical Review Cycles (3-4 Iterations)
 
@@ -99,33 +97,34 @@ Focus on the highest priority issues first.
 1. **Cycle 1**: Address ALL high priority security issues (file access, API credentials)
 2. **Cycle 2**: Fix major SOLID principle violations in command architecture
 3. **Cycle 3**: Optimize file processing performance within feasible scope
-4. **Final Validation**: Human review of content quality and translation accuracy
+4. **Final Validation**: Human review of content quality and GitHub template compliance
 
 **Quality Gates**:
 
 - Security: Safe file access, secure API usage
 - Architecture: Clean separation of concerns
 - Performance: Efficient file processing
+- **GitHub Template Compliance**: Proper feature.yml structure
 
 ### Phase 3: Translation and Issue Creation
 
 **Actions**:
 
-1. **Create Issue File**: Generate new file with `.issue.md` extension containing ISSUE_TEMPLATE
+1. **Create Issue File**: Generate new file with `.issue.md` extension containing GitHub ISSUE_TEMPLATE format
 2. **Human Approval**: Display Japanese content for "Approve" confirmation
 3. **Translation Processing**: Convert Japanese to English using Claude 4
 4. **Linear Issue Creation**: Create issue with English content
 5. **Japanese Comment Addition**: Add original Japanese content as comment
 6. **File Cleanup**: Remove created `.issue.md` file after successful processing
 
-**Quality Gate**: Successfully created Linear Issue with both languages
+**Quality Gate**: Successfully created Linear Issue with both languages and GitHub template compliance
 
-## Core Workflow Implementation
+## Enhanced Core Workflow Implementation
 
 ### 1. File Reading and Validation
 
 ```typescript
-// Security-first file access with path traversal prevention
+// Enhanced security-first file access with path traversal prevention
 import { resolve, relative, join, extname, isAbsolute } from 'path'
 import { stat, readFile } from 'fs/promises'
 
@@ -170,7 +169,7 @@ async function validateAndReadFile(filePath: string): Promise<string> {
 }
 ```
 
-### 2. Content Structure Parsing (Single Responsibility)
+### 2. Enhanced Content Structure Parsing
 
 ```typescript
 // Parse bullet points into structured format
@@ -243,13 +242,38 @@ class ContentParser {
 
     return cleaned.slice(0, 5000) // Enforce reasonable content length
   }
+
+  private insertIntoHierarchy(
+    point: BulletPoint,
+    stack: BulletPoint[],
+    result: BulletPoint[]
+  ): void {
+    // Pop items from stack that are at same or higher level
+    while (stack.length > 0 && stack[stack.length - 1].level >= point.level) {
+      stack.pop()
+    }
+
+    if (stack.length === 0) {
+      // Top level item
+      result.push(point)
+    } else {
+      // Child item
+      const parent = stack[stack.length - 1]
+      if (!parent.children) {
+        parent.children = []
+      }
+      parent.children.push(point)
+    }
+
+    stack.push(point)
+  }
 }
 ```
 
-### 3. ISSUE_TEMPLATE Conversion (Open/Closed Principle)
+### 3. GitHub ISSUE_TEMPLATE Conversion (Enhanced)
 
 ```typescript
-// Convert to Linear Issue template format
+// Convert to GitHub Issue template format
 interface IssueTemplate {
   title: string
   description: string
@@ -266,7 +290,15 @@ abstract class TemplateConverter {
   }
 
   protected detectType(content: string): 'feature' | 'bugfix' {
-    const bugKeywords = ['bug', 'fix', 'error', 'issue', 'バグ', '修正']
+    const bugKeywords = [
+      'bug',
+      'fix',
+      'error',
+      'issue',
+      'バグ',
+      '修正',
+      '不具合',
+    ]
     return bugKeywords.some(keyword => content.toLowerCase().includes(keyword))
       ? 'bugfix'
       : 'feature'
@@ -290,11 +322,11 @@ abstract class TemplateConverter {
   }
 }
 
-// Concrete implementation for feature templates
-class FeatureTemplateConverter extends TemplateConverter {
+// Enhanced GitHub template compliant converter
+class GitHubFeatureTemplateConverter extends TemplateConverter {
   async convert(bullets: BulletPoint[]): Promise<IssueTemplate> {
     const title = this.generateTitle(bullets)
-    const description = this.buildFeatureDescription(bullets)
+    const description = this.buildGitHubFeatureDescription(bullets)
 
     return {
       title,
@@ -304,19 +336,175 @@ class FeatureTemplateConverter extends TemplateConverter {
     }
   }
 
-  private buildFeatureDescription(bullets: BulletPoint[]): string {
-    return `## 概要\n\n${bullets[0]?.content}\n\n## 詳細\n\n${bullets
+  private buildGitHubFeatureDescription(bullets: BulletPoint[]): string {
+    const mainContent = bullets[0]?.content || ''
+    const details = bullets
       .slice(1)
-      .map(b => `- ${b.content}`)
-      .join('\n')}`
+      .map(b => b.content)
+      .join('\n- ')
+
+    return `## Feature Title
+${mainContent}
+
+## Context and Motivation
+
+**Why is this feature needed?**
+${this.inferBusinessContext(bullets)}
+
+**User value:**
+${this.inferUserValue(bullets)}
+
+**Context:**
+${this.inferTechnicalContext(bullets)}
+
+## Detailed Requirements
+
+### Functional Requirements:
+- [ ] ${details}
+
+### Non-Functional Requirements:
+- [ ] レスポンス時間: 2秒以内
+- [ ] クロスプラットフォーム対応（iOS/Android）
+- [ ] アクセシビリティ対応（WCAG 2.1 AA準拠）
+
+### Security Requirements:
+- [ ] 入力値検証の実装
+- [ ] 適切なエラーハンドリング
+- [ ] セキュリティテストの実施
+
+## Technical Constraints and Guidelines
+
+### Technology Stack:
+- [ ] プロジェクトのFlutter + Riverpodアーキテクチャに準拠
+- [ ] 既存のgo_routerナビゲーションを活用
+- [ ] slang i18nシステムとの統合
+- [ ] SOLID原則の遵守
+
+### Code Standards:
+- [ ] 包括的なユニットテストを含む
+- [ ] UIコンポーネントのウィジェットテスト
+- [ ] 既存のコード規約に従う
+- [ ] 適切なエラーハンドリングを含む
+
+## AI Review-First Quality Criteria
+
+### Review Categories (Priority Order):
+
+**High Priority - Security:**
+- [ ] セキュリティ脆弱性の排除（SQLインジェクション、XSS等）
+- [ ] 適切な入力値検証とサニタイゼーション
+- [ ] 認証・認可の適切な実装
+- [ ] 機密データの適切な取り扱い
+
+**Medium Priority - SOLID Principles:**
+- [ ] 単一責任原則の遵守
+- [ ] 開放閉鎖原則の適用
+- [ ] 依存性注入の適切な実装
+- [ ] インターフェース分離の実現
+
+**Low Priority - Performance:**
+- [ ] 効率的な状態管理
+- [ ] 最小限の再レンダリング・リビルド
+- [ ] 適切なメモリ管理
+- [ ] 最適化されたネットワークリクエスト
+
+### Review Constraints:
+- Each review summary: ≤ 400 characters
+- 3-4 review cycles maximum
+- Human final validation required
+
+## Acceptance Criteria
+
+### Core Functionality:
+- [ ] 主要機能が正常に動作する
+- [ ] ユーザーインターフェースが直感的である
+- [ ] エラーケースが適切に処理される
+
+### Quality Gates:
+- [ ] 全ての自動テストが成功（ユニット、ウィジェット、統合）
+- [ ] 静的解析（dart analyze）が成功
+- [ ] コードフォーマット（dart format）が適用済み
+- [ ] AIレビューサイクルが完了（3-4回の反復）
+- [ ] セキュリティレビューが承認
+- [ ] パフォーマンスベンチマークが達成
+- [ ] アクセシビリティ要件が満たされる
+
+### Documentation:
+- [ ] APIドキュメントが更新済み
+- [ ] ユーザーガイドが更新済み（該当する場合）
+- [ ] 複雑なロジックにコードコメントが追加済み
+
+## Testing Strategy
+
+### Test Types Required:
+- [ ] ビジネスロジックのユニットテスト
+- [ ] UIコンポーネントのウィジェットテスト
+- [ ] クリティカルフローの統合テスト
+- [ ] セキュリティテスト
+
+### Test Coverage Goals:
+- [ ] ビジネスロジック: 90%+
+- [ ] UIコンポーネント: 80%+
+- [ ] クリティカルパス: 100%
+
+### Manual Testing:
+- [ ] クロスプラットフォーム互換性（iOS/Android）
+- [ ] スクリーンリーダーでのアクセシビリティテスト
+- [ ] 負荷テスト
+
+## Claude Code Implementation Instructions
+
+### Implementation Approach:
+- [ ] AIレビューファースト設計を使用: 小さなドラフト → 厳しい批評 → 再生成 → リリース
+- [ ] セキュリティ → SOLID → パフォーマンスに焦点を当てた3-4回のレビューサイクル
+- [ ] 最初に最小限の動作実装を作成
+- [ ] 包括的なエラーハンドリングを含む
+- [ ] プロジェクトのRiverpod + go_routerパターンに従う
+
+### Automation Settings:
+- [ ] バックグラウンドタスクを有効化: \`ENABLE_BACKGROUND_TASKS=true\`
+- [ ] 分離開発にgit worktreeを使用
+- [ ] 完了時に日本語でPRを作成
+- [ ] 完了確認のためにGitHub Actionsを監視
+
+### Quality Assurance:
+- [ ] コミット前に \`melos run analyze\` を実行
+- [ ] コミット前に \`melos run test\` を実行
+- [ ] コミット前に \`melos run format\` を実行
+- [ ] 全てのCIチェックが成功することを確認
+
+## Additional Context
+
+**Expected Output Format:**
+機能の詳細な説明、実装ガイドライン、テスト戦略を含む構造化されたLinear Issue`
+  }
+
+  private inferBusinessContext(bullets: BulletPoint[]): string {
+    const content = bullets.map(b => b.content).join(' ')
+    // Simple heuristics for business context
+    if (content.includes('ユーザー') || content.includes('user')) {
+      return 'ユーザー体験の向上とビジネス価値の実現のため'
+    }
+    if (content.includes('レビュー') || content.includes('review')) {
+      return '開発効率の向上と品質の一貫性を実現するため'
+    }
+    return '開発効率の向上と品質の一貫性を実現するため'
+  }
+
+  private inferUserValue(bullets: BulletPoint[]): string {
+    return '- 機能の利便性向上\n- 作業効率の改善\n- 品質の向上'
+  }
+
+  private inferTechnicalContext(bullets: BulletPoint[]): string {
+    return '現在の実装では要件を満たすのが困難な状況にある'
   }
 }
 
-// Concrete implementation for bugfix templates
-class BugfixTemplateConverter extends TemplateConverter {
+// Enhanced bugfix template converter
+class GitHubBugfixTemplateConverter extends TemplateConverter {
   async convert(bullets: BulletPoint[]): Promise<IssueTemplate> {
     const title = this.generateTitle(bullets)
-    const description = this.buildBugfixDescription(bullets)
+    const description = this.buildGitHubBugfixDescription(bullets)
 
     return {
       title,
@@ -326,22 +514,73 @@ class BugfixTemplateConverter extends TemplateConverter {
     }
   }
 
-  private buildBugfixDescription(bullets: BulletPoint[]): string {
-    return `## 問題\n\n${bullets[0]?.content}\n\n## 詳細\n\n${bullets
+  private buildGitHubBugfixDescription(bullets: BulletPoint[]): string {
+    const mainContent = bullets[0]?.content || ''
+    const details = bullets
       .slice(1)
-      .map(b => `- ${b.content}`)
-      .join(
-        '\n'
-      )}\n\n## 期待される動作\n\n修正後の正常な動作を記述してください。`
+      .map(b => b.content)
+      .join('\n- ')
+
+    return `## Bug Title
+${mainContent}
+
+## Problem Description
+
+**What is the issue?**
+${mainContent}
+
+**Impact:**
+- 機能の利用に支障をきたす
+- ユーザー体験の悪化
+- システムの信頼性低下
+
+## Detailed Bug Report
+
+### Current Behavior:
+- [ ] ${details}
+
+### Expected Behavior:
+- [ ] 正常な動作が期待される
+- [ ] エラーが発生しない
+- [ ] 適切なフィードバックが提供される
+
+### Steps to Reproduce:
+- [ ] 具体的な再現手順を記載
+- [ ] 環境情報を含める
+- [ ] 発生条件を明確にする
+
+## Technical Analysis
+
+### Root Cause Analysis:
+- [ ] 問題の原因を特定
+- [ ] 影響範囲を調査
+- [ ] 関連するコンポーネントを確認
+
+### Fix Strategy:
+- [ ] 修正方針の決定
+- [ ] 副作用の検討
+- [ ] テスト戦略の策定
+
+## Quality Assurance
+
+### Testing Requirements:
+- [ ] バグ修正のユニットテスト
+- [ ] 回帰テストの実施
+- [ ] 統合テストの確認
+
+### Validation Criteria:
+- [ ] 問題が解決されている
+- [ ] 新たな問題が発生していない
+- [ ] パフォーマンスに影響がない`
   }
 }
 
-// Factory pattern for converter selection with better error handling
+// Enhanced factory pattern
 class TemplateConverterFactory {
   private static readonly converters = new Map<string, () => TemplateConverter>(
     [
-      ['feature', () => new FeatureTemplateConverter()],
-      ['bugfix', () => new BugfixTemplateConverter()],
+      ['feature', () => new GitHubFeatureTemplateConverter()],
+      ['bugfix', () => new GitHubBugfixTemplateConverter()],
     ]
   )
 
@@ -359,204 +598,10 @@ class TemplateConverterFactory {
 }
 ```
 
-### 4. Translation and Linear Integration
+### 4. Enhanced Main Command Orchestrator
 
 ```typescript
-// Secure API integration with credential management
-import { LinearClient } from '@linear/sdk'
-
-class SecureLinearIntegration implements LinearIntegration {
-  private client: LinearClient
-  private translationCache: Map<string, { value: string; expiry: number }> =
-    new Map()
-
-  constructor() {
-    const apiKey = process.env.LINEAR_API_KEY
-    if (!apiKey) {
-      throw new SecurityError('LINEAR_API_KEY environment variable required')
-    }
-    this.client = new LinearClient({ apiKey })
-  }
-
-  // Sanitize content before API calls
-  private sanitizeContent(content: string): string {
-    return content
-      .replace(/[<>]/g, '') // Remove potential XSS vectors
-      .slice(0, 50000) // Enforce API limits
-  }
-
-  async createLinearIssue(
-    template: IssueTemplate,
-    originalJapanese: string
-  ): Promise<string> {
-    // Translate content with input validation
-    const translatedContent = await this.translateContent(
-      this.sanitizeContent(template.description)
-    )
-
-    // Create Linear Issue with rate limiting
-    const issue = await this.client.createIssue({
-      title: this.sanitizeContent(template.title),
-      description: translatedContent,
-      teamId: process.env.LINEAR_TEAM_ID,
-      priority: this.mapPriority(template.priority),
-    })
-
-    // Add Japanese comment securely
-    await this.client.createComment({
-      issueId: issue.id,
-      body: `## Original Japanese Content\n\n${this.sanitizeContent(originalJapanese)}`,
-    })
-
-    return issue.url
-  }
-
-  private async translateContent(content: string): Promise<string> {
-    // Performance: Cache translations to avoid redundant API calls
-    const cacheKey = this.generateCacheKey(content)
-    const cached = await this.getCachedTranslation(cacheKey)
-    if (cached) return cached
-
-    // Implement secure translation with Claude 4 API
-    const translation = await this.callTranslationAPI(content)
-
-    // Cache result for future use
-    await this.setCachedTranslation(cacheKey, translation, 3600)
-    return translation
-  }
-
-  private async getCachedTranslation(key: string): Promise<string | null> {
-    const cached = this.translationCache.get(key)
-    if (cached && cached.expiry > Date.now()) {
-      return cached.value
-    }
-    // Clean up expired entries
-    if (cached) this.translationCache.delete(key)
-    return null
-  }
-
-  private async setCachedTranslation(
-    key: string,
-    value: string,
-    ttl: number
-  ): Promise<void> {
-    this.translationCache.set(key, {
-      value,
-      expiry: Date.now() + ttl * 1000,
-    })
-
-    // Prevent memory leaks - clean up cache periodically
-    if (this.translationCache.size > 1000) {
-      this.cleanupExpiredCache()
-    }
-  }
-
-  private cleanupExpiredCache(): void {
-    const now = Date.now()
-    for (const [key, cached] of this.translationCache.entries()) {
-      if (cached.expiry <= now) {
-        this.translationCache.delete(key)
-      }
-    }
-  }
-
-  private async callTranslationAPI(content: string): Promise<string> {
-    const maxRetries = 3
-    let attempt = 0
-
-    while (attempt < maxRetries) {
-      try {
-        // Add exponential backoff for rate limiting
-        if (attempt > 0) {
-          await this.delay(Math.pow(2, attempt) * 1000)
-        }
-
-        // Use environment variable for API endpoint security
-        const apiEndpoint = process.env.CLAUDE_API_ENDPOINT
-        if (!apiEndpoint) {
-          throw new SecurityError(
-            'CLAUDE_API_ENDPOINT environment variable required'
-          )
-        }
-
-        // Secure API call with input validation
-        const response = await fetch(apiEndpoint, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${process.env.CLAUDE_API_KEY}`,
-            'User-Agent': 'file-to-issue/1.0.0',
-          },
-          body: JSON.stringify({
-            text: content.slice(0, 100000), // Enforce API limits
-            from: 'ja',
-            to: 'en',
-          }),
-        })
-
-        if (!response.ok) {
-          throw new Error(`Translation API error: ${response.status}`)
-        }
-
-        const result = await response.json()
-        return this.validateTranslation(result.text)
-      } catch (error) {
-        attempt++
-        if (attempt >= maxRetries) {
-          // Don't expose sensitive error details
-          throw new Error('Translation service temporarily unavailable')
-        }
-      }
-    }
-
-    throw new Error('Translation failed after maximum retries')
-  }
-
-  private generateCacheKey(content: string): string {
-    return crypto.createHash('sha256').update(content).digest('hex')
-  }
-
-  private async delay(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms))
-  }
-
-  private validateTranslation(text: string): string {
-    if (!text || text.trim().length === 0) {
-      throw new Error('Translation returned empty result')
-    }
-
-    // Basic validation - ensure translation looks reasonable
-    if (text.length < 10 || text === text.toLowerCase()) {
-      throw new Error('Translation quality validation failed')
-    }
-
-    return text.trim()
-  }
-
-  private mapPriority(priority: 'low' | 'medium' | 'high' | 'urgent'): number {
-    const priorityMap = { low: 1, medium: 2, high: 3, urgent: 4 }
-    return priorityMap[priority] || 1
-  }
-}
-
-// Interfaces for Dependency Inversion Principle
-interface FileValidator {
-  validateAndRead(filePath: string): Promise<string>
-  cleanup(filePath: string): Promise<void>
-}
-
-interface ContentParser {
-  parseBulletPoints(content: string): Promise<BulletPoint[]>
-}
-
-interface LinearIntegration {
-  createLinearIssue(
-    template: IssueTemplate,
-    originalJapanese: string
-  ): Promise<string>
-}
-
-// Main command orchestrator (Dependency Inversion)
+// Enhanced main command orchestrator with proper error handling
 class FileToIssueCommand {
   constructor(
     private fileValidator: FileValidator,
@@ -566,7 +611,7 @@ class FileToIssueCommand {
   ) {}
 
   async execute(filePath?: string): Promise<string> {
-    // Argument validation - exit early if no file path provided
+    // Enhanced argument validation - exit early if no file path provided
     // Skip "Update Todos" phase and terminate immediately when path is empty
     if (!filePath || filePath.trim() === '') {
       console.log('\x1b[31m⏺ Please provide a file path as an argument\x1b[0m')
@@ -576,12 +621,15 @@ class FileToIssueCommand {
 
     try {
       // Phase 1: Secure file processing
+      console.log(`📖 Reading file: ${filePath}`)
       const content = await this.fileValidator.validateAndRead(filePath)
 
       // Phase 2: Content parsing
       const bullets = await this.contentParser.parseBulletPoints(content)
+      console.log(`📋 Found ${bullets.length} bullet points`)
 
       // Phase 3: Template conversion
+      console.log('🏗️ Converting to GitHub ISSUE_TEMPLATE format...')
       const templateType = this.detectTemplateType(bullets)
       const converter = this.templateFactory.create(templateType)
       const template = await converter.convert(bullets)
@@ -598,14 +646,18 @@ class FileToIssueCommand {
       }
 
       // Phase 6: Linear integration
+      console.log('🌐 Translating to English...')
+      console.log('📤 Creating Linear Issue...')
       const issueUrl = await this.linearIntegration.createLinearIssue(
         template,
         content
       )
 
       // Phase 7: Cleanup
+      console.log('🗑️ Cleaning up issue file...')
       await this.fileValidator.cleanup(issueFilePath)
 
+      console.log(`✅ Issue created: ${issueUrl}`)
       return issueUrl
     } catch (error) {
       this.handleError(error)
@@ -615,7 +667,16 @@ class FileToIssueCommand {
 
   private async requestApproval(template: IssueTemplate): Promise<boolean> {
     console.log('📝 Generated Japanese Content:')
-    console.log(`## ${template.title}\n\n${template.description}`)
+    console.log(`## ${template.title}\n`)
+
+    // Show first few lines of description for preview
+    const lines = template.description.split('\n')
+    const preview = lines.slice(0, 10).join('\n')
+    console.log(preview)
+    if (lines.length > 10) {
+      console.log('...')
+    }
+
     console.log('\n✅ Content looks good? Type "Approve" to continue:')
 
     // Wait for user input
@@ -678,17 +739,8 @@ class FileToIssueCommand {
       `${parsedPath.name}.issue.md`
     )
 
-    // Create issue file content in ISSUE_TEMPLATE format
-    const issueContent = `# ${template.title}
-
-${template.description}
-
----
-Type: ${template.type}
-Priority: ${template.priority}
-Generated from: ${path.basename(originalPath)}
-Date: ${new Date().toISOString()}
-`
+    // Create issue file content in GitHub ISSUE_TEMPLATE format
+    const issueContent = template.description
 
     // Write issue file
     await writeFile(issueFilePath, issueContent, { encoding: 'utf8' })
@@ -699,7 +751,7 @@ Date: ${new Date().toISOString()}
 }
 ```
 
-## Security Requirements
+## Enhanced Security Requirements
 
 ### File Access Controls
 
@@ -707,6 +759,7 @@ Date: ${new Date().toISOString()}
 - **Extension Whitelist**: `.md`, `.txt`, `.markdown` files only
 - **Size Limits**: Maximum 10MB file size
 - **Permission Check**: Verify read permissions before access
+- **Input Sanitization**: Prevent null bytes and control characters
 
 ### API Security
 
@@ -714,6 +767,7 @@ Date: ${new Date().toISOString()}
 - **Rate Limiting**: Respect Linear API rate limits
 - **Error Handling**: No sensitive data in error messages
 - **Input Sanitization**: Clean content before API calls
+- **Content Validation**: Validate translation results
 
 ## Error Handling and Recovery
 
@@ -725,6 +779,14 @@ Date: ${new Date().toISOString()}
 💡 Use relative or absolute path to accessible file
 ```
 
+### No Arguments Error
+
+```bash
+/file-to-issue
+⏺ Please provide a file path as an argument
+📝 Skipping Update Todos phase due to missing file path
+```
+
 ### Translation Failures
 
 ```bash
@@ -733,19 +795,11 @@ Date: ${new Date().toISOString()}
 📋 Will save progress and resume automatically
 ```
 
-### Linear API Errors
-
-```bash
-❌ Linear Issue creation failed: Invalid team ID
-📋 Content saved locally for manual retry
-💡 Check Linear API configuration
-```
-
 ## Completion Criteria
 
 ### 1. AI Review-First Standards
 
-- ✅ **3-4 review cycles completed successfully** (Completed: Security → SOLID → Performance)
+- ✅ **3-4 review cycles completed successfully**
 - ✅ **Security**: Path traversal protection, input sanitization, credential management
 - ✅ **SOLID Principles**: Clean separation of concerns, extensible factory pattern
 - ✅ **Performance**: Chunked processing for large files, translation caching, early termination
@@ -754,17 +808,17 @@ Date: ${new Date().toISOString()}
 
 - ✅ **File Reading**: Secure file access with proper validation
 - ✅ **Content Parsing**: Accurate bullet point structure extraction
-- ✅ **Template Conversion**: Proper ISSUE_TEMPLATE format generation
+- ✅ **Template Conversion**: GitHub ISSUE_TEMPLATE format generation
 - ✅ **Translation**: High-quality Japanese to English conversion
 - ✅ **Linear Integration**: Successful Issue creation with bilingual content
-- ✅ **Issue File Creation**: Generate `.issue.md` file with ISSUE_TEMPLATE format
+- ✅ **Issue File Creation**: Generate `.issue.md` file with proper format
 - ✅ **File Cleanup**: Safe removal of created `.issue.md` files
 
 ### 3. Quality Standards
 
 - ✅ **Error Handling**: Comprehensive error recovery mechanisms
 - ✅ **User Experience**: Clear progress indication and feedback
-- ✅ **Documentation**: Complete usage and troubleshooting guide
+- ✅ **GitHub Template Compliance**: Proper feature.yml structure adherence
 
 ## Usage Examples
 
@@ -775,34 +829,23 @@ Date: ${new Date().toISOString()}
 
 📖 Reading file: tasks.md
 📋 Found 5 bullet points
-🏗️ Converting to ISSUE_TEMPLATE format...
+🏗️ Converting to GitHub ISSUE_TEMPLATE format...
 📝 Created issue file: tasks.issue.md
 
 📝 Generated Japanese Content:
 ## タイトル
 新機能：ユーザー認証システム
 
-## 概要
+## Context and Motivation
 ...
 
 ✅ Content looks good? Type 'Approve' to continue: Approve
 
 🌐 Translating to English...
 📤 Creating Linear Issue...
-💬 Adding Japanese comment...
 🗑️ Cleaning up issue file...
 
 ✅ Issue created: https://linear.app/team/issue/ABC-123
-```
-
-### Error Recovery Example
-
-```bash
-/file-to-issue large-file.md
-
-❌ Error: File size exceeds 10MB limit
-💡 Consider splitting into smaller files
-📋 Current file: 15.2MB
 ```
 
 ### No Arguments Example
@@ -821,7 +864,7 @@ Date: ${new Date().toISOString()}
 - **Structured bullet-point files** with clear hierarchy
 - **Japanese content** requiring English translation
 - **Feature requests** and bug reports in bullet format
-- **Planning documents** needing Issue conversion
+- **Planning documents** needing GitHub Issue Template format
 
 ### Limitations
 
@@ -836,6 +879,7 @@ Date: ${new Date().toISOString()}
 2. **Meaningful content** with sufficient detail for Issues
 3. **Proper file permissions** for read access
 4. **Valid Linear API configuration** for Issue creation
+5. **GitHub Issue Template compliance** for structured output
 
 ## Configuration Requirements
 
@@ -856,10 +900,15 @@ project-root/
 ├── .claude/
 │   └── commands/
 │       └── file-to-issue.md
+├── .github/
+│   └── ISSUE_TEMPLATE/
+│       └── feature.yml
+├── docs/
+│   └── CLAUDE_4_BEST_PRACTICES.md
 ├── .env (for API keys)
 └── allowed-files/ (for file access validation)
 ```
 
 ---
 
-**Note**: This command prioritizes security in file access and API usage, implements clean architecture following SOLID principles, and provides efficient file processing with comprehensive error handling.
+**Note**: This enhanced command prioritizes GitHub Issue Template compliance, implements Claude 4 best practices throughout, and provides comprehensive error handling with secure file processing.
