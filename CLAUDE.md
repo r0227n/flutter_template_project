@@ -20,7 +20,7 @@ This is a Flutter mobile application development project using Claude Code with 
 ### Technology Stack
 
 - **Framework**: Flutter (Workspace/Monorepo structure)
-- **Version Management**: fvm (Flutter Version Management)
+- **Version Management**: mise (polyglot tool version manager)
 - **Task Management**: Linear (MCP integrated)
 - **Parallel Development**: git worktree
 - **Automation**: Claude Code with background tasks
@@ -59,7 +59,8 @@ flutter_template_project/
 
 ### Requirements
 
-- Flutter SDK (managed by fvm)
+- Flutter SDK (managed by mise)
+- bun (managed by mise)
 - Git worktree support
 - Linear MCP configuration completed
 - Claude Code ENABLE_BACKGROUND_TASKS enabled
@@ -92,18 +93,21 @@ melos run test
 melos run ci:format
 ```
 
-### Direct Flutter Commands (using fvm)
+### Direct Flutter Commands (using mise)
 
 ```bash
+# Activate mise environment first
+eval "$(mise activate bash)"
+
 # Run application
-cd app && fvm flutter run
+cd app && flutter run
 
 # Run tests (single file)
-cd app && fvm flutter test test/widget_test.dart
+cd app && flutter test test/widget_test.dart
 
 # Build
-cd app && fvm flutter build apk
-cd app && fvm flutter build ios --no-codesign
+cd app && flutter build apk
+cd app && flutter build ios --no-codesign
 ```
 
 ### Node.js Related Commands
@@ -116,11 +120,34 @@ npm run lint
 npm run format
 ```
 
+### Development Workflow Commands
+
+```bash
+# Workflow 1: Code Quality Check
+melos run analyze
+melos run test
+melos run format:prettier
+melos run format
+
+# Workflow 2: Development Environment Setup
+mise install
+eval "$(mise activate bash)"
+melos run get
+melos run gen
+
+# Workflow 3: Release Preparation
+melos run analyze
+melos run test
+melos run ci:format
+melos run format:prettier
+melos run format
+```
+
 ### Environment Variables
 
 ```bash
 export ENABLE_BACKGROUND_TASKS=true
-export FLUTTER_VERSION_MANAGEMENT=fvm
+export FLUTTER_VERSION_MANAGEMENT=mise
 export TASK_MANAGEMENT_SYSTEM=linear
 export PARALLEL_DEVELOPMENT=git_worktree
 export PR_LANGUAGE=japanese

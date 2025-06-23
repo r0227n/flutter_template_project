@@ -9,13 +9,13 @@ part of 'routes.dart';
 List<RouteBase> get $appRoutes => [$homeRoute];
 
 RouteBase get $homeRoute => GoRouteData.$route(
-  path: '/',
-
-  factory: _$HomeRoute._fromState,
-  routes: [
-    GoRouteData.$route(path: 'settings', factory: _$SettingsRoute._fromState),
-  ],
-);
+      path: '/',
+      factory: _$HomeRoute._fromState,
+      routes: [
+        GoRouteData.$route(
+            path: 'settings', factory: _$SettingsRoute._fromState),
+      ],
+    );
 
 mixin _$HomeRoute on GoRouteData {
   static HomeRoute _fromState(GoRouterState state) => const HomeRoute();

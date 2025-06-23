@@ -28,7 +28,6 @@ class SettingsPage extends ConsumerWidget {
             onTap: () => _showLanguageDialog(context, t),
           ),
           const Divider(),
-
           ListTile(
             title: Text(t.settings.theme),
             subtitle: const app_prefs.ThemeText(),
@@ -36,7 +35,6 @@ class SettingsPage extends ConsumerWidget {
             onTap: () => _showThemeDialog(context, t),
           ),
           const Divider(),
-
           ListTile(
             title: Text(t.settings.version),
             subtitle: const app_prefs.VersionText(),
@@ -44,7 +42,6 @@ class SettingsPage extends ConsumerWidget {
             // Version is display-only
           ),
           const Divider(),
-
           ListTile(
             title: Text(t.settings.licenses),
             trailing: const Icon(Icons.chevron_right),
@@ -66,7 +63,6 @@ class SettingsPage extends ConsumerWidget {
   ) async {
     await app_prefs.PreferencesDialogHelpers.showLocaleSelectionDialog(
       context: context,
-
       title: t.settings.language,
       onLocaleChanged: (languageCode) async {
         // Update slang locale settings for immediate UI update
@@ -85,7 +81,6 @@ class SettingsPage extends ConsumerWidget {
   ) async {
     await app_prefs.PreferencesDialogHelpers.showThemeSelectionDialog(
       context: context,
-
       title: t.settings.theme,
     );
   }

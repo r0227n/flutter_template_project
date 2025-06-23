@@ -119,8 +119,7 @@ class PreferencesDialogHelpers {
   }) async {
     final t = app_prefs.Translations.of(context);
 
-    final locales =
-        availableLocales ??
+    final locales = availableLocales ??
         [
           LocaleOption(languageCode: 'ja', displayName: t.locale.japanese),
           LocaleOption(languageCode: 'en', displayName: t.locale.english),

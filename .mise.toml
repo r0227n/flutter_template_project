@@ -1,0 +1,22 @@
+[tools]
+flutter = "3.32.2"
+bun = "1.2.17"
+
+[env]
+FLUTTER_ROOT = "{{.mise_tools_flutter}}"
+PATH = ["{{.mise_tools_flutter}}/bin", "{{.mise_tools_bun}}/bin", "{{env.PATH}}"]
+
+[tasks]
+# Flutter tasks
+install-deps = "flutter pub get"
+gen = "dart run build_runner build"
+analyze = "flutter analyze"
+test = "flutter test"
+format = "dart format ."
+
+# Melos tasks
+melos-get = "melos bootstrap"
+melos-gen = "melos run gen"
+melos-analyze = "melos run analyze"
+melos-test = "melos run test"
+melos-format = "melos run format"

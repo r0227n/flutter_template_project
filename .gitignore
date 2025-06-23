@@ -20,6 +20,9 @@ migrate_working_dir/
 worktrees/*
 !worktrees/.gitkeep
 
+# Claude Code workspaces
+.claude-workspaces/
+
 # Flutter/Dart/Pub related
 **/doc/api/
 **/ios/Flutter/.last_build_id
@@ -46,8 +49,6 @@ app.*.map.json
 # Node.js
 node_modules/
 
-# FVM Version Cache
-.fvm/
-
-# FVM
-.fvm/flutter_sdk
+# mise
+.mise/cache/
+.mise/plugins/

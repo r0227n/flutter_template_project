@@ -1,0 +1,70 @@
+name: 'Setup Development Environment with mise'
+description: 'Sets up Flutter, bun, and other tools using mise for consistent development environment'
+
+inputs:
+  flutter-version-override:
+    description: 'Optional Flutter version to override the one in .tool-versions'
+    required: false
+    default: ''
+  bun-version-override:
+    description: 'Optional bun version to override the one in .tool-versions'
+    required: false
+    default: ''
+
+runs:
+  using: 'composite'
+  steps:
+    # Install mise
+    - name: Install mise
+      shell: bash
+      run: |
+        curl https://mise.run | sh
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+    # Override versions if provided
+    - name: Override tool versions
+      if: inputs.flutter-version-override != '' || inputs.bun-version-override != ''
+      shell: bash
+      run: |
+        if [ -n "${{ inputs.flutter-version-override }}" ]; then
+          sed -i 's/flutter .*/flutter ${{ inputs.flutter-version-override }}/' .tool-versions
+        fi
+        if [ -n "${{ inputs.bun-version-override }}" ]; then
+          sed -i 's/bun .*/bun ${{ inputs.bun-version-override }}/' .tool-versions
+        fi
+
+    # Install tools using mise
+    - name: Install tools with mise
+      shell: bash
+      run: |
+        mise install
+
+    # Activate mise environment
+    - name: Activate mise environment
+      shell: bash
+      run: |
+        eval "$(mise activate bash)"
+        echo "PATH=$PATH" >> $GITHUB_ENV
+        echo "FLUTTER_ROOT=$(mise where flutter)" >> $GITHUB_ENV
+
+    # Verify installation
+    - name: Verify tool installation
+      shell: bash
+      run: |
+        eval "$(mise activate bash)"
+        flutter --version
+        bun --version
+
+    # Parse melos version from pubspec.yaml
+    - name: Get melos version
+      id: melos-version
+      shell: bash
+      run: |
+        MELOS_VERSION=$(grep "melos:" pubspec.yaml | head -1 | awk '{print $2}' | sed 's/\^//')
+        echo "version=$MELOS_VERSION" >> $GITHUB_OUTPUT
+
+    # Setup melos
+    - name: Setup melos
+      uses: bluefireteam/melos-action@c7dcb921b23cc520cace360b95d02b37bf09cdaa # v3.0.0
+      with:
+        melos-version: ${{ steps.melos-version.outputs.version }}
