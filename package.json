@@ -8,7 +8,7 @@
         "commitlint": "bunx commitlint --edit",
         "lint": "bunx prettier --check '**/*.{yml,yaml,md}'",
         "format": "bunx prettier --write '**/*.{yml,yaml,md}'",
-        "install": "bun install",
+        "postinstall": "echo 'Dependencies installed with bun'",
         "clean": "bun run clean:node_modules",
         "clean:node_modules": "rm -rf node_modules && bun install",
         "dev:lint": "bun run lint",
