@@ -40,7 +40,7 @@
 graph LR
     A[1. claude] --> B[2. /linear PKG-123]
     B --> C[3. ☕ 待つだけ]
-    
+
     style A fill:#e3f2fd
     style B fill:#fff3e0
     style C fill:#e8f5e8
@@ -111,10 +111,12 @@ lib/
 ## よくある質問
 
 **Q: PKG-XXXと通常のIssue IDの違いは？**
+
 - PKG-XXX: packagesディレクトリ専用のパッケージ開発
 - 通常のID: メインアプリの機能開発
 
 **Q: パッケージ間の依存関係は？**
+
 - 各パッケージは独立して動作するよう設計
 - 共通機能は別の専用パッケージに切り出し
 - 循環依存は絶対に避ける
@@ -166,4 +168,3 @@ git push origin feature/PKG-XXX
 - **メインプロジェクトガイド**: [../HUMAN.md](../HUMAN.md)
 - **パッケージ技術仕様**: [CLAUDE.md](CLAUDE.md)
 - **Claude 4ベストプラクティス**: [../docs/CLAUDE_4_BEST_PRACTICES.md](../docs/CLAUDE_4_BEST_PRACTICES.md)
-
