@@ -44,10 +44,12 @@ Constraint: Summarize findings within 400 characters
 
 **Behavior**:
 
-1. Prompt for file path input
-2. Display file content preview
-3. Show parsed bullet points
-4. Confirm before processing
+1. **Argument Validation**: Check if file path is provided
+2. **Early Termination**: If no arguments, display "⏺ Please provide a file path as an argument" in red, skip "Update Todos" phase, and terminate immediately
+3. Prompt for file path input (if arguments provided)
+4. Display file content preview
+5. Show parsed bullet points
+6. Confirm before processing
 
 ### Direct Mode (With File Path)
 
@@ -124,7 +126,7 @@ Focus on the highest priority issues first.
 
 ```typescript
 // Security-first file access with path traversal prevention
-import { resolve, relative, join } from 'path'
+import { resolve, relative, join, extname, isAbsolute } from 'path'
 import { stat, readFile } from 'fs/promises'
 
 const ALLOWED_EXTENSIONS = ['.md', '.txt', '.markdown']
@@ -132,17 +134,27 @@ const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
 const WORK_DIRECTORY = process.env.WORK_DIRECTORY || '.claude-workspaces'
 
 async function validateAndReadFile(filePath: string): Promise<string> {
+  // Input sanitization - prevent null bytes and control characters
+  if (!filePath || /[\x00-\x1f\x7f-\x9f]/.test(filePath)) {
+    throw new SecurityError('Access denied: Invalid file path characters')
+  }
+
   // Prevent directory traversal attacks
   const resolvedPath = resolve(filePath)
   const workDir = resolve(WORK_DIRECTORY)
   const relativePath = relative(workDir, resolvedPath)
 
-  if (relativePath.startsWith('..') || path.isAbsolute(relativePath)) {
-    throw new SecurityError('File access outside allowed directory')
+  // Enhanced path validation - check for traversal and absolute paths
+  if (
+    relativePath.startsWith('..') ||
+    isAbsolute(relativePath) ||
+    relativePath.includes('..')
+  ) {
+    throw new SecurityError('Access denied: Path traversal attempt detected')
   }
 
-  // Validate file extension
-  const ext = path.extname(filePath).toLowerCase()
+  // Validate file extension using imported function
+  const ext = extname(filePath).toLowerCase()
   if (!ALLOWED_EXTENSIONS.includes(ext)) {
     throw new ValidationError(`Unsupported file extension: ${ext}`)
   }
@@ -173,8 +185,28 @@ class ContentParser {
   private readonly BULLET_PATTERNS = [/^[\s]*[-*+]\s/, /^[\s]*\d+\.\s/]
 
   async parseBulletPoints(content: string): Promise<BulletPoint[]> {
+    // Performance optimization: Process lines in chunks for large files
     const lines = content.split('\n').filter(line => line.trim())
+
+    if (lines.length > 1000) {
+      // Process large files in chunks to prevent memory issues
+      return this.buildHierarchyChunked(lines)
+    }
+
     return this.buildHierarchy(lines)
+  }
+
+  private buildHierarchyChunked(lines: string[]): BulletPoint[] {
+    const CHUNK_SIZE = 100
+    const result: BulletPoint[] = []
+
+    for (let i = 0; i < lines.length; i += CHUNK_SIZE) {
+      const chunk = lines.slice(i, i + CHUNK_SIZE)
+      const chunkResult = this.buildHierarchy(chunk)
+      result.push(...chunkResult)
+    }
+
+    return result
   }
 
   private buildHierarchy(lines: string[]): BulletPoint[] {
@@ -199,7 +231,17 @@ class ContentParser {
   }
 
   private extractContent(line: string): string {
-    return line.replace(this.BULLET_PATTERNS[0], '').trim()
+    // Input validation - prevent malicious patterns
+    if (line.length > 10000) return '' // Prevent DoS via massive lines
+
+    // Sanitize content - remove potential script injection patterns
+    const cleaned = line
+      .replace(this.BULLET_PATTERNS[0], '')
+      .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '') // Remove script tags
+      .replace(/javascript:/gi, '') // Remove javascript: URLs
+      .trim()
+
+    return cleaned.slice(0, 5000) // Enforce reasonable content length
   }
 }
 ```
@@ -229,6 +271,23 @@ abstract class TemplateConverter {
       ? 'bugfix'
       : 'feature'
   }
+
+  protected inferPriority(
+    bullets: BulletPoint[]
+  ): 'low' | 'medium' | 'high' | 'urgent' {
+    const urgentKeywords = ['urgent', '緊急', 'critical', '重大']
+    const highKeywords = ['important', '重要', 'blocking', 'ブロッキング']
+    const content = bullets
+      .map(b => b.content)
+      .join(' ')
+      .toLowerCase()
+
+    if (urgentKeywords.some(keyword => content.includes(keyword)))
+      return 'urgent'
+    if (highKeywords.some(keyword => content.includes(keyword))) return 'high'
+    if (bullets.length > 5) return 'medium' // Complex issues get medium priority
+    return 'low'
+  }
 }
 
 // Concrete implementation for feature templates
@@ -253,17 +312,49 @@ class FeatureTemplateConverter extends TemplateConverter {
   }
 }
 
-// Factory pattern for converter selection
-class TemplateConverterFactory {
-  static create(type: 'feature' | 'bugfix'): TemplateConverter {
-    switch (type) {
-      case 'feature':
-        return new FeatureTemplateConverter()
-      case 'bugfix':
-        return new BugfixTemplateConverter()
-      default:
-        throw new Error(`Unsupported template type: ${type}`)
+// Concrete implementation for bugfix templates
+class BugfixTemplateConverter extends TemplateConverter {
+  async convert(bullets: BulletPoint[]): Promise<IssueTemplate> {
+    const title = this.generateTitle(bullets)
+    const description = this.buildBugfixDescription(bullets)
+
+    return {
+      title,
+      description,
+      type: 'bugfix',
+      priority: this.inferPriority(bullets),
     }
+  }
+
+  private buildBugfixDescription(bullets: BulletPoint[]): string {
+    return `## 問題\n\n${bullets[0]?.content}\n\n## 詳細\n\n${bullets
+      .slice(1)
+      .map(b => `- ${b.content}`)
+      .join(
+        '\n'
+      )}\n\n## 期待される動作\n\n修正後の正常な動作を記述してください。`
+  }
+}
+
+// Factory pattern for converter selection with better error handling
+class TemplateConverterFactory {
+  private static readonly converters = new Map<string, () => TemplateConverter>(
+    [
+      ['feature', () => new FeatureTemplateConverter()],
+      ['bugfix', () => new BugfixTemplateConverter()],
+    ]
+  )
+
+  static create(type: 'feature' | 'bugfix'): TemplateConverter {
+    const converterFactory = this.converters.get(type)
+    if (!converterFactory) {
+      throw new ValidationError(`Unsupported template type: ${type}`)
+    }
+    return converterFactory()
+  }
+
+  static getSupportedTypes(): string[] {
+    return Array.from(this.converters.keys())
   }
 }
 ```
@@ -274,8 +365,10 @@ class TemplateConverterFactory {
 // Secure API integration with credential management
 import { LinearClient } from '@linear/sdk'
 
-class SecureLinearIntegration {
+class SecureLinearIntegration implements LinearIntegration {
   private client: LinearClient
+  private translationCache: Map<string, { value: string; expiry: number }> =
+    new Map()
 
   constructor() {
     const apiKey = process.env.LINEAR_API_KEY
@@ -321,15 +414,50 @@ class SecureLinearIntegration {
   private async translateContent(content: string): Promise<string> {
     // Performance: Cache translations to avoid redundant API calls
     const cacheKey = this.generateCacheKey(content)
-    const cached = await this.translationCache.get(cacheKey)
+    const cached = await this.getCachedTranslation(cacheKey)
     if (cached) return cached
 
     // Implement secure translation with Claude 4 API
     const translation = await this.callTranslationAPI(content)
 
     // Cache result for future use
-    await this.translationCache.set(cacheKey, translation, { ttl: 3600 })
+    await this.setCachedTranslation(cacheKey, translation, 3600)
     return translation
+  }
+
+  private async getCachedTranslation(key: string): Promise<string | null> {
+    const cached = this.translationCache.get(key)
+    if (cached && cached.expiry > Date.now()) {
+      return cached.value
+    }
+    // Clean up expired entries
+    if (cached) this.translationCache.delete(key)
+    return null
+  }
+
+  private async setCachedTranslation(
+    key: string,
+    value: string,
+    ttl: number
+  ): Promise<void> {
+    this.translationCache.set(key, {
+      value,
+      expiry: Date.now() + ttl * 1000,
+    })
+
+    // Prevent memory leaks - clean up cache periodically
+    if (this.translationCache.size > 1000) {
+      this.cleanupExpiredCache()
+    }
+  }
+
+  private cleanupExpiredCache(): void {
+    const now = Date.now()
+    for (const [key, cached] of this.translationCache.entries()) {
+      if (cached.expiry <= now) {
+        this.translationCache.delete(key)
+      }
+    }
   }
 
   private async callTranslationAPI(content: string): Promise<string> {
@@ -343,23 +471,89 @@ class SecureLinearIntegration {
           await this.delay(Math.pow(2, attempt) * 1000)
         }
 
-        const response = await this.claudeClient.translate({
-          text: content,
-          from: 'ja',
-          to: 'en',
+        // Use environment variable for API endpoint security
+        const apiEndpoint = process.env.CLAUDE_API_ENDPOINT
+        if (!apiEndpoint) {
+          throw new SecurityError(
+            'CLAUDE_API_ENDPOINT environment variable required'
+          )
+        }
+
+        // Secure API call with input validation
+        const response = await fetch(apiEndpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${process.env.CLAUDE_API_KEY}`,
+            'User-Agent': 'file-to-issue/1.0.0',
+          },
+          body: JSON.stringify({
+            text: content.slice(0, 100000), // Enforce API limits
+            from: 'ja',
+            to: 'en',
+          }),
         })
 
-        return this.validateTranslation(response.text)
+        if (!response.ok) {
+          throw new Error(`Translation API error: ${response.status}`)
+        }
+
+        const result = await response.json()
+        return this.validateTranslation(result.text)
       } catch (error) {
         attempt++
-        if (attempt >= maxRetries) throw error
+        if (attempt >= maxRetries) {
+          // Don't expose sensitive error details
+          throw new Error('Translation service temporarily unavailable')
+        }
       }
     }
+
+    throw new Error('Translation failed after maximum retries')
   }
 
   private generateCacheKey(content: string): string {
     return crypto.createHash('sha256').update(content).digest('hex')
   }
+
+  private async delay(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms))
+  }
+
+  private validateTranslation(text: string): string {
+    if (!text || text.trim().length === 0) {
+      throw new Error('Translation returned empty result')
+    }
+
+    // Basic validation - ensure translation looks reasonable
+    if (text.length < 10 || text === text.toLowerCase()) {
+      throw new Error('Translation quality validation failed')
+    }
+
+    return text.trim()
+  }
+
+  private mapPriority(priority: 'low' | 'medium' | 'high' | 'urgent'): number {
+    const priorityMap = { low: 1, medium: 2, high: 3, urgent: 4 }
+    return priorityMap[priority] || 1
+  }
+}
+
+// Interfaces for Dependency Inversion Principle
+interface FileValidator {
+  validateAndRead(filePath: string): Promise<string>
+  cleanup(filePath: string): Promise<void>
+}
+
+interface ContentParser {
+  parseBulletPoints(content: string): Promise<BulletPoint[]>
+}
+
+interface LinearIntegration {
+  createLinearIssue(
+    template: IssueTemplate,
+    originalJapanese: string
+  ): Promise<string>
 }
 
 // Main command orchestrator (Dependency Inversion)
@@ -368,10 +562,18 @@ class FileToIssueCommand {
     private fileValidator: FileValidator,
     private contentParser: ContentParser,
     private templateFactory: TemplateConverterFactory,
-    private linearIntegration: SecureLinearIntegration
+    private linearIntegration: LinearIntegration
   ) {}
 
-  async execute(filePath: string): Promise<string> {
+  async execute(filePath?: string): Promise<string> {
+    // Argument validation - exit early if no file path provided
+    // Skip "Update Todos" phase and terminate immediately when path is empty
+    if (!filePath || filePath.trim() === '') {
+      console.log('\x1b[31m⏺ Please provide a file path as an argument\x1b[0m')
+      console.log('📝 Skipping Update Todos phase due to missing file path')
+      process.exit(0)
+    }
+
     try {
       // Phase 1: Secure file processing
       const content = await this.fileValidator.validateAndRead(filePath)
@@ -421,7 +623,54 @@ class FileToIssueCommand {
     return input.toLowerCase() === 'approve'
   }
 
-  private async createIssueFile(originalPath: string, template: IssueTemplate): Promise<string> {
+  private async getUserInput(): Promise<string> {
+    return new Promise(resolve => {
+      const readline = require('readline')
+      const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+      })
+
+      rl.question('', (answer: string) => {
+        rl.close()
+        resolve(answer.trim())
+      })
+    })
+  }
+
+  private detectTemplateType(bullets: BulletPoint[]): 'feature' | 'bugfix' {
+    const content = bullets.map(b => b.content).join(' ')
+    const bugKeywords = [
+      'bug',
+      'fix',
+      'error',
+      'issue',
+      'バグ',
+      '修正',
+      '不具合',
+    ]
+    return bugKeywords.some(keyword => content.toLowerCase().includes(keyword))
+      ? 'bugfix'
+      : 'feature'
+  }
+
+  private handleError(error: Error): void {
+    console.error('❌ Error:', error.message)
+
+    // Log error details for debugging (without sensitive info)
+    if (error.name === 'SecurityError') {
+      console.error('🔒 Security validation failed')
+    } else if (error.name === 'ValidationError') {
+      console.error('⚠️ Input validation failed')
+    } else {
+      console.error('💥 Unexpected error occurred')
+    }
+  }
+
+  private async createIssueFile(
+    originalPath: string,
+    template: IssueTemplate
+  ): Promise<string> {
     // Generate issue file path by adding .issue.md extension
     const parsedPath = path.parse(originalPath)
     const issueFilePath = path.join(
@@ -444,7 +693,7 @@ Date: ${new Date().toISOString()}
     // Write issue file
     await writeFile(issueFilePath, issueContent, { encoding: 'utf8' })
     console.log(`📝 Created issue file: ${issueFilePath}`)
-    
+
     return issueFilePath
   }
 }
@@ -496,10 +745,10 @@ Date: ${new Date().toISOString()}
 
 ### 1. AI Review-First Standards
 
-- ✅ **3-4 review cycles completed successfully**
-- ✅ **Security**: All file access and API security issues resolved
-- ✅ **SOLID Principles**: Clean command architecture implemented
-- ✅ **Performance**: Efficient file processing optimized
+- ✅ **3-4 review cycles completed successfully** (Completed: Security → SOLID → Performance)
+- ✅ **Security**: Path traversal protection, input sanitization, credential management
+- ✅ **SOLID Principles**: Clean separation of concerns, extensible factory pattern
+- ✅ **Performance**: Chunked processing for large files, translation caching, early termination
 
 ### 2. Functional Requirements
 
@@ -554,6 +803,15 @@ Date: ${new Date().toISOString()}
 ❌ Error: File size exceeds 10MB limit
 💡 Consider splitting into smaller files
 📋 Current file: 15.2MB
+```
+
+### No Arguments Example
+
+```bash
+/file-to-issue
+
+⏺ Please provide a file path as an argument
+📝 Skipping Update Todos phase due to missing file path
 ```
 
 ## Best Practices and Limitations
