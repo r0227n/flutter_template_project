@@ -1,26 +1,79 @@
 {
+  // ===========================================
+  // Flutter & Dart Configuration
+  // ===========================================
   "dart.flutterSdkPath": ".fvm/versions/3.32.2",
+  "dart.previewFlutterUiGuides": true,
+  "dart.previewFlutterUiGuidesCustomTracking": true,
+
+  // ===========================================
+  // File Management
+  // ===========================================
   "files.exclude": {
     "**/.git": true,
     "**/.svn": true,
     "**/.hg": true,
-    "**/CVS": true,
     "**/.DS_Store": true,
     "**/Thumbs.db": true
   },
+
+  // ===========================================
+  // Search Configuration
+  // ===========================================
+  "search.exclude": {
+    // Generated Dart files (build_runner)
+    "**/*.g.dart": true,
+    "**/*.freezed.dart": true,
+    "**/*.config.dart": true,
+    "**/*.gr.dart": true,
+    // Generated translation files
+    "**/translations.g.dart": true
+  },
+  "search.useReplacePreview": true,
+  "search.searchOnType": true,
+  "search.searchOnTypeDebouncePeriod": 300,
+
+  // ===========================================
+  // Explorer File Nesting
+  // ===========================================
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.expand": false,
   "explorer.fileNesting.patterns": {
+    // Dart files and their generated counterparts
     "*.dart": "${capture}.g.dart, ${capture}.freezed.dart, ${capture}.config.dart, ${capture}.gr.dart",
+    // Flutter project files
     "pubspec.yaml": "pubspec.lock, .flutter-plugins, .flutter-plugins-dependencies, .packages, .metadata",
+    // Analysis options
     "analysis_options.yaml": "analysis_options.yaml",
+    // Git files
     ".gitignore": ".gitattributes, .gitmodules, .gitmessage, .mailmap, .git-blame*"
   },
+
+  // ===========================================
+  // General Editor Configuration
+  // ===========================================
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit"
   },
+
+  // ===========================================
+  // Language-Specific Settings
+  // ===========================================
+  
+  // Dart Configuration
+  "[dart]": {
+    "editor.defaultFormatter": "Dart-Code.dart-code",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "dart.addConstModifier": "explicit",
+      "source.organizeImports": "explicit"
+    }
+  },
+
+  // YAML Configuration
   "[yaml]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
@@ -29,6 +82,8 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
   },
+
+  // Markdown Configuration
   "[markdown]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,

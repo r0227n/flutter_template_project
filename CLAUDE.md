@@ -1,30 +1,124 @@
-# CLAUDE.md - Claude Code設定ファイル
+# CLAUDE.md
 
-## プロジェクト概要
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-このプロジェクトはFlutterを使用したモバイルアプリケーション開発プロジェクトです。Claude Codeを使用して、Linear Issue管理システムと連携した自動化開発ワークフローを実現します。
+## Claude 4 Best Practices Application
 
-### 技術スタック
+This project follows the Claude 4 prompt engineering best practices defined in `docs/CLAUDE_4_BEST_PRACTICES.md`. We emphasize the following principles:
 
-- **フレームワーク**: Flutter
-- **バージョン管理**: fvm (Flutter Version Management)
-- **タスク管理**: Linear (MCP連携済み)
-- **並列開発**: git worktree
-- **自動化**: Claude Code with background tasks
+1. **AI Review-First Design**: "Small draft → Critical review → Regenerate → Release" cycle
+2. **Clear and Specific Instructions**: Eliminate ambiguity and clearly define expected deliverables
+3. **Structured Review Templates**: Evaluate code from security, SOLID principles, and performance perspectives
+4. **Iterative Improvement**: Enhance quality through 3-4 review cycles
 
-## 環境設定
+For details, refer to [Claude 4 Best Practices](docs/CLAUDE_4_BEST_PRACTICES.md).
 
-### 必須要件
+## Project Overview
 
-- Flutter SDK (fvmで管理)
-- Git worktree対応
-- Linear MCP設定完了
-- Claude Code ENABLE_BACKGROUND_TASKS有効化
+This is a Flutter mobile application development project using Claude Code with automated development workflow integrated with Linear Issue management system.
 
-### 環境変数
+### Technology Stack
+
+- **Framework**: Flutter (Workspace/Monorepo structure)
+- **Version Management**: fvm (Flutter Version Management)
+- **Task Management**: Linear (MCP integrated)
+- **Parallel Development**: git worktree
+- **Automation**: Claude Code with background tasks
+- **State Management**: Riverpod (hooks_riverpod, riverpod_annotation)
+- **Navigation**: go_router (declarative routing)
+- **Internationalization**: slang (type-safe translations)
+- **Build Tools**: build_runner, freezed
+- **Monorepo Management**: Melos + pub workspace
+
+## Project Structure
+
+```
+flutter_template_project/
+├── app/                         # Main Flutter application
+│   ├── lib/
+│   │   ├── main.dart           # Entry point
+│   │   ├── pages/              # UI pages (home_page.dart, settings_page.dart)
+│   │   ├── router/             # go_router config and type-safe route definitions
+│   │   └── i18n/               # slang-generated multilingual files
+│   ├── assets/i18n/            # JSON translation files (ja.i18n.json, en.i18n.json)
+│   └── test/                   # Widget tests
+├── packages/
+│   └── app_preferences/        # Shared preferences management package
+│       ├── lib/
+│       │   ├── src/
+│       │   │   ├── providers/  # Riverpod providers
+│       │   │   ├── repositories/
+│       │   │   └── theme/
+│       │   └── widgets/        # Reusable widgets
+│       └── assets/i18n/        # Package-specific translations
+├── pubspec.yaml                # Workspace configuration
+└── melos.yaml                  # (integrated in pubspec.yaml)
+```
+
+## Environment Setup
+
+### Requirements
+
+- Flutter SDK (managed by fvm)
+- Git worktree support
+- Linear MCP configuration completed
+- Claude Code ENABLE_BACKGROUND_TASKS enabled
+- Node.js (for commitlint, prettier)
+
+## Development Commands
+
+### Melos Commands (Recommended)
 
 ```bash
-export ENABLE_BACKGROUND_TASKS=1
+# Code generation (freezed, riverpod, go_router, slang)
+melos run gen
+
+# Install dependencies
+melos run get
+
+# Static analysis
+melos run analyze
+
+# slang translation check
+melos run analyze:slang
+
+# Code formatting
+melos run format
+
+# Run tests
+melos run test
+
+# CI format check
+melos run ci:format
+```
+
+### Direct Flutter Commands (using fvm)
+
+```bash
+# Run application
+cd app && fvm flutter run
+
+# Run tests (single file)
+cd app && fvm flutter test test/widget_test.dart
+
+# Build
+cd app && fvm flutter build apk
+cd app && fvm flutter build ios --no-codesign
+```
+
+### Node.js Related Commands
+
+```bash
+# YAML/Markdown lint
+npm run lint
+
+# YAML/Markdown format
+npm run format
+```
+
+### Environment Variables
+
+```bash
 export ENABLE_BACKGROUND_TASKS=true
 export FLUTTER_VERSION_MANAGEMENT=fvm
 export TASK_MANAGEMENT_SYSTEM=linear
@@ -33,298 +127,114 @@ export PR_LANGUAGE=japanese
 export COMPLETION_NOTIFICATION=alarm
 export INTERACTIVE_MODE=true
 export ISSUE_SELECTION_UI=enabled
-export AUTO_CONFIRM_WITH_ARGS=true      # 引数ありの場合は確認をスキップ
-export SILENT_MODE_WITH_ARGS=false      # 進捗表示は継続
-export ERROR_ONLY_OUTPUT=false          # エラー以外も表示
+export AUTO_CONFIRM_WITH_ARGS=true      # Skip confirmation when arguments provided
+export SILENT_MODE_WITH_ARGS=false      # Continue progress display
+export ERROR_ONLY_OUTPUT=false          # Display non-error output
+export CLAUDE_ISOLATION_MODE=true       # Work isolation during parallel execution
+export CLAUDE_WORKSPACE_DIR=".claude-workspaces" # Project-internal working directory
+export CLAUDE_MEMORY_ISOLATION=true     # Memory/context isolation
+export GITHUB_ACTIONS_CHECK=true        # Enable GitHub Actions completion check
+export CHECK_PR_WORKFLOW="check-pr.yml" # Target workflow file to monitor
 ```
 
-## カスタムスラッシュコマンド設定
+## Architecture Design
 
-### 利用可能なコマンド
+### State Management: Riverpod
 
-- `/linear` - Linear Issue処理（対話式・自動実行）
-- `/linear-list` - 利用可能Issue一覧表示
-- `/linear-status` - Linear連携状況確認
+- **Providers**: Located in `app_preferences/lib/src/providers/`
+- **Code Generation**: Use `@riverpod` annotation, generate with `melos run gen`
+- **AsyncValue**: Used for asynchronous operation state management
+- **Provider Types**:
+  - `StateNotifierProvider`: Logic with state changes
+  - `FutureProvider`: Asynchronous data retrieval
+  - `StreamProvider`: Real-time data streams
 
-### コマンドファイル配置
+### Navigation: go_router
+
+- **Route Definition**: `app/lib/router/app_routes.dart`
+- **Type-safe Routing**: Achieve type safety with `@TypedGoRoute` annotation
+- **Navigation Example**: `HomePageRoute().go(context)`
+
+### Internationalization: slang
+
+- **Translation Files**: Place `ja.i18n.json` and `en.i18n.json` in `app/assets/i18n/`
+- **Type-safe Access**: Access translation strings with `context.i18n.someKey`
+- **Dynamic Switching**: Runtime language switching using LocaleSettings
+
+### Theme Management
+
+- **Theme Provider**: Managed by `app_preferences` package
+- **Persistence**: Save selected theme using SharedPreferences
+- **System Theme**: Material You (Android 12+) support
+
+## Custom Slash Commands Configuration
+
+### Available Commands
+
+- `/linear` - Linear Issue processing command (see `.claude/commands/linear.md` for detailed implementation)
+
+### Command File Placement
 
 ```
 .claude/
 └── commands/
-    ├── linear.md          # メインのIssue処理コマンド
-    ├── linear-list.md     # Issue一覧表示コマンド
-    └── linear-status.md   # 接続状況確認コマンド
+    └── linear.md          # Complete Linear Issue processing implementation
 ```
 
-## ワークフロー定義
+## Development Workflow
 
-### 基本フロー（/linearコマンド使用）
+### Git Worktree Usage (Recommended)
 
-1. **コマンド実行**: `claude` → `/linear` または `/linear <Issue ID>` 実行
-2. **Issue選択**: 対話形式でIssue ID選択（引数指定時はスキップ）
-3. **ブランチ作成**: リモートのデフォルトブランチから新規作業ブランチをgit worktreeで作成
-4. **並列実行**: 非同期でタスクを実行
-5. **自動PR作成**: 作業完了時に日本語でPRを作成
-6. **完了通知**: アラームで作業完了を通知
+This project uses **git worktree** for parallel development:
 
-### 詳細ワークフロー
+1. **Parallel Development**: Multiple Issues can be worked on simultaneously
+2. **Branch Isolation**: Each Issue gets its own working directory via git worktree
+3. **Environment Independence**: Separate Flutter environments per worktree
+4. **Conflict Prevention**: Isolated workspaces prevent interference between tasks
 
-#### Phase 1: タスク初期化
-
-```
-INPUT:
-- 対話形式: `/linear` → Issue ID選択プロンプト
-- 自動実行: `/linear ABC-123` → 確認なしで即座に開始
-↓
-1. Issue ID検証（自動実行時は確認プロンプトなし）
-2. Linear APIでIssue詳細を取得
-3. Issue内容を解析してタスク要件を理解
-4. 適切なブランチ名を生成 (feature/ABC-123-task-description)
-5. 実行開始（自動実行時は確認プロンプトスキップ）
-```
-
-#### Phase 2: 環境準備
-
-```
-1. リモートリポジトリから最新のデフォルトブランチを取得
-2. git worktree add でリモートブランチから新しい作業ディレクトリを作成
-3. fvm use でプロジェクト指定のFlutterバージョンを設定
-4. 依存関係のインストール (flutter pub get)
-```
-
-#### Phase 3: 非同期実行
-
-```
-ENABLE_BACKGROUND_TASKS = true で以下を並列実行:
-- コード実装
-- テスト作成・実行
-- ドキュメント更新
-- コード品質チェック
-```
-
-#### Phase 4: 完了処理
-
-```
-1. 全ての作業が完了次第
-2. 変更をコミット
-3. PRを作成（説明文は日本語）
-4. Linear IssueをIn Reviewステータスに更新
-5. アラーム通知で完了を報告
-```
-
-## コマンド実行例
-
-### 対話形式での実行（推奨）
+**Basic git worktree commands**:
 
 ```bash
-# Claude Code対話モードを開始
-claude
+# Create new worktree
+git worktree add path/to/worktree -b branch-name
 
-# /linearコマンドで対話形式実行
-/linear
-
-# 実行例:
-# 📋 利用可能なIssue:
-# 1) ABC-123: ユーザー認証機能の実装 (High, To Do)
-# 2) XYZ-456: バグ修正: ログイン時のエラー処理 (Urgent, In Progress)
-# 3) FEAT-789: 新機能: プッシュ通知 (Normal, To Do)
-#
-# ? 処理するIssueを選択してください [1-3, または複数選択]: 1,3
-# ? 選択したIssue: ABC-123, FEAT-789 で実行しますか？ [Y/n]: y
-#
-# 🚀 並列実行を開始しています...
-```
-
-### 直接指定での実行（自動実行）
-
-```bash
-# Claude Code対話モード
-claude
-
-# Issue IDを直接指定（確認なしで自動実行）
-/linear ABC-123
-# ✅ Issue検証完了 → 🚀 自動実行開始
-
-# 複数Issue IDを指定（確認なしで自動実行）
-/linear ABC-123 XYZ-456 FEAT-789
-# ✅ 3件のIssue検証完了 → 🚀 並列自動実行開始
-
-# 実行例（自動モード）:
-# /linear ABC-123
-# ✅ Issue ID検証: ABC-123
-# ✅ Linear API確認: Issue存在確認済み
-# ✅ 権限確認: 処理可能
-# ✅ git worktree作成: feature/ABC-123-user-auth
-# ✅ Flutter環境設定: fvm 3.24.0 適用済み
-# 🚀 バックグラウンド実行開始...
-# 📝 実装中: ユーザー認証機能
-# ⏰ 完了時にアラーム通知予定
-```
-
-### 補助コマンド
-
-```bash
-# Issue一覧確認
-/linear-list
-
-# Linear連携状況確認
-/linear-status
-```
-
-## 対話式実行の詳細仕様
-
-### 対話フローの設定
-
-```bash
-# デフォルト設定で対話モード有効
-export INTERACTIVE_MODE=true
-export PROMPT_STYLE="enhanced"  # enhanced, simple, minimal
-export AUTO_COMPLETION=true     # Issue ID補完機能
-export ISSUE_PREVIEW=true       # Issue内容プレビュー表示
-```
-
-### 入力検証とエラーハンドリング
-
-```
-対話時の検証項目:
-1. Issue ID形式チェック (例: ABC-123)
-2. Linear APIでの存在確認
-3. Issue状態確認（クローズ済みの場合は警告）
-4. 権限確認（アサインされていない場合は確認）
-5. 依存関係チェック（ブロッカーIssueの存在）
-```
-
-### 対話UIのカスタマイズ
-
-```bash
-# 対話モード（引数なし）- 詳細確認あり
-/linear
-> 📋 利用可能なIssue:
-> 1) ABC-123: ユーザー認証機能の実装
->    ステータス: To Do | 優先度: High | 担当者: あなた
->    📝 説明: OAuth2.0を使用したログイン機能の実装
->
-> ? 処理するIssueを選択してください: 1
-> ? このIssueを処理しますか？ [Y/n]: y
-
-# 自動実行モード（引数あり）- 確認なし
-/linear ABC-123
-> ✅ Issue ID検証: ABC-123
-> ✅ Linear API確認: 存在確認済み
-> ✅ 処理権限: OK
-> 🚀 自動実行開始...
-> 📝 実装中: ユーザー認証機能の実装
-> ⏰ 完了時にアラーム通知予定
-
-# エラー発生時のみ停止
-/linear INVALID-123
-> ❌ エラー: Issue ID 'INVALID-123' が見つかりません
-> 💡 /linear-list で利用可能なIssueを確認してください
-```
-
-## 自動化ルール
-
-### PR作成ルール
-
-- **タイトル**: `[ABC-123] Issue タイトルをそのまま使用`
-- **説明文**: 日本語で以下の内容を含む
-
-  ```markdown
-  ## 変更内容
-
-  - 実装した機能の詳細
-  - 修正したバグの内容
-
-  ## 関連Issue
-
-  - Closes #{Linear Issue URL}
-
-  ## テスト
-
-  - 実行したテストの概要
-  - テスト結果
-
-  ## チェックリスト
-
-  - [ ] コードレビュー準備完了
-  - [ ] テスト実行済み
-  - [ ] ドキュメント更新済み
-  ```
-
-### 並列実行ルール
-
-- 各git worktreeは独立したFlutter環境を持つ
-- 同時に複数のIssueを処理可能
-- リソース競合を避けるため、重要度に応じて優先度を調整
-
-### 完了通知ルール
-
-- システムアラーム音で通知
-- 通知内容: "Issue ABC-123の作業が完了しました。PRが作成されています。"
-
-## トラブルシューティング
-
-### よくある問題と解決方法
-
-#### 1. Linear API接続エラー
-
-```bash
-# Linear連携状況確認
-/linear-status
-
-# MCP設定の再確認が必要な場合
-/config
-```
-
-#### 2. fvmバージョン競合
-
-```bash
-# Flutterバージョンを再設定
-fvm use [project_flutter_version]
-flutter clean
-flutter pub get
-```
-
-#### 3. git worktree作成失敗
-
-```bash
-# 既存のworktreeを確認・削除
+# List active worktrees
 git worktree list
-git worktree remove [worktree_path]
+
+# Remove completed worktree
+git worktree remove path/to/worktree
 ```
 
-#### 4. バックグラウンドタスクが動作しない
+**Note**: The `/linear` command handles git worktree creation automatically for Linear Issue processing.
 
-```bash
-# 環境変数を確認
-echo $ENABLE_BACKGROUND_TASKS
-export ENABLE_BACKGROUND_TASKS=true
-```
-
-## 設定カスタマイズ
-
-### 通知設定
-
-- アラーム音の変更: システム設定で調整
-- 通知タイミング: PR作成完了時
-
-### 品質管理
-
-- 自動テスト実行: 全てのコミット前に実行
-- コード静的解析: dart analyze自動実行
-- フォーマット: dart format自動適用
-
-### パフォーマンス最適化
-
-- 並列実行数制限: CPU使用率に応じて調整
-- メモリ使用量監視: 大量のworktree作成時の制御
-
-## セキュリティ考慮事項
-
-- Linear APIキーの安全な管理
-- git認証情報の適切な設定
-- 機密情報を含むコードの取り扱い注意
+For detailed Linear Issue processing workflow, execution examples, and configuration options, refer to `.claude/commands/linear.md`.
 
 ---
 
-**注意**: このファイルはClaude Codeの動作を制御する重要な設定ファイルです。変更時は十分にテストを行ってください。
+**Note**: This file is an important configuration file that controls Claude Code behavior. Test thoroughly when making changes.
+
+## Development Guidelines
+
+### Code Generation
+
+- Always execute `melos run gen` after adding new model classes or providers
+- Do not directly edit generated files (`*.g.dart`, `*.freezed.dart`)
+
+### Testing
+
+- Add corresponding widget tests to `app/test/` when adding new features
+- Execute `melos run test` to run tests for all packages
+- Include tests as targets for AI Review-First
+
+### Git Workflow
+
+- Use [Conventional Commits](https://www.conventionalcommits.org/) format for commit messages
+- **Branch naming**: Use only `feature/ISSUE_ID` format (no Japanese/English descriptions)
+- PR checks automatically execute with `.github/workflows/check-pr.yml`
+- Includes analysis, formatting, testing, i18n validation
+
+### Package Management
+
+- Add new dependencies to the appropriate package's `pubspec.yaml`
+- Same versions used across all packages due to Workspace resolution
+- Update all package dependencies collectively with `melos run get`

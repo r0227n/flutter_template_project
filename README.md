@@ -1,103 +1,222 @@
 # Flutter Template Project
 
-このリポジトリは、Flutterプロジェクトを初期化するためのGitHubテンプレートとして機能します。このテンプレートからプロジェクトを作成した後、初期セットアップとして「initialization」という名前のGitHub Actionを一度実行してください。
+**AI支援開発とモダンアーキテクチャを組み合わせた、エンタープライズ対応Flutterアプリケーションテンプレート**
 
-## 特徴
+## プロジェクト概要
 
-このテンプレートは以下の機能を提供します：
+このテンプレートは、効率的なFlutterアプリ開発を実現するための包括的な環境を提供します。Claude CodeによるAI支援開発、モノレポ構造、自動化された品質管理により、開発チームの生産性を大幅に向上させます。
 
-- **FVM（Flutter Version Management）** を使用した最新のFlutterバージョン管理
-- **マルチプラットフォーム対応** - iOS、Android、Web、macOS、Linux、Windowsをサポート
-- **整理されたプロジェクト構造** - `apps`ディレクトリにFlutterプロジェクト、`docs`ディレクトリにドキュメントを配置
-- **主要パッケージのプリインストール**:
-  - [hooks_riverpod](https://pub.dev/packages/hooks_riverpod) - 状態管理
-  - [flutter_hooks](https://pub.dev/packages/flutter_hooks) - ステートフルロジックの再利用
-  - [riverpod_annotation](https://pub.dev/packages/riverpod_annotation) - コード生成のためのRiverpodアノテーション
-  - [go_router](https://pub.dev/packages/go_router) - 宣言的ルーティング
-- **開発依存関係**:
-  - [riverpod_generator](https://pub.dev/packages/riverpod_generator) - Riverpodプロバイダーのコード生成
-  - [build_runner](https://pub.dev/packages/build_runner) - コード生成ツール
-  - [custom_lint](https://pub.dev/packages/custom_lint) - カスタムlintルール
-  - [riverpod_lint](https://pub.dev/packages/riverpod_lint) - Riverpod特有のlintルール
-  - [go_router_builder](https://pub.dev/packages/go_router_builder) - GoRouterのコード生成
-- **コミットメッセージの標準化** - commitlintによる一貫したコミットメッセージ形式の強制
+### 核となる特徴
 
-## 使用方法
+- **🤖 AI支援開発**: Claude Code統合によるLinear Issue駆動の自動開発
+- **📦 モノレポ構造**: Melosによる効率的なマルチパッケージ管理
+- **🎯 型安全性**: Riverpod、go_router、slangによる堅牢なアーキテクチャ
+- **⚡ 開発効率**: 自動コード生成とHot Reloadによる高速開発サイクル
+- **🔍 品質保証**: 自動テスト、linting、フォーマットによる一貫したコード品質
 
-### 新しいプロジェクトの作成
+## 技術スタック
 
-1. GitHubで「Use this template」ボタンをクリックして、このテンプレートから新しいリポジトリを作成します。
-2. リポジトリが作成されると、「initialization」ワークフローが自動的に実行されます（リポジトリ名が「flutter-mobile-project-template」でない場合）。
-3. ワークフローが完了すると、Flutterプロジェクトが設定され、必要なパッケージがすべてインストールされます。
+| 分野               | 技術                 | 役割                             |
+| ------------------ | -------------------- | -------------------------------- |
+| **フレームワーク** | Flutter + FVM        | マルチプラットフォーム開発       |
+| **状態管理**       | Riverpod + Hooks     | リアクティブな状態アーキテクチャ |
+| **ナビゲーション** | go_router            | 型安全なルーティング             |
+| **国際化**         | slang                | コード生成による多言語対応       |
+| **モノレポ**       | Melos                | パッケージ統合管理               |
+| **AI開発**         | Claude Code + Linear | 自動化された開発ワークフロー     |
 
-### プロジェクト構造
-
-初期化後、プロジェクトは以下の構造になります：
+## プロジェクト構成
 
 ```
-your-project/
-├── .github/
-│   └── workflows/
-│       └── initialization.yml
-├── apps/
-│   ├── lib/
-│   ├── test/
-│   ├── android/
-│   ├── ios/
-│   ├── web/
-│   ├── macos/
-│   ├── linux/
-│   ├── windows/
-│   ├── pubspec.yaml
-│   └── analysis_options.yaml
-├── docs/
-├── .gitignore
-├── .gitattributes
-├── commitlint.config.js
-└── README.md
+flutter_template_project/
+├── 📱 app/                      # メインアプリケーション
+│   ├── lib/                     # アプリケーションコード
+│   └── assets/i18n/             # 多言語対応ファイル
+├── 📦 packages/                 # 共有パッケージ
+│   └── app_preferences/         # 設定管理パッケージ
+├── 🤖 .claude/                  # AI開発支援設定
+├── 📋 CLAUDE.md                 # AI用プロジェクト設定
+├── 📋 HUMAN.md                  # 開発者向け設定解説
+├── 🔧 scripts/                 # 自動化スクリプト
+└── 📚 docs/                    # プロジェクトドキュメント
 ```
 
-### 開発
+## クイックスタート
 
-プロジェクトでは、FVMを使用してFlutterバージョンを管理しています。以下のコマンドを使用してください：
+### 必要な環境
+
+| ツール  | 推奨バージョン | インストール方法                  |
+| ------- | -------------- | --------------------------------- |
+| Flutter | FVM管理        | `dart pub global activate fvm`    |
+| Node.js | 18+            | [nodejs.org](https://nodejs.org/) |
+| Melos   | 7.0+           | `dart pub global activate melos`  |
+
+### セットアップ手順
 
 ```bash
-# Flutterコマンドの実行
-fvm flutter run
+# 1. プロジェクトを取得
+git clone <repository-url>
+cd flutter_template_project
 
-# パッケージの追加
-fvm flutter pub add package_name
+# 2. 開発環境を構築
+fvm install && fvm use
+npm install
+melos bootstrap
 
-# ビルドランナーの実行
-fvm flutter pub run build_runner build --delete-conflicting-outputs
+# 3. コード生成を実行
+melos run gen
+
+# 4. アプリを起動
+cd app && fvm flutter run
 ```
 
-### コミットメッセージの形式
+## 開発ワークフロー
 
-このプロジェクトでは、[Conventional Commits](https://www.conventionalcommits.org/)形式を使用しています。コミットメッセージは以下の形式に従う必要があります：
+### 基本的な開発手順
 
+```bash
+# 開発用コマンド
+melos run get      # 依存関係の更新
+melos run gen      # コード生成（riverpod、freezed等）
+melos run analyze  # 静的解析
+melos run test     # テスト実行
+melos run format   # コード整形
 ```
-<type>: <description>
 
-[optional body]
+### AI支援開発（Claude Code）
 
-[optional footer]
+Claude CodeとLinearを連携した自動開発機能を提供：
+
+```bash
+# Claude Code起動
+claude
+
+# Issue指定で自動開発開始
+/linear ABC-123
 ```
 
-使用可能なタイプ：
+**特徴:**
 
-- `build`: ビルドシステムまたは外部依存関係に影響する変更
-- `chore`: その他の変更（ソースやテストの変更を含まない）
-- `ci`: CI設定ファイルとスクリプトの変更
-- `docs`: ドキュメントのみの変更
-- `feat`: 新機能
-- `fix`: バグ修正
-- `perf`: パフォーマンスを向上させるコード変更
-- `refactor`: バグを修正せず、機能も追加しないコード変更
-- `revert`: 以前のコミットを元に戻す
-- `style`: コードの意味に影響しない変更（空白、フォーマット、セミコロンの欠落など）
-- `test`: 不足しているテストの追加または既存のテストの修正
+- Linear Issueの内容を解析し、自動実装
+- AI品質レビューによる反復改善
+- 自動テスト実行とPR作成
+- 並行開発のためのgit worktree活用
+
+## 重要なファイル
+
+| ファイル      | 目的                          | 読者       |
+| ------------- | ----------------------------- | ---------- |
+| **CLAUDE.md** | Claude Code用設定（AI指示書） | AIシステム |
+| **HUMAN.md**  | 開発者向けCLAUDE.md解説書     | 開発チーム |
+
+これらのファイルは、AI支援開発の動作を制御する重要な設定です。
+
+## 品質管理
+
+### コード品質ツール
+
+- **commitlint**: [Conventional Commits](https://conventionalcommits.org/)準拠
+- **prettier**: YAML/Markdown自動フォーマット
+- **dart analyze**: Flutter静的解析
+- **自動テスト**: ユニット・ウィジェット・統合テスト
+
+### コミット規約
+
+```bash
+feat: 新機能追加
+fix: バグ修正
+docs: ドキュメント更新
+style: コードスタイル変更
+refactor: リファクタリング
+test: テスト関連
+chore: その他のメンテナンス
+```
+
+## アーキテクチャ概要
+
+### 状態管理パターン
+
+**Riverpod + Hooks** による宣言的UI：
+
+```dart
+@riverpod
+class CounterNotifier extends _$CounterNotifier {
+  @override
+  int build() => 0;
+
+  void increment() => state++;
+}
+
+// UI での使用
+class CounterPage extends ConsumerWidget {
+  Widget build(context, ref) {
+    final count = ref.watch(counterNotifierProvider);
+    return Text('Count: $count');
+  }
+}
+```
+
+### 国際化アプローチ
+
+**slang** による型安全な多言語対応：
+
+```dart
+// assets/i18n/ja.i18n.json
+{
+  "welcome": "ようこそ",
+  "settings": {
+    "title": "設定"
+  }
+}
+
+// UI での使用
+Text(context.i18n.welcome)
+Text(context.i18n.settings.title)
+```
+
+## テスト戦略
+
+| テストレベル | 対象              | ツール           |
+| ------------ | ----------------- | ---------------- |
+| ユニット     | ビジネスロジック  | flutter_test     |
+| ウィジェット | UI コンポーネント | flutter_test     |
+| 統合         | ユーザーフロー    | integration_test |
+
+```bash
+# 全テスト実行
+melos run test
+
+# カバレッジ付き実行
+melos run test --coverage
+```
+
+## ドキュメント
+
+| ドキュメント                                         | 内容         | 対象者      |
+| ---------------------------------------------------- | ------------ | ----------- |
+| [CLAUDE.md](CLAUDE.md)                               | AI開発設定   | Claude Code |
+| [HUMAN.md](HUMAN.md)                                 | 設定解説書   | 開発者      |
+| [docs/VSCODE_SETTINGS.md](docs/VSCODE_SETTINGS.md)   | エディタ設定 | 開発者      |
+| [docs/COMMITLINT_RULES.md](docs/COMMITLINT_RULES.md) | コミット規約 | 全メンバー  |
+
+## 貢献方法
+
+1. このリポジトリをフォーク
+2. フィーチャーブランチを作成 (`git checkout -b feature/new-feature`)
+3. 変更をコミット (`git commit -m 'feat: add new feature'`)
+4. ブランチをプッシュ (`git push origin feature/new-feature`)
+5. プルリクエストを作成
 
 ## ライセンス
 
-このプロジェクトはMITライセンスの下で公開されています。詳細については、[LICENSE](LICENSE)ファイルを参照してください。
+このプロジェクトは MIT ライセンスの下で公開されています。詳細は [LICENSE](LICENSE) を参照してください。
+
+## サポート・コミュニティ
+
+- 📖 [ドキュメント](docs/)
+- 🐛 [Issue報告](https://github.com/your-org/flutter_template_project/issues)
+- 💬 [ディスカッション](https://github.com/your-org/flutter_template_project/discussions)
+
+---
+
+**このテンプレートで、モダンなFlutterアプリ開発を今すぐ始めましょう！**

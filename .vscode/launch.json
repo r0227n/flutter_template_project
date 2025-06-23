@@ -1,14 +1,14 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "development",
-            "type": "dart",
-            "request": "launch",
-            "cwd": "${workspaceFolder}/apps",
-            "program": "lib/main.dart",
-            "args": [],
-            "console": "debugConsole",
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "development",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/app",
+      "program": "lib/main.dart",
+      "args": [],
+      "console": "debugConsole"
+    }
+  ]
 }

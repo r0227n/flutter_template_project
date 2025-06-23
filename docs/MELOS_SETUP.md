@@ -38,10 +38,10 @@ name: workspace
 publish_to: none
 
 environment:
-  sdk: ^3.6.0
+  sdk: ^3.5.0
 
 dev_dependencies:
-  melos: ^6.3.3
+  melos: ^6.4.0
 
 workspace:
   - apps
@@ -107,8 +107,8 @@ scripts:
     run: melos exec --scope="*app*" -- "flutter build ios --no-codesign"
 
 environment:
-  sdk: '>=3.6.0 <4.0.0'
-  flutter: '>=3.0.0'
+  sdk: '>=3.5.0 <4.0.0'
+  flutter: '>=3.24.0'
 ```
 
 ### 4. ワークスペースの初期化

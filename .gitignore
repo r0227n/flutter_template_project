@@ -16,9 +16,9 @@ migrate_working_dir/
 *.iws
 .idea/
 
-# git worktrees
-worktrees/*
-!worktrees/.gitkeep
+# Claude Code git worktrees
+.claude-workspaces/*
+!.claude-workspaces/.gitkeep
 
 # Flutter/Dart/Pub related
 **/doc/api/

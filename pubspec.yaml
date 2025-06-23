@@ -8,14 +8,14 @@ dev_dependencies:
   melos: ^7.0.0-dev.9
 
 workspace:
-  - apps
+  - app
   - packages/app_preferences
 
 melos:
   name: flutter_template_project
 
   packages:
-    - apps/
+    - app/
     - packages/**
 
   command:
@@ -35,6 +35,11 @@ melos:
       description: Get dependencies for all packages
       run: melos exec -- "flutter pub get"
 
+    # Lint YAML and Markdown files using prettier
+    lint:
+      description: Lint YAML and Markdown files
+      run: npm run lint
+
     # Analyze all packages
     analyze:
       description: Analyze all packages
@@ -50,6 +55,11 @@ melos:
       description: Format all packages
       run: melos exec -- "dart format ."
 
+    # Format YAML and Markdown files using prettier
+    format:prettier:
+      description: Format YAML and Markdown files
+      run: npm run format
+
     # Run tests for all packages
     test:
       description: Run tests for all packages
@@ -59,6 +69,11 @@ melos:
     ci:format:
       description: Check if all packages are formatted correctly
       run: melos exec -- "dart format --output=none --set-exit-if-changed ."
+
+    # Clean up branches and worktrees that no longer exist on remote
+    clean:branch:
+      description: Remove local branches and worktrees that don't exist on remote
+      run: ./scripts/clean-branch.sh
 
   environment:
     sdk: '>=3.6.0 <4.0.0'
