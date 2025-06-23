@@ -603,60 +603,70 @@ class TemplateConverterFactory {
 ```typescript
 // Linear MCP integration with robust error handling and session-independent operation
 class LinearMCPIntegration {
-  private static readonly DEFAULT_TEAM_ID = "98d7872a-476e-4c41-8ea1-11680e183b10" // Ryo24Lab
-  private static readonly DEFAULT_PROJECT_ID = "1f3c75f0-8650-4779-969c-28bc62e16333" // Template Project
-  
+  private static readonly DEFAULT_TEAM_ID =
+    '98d7872a-476e-4c41-8ea1-11680e183b10' // Ryo24Lab
+  private static readonly DEFAULT_PROJECT_ID =
+    '1f3c75f0-8650-4779-969c-28bc62e16333' // Template Project
+
   async createLinearIssueViaMCP(
-    template: IssueTemplate, 
+    template: IssueTemplate,
     originalContent: string
   ): Promise<string> {
     try {
       // Step 1: Validate MCP Linear availability
       await this.validateMCPLinearAvailability()
-      
+
       // Step 2: Translate content to English
       const translatedTemplate = await this.translateToEnglish(template)
-      
+
       // Step 3: Create Linear Issue via MCP
       const issueData = await this.createIssueViaMCP(translatedTemplate)
-      
+
       // Step 4: Add Japanese content as comment
       await this.addJapaneseComment(issueData.id, originalContent)
-      
+
       console.log(`✅ Linear Issue created: ${issueData.url}`)
       return issueData.url
-      
     } catch (error) {
       return this.handleLinearError(error)
     }
   }
-  
+
   private async validateMCPLinearAvailability(): Promise<void> {
     try {
       // Check if Linear MCP is available by attempting to list teams
       const teams = await mcp__linear_mcp__list_teams()
-      
+
       if (!teams || teams.length === 0) {
-        throw new MCPError('Linear MCP is configured but no teams are accessible')
+        throw new MCPError(
+          'Linear MCP is configured but no teams are accessible'
+        )
       }
-      
+
       // Verify our default team exists
-      const defaultTeam = teams.find(team => team.id === LinearMCPIntegration.DEFAULT_TEAM_ID)
+      const defaultTeam = teams.find(
+        team => team.id === LinearMCPIntegration.DEFAULT_TEAM_ID
+      )
       if (!defaultTeam) {
-        console.warn(`⚠️ Default team ${LinearMCPIntegration.DEFAULT_TEAM_ID} not found, using first available team`)
+        console.warn(
+          `⚠️ Default team ${LinearMCPIntegration.DEFAULT_TEAM_ID} not found, using first available team`
+        )
       }
-      
-      console.log(`📋 Linear MCP connected successfully. Available teams: ${teams.length}`)
-      
+
+      console.log(
+        `📋 Linear MCP connected successfully. Available teams: ${teams.length}`
+      )
     } catch (error) {
       throw new MCPError(
         `Linear MCP not available or not properly configured: ${error.message}\n` +
-        'Please ensure Linear MCP is installed and configured with proper API credentials.'
+          'Please ensure Linear MCP is installed and configured with proper API credentials.'
       )
     }
   }
-  
-  private async createIssueViaMCP(template: IssueTemplate): Promise<{ id: string; url: string }> {
+
+  private async createIssueViaMCP(
+    template: IssueTemplate
+  ): Promise<{ id: string; url: string }> {
     // Prepare issue parameters for MCP Linear API
     const issueParams = {
       title: template.title,
@@ -666,21 +676,20 @@ class LinearMCPIntegration {
       // Optional: Associate with project within the team
       projectId: LinearMCPIntegration.DEFAULT_PROJECT_ID,
     }
-    
+
     try {
       // Call Linear MCP function with explicit team-based creation
       console.log(`📤 Creating issue in team: ${issueParams.teamId}`)
       const result = await mcp__linear_mcp__create_issue(issueParams)
-      
+
       if (!result || !result.id || !result.url) {
         throw new MCPError('Linear MCP returned invalid response format')
       }
-      
+
       return {
         id: result.id,
         url: result.url,
       }
-      
     } catch (error) {
       // Enhanced error handling for common MCP issues
       if (error.message.includes('Authentication')) {
@@ -688,18 +697,21 @@ class LinearMCPIntegration {
           'Linear MCP authentication failed. Please check API key configuration.'
         )
       }
-      
+
       if (error.message.includes('team')) {
         throw new MCPError(
           `Team access error: ${error.message}. Using fallback team ID: ${LinearMCPIntegration.DEFAULT_TEAM_ID}`
         )
       }
-      
+
       throw new MCPError(`Linear issue creation failed: ${error.message}`)
     }
   }
-  
-  private async addJapaneseComment(issueId: string, originalContent: string): Promise<void> {
+
+  private async addJapaneseComment(
+    issueId: string,
+    originalContent: string
+  ): Promise<void> {
     try {
       const comment = `## 元の日本語コンテンツ
 
@@ -707,21 +719,22 @@ ${originalContent}
 
 ---
 *This comment contains the original Japanese content that was translated to create this issue.*`
-      
+
       await mcp__linear_mcp__create_comment({
         issueId: issueId,
         body: comment,
       })
-      
+
       console.log('📝 Added Japanese content as comment')
-      
     } catch (error) {
       console.warn(`⚠️ Failed to add Japanese comment: ${error.message}`)
       // Don't fail the entire process if comment addition fails
     }
   }
-  
-  private async translateToEnglish(template: IssueTemplate): Promise<IssueTemplate> {
+
+  private async translateToEnglish(
+    template: IssueTemplate
+  ): Promise<IssueTemplate> {
     // Use Claude for translation with explicit instructions
     const translationPrompt = `
 Translate the following GitHub Issue template from Japanese to English.
@@ -733,50 +746,52 @@ Title: ${template.title}
 Description:
 ${template.description}
 `
-    
+
     try {
       // Call Claude via MCP for translation
-      const translatedText = await this.callClaudeForTranslation(translationPrompt)
-      
+      const translatedText =
+        await this.callClaudeForTranslation(translationPrompt)
+
       // Parse the translated response
       const titleMatch = translatedText.match(/Title:\s*(.+)/)
       const descriptionMatch = translatedText.match(/Description:\s*([\s\S]+)/)
-      
+
       return {
         ...template,
         title: titleMatch?.[1]?.trim() || template.title,
         description: descriptionMatch?.[1]?.trim() || template.description,
       }
-      
     } catch (error) {
-      console.warn(`⚠️ Translation failed: ${error.message}. Using original content.`)
+      console.warn(
+        `⚠️ Translation failed: ${error.message}. Using original content.`
+      )
       return template // Fallback to original if translation fails
     }
   }
-  
+
   private async callClaudeForTranslation(prompt: string): Promise<string> {
     // Implementation would depend on available Claude MCP or API access
     // For now, return a placeholder indicating translation is needed
     console.log('🌐 Translating content to English...')
-    
+
     // In actual implementation, this would call Claude via MCP or API
     // For this example, we return the original content with a note
     return `Translation service not implemented yet. Original content:\n${prompt}`
   }
-  
+
   private mapPriorityToLinearValue(priority: string): number {
     const priorityMap = {
-      'urgent': 1,
-      'high': 2,
-      'medium': 3,
-      'low': 4,
+      urgent: 1,
+      high: 2,
+      medium: 3,
+      low: 4,
     }
     return priorityMap[priority] || 3
   }
-  
+
   private handleLinearError(error: Error): never {
     console.error('❌ Linear Integration Error:', error.message)
-    
+
     if (error.name === 'MCPError') {
       console.error('🔌 MCP Connection Issue:', error.message)
       console.error('💡 Troubleshooting:')
@@ -784,7 +799,7 @@ ${template.description}
       console.error('  2. Check Linear API key configuration')
       console.error('  3. Ensure team access permissions are granted')
     }
-    
+
     throw error
   }
 }
@@ -1109,10 +1124,6 @@ class FileToIssueCommand {
 export FILE_SIZE_LIMIT_MB=10
 export ALLOWED_FILE_EXTENSIONS=".md,.txt,.markdown"
 export WORK_DIRECTORY=".claude-workspaces"
-
-# Linear identifiers (hardcoded for consistency)
-# Team ID: 98d7872a-476e-4c41-8ea1-11680e183b10 (Ryo24Lab)
-# Project ID: 1f3c75f0-8650-4779-969c-28bc62e16333 (Template Project)
 ```
 
 #### MCP Linear Functions Used
@@ -1121,8 +1132,8 @@ This command relies on the following MCP Linear functions:
 
 ```typescript
 // MCP Linear API functions
-mcp__linear_mcp__list_teams()          // Validate MCP connectivity
-mcp__linear_mcp__create_issue(params)  // Create issues in team
+mcp__linear_mcp__list_teams() // Validate MCP connectivity
+mcp__linear_mcp__create_issue(params) // Create issues in team
 mcp__linear_mcp__create_comment(params) // Add Japanese content as comment
 ```
 
