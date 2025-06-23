@@ -1,6 +1,6 @@
 # GitHub Issue Processing Command - Claude 4 Best Practices
 
-**IMPORTANT**: This command implements AI Review-First design following Claude 4 best practices for high-quality Flutter development using GitHub Issues instead of Linear.
+**IMPORTANT**: This command implements AI Review-First design following Claude 4 best practices for high-quality Flutter development using GitHub Issues.
 
 ## Overview
 
@@ -184,17 +184,306 @@ Task completion requires ALL conditions met:
 
 ### Quality Assurance Pipeline
 
-```
-AI Review-First → PR Creation → CI/CD Validation → Quality Gates
-     ↓              ↓              ↓               ↓
-Draft Code → Critical Review → Automated Checks → Release Ready
+**Comprehensive Quality Framework**: Multi-stage validation ensuring production-ready code through automated and manual quality gates.
+
+```mermaid
+sequenceDiagram
+    participant Task as /task Command
+    participant Workspace as Git Worktree
+    participant Flutter as Flutter Env
+    participant AI as AI Reviewer
+    participant QA as Quality Assurance
+    participant GitHub as GitHub API
+    participant Actions as GitHub Actions
+    participant Notification as Completion Alert
+
+    Note over Task,Notification: Quality Assurance Pipeline Process
+
+    Task->>GitHub: Fetch Issue #123 details
+    GitHub-->>Task: Issue requirements
+    
+    Task->>Workspace: Create isolated workspace
+    Workspace-->>Task: feature/issue-123 branch ready
+    
+    Task->>Flutter: Setup fvm environment
+    Flutter-->>Task: Flutter SDK configured
+    
+    rect rgb(255, 248, 225)
+        Note over Task,AI: Phase 1: Minimal Implementation
+        Task->>AI: Generate walking skeleton
+        AI-->>Task: Basic functionality implemented
+    end
+    
+    rect rgb(255, 235, 238)
+        Note over AI,QA: Phase 2: AI Review Cycles (3-4 iterations)
+        
+        loop Security Review (Cycle 1)
+            AI->>QA: Security vulnerability scan
+            QA-->>AI: High priority issues found
+            AI->>AI: Apply security fixes
+        end
+        
+        loop Architecture Review (Cycle 2)
+            AI->>QA: SOLID principle validation
+            QA-->>AI: Medium priority violations
+            AI->>AI: Refactor architecture
+        end
+        
+        loop Performance Review (Cycle 3)
+            AI->>QA: Performance analysis
+            QA-->>AI: Optimization opportunities
+            AI->>AI: Apply performance improvements
+        end
+        
+        AI->>QA: Final comprehensive review
+        QA-->>AI: All standards met
+    end
+    
+    rect rgb(243, 229, 245)
+        Note over Task,Actions: Phase 3: Automated Validation
+        
+        Task->>QA: Run melos analyze
+        QA-->>Task: ✅ Static analysis passed
+        
+        Task->>QA: Run melos test
+        QA-->>Task: ✅ Tests passed
+        
+        Task->>QA: Run melos ci:format
+        QA-->>Task: ✅ Format validation passed
+        
+        Task->>Flutter: Build verification
+        Flutter-->>Task: ✅ Build successful
+    end
+    
+    rect rgb(232, 245, 233)
+        Note over Task,Actions: Phase 4: CI/CD Integration
+        
+        Task->>GitHub: Create Pull Request
+        GitHub-->>Actions: Trigger check-pr.yml workflow
+        
+        Actions->>Actions: dart analyze
+        Actions->>Actions: flutter test
+        Actions->>Actions: flutter build
+        Actions->>Actions: slang validation
+        
+        alt All Checks Pass
+            Actions-->>GitHub: ✅ Workflow succeeded
+            GitHub-->>Task: PR ready for review
+        else Check Failures
+            Actions-->>GitHub: ❌ Workflow failed
+            GitHub->>Task: Failure details
+            
+            Task->>QA: Automatic failure recovery
+            alt Recoverable Failure
+                QA->>QA: Apply fixes (format/lint/deps)
+                QA->>GitHub: Commit automatic fixes
+                GitHub->>Actions: Re-trigger workflow
+            else Manual Intervention Required
+                QA-->>Notification: Human review needed
+            end
+        end
+    end
+    
+    rect rgb(200, 230, 201)
+        Note over Task,Notification: Phase 5: Completion
+        
+        Task->>GitHub: Update Issue with PR link
+        GitHub-->>Task: Issue updated
+        
+        Task->>Workspace: Cleanup workspace (optional)
+        Workspace-->>Task: Resources released
+        
+        Task->>Notification: Send completion alarm
+        Notification-->>Task: ✅ Quality pipeline complete
+    end
+    
+    Note over Task,Notification: End-to-End Quality Assurance: 15-30 minutes
 ```
 
-**Monitoring Process**:
+#### Stage 1: Code Quality Analysis
 
-- Track `.github/workflows/check-pr.yml` execution
-- Analyze failure patterns for automatic correction
-- Ensure all quality gates pass before completion
+**Flutter-Specific Checks**:
+
+```bash
+# Static analysis with Flutter rules
+melos run analyze
+dart analyze --fatal-infos --fatal-warnings
+
+# Format validation
+melos run ci:format
+dart format --set-exit-if-changed .
+
+# Translation validation
+melos run analyze:slang
+```
+
+**Quality Metrics**:
+- Zero analyzer warnings/errors
+- 100% code formatting compliance
+- All translation keys validated
+
+#### Stage 2: Security Assessment
+
+**Automated Security Scan**:
+
+```bash
+# Dependency vulnerability check
+flutter pub deps --json | jq '.packages[] | select(.kind == "direct")'
+
+# Sensitive data detection
+grep -r "API_KEY\|SECRET\|PASSWORD" --exclude-dir=.git .
+```
+
+**Security Checklist**:
+- ✅ No hardcoded secrets or API keys
+- ✅ Proper input validation and sanitization
+- ✅ Secure data storage practices
+- ✅ Network security implementation
+
+#### Stage 3: AI Review Cycles (3-4 Iterations)
+
+**Structured Review Process**:
+
+```
+Review Template (400 character limit):
+1. Security vulnerabilities (HIGH)
+2. SOLID principle violations (MEDIUM)
+3. Performance optimization (LOW)
+
+Focus: Actionable feedback only
+```
+
+**Iterative Improvement**:
+- **Cycle 1**: Critical security issues
+- **Cycle 2**: Architectural violations
+- **Cycle 3**: Performance optimizations
+- **Cycle 4**: Final validation
+
+#### Stage 4: Test Execution
+
+**Comprehensive Testing**:
+
+```bash
+# Unit tests
+melos run test
+
+# Widget tests (specific files)
+cd app && fvm flutter test test/widget_test.dart
+
+# Integration tests (if available)
+cd app && fvm flutter test integration_test/
+```
+
+**Coverage Requirements**:
+- Unit tests for all business logic
+- Widget tests for UI components
+- Integration tests for critical flows
+
+#### Stage 5: Build Verification
+
+**Multi-platform Build Tests**:
+
+```bash
+# Android build
+cd app && fvm flutter build apk --debug
+
+# iOS build (macOS only)
+cd app && fvm flutter build ios --no-codesign --debug
+
+# Web build
+cd app && fvm flutter build web --debug
+```
+
+#### Stage 6: CI/CD Pipeline Integration
+
+**GitHub Actions Workflow**: `.github/workflows/check-pr.yml`
+
+**Monitored Checks**:
+- ✅ Static analysis (dart analyze)
+- ✅ Code formatting (dart format)
+- ✅ Test execution (flutter test)
+- ✅ Build verification (flutter build)
+- ✅ i18n validation (slang check)
+
+**Pipeline Monitoring**:
+
+```bash
+# Check workflow status
+gh run list --workflow=check-pr.yml --limit=1
+
+# View detailed logs
+gh run view --log
+
+# Re-trigger on failure
+gh workflow run check-pr.yml
+```
+
+#### Stage 7: Automatic Failure Recovery
+
+**Intelligent Error Resolution**:
+
+```bash
+# Failure Detection Pattern
+case "$failure_type" in
+    "format")
+        echo "🔧 Applying automatic formatting..."
+        melos run format
+        git add -A && git commit -m "style: apply automatic formatting"
+        ;;
+    "lint")
+        echo "🔧 Fixing lint issues..."
+        dart fix --apply
+        git add -A && git commit -m "fix: resolve lint issues"
+        ;;
+    "test")
+        echo "🔧 Analyzing test failures..."
+        # Run specific failing tests for diagnosis
+        melos run test --reporter=json > test_results.json
+        ;;
+    "build")
+        echo "🔧 Resolving build dependencies..."
+        melos clean && melos run get && melos run gen
+        ;;
+esac
+```
+
+**Recovery Success Rate**: Target 85% automatic resolution of common failures
+
+#### Stage 8: Quality Gate Validation
+
+**Final Quality Checklist**:
+
+```yaml
+Quality Gates:
+  Security:
+    - No high/critical vulnerabilities: ✅
+    - Input validation implemented: ✅
+    - Secure storage practices: ✅
+  
+  Architecture:
+    - SOLID principles followed: ✅
+    - Design patterns appropriate: ✅
+    - Code organization logical: ✅
+  
+  Performance:
+    - No obvious bottlenecks: ✅
+    - Efficient algorithms used: ✅
+    - Resource usage optimized: ✅
+  
+  Testing:
+    - Unit test coverage ≥80%: ✅
+    - Widget tests for UI: ✅
+    - Critical paths tested: ✅
+  
+  Documentation:
+    - Code comments where needed: ✅
+    - README updated if required: ✅
+    - API documentation complete: ✅
+```
+
+**Completion Criteria**: ALL quality gates must pass before proceeding to release
+
+**Human Escalation**: Quality gate failures after 2 automatic retry attempts require human intervention
 
 ### Automatic Failure Response
 
