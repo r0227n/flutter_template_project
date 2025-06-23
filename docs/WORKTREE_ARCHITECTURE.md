@@ -39,20 +39,20 @@ flutter_template_project/
 ```mermaid
 flowchart TB
     subgraph "プロジェクトルート"
-        MainRepo["🗂️ flutter_template_project<br/>(メインリポジトリ)"] 
-        
+        MainRepo["🗂️ flutter_template_project<br/>(メインリポジトリ)"]
+
         subgraph "作業ディレクトリ"
             CW[".claude-workspaces/"]
             CW --> W1["FEAT-123/<br/>🔧 新機能開発"]
             CW --> W2["UI-456/<br/>🎨 UI改善"]
             CW --> W3["BUG-789/<br/>🐛 バグ修正"]
         end
-        
+
         subgraph "Git内部管理"
             GitDir[".git/"]
             GitDir --> GM["worktrees/<br/>📝 メタデータ管理"]
         end
-        
+
         subgraph "共有リソース"
             App["app/<br/>📱 メインアプリ"]
             Pkg["packages/<br/>📦 共有パッケージ"]
@@ -60,27 +60,27 @@ flowchart TB
             Claude[".claude/<br/>⚙️ Claude設定"]
         end
     end
-    
+
     W1 -.->|参照| App
     W1 -.->|参照| Pkg
     W1 -.->|参照| Claude
-    
+
     W2 -.->|参照| App
     W2 -.->|参照| Pkg
     W2 -.->|参照| Claude
-    
+
     W3 -.->|参照| App
     W3 -.->|参照| Pkg
     W3 -.->|参照| Claude
-    
+
     GM -.->|管理| W1
     GM -.->|管理| W2
     GM -.->|管理| W3
-    
+
     classDef workspace fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
     classDef shared fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
     classDef internal fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    
+
     class W1,W2,W3 workspace
     class App,Pkg,Docs,Claude shared
     class GitDir,GM internal
@@ -301,41 +301,41 @@ flowchart LR
         MainGit --> Refs["refs/<br/>🔗 参照"]
         MainGit --> Config["config<br/>⚙️ 設定"]
         MainGit --> WMeta["worktrees/<br/>📝 メタデータ"]
-        
+
         subgraph "Worktreeメタデータ"
             WMeta --> W1Meta["FEAT-123/<br/>HEAD, commondir, gitdir"]
             WMeta --> W2Meta["UI-456/<br/>HEAD, commondir, gitdir"]
             WMeta --> W3Meta["BUG-789/<br/>HEAD, commondir, gitdir"]
         end
     end
-    
+
     subgraph "作業ディレクトリ"
         CWS[".claude-workspaces/"]
         CWS --> CW1["FEAT-123/"]
         CWS --> CW2["UI-456/"]
         CWS --> CW3["BUG-789/"]
-        
+
         CW1 --> GitRef1[".git<br/>(参照ファイル)"]
         CW2 --> GitRef2[".git<br/>(参照ファイル)"]
         CW3 --> GitRef3[".git<br/>(参照ファイル)"]
-        
+
         CW1 --> AppCode1["app/<br/>📱 アプリコード"]
         CW2 --> AppCode2["app/<br/>📱 アプリコード"]
         CW3 --> AppCode3["app/<br/>📱 アプリコード"]
     end
-    
+
     W1Meta -.->|管理| GitRef1
     W2Meta -.->|管理| GitRef2
     W3Meta -.->|管理| GitRef3
-    
+
     GitRef1 -.->|参照| MainGit
     GitRef2 -.->|参照| MainGit
     GitRef3 -.->|参照| MainGit
-    
+
     classDef meta fill:#fff3e0,stroke:#f57c00,stroke-width:2px
     classDef workspace fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
     classDef reference fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
-    
+
     class MainGit,WMeta,W1Meta,W2Meta,W3Meta meta
     class CWS,CW1,CW2,CW3,AppCode1,AppCode2,AppCode3 workspace
     class GitRef1,GitRef2,GitRef3 reference
@@ -376,26 +376,26 @@ sequenceDiagram
     participant Claude as 🤖 Claude Code
     participant Git as 📚 Git Worktree
     participant Flutter as 📱 Flutter
-    
+
     User->>Claude: /linear FEAT-123
     Claude->>Linear: Issue詳細取得
     Linear-->>Claude: Issue情報
-    
+
     Claude->>Git: worktree作成
     Note over Git: .claude-workspaces/FEAT-123/
     Git-->>Claude: 作業環境準備完了
-    
+
     Claude->>Flutter: 環境セットアップ
     Note over Flutter: flutter pub get<br/>コード生成
     Flutter-->>Claude: セットアップ完了
-    
+
     loop 開発サイクル
         Claude->>Claude: コード実装
         Claude->>Flutter: テスト実行
         Flutter-->>Claude: 結果
         Claude->>Git: コミット
     end
-    
+
     Claude->>Git: PR作成
     Claude->>Linear: Issue更新
     Linear-->>User: 完了通知
@@ -454,7 +454,7 @@ flowchart TD
         C["📁 専用ディレクトリ配置<br/>dev/branches/<br/>(代替案)"]
         D["📂 サブディレクトリ配置<br/>workspace/tasks/<br/>(検討案)"]
     end
-    
+
     subgraph "評価基準"
         E1["👁️ 可視性"]
         E2["🔧 IDE認識"]
@@ -462,16 +462,16 @@ flowchart TD
         E4["💾 バックアップ対象"]
         E5["🔐 権限問題"]
     end
-    
+
     A --> Score1["✅✅✅✅✅<br/>総合: 優秀"]
     B --> Score2["❌❌❌❌❌<br/>総合: 問題あり"]
     C --> Score3["✅✅⚠️✅✅<br/>総合: 良好"]
     D --> Score4["✅✅⚠️✅✅<br/>総合: 良好"]
-    
+
     classDef current fill:#e8f5e8,stroke:#2e7d32,stroke-width:3px
     classDef bad fill:#ffebee,stroke:#c62828,stroke-width:2px
     classDef alternative fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
-    
+
     class A,Score1 current
     class B,Score2 bad
     class C,D,Score3,Score4 alternative
@@ -583,41 +583,41 @@ flutter_template_project/
 flowchart TB
     subgraph "意思決定プロセス"
         Start(["Git Worktree配置の検討"]) --> Analysis["要件分析"]
-        
+
         Analysis --> Req1["📱 Flutter並行開発"]
         Analysis --> Req2["🤖 Claude Code連携"]
         Analysis --> Req3["📋 Linear統合"]
         Analysis --> Req4["👥 チーム開発"]
-        
+
         Req1 --> Eval["配置方式評価"]
         Req2 --> Eval
         Req3 --> Eval
         Req4 --> Eval
-        
+
         Eval --> Option1["🏠 ルート直下"]
         Eval --> Option2["🔒 .git直下"]
         Eval --> Option3["📁 専用ディレクトリ"]
-        
+
         Option1 --> Decision["✅ 最適解"]
         Option2 --> Reject1["❌ 問題あり"]
         Option3 --> Reject2["⚠️ 複雑化"]
-        
+
         Decision --> Final(["📁 .claude-workspaces/<br/>プロジェクトルート配置"])
     end
-    
+
     subgraph "実現効果"
         Final --> Effect1["🚀 開発効率向上"]
         Final --> Effect2["🔧 環境独立性"]
         Final --> Effect3["👁️ 高い可視性"]
         Final --> Effect4["📊 簡単な管理"]
     end
-    
+
     classDef start fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
     classDef requirement fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
     classDef decision fill:#e8f5e8,stroke:#2e7d32,stroke-width:3px
     classDef effect fill:#fff3e0,stroke:#f57c00,stroke-width:2px
     classDef reject fill:#ffebee,stroke:#c62828,stroke-width:2px
-    
+
     class Start,Final start
     class Req1,Req2,Req3,Req4 requirement
     class Decision,Effect1,Effect2,Effect3,Effect4 decision

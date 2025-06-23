@@ -35,7 +35,7 @@ export FLUTTER_VERSION_MANAGEMENT=fvm
 graph LR
     A[1. claude] --> B[2. /linear ABC-123]
     B --> C[3. ☕ 待つだけ]
-    
+
     style A fill:#e3f2fd
     style B fill:#fff3e0
     style C fill:#e8f5e8
@@ -43,12 +43,12 @@ graph LR
 
 ## 基本コマンド
 
-| コマンド | 説明 | 使用例 |
-|---------|-----|--------|
-| `/linear ABC-123` | Issue自動処理 | `/linear AUTH-001` |
-| `/linear` | 対話式Issue選択 | Issue選択画面が表示 |
-| `/linear-list` | Issue一覧表示 | 利用可能なIssue確認 |
-| `/linear-status` | 接続状況確認 | Linear連携チェック |
+| コマンド          | 説明            | 使用例              |
+| ----------------- | --------------- | ------------------- |
+| `/linear ABC-123` | Issue自動処理   | `/linear AUTH-001`  |
+| `/linear`         | 対話式Issue選択 | Issue選択画面が表示 |
+| `/linear-list`    | Issue一覧表示   | 利用可能なIssue確認 |
+| `/linear-status`  | 接続状況確認    | Linear連携チェック  |
 
 ### 実行例
 
@@ -72,19 +72,19 @@ graph TD
     A[Issue選択] --> B[最小実装作成]
     B --> C[AIレビュー]
     C --> D{問題の重要度}
-    
+
     D -->|高| E[セキュリティ修正]
     D -->|中| F[SOLID原則修正]
     D -->|低| G[パフォーマンス修正]
-    
+
     E --> H[再レビュー]
     F --> H
     G --> H
-    
+
     H --> I{品質OK?}
     I -->|No| C
     I -->|Yes| J[PR作成]
-    
+
     style A fill:#e1f5fe
     style C fill:#fff3e0
     style J fill:#e8f5e8
@@ -97,7 +97,7 @@ graph LR
     A[複数Issue指定] --> B[独立した作業環境]
     B --> C[並列実行]
     C --> D[効率UP!]
-    
+
     style A fill:#e1f5fe
     style D fill:#e8f5e8
 ```
@@ -114,6 +114,7 @@ graph LR
 ## 💡 使用例
 
 ### 新機能実装
+
 ```bash
 claude
 /linear AUTH-001  # ユーザー認証機能の実装
@@ -121,6 +122,7 @@ claude
 ```
 
 ### 緊急バグ修正
+
 ```bash
 claude
 /linear URGENT-999  # 重要なバグを即座に修正
@@ -128,6 +130,7 @@ claude
 ```
 
 ### 複数作業
+
 ```bash
 claude
 /linear AUTH-001 UI-002 BUG-003  # 3つ同時処理
@@ -137,17 +140,20 @@ claude
 ## よくある質問
 
 **Q: 複数Issue同時処理**
+
 ```bash
 /linear ABC-123 XYZ-456 DEF-789  # 複数指定
 # または別ターミナルで並列実行
 ```
 
 **Q: 作業状況確認**
+
 ```bash
 /linear-running  # 実行中タスク確認
 ```
 
 **Q: 失敗時の対応**
+
 - GitHub Actions失敗時は自動修正を試行
 - 修正不可の場合はPRにエラー報告
 - 必要に応じて手動修正
@@ -165,6 +171,7 @@ claude
 ```
 
 **原因と対策:**
+
 - MCP設定が正しくない → Linear MCP設定を再確認
 - APIキーの期限切れ → 新しいAPIキーに更新
 
@@ -211,11 +218,13 @@ git push origin feature/ISSUE-ID
 ## 📈 効率化のコツ
 
 ### Issue設計
+
 - 大きな機能は複数の小さなIssueに分割
 - 1つのIssueは1つの関心事に集中
 - 依存関係のないIssueは並列処理
 
 ### 品質管理
+
 - AIが作成したコードも必ず人間がレビュー
 - 自動テストの結果を必ず確認
 - 新機能は必ずドキュメントも更新

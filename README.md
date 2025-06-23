@@ -16,14 +16,14 @@
 
 ## 技術スタック
 
-| 分野 | 技術 | 役割 |
-|------|------|------|
-| **フレームワーク** | Flutter + FVM | マルチプラットフォーム開発 |
-| **状態管理** | Riverpod + Hooks | リアクティブな状態アーキテクチャ |
-| **ナビゲーション** | go_router | 型安全なルーティング |
-| **国際化** | slang | コード生成による多言語対応 |
-| **モノレポ** | Melos | パッケージ統合管理 |
-| **AI開発** | Claude Code + Linear | 自動化された開発ワークフロー |
+| 分野               | 技術                 | 役割                             |
+| ------------------ | -------------------- | -------------------------------- |
+| **フレームワーク** | Flutter + FVM        | マルチプラットフォーム開発       |
+| **状態管理**       | Riverpod + Hooks     | リアクティブな状態アーキテクチャ |
+| **ナビゲーション** | go_router            | 型安全なルーティング             |
+| **国際化**         | slang                | コード生成による多言語対応       |
+| **モノレポ**       | Melos                | パッケージ統合管理               |
+| **AI開発**         | Claude Code + Linear | 自動化された開発ワークフロー     |
 
 ## プロジェクト構成
 
@@ -45,11 +45,11 @@ flutter_template_project/
 
 ### 必要な環境
 
-| ツール | 推奨バージョン | インストール方法 |
-|--------|----------------|------------------|
-| Flutter | FVM管理 | `dart pub global activate fvm` |
-| Node.js | 18+ | [nodejs.org](https://nodejs.org/) |
-| Melos | 7.0+ | `dart pub global activate melos` |
+| ツール  | 推奨バージョン | インストール方法                  |
+| ------- | -------------- | --------------------------------- |
+| Flutter | FVM管理        | `dart pub global activate fvm`    |
+| Node.js | 18+            | [nodejs.org](https://nodejs.org/) |
+| Melos   | 7.0+           | `dart pub global activate melos`  |
 
 ### セットアップ手順
 
@@ -96,6 +96,7 @@ claude
 ```
 
 **特徴:**
+
 - Linear Issueの内容を解析し、自動実装
 - AI品質レビューによる反復改善
 - 自動テスト実行とPR作成
@@ -103,10 +104,10 @@ claude
 
 ## 重要なファイル
 
-| ファイル | 目的 | 読者 |
-|----------|------|------|
+| ファイル      | 目的                          | 読者       |
+| ------------- | ----------------------------- | ---------- |
 | **CLAUDE.md** | Claude Code用設定（AI指示書） | AIシステム |
-| **HUMAN.md** | 開発者向けCLAUDE.md解説書 | 開発チーム |
+| **HUMAN.md**  | 開発者向けCLAUDE.md解説書     | 開発チーム |
 
 これらのファイルは、AI支援開発の動作を制御する重要な設定です。
 
@@ -142,7 +143,7 @@ chore: その他のメンテナンス
 class CounterNotifier extends _$CounterNotifier {
   @override
   int build() => 0;
-  
+
   void increment() => state++;
 }
 
@@ -175,11 +176,11 @@ Text(context.i18n.settings.title)
 
 ## テスト戦略
 
-| テストレベル | 対象 | ツール |
-|--------------|------|--------|
-| ユニット | ビジネスロジック | flutter_test |
-| ウィジェット | UI コンポーネント | flutter_test |
-| 統合 | ユーザーフロー | integration_test |
+| テストレベル | 対象              | ツール           |
+| ------------ | ----------------- | ---------------- |
+| ユニット     | ビジネスロジック  | flutter_test     |
+| ウィジェット | UI コンポーネント | flutter_test     |
+| 統合         | ユーザーフロー    | integration_test |
 
 ```bash
 # 全テスト実行
@@ -191,12 +192,12 @@ melos run test --coverage
 
 ## ドキュメント
 
-| ドキュメント | 内容 | 対象者 |
-|--------------|------|--------|
-| [CLAUDE.md](CLAUDE.md) | AI開発設定 | Claude Code |
-| [HUMAN.md](HUMAN.md) | 設定解説書 | 開発者 |
-| [docs/VSCODE_SETTINGS.md](docs/VSCODE_SETTINGS.md) | エディタ設定 | 開発者 |
-| [docs/COMMITLINT_RULES.md](docs/COMMITLINT_RULES.md) | コミット規約 | 全メンバー |
+| ドキュメント                                         | 内容         | 対象者      |
+| ---------------------------------------------------- | ------------ | ----------- |
+| [CLAUDE.md](CLAUDE.md)                               | AI開発設定   | Claude Code |
+| [HUMAN.md](HUMAN.md)                                 | 設定解説書   | 開発者      |
+| [docs/VSCODE_SETTINGS.md](docs/VSCODE_SETTINGS.md)   | エディタ設定 | 開発者      |
+| [docs/COMMITLINT_RULES.md](docs/COMMITLINT_RULES.md) | コミット規約 | 全メンバー  |
 
 ## 貢献方法
 

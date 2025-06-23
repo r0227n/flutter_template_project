@@ -17,12 +17,12 @@ Flutter開発環境に最適化されたVS Code設定を提供し、開発効率
 
 ### Key Features
 
-| 機能 | 説明 | 効果 |
-|------|------|------|
-| **自動フォーマット** | 保存時の自動コードフォーマット | スタイル統一・コード品質向上 |
-| **生成ファイル除外** | build_runner等の生成ファイルを非表示 | 関連ファイルへの集中 |
-| **ファイルネスティング** | 関連ファイルのグループ化表示 | プロジェクト構造の理解促進 |
-| **言語固有設定** | Dart/YAML/Markdown専用設定 | 最適化された開発体験 |
+| 機能                     | 説明                                 | 効果                         |
+| ------------------------ | ------------------------------------ | ---------------------------- |
+| **自動フォーマット**     | 保存時の自動コードフォーマット       | スタイル統一・コード品質向上 |
+| **生成ファイル除外**     | build_runner等の生成ファイルを非表示 | 関連ファイルへの集中         |
+| **ファイルネスティング** | 関連ファイルのグループ化表示         | プロジェクト構造の理解促進   |
+| **言語固有設定**         | Dart/YAML/Markdown専用設定           | 最適化された開発体験         |
 
 ## Configuration Details
 
@@ -122,13 +122,13 @@ Flutter開発環境に最適化されたVS Code設定を提供し、開発効率
 
 ## Development Workflow Impact
 
-| カテゴリ | 改善点 | 具体的な効果 |
-|---------|--------|-------------|
-| **Code Quality** | 自動フォーマット・修正 | スタイル統一、エラー削減、可読性向上 |
-| **Development Efficiency** | ファイル管理最適化 | 関連ファイルへの集中、構造理解促進 |
-| **Team Collaboration** | 環境統一 | SDKバージョン統一、設定共有 |
-| **Search Performance** | 生成ファイル除外 | 検索精度向上、結果の関連性向上 |
-| **Project Navigation** | ファイルネスティング | 階層構造の理解、ナビゲーション効率化 |
+| カテゴリ                   | 改善点                 | 具体的な効果                         |
+| -------------------------- | ---------------------- | ------------------------------------ |
+| **Code Quality**           | 自動フォーマット・修正 | スタイル統一、エラー削減、可読性向上 |
+| **Development Efficiency** | ファイル管理最適化     | 関連ファイルへの集中、構造理解促進   |
+| **Team Collaboration**     | 環境統一               | SDKバージョン統一、設定共有          |
+| **Search Performance**     | 生成ファイル除外       | 検索精度向上、結果の関連性向上       |
+| **Project Navigation**     | ファイルネスティング   | 階層構造の理解、ナビゲーション効率化 |
 
 ## Customization Guide
 
@@ -191,12 +191,14 @@ Flutter開発環境に最適化されたVS Code設定を提供し、開発効率
 **Solutions**:
 
 1. **Extension Check**:
+
    ```bash
    # VS Code Extensions確認
    code --list-extensions | grep -E "(dart-code|prettier)"
    ```
 
 2. **Settings Verification**:
+
    - `editor.formatOnSave`: `true`になっているか
    - 言語固有設定が正しく記述されているか
    - デフォルトフォーマッターが適切に設定されているか
@@ -212,6 +214,7 @@ Flutter開発環境に最適化されたVS Code設定を提供し、開発効率
 **Solutions**:
 
 1. **Setting Check**:
+
    ```json
    {
      "explorer.fileNesting.enabled": true,
@@ -220,6 +223,7 @@ Flutter開発環境に最適化されたVS Code設定を提供し、開発効率
    ```
 
 2. **Pattern Validation**:
+
    - パターン構文の確認
    - ファイル名の一致確認
    - 正規表現の妥当性
@@ -235,6 +239,7 @@ Flutter開発環境に最適化されたVS Code設定を提供し、開発効率
 **Solutions**:
 
 1. **Exclude Pattern Check**:
+
    ```json
    {
      "search.exclude": {
@@ -250,10 +255,10 @@ Flutter開発環境に最適化されたVS Code設定を提供し、開発効率
 
 ## References
 
-| Resource | Description | URL |
-|----------|-------------|-----|
-| **VS Code Settings** | 公式設定リファレンス | [Settings Reference](https://code.visualstudio.com/docs/getstarted/settings) |
-| **Dart-Code Extension** | Dart/Flutter開発拡張機能 | [Dart-Code](https://dartcode.org/) |
-| **Prettier Extension** | コードフォーマッター | [Prettier VS Code](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) |
-| **Flutter VS Code** | Flutter開発ガイド | [Flutter Development](https://docs.flutter.dev/development/tools/vs-code) |
-| **File Nesting** | ファイルネスティング設定 | [File Nesting](https://code.visualstudio.com/updates/v1_67#_explorer-file-nesting) |
+| Resource                | Description              | URL                                                                                            |
+| ----------------------- | ------------------------ | ---------------------------------------------------------------------------------------------- |
+| **VS Code Settings**    | 公式設定リファレンス     | [Settings Reference](https://code.visualstudio.com/docs/getstarted/settings)                   |
+| **Dart-Code Extension** | Dart/Flutter開発拡張機能 | [Dart-Code](https://dartcode.org/)                                                             |
+| **Prettier Extension**  | コードフォーマッター     | [Prettier VS Code](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) |
+| **Flutter VS Code**     | Flutter開発ガイド        | [Flutter Development](https://docs.flutter.dev/development/tools/vs-code)                      |
+| **File Nesting**        | ファイルネスティング設定 | [File Nesting](https://code.visualstudio.com/updates/v1_67#_explorer-file-nesting)             |

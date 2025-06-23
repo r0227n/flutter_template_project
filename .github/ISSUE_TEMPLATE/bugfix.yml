@@ -1,7 +1,7 @@
 name: Bug Fix
 description: Report a bug for fixing using Claude Code and AI Review-First design
-title: "[BUG] "
-labels: ["bug", "claude-code"]
+title: '[BUG] '
+labels: ['bug', 'claude-code']
 assignees: []
 
 body:
@@ -9,7 +9,7 @@ body:
     attributes:
       value: |
         ## Bug Fix Template
-        
+
         This template follows Claude 4 best practices and AI Review-First design principles.
         Please provide clear, specific information to enable effective Claude Code automation.
 
@@ -18,7 +18,7 @@ body:
     attributes:
       label: Bug Title
       description: Clear and concise description of the bug
-      placeholder: "Login form validation fails with special characters"
+      placeholder: 'Login form validation fails with special characters'
     validations:
       required: true
 
@@ -52,7 +52,7 @@ body:
         2. 
         3. 
         4. 
-        5. 
+        5.
     validations:
       required: true
 
@@ -93,20 +93,20 @@ body:
         - [ ] iOS (version: )
         - [ ] Android (version: )
         - [ ] Web (browser: )
-        
+
         ### Device Information:
         - Device model: 
         - Screen size: 
         - Orientation: 
-        
+
         ### Flutter/App Information:
         - Flutter version: (check with `flutter --version`)
         - App version: 
         - Build mode: [ ] Debug [ ] Release [ ] Profile
-        
+
         ### Additional Context:
         - Network conditions: 
-        - Data state: 
+        - Data state:
     validations:
       required: true
 
@@ -122,16 +122,16 @@ body:
         - [ ] High (affects main user flows)
         - [ ] Medium (affects secondary features)
         - [ ] Low (minor inconvenience)
-        
+
         ### User Impact:
         - Affected users: 
         - Frequency: 
         - Workaround available: [ ] Yes [ ] No
-        
+
         ### Business Impact:
         - User experience degradation: 
         - Potential user loss: 
-        - Security implications: 
+        - Security implications:
     validations:
       required: true
 
@@ -151,15 +151,15 @@ body:
         - File: 
         - Function/Class: 
         - Line number: 
-        
+
         ### Error Analysis:
         - Error type: 
         - Stack trace: 
         - Related logs: 
-        
+
         ### Dependency Issues:
         - Package versions: 
-        - Configuration conflicts: 
+        - Configuration conflicts:
     validations:
       required: false
 
@@ -171,25 +171,25 @@ body:
         Define specific criteria for the AI review cycles when implementing the fix
       value: |
         ### Review Categories (Priority Order):
-        
+
         **High Priority - Security:**
         - [ ] Fix doesn't introduce security vulnerabilities
         - [ ] Input validation remains secure
         - [ ] No injection attack vectors created
         - [ ] Proper sanitization maintained
-        
+
         **Medium Priority - SOLID Principles:**
         - [ ] Fix follows Single Responsibility Principle
         - [ ] No violation of existing architectural patterns
         - [ ] Maintains loose coupling
         - [ ] Preserves testability
-        
+
         **Low Priority - Performance:**
         - [ ] Fix doesn't degrade performance
         - [ ] No memory leaks introduced
         - [ ] Efficient validation logic
         - [ ] Minimal overhead added
-        
+
         ### Review Constraints:
         - Each review summary: ≤ 400 characters
         - 3-4 review cycles maximum
@@ -209,19 +209,19 @@ body:
         - [ ] Fix the specific issue without breaking existing functionality
         - [ ] Maintain backward compatibility
         - [ ] Preserve current user experience for valid cases
-        
+
         ### Technical Requirements:
         - [ ] Follow project's coding standards and patterns
         - [ ] Use existing validation framework
         - [ ] Maintain integration with current auth system
         - [ ] Preserve error handling mechanisms
-        
+
         ### Testing Requirements:
         - [ ] Add regression tests for the specific bug
         - [ ] Ensure existing tests continue to pass
         - [ ] Add edge case coverage
         - [ ] Include both positive and negative test cases
-        
+
         ### Documentation Requirements:
         - [ ] Update relevant code comments
         - [ ] Add validation rule documentation if applicable
@@ -241,13 +241,13 @@ body:
         - [ ] Special characters in passwords are properly accepted
         - [ ] Valid login attempts succeed as expected
         - [ ] Invalid login attempts are still properly rejected
-        
+
         ### Regression Prevention:
         - [ ] All existing authentication tests pass
         - [ ] No new authentication issues introduced
         - [ ] Performance impact is negligible (< 5ms overhead)
         - [ ] Memory usage remains stable
-        
+
         ### Quality Gates:
         - [ ] Unit tests cover the fix and edge cases
         - [ ] Widget tests verify UI behavior
@@ -256,7 +256,7 @@ body:
         - [ ] Code formatting (dart format) applied
         - [ ] AI review cycles completed (3-4 iterations)
         - [ ] Security review passed for auth-related changes
-        
+
         ### Cross-Platform Validation:
         - [ ] Fix works on iOS
         - [ ] Fix works on Android  
@@ -276,25 +276,25 @@ body:
         - [ ] Edge cases with various special character combinations
         - [ ] Boundary condition tests (empty, max length, etc.)
         - [ ] Regression tests for related functionality
-        
+
         ### Test Coverage:
         - [ ] Unit tests for validation logic: 100%
         - [ ] Widget tests for form interaction: 90%+
         - [ ] Integration tests for auth flow: Critical paths
-        
+
         ### Manual Testing:
         - [ ] Cross-platform verification
         - [ ] Accessibility testing (screen readers, keyboard navigation)
         - [ ] Performance testing under various conditions
         - [ ] User experience validation
-        
+
         ### Test Data:
         ```
         Valid test cases:
         - MyP@ssw0rd!
         - complex#P@ssw0rd$
         - user.name+tag@domain.com
-        
+
         Invalid test cases:
         - (empty)
         - "password" (too simple)
@@ -315,25 +315,25 @@ body:
         - [ ] Focus on surgical fix: change minimum necessary code
         - [ ] Preserve existing architecture and patterns
         - [ ] Follow project's Flutter + Riverpod conventions
-        
+
         ### Analysis Phase:
         - [ ] Examine current validation logic thoroughly
         - [ ] Identify exact cause of the bug
         - [ ] Review related code and dependencies
         - [ ] Check for similar issues in codebase
-        
+
         ### Fix Implementation:
         - [ ] Implement minimal, targeted fix
         - [ ] Add comprehensive test coverage
         - [ ] Include proper error handling
         - [ ] Maintain code readability and maintainability
-        
+
         ### Automation Settings:
         - [ ] Enable background tasks: `ENABLE_BACKGROUND_TASKS=true`
         - [ ] Use git worktree for isolated development
         - [ ] Create PR in Japanese upon completion
         - [ ] Monitor GitHub Actions for completion confirmation
-        
+
         ### Quality Assurance:
         - [ ] Run `melos run analyze` before commit
         - [ ] Run `melos run test` before commit
@@ -353,17 +353,17 @@ body:
         ### Screenshots:
         - Before: [attach screenshot of error]
         - Expected: [attach screenshot of expected behavior]
-        
+
         ### Error Logs:
         ```
         [paste relevant console logs, stack traces, etc.]
         ```
-        
+
         ### Code Snippets:
         ```dart
         // Current problematic code (if known)
         ```
-        
+
         ### Related Issues:
         - Similar bugs: #123, #456
         - Related features: #789

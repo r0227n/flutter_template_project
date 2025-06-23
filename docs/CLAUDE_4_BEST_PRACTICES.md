@@ -30,11 +30,11 @@ flowchart LR
     C --> D{品質OK?}
     D -->|No| B
     D -->|Yes| E[リリース]
-    
+
     classDef start fill:#e1f5fe
     classDef review fill:#f3e5f5
     classDef end fill:#e8f5e8
-    
+
     class A start
     class B,C review
     class E end
@@ -53,11 +53,13 @@ flowchart LR
 ### 明確で具体的な指示
 
 ❌ **悪い例**
+
 ```text
 Flutterウィジェットを作成して
 ```
 
 ✅ **良い例**
+
 ```text
 Riverpodとhooks_riverpodを使用してユーザー設定画面を作成してください。
 要件:

@@ -193,6 +193,7 @@ This project uses **git worktree** for parallel development:
 4. **Conflict Prevention**: Isolated workspaces prevent interference between tasks
 
 **Basic git worktree commands**:
+
 ```bash
 # Create new worktree
 git worktree add path/to/worktree -b branch-name
