@@ -20,7 +20,7 @@ Convert bullet-point files into Linear Issues using AI Review-First methodology.
 ### Clear Instructions
 
 - Eliminate ambiguity in file parsing and template conversion
-- Define specific deliverables: structured Japanese content → GitHub template format → English translation → Linear Issue
+- Define specific outcomes: structured Japanese content → GitHub template format → English translation → Linear Issue
 - Provide structured review templates for content quality
 
 ### Structured Quality Assessment
@@ -74,7 +74,7 @@ Constraint: Summarize findings within 400 characters
 3. **Template Conversion**: Transform to GitHub ISSUE_TEMPLATE format in Japanese
 4. **Initial Quality Check**: Validate content structure against feature.yml
 
-**Quality Gate**: Well-formed Japanese GitHub ISSUE_TEMPLATE content
+**Success Criteria**: Well-formed Japanese GitHub ISSUE_TEMPLATE content
 
 ### Phase 2: Critical Review Cycles (3-4 Iterations)
 
@@ -99,7 +99,7 @@ Focus on the highest priority issues first.
 3. **Cycle 3**: Optimize file processing performance within feasible scope
 4. **Final Validation**: Human review of content quality and GitHub template compliance
 
-**Quality Gates**:
+**Quality Requirements**:
 
 - Security: Safe file access, secure API usage
 - Architecture: Clean separation of concerns
@@ -117,7 +117,7 @@ Focus on the highest priority issues first.
 5. **Japanese Comment Addition**: Add original Japanese content as comment
 6. **File Cleanup**: Remove created `.issue.md` file after successful processing
 
-**Quality Gate**: Successfully created Linear Issue with both languages and GitHub template compliance
+**Success Criteria**: Successfully created Linear Issue with both languages and GitHub template compliance
 
 ## Enhanced Core Workflow Implementation
 
@@ -133,23 +133,23 @@ const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
 const WORK_DIRECTORY = process.env.WORK_DIRECTORY || '.claude-workspaces'
 
 async function validateAndReadFile(filePath: string): Promise<string> {
-  // Input sanitization - prevent null bytes and control characters
+  // Input validation - prevent null bytes and control characters
   if (!filePath || /[\x00-\x1f\x7f-\x9f]/.test(filePath)) {
     throw new SecurityError('Access denied: Invalid file path characters')
   }
 
-  // Prevent directory traversal attacks
+  // Prevent directory access outside allowed areas
   const resolvedPath = resolve(filePath)
   const workDir = resolve(WORK_DIRECTORY)
   const relativePath = relative(workDir, resolvedPath)
 
-  // Enhanced path validation - check for traversal and absolute paths
+  // Enhanced path validation - check for unauthorized access patterns
   if (
     relativePath.startsWith('..') ||
     isAbsolute(relativePath) ||
     relativePath.includes('..')
   ) {
-    throw new SecurityError('Access denied: Path traversal attempt detected')
+    throw new SecurityError('Access denied: Unauthorized path access detected')
   }
 
   // Validate file extension using imported function
@@ -184,25 +184,25 @@ class ContentParser {
   private readonly BULLET_PATTERNS = [/^[\s]*[-*+]\s/, /^[\s]*\d+\.\s/]
 
   async parseBulletPoints(content: string): Promise<BulletPoint[]> {
-    // Performance optimization: Process lines in chunks for large files
+    // Performance optimization: Process lines in smaller parts for large files
     const lines = content.split('\n').filter(line => line.trim())
 
     if (lines.length > 1000) {
-      // Process large files in chunks to prevent memory issues
-      return this.buildHierarchyChunked(lines)
+      // Process large files in smaller parts to prevent memory issues
+      return this.buildHierarchyInParts(lines)
     }
 
     return this.buildHierarchy(lines)
   }
 
-  private buildHierarchyChunked(lines: string[]): BulletPoint[] {
-    const CHUNK_SIZE = 100
+  private buildHierarchyInParts(lines: string[]): BulletPoint[] {
+    const PART_SIZE = 100
     const result: BulletPoint[] = []
 
-    for (let i = 0; i < lines.length; i += CHUNK_SIZE) {
-      const chunk = lines.slice(i, i + CHUNK_SIZE)
-      const chunkResult = this.buildHierarchy(chunk)
-      result.push(...chunkResult)
+    for (let i = 0; i < lines.length; i += PART_SIZE) {
+      const part = lines.slice(i, i + PART_SIZE)
+      const partResult = this.buildHierarchy(part)
+      result.push(...partResult)
     }
 
     return result
@@ -231,9 +231,9 @@ class ContentParser {
 
   private extractContent(line: string): string {
     // Input validation - prevent malicious patterns
-    if (line.length > 10000) return '' // Prevent DoS via massive lines
+    if (line.length > 10000) return '' // Prevent system overload from very large lines
 
-    // Sanitize content - remove potential script injection patterns
+    // Clean content - remove potential harmful patterns
     const cleaned = line
       .replace(this.BULLET_PATTERNS[0], '')
       .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '') // Remove script tags
@@ -391,8 +391,8 @@ ${this.inferTechnicalContext(bullets)}
 ### Review Categories (Priority Order):
 
 **High Priority - Security:**
-- [ ] セキュリティ脆弱性の排除（SQLインジェクション、XSS等）
-- [ ] 適切な入力値検証とサニタイゼーション
+- [ ] セキュリティ脆弱性の排除（不正なデータ入力、スクリプト実行等）
+- [ ] 適切な入力値検証とデータ処理
 - [ ] 認証・認可の適切な実装
 - [ ] 機密データの適切な取り扱い
 
@@ -601,20 +601,18 @@ class TemplateConverterFactory {
 ### 4. Linear MCP Integration Implementation
 
 ```typescript
-// Linear MCP integration with robust error handling and session-independent operation
+// Linear MCP integration with robust error handling and dynamic team/project resolution
 class LinearMCPIntegration {
-  private static readonly DEFAULT_TEAM_ID =
-    '98d7872a-476e-4c41-8ea1-11680e183b10' // Ryo24Lab
-  private static readonly DEFAULT_PROJECT_ID =
-    '1f3c75f0-8650-4779-969c-28bc62e16333' // Template Project
+  private teamId: string | null = null
+  private projectId: string | null = null
 
   async createLinearIssueViaMCP(
     template: IssueTemplate,
     originalContent: string
   ): Promise<string> {
     try {
-      // Step 1: Validate MCP Linear availability
-      await this.validateMCPLinearAvailability()
+      // Step 1: Validate MCP Linear availability and get team/project info
+      await this.initializeMCPLinearConnection()
 
       // Step 2: Translate content to English
       const translatedTemplate = await this.translateToEnglish(template)
@@ -632,54 +630,125 @@ class LinearMCPIntegration {
     }
   }
 
-  private async validateMCPLinearAvailability(): Promise<void> {
+  private async initializeMCPLinearConnection(): Promise<void> {
     try {
-      // Check if Linear MCP is available by attempting to list teams
+      // Step 1: Get available teams
       const teams = await mcp__linear_mcp__list_teams()
-
+      
       if (!teams || teams.length === 0) {
         throw new MCPError(
           'Linear MCP is configured but no teams are accessible'
         )
       }
 
-      // Verify our default team exists
-      const defaultTeam = teams.find(
-        team => team.id === LinearMCPIntegration.DEFAULT_TEAM_ID
-      )
-      if (!defaultTeam) {
-        console.warn(
-          `⚠️ Default team ${LinearMCPIntegration.DEFAULT_TEAM_ID} not found, using first available team`
-        )
-      }
+      // Step 2: Select appropriate team (use first available or specific criteria)
+      this.teamId = await this.selectTeam(teams)
+      
+      // Step 3: Get available projects for the selected team
+      const projects = await mcp__linear_mcp__list_projects()
+      
+      // Step 4: Select appropriate project (optional)
+      this.projectId = await this.selectProject(projects)
 
-      console.log(
-        `📋 Linear MCP connected successfully. Available teams: ${teams.length}`
-      )
+      console.log(`📋 Linear MCP initialized successfully`)
+      console.log(`🏢 Team: ${this.getTeamName(teams, this.teamId)} (${this.teamId})`)
+      if (this.projectId) {
+        console.log(`📁 Project: ${this.getProjectName(projects, this.projectId)} (${this.projectId})`)
+      }
+      
     } catch (error) {
       throw new MCPError(
-        `Linear MCP not available or not properly configured: ${error.message}\n` +
+        `Linear MCP initialization failed: ${error.message}\n` +
           'Please ensure Linear MCP is installed and configured with proper API credentials.'
       )
     }
   }
 
+  private async selectTeam(teams: any[]): Promise<string> {
+    // Strategy 1: Look for team with common development-related names
+    const preferredNames = ['development', 'dev', 'main', 'primary', 'default']
+    
+    for (const name of preferredNames) {
+      const team = teams.find(t => 
+        t.name?.toLowerCase().includes(name) || 
+        t.key?.toLowerCase().includes(name)
+      )
+      if (team) {
+        console.log(`🎯 Selected team by name preference: ${team.name}`)
+        return team.id
+      }
+    }
+    
+    // Strategy 2: Use first available team
+    const firstTeam = teams[0]
+    console.log(`📍 Using first available team: ${firstTeam.name}`)
+    return firstTeam.id
+  }
+
+  private async selectProject(projects: any[]): Promise<string | null> {
+    if (!projects || projects.length === 0) {
+      console.log('📂 No projects available, creating issue without project association')
+      return null
+    }
+
+    // Strategy 1: Look for template or default project
+    const preferredNames = ['template', 'default', 'general', 'main']
+    
+    for (const name of preferredNames) {
+      const project = projects.find(p => 
+        p.name?.toLowerCase().includes(name) || 
+        p.key?.toLowerCase().includes(name)
+      )
+      if (project) {
+        console.log(`🎯 Selected project by name preference: ${project.name}`)
+        return project.id
+      }
+    }
+    
+    // Strategy 2: Use first available project
+    const firstProject = projects[0]
+    console.log(`📍 Using first available project: ${firstProject.name}`)
+    return firstProject.id
+  }
+
+  private getTeamName(teams: any[], teamId: string): string {
+    const team = teams.find(t => t.id === teamId)
+    return team?.name || 'Unknown Team'
+  }
+
+  private getProjectName(projects: any[], projectId: string | null): string {
+    if (!projectId) return 'No Project'
+    const project = projects.find(p => p.id === projectId)
+    return project?.name || 'Unknown Project'
+  }
+
   private async createIssueViaMCP(
     template: IssueTemplate
   ): Promise<{ id: string; url: string }> {
+    if (!this.teamId) {
+      throw new MCPError('Team ID not initialized. Please call initializeMCPLinearConnection first.')
+    }
+
     // Prepare issue parameters for MCP Linear API
-    const issueParams = {
+    const issueParams: any = {
       title: template.title,
       description: template.description,
-      teamId: LinearMCPIntegration.DEFAULT_TEAM_ID, // REQUIRED: Create in Team, not Project
+      teamId: this.teamId, // REQUIRED: Create in Team, dynamically retrieved
       priority: this.mapPriorityToLinearValue(template.priority),
-      // Optional: Associate with project within the team
-      projectId: LinearMCPIntegration.DEFAULT_PROJECT_ID,
+    }
+
+    // Optional: Associate with project within the team if available
+    if (this.projectId) {
+      issueParams.projectId = this.projectId
     }
 
     try {
-      // Call Linear MCP function with explicit team-based creation
-      console.log(`📤 Creating issue in team: ${issueParams.teamId}`)
+      // Call Linear MCP function with dynamic team-based creation
+      console.log(`📤 Creating issue in team: ${this.teamId}`)
+      if (this.projectId) {
+        console.log(`📁 Associating with project: ${this.projectId}`)
+      }
+      
       const result = await mcp__linear_mcp__create_issue(issueParams)
 
       if (!result || !result.id || !result.url) {
@@ -700,8 +769,19 @@ class LinearMCPIntegration {
 
       if (error.message.includes('team')) {
         throw new MCPError(
-          `Team access error: ${error.message}. Using fallback team ID: ${LinearMCPIntegration.DEFAULT_TEAM_ID}`
+          `Team access error: ${error.message}. Team ID: ${this.teamId}`
         )
+      }
+
+      if (error.message.includes('project')) {
+        console.warn(`⚠️ Project association failed, retrying without project: ${error.message}`)
+        // Retry without project association
+        delete issueParams.projectId
+        const retryResult = await mcp__linear_mcp__create_issue(issueParams)
+        return {
+          id: retryResult.id,
+          url: retryResult.url,
+        }
       }
 
       throw new MCPError(`Linear issue creation failed: ${error.message}`)
@@ -1015,9 +1095,9 @@ class FileToIssueCommand {
 ### 1. AI Review-First Standards
 
 - ✅ **3-4 review cycles completed successfully**
-- ✅ **Security**: Path traversal protection, input sanitization, credential management
+- ✅ **Security**: Path access protection, input validation, credential management
 - ✅ **SOLID Principles**: Clean separation of concerns, extensible factory pattern
-- ✅ **Performance**: Chunked processing for large files, translation caching, early termination
+- ✅ **Performance**: Batch processing for large files, translation caching, early termination
 
 ### 2. Functional Requirements
 
@@ -1058,12 +1138,15 @@ class FileToIssueCommand {
 
 🌐 Translating to English...
 📤 Creating Linear Issue via MCP...
-📋 Linear MCP connected successfully. Available teams: 1
-📤 Creating issue in team: 98d7872a-476e-4c41-8ea1-11680e183b10
+📋 Linear MCP initialized successfully
+🏢 Team: Development Team (team-abc123)
+📁 Project: Main Project (project-xyz789)
+📤 Creating issue in team: team-abc123
+📁 Associating with project: project-xyz789
 📝 Added Japanese content as comment
 🗑️ Cleaning up issue file...
 
-✅ Linear Issue created: https://linear.app/team/issue/ABC-123
+✅ Linear Issue created: https://linear.app/team/issue/TASK-123
 ```
 
 ### No Arguments Example
@@ -1096,8 +1179,8 @@ class FileToIssueCommand {
 - **Session Independence**: Command works without relying on active session data
 - **MCP Connectivity**: Validates Linear MCP availability before processing
 - **Error Recovery**: Graceful fallback when MCP services are unavailable
-- **Team-Based Creation**: Issues always created in specified team (Ryo24Lab)
-- **Project Association**: Optional project linking within the team structure
+- **Dynamic Team Selection**: Automatically selects appropriate team from available options
+- **Project Association**: Optional project linking within the selected team structure
 
 ### Success Factors
 
@@ -1132,8 +1215,9 @@ This command relies on the following MCP Linear functions:
 
 ```typescript
 // MCP Linear API functions
-mcp__linear_mcp__list_teams() // Validate MCP connectivity
-mcp__linear_mcp__create_issue(params) // Create issues in team
+mcp__linear_mcp__list_teams()           // Retrieve available teams
+mcp__linear_mcp__list_projects()        // Retrieve available projects  
+mcp__linear_mcp__create_issue(params)   // Create issues in selected team
 mcp__linear_mcp__create_comment(params) // Add Japanese content as comment
 ```
 
@@ -1142,7 +1226,7 @@ mcp__linear_mcp__create_comment(params) // Add Japanese content as comment
 The implementation includes robust fallback mechanisms:
 
 1. **MCP Availability Check**: Validates Linear MCP is accessible before proceeding
-2. **Hardcoded Team/Project IDs**: No reliance on dynamic session data
+2. **Dynamic Team/Project Resolution**: Automatically retrieves and selects appropriate teams/projects
 3. **Graceful Error Handling**: Clear error messages when MCP is unavailable
 4. **Fallback Content**: Original content preserved if translation fails
 
