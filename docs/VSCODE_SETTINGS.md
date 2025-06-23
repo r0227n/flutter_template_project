@@ -1,17 +1,30 @@
 # VS Code Settings Configuration
 
-このドキュメントでは、プロジェクトの`.vscode/settings.json`で設定されている各項目について詳しく解説します。
+プロジェクトの`.vscode/settings.json`設定ファイルの詳細解説ドキュメント
 
-## 概要
+## Table of Contents
 
-Flutter開発に最適化されたVS Code設定で、以下の機能を提供します：
+- [Overview](#overview)
+- [Configuration Details](#configuration-details)
+- [Development Workflow Impact](#development-workflow-impact)
+- [Customization Guide](#customization-guide)
+- [Troubleshooting](#troubleshooting)
+- [References](#references)
 
-- 自動フォーマット（保存時）
-- 生成ファイルの非表示化
-- ファイルネスティング
-- 言語固有の設定
+## Overview
 
-## 設定項目の詳細
+Flutter開発環境に最適化されたVS Code設定を提供し、開発効率とコード品質を向上させます。
+
+### Key Features
+
+| 機能 | 説明 | 効果 |
+|------|------|------|
+| **自動フォーマット** | 保存時の自動コードフォーマット | スタイル統一・コード品質向上 |
+| **生成ファイル除外** | build_runner等の生成ファイルを非表示 | 関連ファイルへの集中 |
+| **ファイルネスティング** | 関連ファイルのグループ化表示 | プロジェクト構造の理解促進 |
+| **言語固有設定** | Dart/YAML/Markdown専用設定 | 最適化された開発体験 |
+
+## Configuration Details
 
 ### Flutter & Dart Configuration
 
@@ -107,70 +120,140 @@ Flutter開発に最適化されたVS Code設定で、以下の機能を提供し
 | `[markdown].editor.formatOnSave`     | `true`                   | 保存時にフォーマット             | ドキュメント品質向上           |
 | `[markdown].editor.wordWrap`         | `on`                     | 長い行の自動折り返し             | 可読性向上                     |
 
-## 開発ワークフローへの影響
+## Development Workflow Impact
 
-### 1. コード品質の向上
+| カテゴリ | 改善点 | 具体的な効果 |
+|---------|--------|-------------|
+| **Code Quality** | 自動フォーマット・修正 | スタイル統一、エラー削減、可読性向上 |
+| **Development Efficiency** | ファイル管理最適化 | 関連ファイルへの集中、構造理解促進 |
+| **Team Collaboration** | 環境統一 | SDKバージョン統一、設定共有 |
+| **Search Performance** | 生成ファイル除外 | 検索精度向上、結果の関連性向上 |
+| **Project Navigation** | ファイルネスティング | 階層構造の理解、ナビゲーション効率化 |
 
-- 自動フォーマットによるスタイル統一
-- 保存時の自動修正によるエラー削減
-- import文の自動整理による可読性向上
+## Customization Guide
 
-### 2. 開発効率の向上
+### Adding New Generated File Types
 
-- 生成ファイルの非表示化により、関連ファイルに集中
-- ファイルネスティングによるプロジェクト構造の理解
-- リアルタイム検索による素早いファイル発見
-
-### 3. チーム開発の効率化
-
-- Flutter SDKバージョンの統一
-- コードスタイルの自動統一
-- 設定ファイルの共有による環境統一
-
-## カスタマイズ方法
-
-### 新しい生成ファイルタイプの追加
+生成ファイルタイプを追加する場合の設定例：
 
 ```json
-"search.exclude": {
-  "**/*.your_extension.dart": true
-},
-"explorer.fileNesting.patterns": {
-  "*.dart": "${capture}.g.dart, ${capture}.your_extension.dart"
+{
+  "search.exclude": {
+    "**/*.your_extension.dart": true,
+    "**/*.generated.dart": true
+  },
+  "explorer.fileNesting.patterns": {
+    "*.dart": "${capture}.g.dart, ${capture}.freezed.dart, ${capture}.your_extension.dart"
+  }
 }
 ```
 
-### 言語固有設定の追加
+### Language-Specific Configuration
+
+新しい言語サポートを追加する場合：
 
 ```json
-"[json]": {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true
+{
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  }
 }
 ```
 
-## トラブルシューティング
+### Custom File Nesting Patterns
 
-### フォーマッターが動作しない場合
+プロジェクト固有のファイルネスティングパターン：
 
-1. 拡張機能のインストール確認:
+```json
+{
+  "explorer.fileNesting.patterns": {
+    "*.component.ts": "${capture}.component.html, ${capture}.component.scss, ${capture}.component.spec.ts",
+    "*.service.ts": "${capture}.service.spec.ts",
+    "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml"
+  }
+}
+```
 
-   - Dart-Code.dart-code
-   - esbenp.prettier-vscode
+## Troubleshooting
 
-2. 設定の確認:
-   - `editor.formatOnSave`が`true`になっているか
+### Formatter Not Working
+
+**Problem**: コードが保存時にフォーマットされない
+
+**Solutions**:
+
+1. **Extension Check**:
+   ```bash
+   # VS Code Extensions確認
+   code --list-extensions | grep -E "(dart-code|prettier)"
+   ```
+
+2. **Settings Verification**:
+   - `editor.formatOnSave`: `true`になっているか
    - 言語固有設定が正しく記述されているか
+   - デフォルトフォーマッターが適切に設定されているか
 
-### ファイルネスティングが表示されない場合
+3. **Configuration Reload**:
+   - VS Code再起動
+   - 設定ファイルの再読み込み
 
-1. `explorer.fileNesting.enabled`が`true`になっているか確認
-2. パターンが正しく記述されているか確認
-3. VS Codeの再起動を試行
+### File Nesting Issues
 
-## 参考資料
+**Problem**: ファイルネスティングが表示されない
 
-- [VS Code Settings Reference](https://code.visualstudio.com/docs/getstarted/settings)
-- [Dart-Code Extension](https://dartcode.org/)
-- [Prettier VS Code Extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
-- [Flutter Development on VS Code](https://docs.flutter.dev/development/tools/vs-code)
+**Solutions**:
+
+1. **Setting Check**:
+   ```json
+   {
+     "explorer.fileNesting.enabled": true,
+     "explorer.fileNesting.expand": false
+   }
+   ```
+
+2. **Pattern Validation**:
+   - パターン構文の確認
+   - ファイル名の一致確認
+   - 正規表現の妥当性
+
+3. **Workspace Reload**:
+   - ワークスペースの再読み込み
+   - VS Code完全再起動
+
+### Search Exclusion Problems
+
+**Problem**: 生成ファイルが検索結果に表示される
+
+**Solutions**:
+
+1. **Exclude Pattern Check**:
+   ```json
+   {
+     "search.exclude": {
+       "**/*.g.dart": true,
+       "**/*.freezed.dart": true
+     }
+   }
+   ```
+
+2. **Global vs Workspace Settings**:
+   - ワークスペース設定の優先確認
+   - グローバル設定との競合チェック
+
+## References
+
+| Resource | Description | URL |
+|----------|-------------|-----|
+| **VS Code Settings** | 公式設定リファレンス | [Settings Reference](https://code.visualstudio.com/docs/getstarted/settings) |
+| **Dart-Code Extension** | Dart/Flutter開発拡張機能 | [Dart-Code](https://dartcode.org/) |
+| **Prettier Extension** | コードフォーマッター | [Prettier VS Code](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) |
+| **Flutter VS Code** | Flutter開発ガイド | [Flutter Development](https://docs.flutter.dev/development/tools/vs-code) |
+| **File Nesting** | ファイルネスティング設定 | [File Nesting](https://code.visualstudio.com/updates/v1_67#_explorer-file-nesting) |
