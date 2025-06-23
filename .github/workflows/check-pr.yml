@@ -13,8 +13,10 @@ env:
 
 jobs:
   analyze-and-format:
-    name: Analyze and Format Check
+    name: Dart Analysis and Format Check
     runs-on: ubuntu-24.04
+    needs: check-file-changes
+    if: needs.check-file-changes.outputs.dart_changed > 0
 
     steps:
       # https://github.com/actions/checkout
@@ -37,6 +39,7 @@ jobs:
     name: Check File Changes
     runs-on: ubuntu-24.04
     outputs:
+      dart_changed: ${{ steps.check_changes.outputs.dart_changed }}
       i18n_files_exist: ${{ steps.check_i18n_files.outputs.files_exists }}
       yml_changed: ${{ steps.check_changes.outputs.yml_changed }}
       yaml_changed: ${{ steps.check_changes.outputs.yaml_changed }}
