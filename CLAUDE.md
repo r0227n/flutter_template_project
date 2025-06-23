@@ -36,33 +36,35 @@ This is a Flutter mobile application development project using Claude Code with 
 
 ```
 flutter_template_project/
-├── app/                         # Main Flutter application
+├── .claude-workspaces/         # Claude Code working directories (replaces worktrees/)
+├── app/                        # Main Flutter application
 │   ├── lib/
-│   │   ├── main.dart           # Entry point
-│   │   ├── pages/              # UI pages (home_page.dart, settings_page.dart)
-│   │   │   ├── home/           # Home page components
-│   │   │   └── settings/       # Settings page components
-│   │   ├── router/             # go_router config and type-safe route definitions
-│   │   └── i18n/               # slang-generated multilingual files
-│   ├── assets/i18n/            # JSON translation files (ja.i18n.json, en.i18n.json)
-│   ├── test/                   # Widget tests
-│   ├── android/                # Android platform specific files
-│   ├── ios/                    # iOS platform specific files
-│   ├── web/                    # Web platform specific files
-│   ├── linux/                  # Linux platform specific files
-│   ├── macos/                  # macOS platform specific files
-│   └── windows/                # Windows platform specific files
-├── packages/                   # Shared packages (currently empty)
-├── docs/                       # Project documentation
+│   │   ├── main.dart          # Entry point
+│   │   ├── pages/             # UI pages
+│   │   │   ├── home/          # Home page components
+│   │   │   └── settings/      # Settings page components
+│   │   ├── router/            # go_router config and type-safe route definitions
+│   │   └── i18n/              # slang-generated multilingual files
+│   ├── assets/i18n/           # JSON translation files (ja.i18n.json, en.i18n.json)
+│   ├── test/                  # Widget tests
+│   ├── android/               # Android platform specific files
+│   ├── ios/                   # iOS platform specific files
+│   ├── web/                   # Web platform specific files
+│   ├── linux/                 # Linux platform specific files
+│   ├── macos/                 # macOS platform specific files
+│   └── windows/               # Windows platform specific files
+├── packages/                  # Shared packages (currently empty)
+├── docs/                      # Project documentation
 │   ├── CLAUDE_4_BEST_PRACTICES.md
 │   ├── COMMITLINT_RULES.md
+│   ├── COMMITLINT_YAML_CONFIGURATION.md
 │   ├── MELOS_SETUP.md
+│   ├── VSCODE_SETTINGS.md
 │   └── WORKTREE_ARCHITECTURE.md
-├── scripts/                    # Build and utility scripts
-├── memos/                      # Development memos and notes
-├── worktrees/                  # Git worktree working directories
-├── pubspec.yaml                # Workspace configuration
-└── package.json                # Node.js dependencies (commitlint, prettier)
+├── scripts/                   # Build and utility scripts
+├── memos/                     # Development memos and notes
+├── pubspec.yaml               # Workspace configuration
+└── package.json               # Node.js dependencies (commitlint, prettier)
 ```
 
 <!-- END AUTO-GENERATED SECTION -->
