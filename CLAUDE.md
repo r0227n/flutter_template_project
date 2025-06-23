@@ -2,110 +2,121 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## プロジェクト概要
+## Claude 4 Best Practices Application
 
-このプロジェクトはFlutterを使用したモバイルアプリケーション開発プロジェクトです。Claude Codeを使用して、Linear Issue管理システムと連携した自動化開発ワークフローを実現します。
+This project follows the Claude 4 prompt engineering best practices defined in `docs/CLAUDE_4_BEST_PRACTICES.md`. We emphasize the following principles:
 
-### 技術スタック
+1. **AI Review-First Design**: "Small draft → Critical review → Regenerate → Release" cycle
+2. **Clear and Specific Instructions**: Eliminate ambiguity and clearly define expected deliverables
+3. **Structured Review Templates**: Evaluate code from security, SOLID principles, and performance perspectives
+4. **Iterative Improvement**: Enhance quality through 3-4 review cycles
 
-- **フレームワーク**: Flutter (Workspace/Monorepo構造)
-- **バージョン管理**: fvm (Flutter Version Management)
-- **タスク管理**: Linear (MCP連携済み)
-- **並列開発**: git worktree
-- **自動化**: Claude Code with background tasks
+For details, refer to [Claude 4 Best Practices](docs/CLAUDE_4_BEST_PRACTICES.md).
+
+## Project Overview
+
+This is a Flutter mobile application development project using Claude Code with automated development workflow integrated with Linear Issue management system.
+
+### Technology Stack
+
+- **Framework**: Flutter (Workspace/Monorepo structure)
+- **Version Management**: fvm (Flutter Version Management)
+- **Task Management**: Linear (MCP integrated)
+- **Parallel Development**: git worktree
+- **Automation**: Claude Code with background tasks
 - **State Management**: Riverpod (hooks_riverpod, riverpod_annotation)
 - **Navigation**: go_router (declarative routing)
 - **Internationalization**: slang (type-safe translations)
 - **Build Tools**: build_runner, freezed
 - **Monorepo Management**: Melos + pub workspace
 
-## プロジェクト構造
+## Project Structure
 
 ```
 flutter_template_project/
-├── app/                         # メインFlutterアプリケーション
+├── app/                         # Main Flutter application
 │   ├── lib/
-│   │   ├── main.dart           # エントリーポイント
-│   │   ├── pages/              # UIページ (home_page.dart, settings_page.dart)
-│   │   ├── router/             # go_router設定と型安全ルート定義
-│   │   └── i18n/               # slang生成の多言語ファイル
-│   ├── assets/i18n/            # JSON翻訳ファイル (ja.i18n.json, en.i18n.json)
-│   └── test/                   # ウィジェットテスト
+│   │   ├── main.dart           # Entry point
+│   │   ├── pages/              # UI pages (home_page.dart, settings_page.dart)
+│   │   ├── router/             # go_router config and type-safe route definitions
+│   │   └── i18n/               # slang-generated multilingual files
+│   ├── assets/i18n/            # JSON translation files (ja.i18n.json, en.i18n.json)
+│   └── test/                   # Widget tests
 ├── packages/
-│   └── app_preferences/        # 共有preferences管理パッケージ
+│   └── app_preferences/        # Shared preferences management package
 │       ├── lib/
 │       │   ├── src/
-│       │   │   ├── providers/  # Riverpodプロバイダー
+│       │   │   ├── providers/  # Riverpod providers
 │       │   │   ├── repositories/
 │       │   │   └── theme/
-│       │   └── widgets/        # 再利用可能なウィジェット
-│       └── assets/i18n/        # パッケージ固有の翻訳
-├── pubspec.yaml                # Workspace設定
-└── melos.yaml                  # (pubspec.yaml内に統合)
+│       │   └── widgets/        # Reusable widgets
+│       └── assets/i18n/        # Package-specific translations
+├── pubspec.yaml                # Workspace configuration
+└── melos.yaml                  # (integrated in pubspec.yaml)
 ```
 
-## 環境設定
+## Environment Setup
 
-### 必須要件
+### Requirements
 
-- Flutter SDK (fvmで管理)
-- Git worktree対応
-- Linear MCP設定完了
-- Claude Code ENABLE_BACKGROUND_TASKS有効化
-- Node.js (commitlint, prettier用)
+- Flutter SDK (managed by fvm)
+- Git worktree support
+- Linear MCP configuration completed
+- Claude Code ENABLE_BACKGROUND_TASKS enabled
+- Node.js (for commitlint, prettier)
 
-## 開発コマンド
+## Development Commands
 
-### Melosコマンド (推奨)
+### Melos Commands (Recommended)
 
 ```bash
-# コード生成 (freezed, riverpod, go_router, slang)
+# Code generation (freezed, riverpod, go_router, slang)
 melos run gen
 
-# 依存関係取得
+# Install dependencies
 melos run get
 
-# 静的解析
+# Static analysis
 melos run analyze
 
-# slang翻訳チェック
+# slang translation check
 melos run analyze:slang
 
-# コードフォーマット
+# Code formatting
 melos run format
 
-# テスト実行
+# Run tests
 melos run test
 
-# CI用フォーマットチェック
+# CI format check
 melos run ci:format
 ```
 
-### Flutter直接コマンド (fvm使用)
+### Direct Flutter Commands (using fvm)
 
 ```bash
-# アプリケーション実行
+# Run application
 cd app && fvm flutter run
 
-# テスト実行（単一ファイル）
+# Run tests (single file)
 cd app && fvm flutter test test/widget_test.dart
 
-# ビルド
+# Build
 cd app && fvm flutter build apk
 cd app && fvm flutter build ios --no-codesign
 ```
 
-### Node.js関連コマンド
+### Node.js Related Commands
 
 ```bash
-# YAML/Markdownリント
+# YAML/Markdown lint
 npm run lint
 
-# YAML/Markdownフォーマット
+# YAML/Markdown format
 npm run format
 ```
 
-### 環境変数
+### Environment Variables
 
 ```bash
 export ENABLE_BACKGROUND_TASKS=true
@@ -116,553 +127,607 @@ export PR_LANGUAGE=japanese
 export COMPLETION_NOTIFICATION=alarm
 export INTERACTIVE_MODE=true
 export ISSUE_SELECTION_UI=enabled
-export AUTO_CONFIRM_WITH_ARGS=true      # 引数ありの場合は確認をスキップ
-export SILENT_MODE_WITH_ARGS=false      # 進捗表示は継続
-export ERROR_ONLY_OUTPUT=false          # エラー以外も表示
-export CLAUDE_ISOLATION_MODE=true       # 並列実行時の作業分離
-export CLAUDE_WORKSPACE_DIR=".claude-workspaces" # プロジェクト内作業ディレクトリ
-export CLAUDE_MEMORY_ISOLATION=true     # メモリ・コンテキスト分離
-export GITHUB_ACTIONS_CHECK=true        # GitHub Actions完了チェック有効
-export CHECK_PR_WORKFLOW="check-pr.yml" # 監視対象ワークフローファイル
+export AUTO_CONFIRM_WITH_ARGS=true      # Skip confirmation when arguments provided
+export SILENT_MODE_WITH_ARGS=false      # Continue progress display
+export ERROR_ONLY_OUTPUT=false          # Display non-error output
+export CLAUDE_ISOLATION_MODE=true       # Work isolation during parallel execution
+export CLAUDE_WORKSPACE_DIR=".claude-workspaces" # Project-internal working directory
+export CLAUDE_MEMORY_ISOLATION=true     # Memory/context isolation
+export GITHUB_ACTIONS_CHECK=true        # Enable GitHub Actions completion check
+export CHECK_PR_WORKFLOW="check-pr.yml" # Target workflow file to monitor
 ```
 
-## アーキテクチャ設計
+## Architecture Design
 
 ### State Management: Riverpod
 
-- **Providers**: `app_preferences/lib/src/providers/`に配置
-- **コード生成**: `@riverpod`アノテーションを使用し、`melos run gen`で生成
-- **AsyncValue**: 非同期操作の状態管理に使用
+- **Providers**: Located in `app_preferences/lib/src/providers/`
+- **Code Generation**: Use `@riverpod` annotation, generate with `melos run gen`
+- **AsyncValue**: Used for asynchronous operation state management
 - **Provider Types**:
-  - `StateNotifierProvider`: 状態変更を伴うロジック
-  - `FutureProvider`: 非同期データの取得
-  - `StreamProvider`: リアルタイムデータストリーム
+  - `StateNotifierProvider`: Logic with state changes
+  - `FutureProvider`: Asynchronous data retrieval
+  - `StreamProvider`: Real-time data streams
 
 ### Navigation: go_router
 
-- **ルート定義**: `app/lib/router/app_routes.dart`
-- **型安全ルーティング**: `@TypedGoRoute`アノテーションで型安全を実現
-- **遷移例**: `HomePageRoute().go(context)`
+- **Route Definition**: `app/lib/router/app_routes.dart`
+- **Type-safe Routing**: Achieve type safety with `@TypedGoRoute` annotation
+- **Navigation Example**: `HomePageRoute().go(context)`
 
 ### Internationalization: slang
 
-- **翻訳ファイル**: `app/assets/i18n/`に`ja.i18n.json`と`en.i18n.json`を配置
-- **型安全アクセス**: `context.i18n.someKey`で翻訳文字列にアクセス
-- **動的切り替え**: LocaleSettingsを使用して実行時に言語切り替え可能
+- **Translation Files**: Place `ja.i18n.json` and `en.i18n.json` in `app/assets/i18n/`
+- **Type-safe Access**: Access translation strings with `context.i18n.someKey`
+- **Dynamic Switching**: Runtime language switching using LocaleSettings
 
 ### Theme Management
 
-- **テーマプロバイダー**: `app_preferences`パッケージで管理
-- **永続化**: SharedPreferencesで選択テーマを保存
-- **システムテーマ**: Material You (Android 12+)対応
+- **Theme Provider**: Managed by `app_preferences` package
+- **Persistence**: Save selected theme using SharedPreferences
+- **System Theme**: Material You (Android 12+) support
 
-## カスタムスラッシュコマンド設定
+## Custom Slash Commands Configuration
 
-### 利用可能なコマンド
+### Available Commands
 
-- `/linear` - Linear Issue処理（対話式・自動実行）
-- `/linear-list` - 利用可能Issue一覧表示
-- `/linear-status` - Linear連携状況確認
+- `/linear` - Linear Issue processing (interactive & automatic execution)
+- `/linear-list` - Display available Issues list
+- `/linear-status` - Check Linear integration status
 
-### コマンドファイル配置
+### Command File Placement
 
 ```
 .claude/
 └── commands/
-    ├── linear.md          # メインのIssue処理コマンド
-    ├── linear-list.md     # Issue一覧表示コマンド
-    └── linear-status.md   # 接続状況確認コマンド
+    ├── linear.md          # Main Issue processing command
+    ├── linear-list.md     # Issue list display command
+    └── linear-status.md   # Connection status check command
 ```
 
-## ワークフロー定義
+## Workflow Definition
 
-### 基本フロー（/linearコマンド使用）
+### Basic Flow (using /linear command)
 
-1. **コマンド実行**: `claude` → `/linear` または `/linear <Issue ID>` 実行
-2. **Issue選択**: 対話形式でIssue ID選択（引数指定時はスキップ）
-3. **ブランチ作成**: 新規作業ブランチをgit worktreeで作成
-4. **並列実行**: 非同期でタスクを実行
-5. **自動PR作成**: 作業完了時に日本語でPRを作成
-6. **完了通知**: アラームで作業完了を通知
+1. **Command Execution**: `claude` → `/linear` or `/linear <Issue ID>` execution
+2. **Issue Selection**: Interactive Issue ID selection (skip when argument specified)
+3. **Branch Creation**: Create new working branch with git worktree
+4. **Parallel Execution**: Execute tasks asynchronously
+5. **Automatic PR Creation**: Create PR in Japanese upon work completion
+6. **Completion Notification**: Notify work completion with alarm
 
-### 詳細ワークフロー
+### Detailed Workflow
 
-#### Phase 1: タスク初期化
+#### Phase 1: Task Initialization
 
 ```
 INPUT:
-- 対話形式: `/linear` → Issue ID選択プロンプト
-- 自動実行: `/linear ABC-123` → 確認なしで即座に開始
+- Interactive mode: `/linear` → Issue ID selection prompt
+- Automatic execution: `/linear ABC-123` → Start immediately without confirmation
 ↓
-1. Issue ID検証（自動実行時は確認プロンプトなし）
-2. Linear APIでIssue詳細を取得
-3. Issue内容を解析してタスク要件を理解
-4. 適切なブランチ名を生成 (feature/ISSUE_ID) ※日本語は使用しない
-5. 実行開始（自動実行時は確認プロンプトスキップ）
+1. Issue ID validation (no confirmation prompt in automatic execution)
+2. Retrieve Issue details via Linear API
+3. Analyze Issue content to understand task requirements
+4. Generate appropriate branch name (feature/ISSUE_ID) ※No Japanese used
+5. Start execution (skip confirmation prompt in automatic execution)
 ```
 
-#### Phase 2: 環境準備（分離実行）
+#### Phase 2: Environment Preparation (Isolated Execution)
 
 ```
-1. Issue IDベースの独立作業ディレクトリ作成（プロジェクト内）
-   - .claude-workspaces/ABC-123/ (タスクA専用)
-   - .claude-workspaces/XYZ-456/ (タスクB専用)
-2. 各ディレクトリでgit worktree add実行
-3. 独立したClaude Codeプロセスとメモリ空間
-4. fvm use でプロジェクト指定のFlutterバージョンを設定
-5. 依存関係のインストール (flutter pub get)
-6. セッション識別子の作成（.claude-session）
+1. Create independent working directory based on Issue ID (within project)
+   - .claude-workspaces/ABC-123/ (Task A dedicated)
+   - .claude-workspaces/XYZ-456/ (Task B dedicated)
+2. Execute git worktree add in each directory
+3. Independent Claude Code process and memory space
+4. Set project-specified Flutter version with fvm use
+5. Install dependencies (flutter pub get)
+6. Create session identifier (.claude-session)
 ```
 
-#### Phase 3: 非同期実行
+#### Phase 3: AI Review-First Execution
 
 ```
-ENABLE_BACKGROUND_TASKS = true で以下を並列実行:
-- コード実装
-- テスト作成・実行
-- ドキュメント更新
-- コード品質チェック
+ENABLE_BACKGROUND_TASKS = true executes the following in review-first cycle:
+
+1. Initial Draft Creation:
+   - Minimal feature implementation
+   - Basic test creation
+
+2. AI Critical Review (3-4 cycles):
+   Evaluation Categories:
+   - Security vulnerabilities (high priority)
+   - SOLID principle violations (medium priority)
+   - Performance optimization (low priority)
+   Constraint: Each review within 400 characters
+
+3. Iterative Improvement:
+   - Fix high priority issues
+   - Fix medium priority issues
+   - Fix low priority issues
+
+4. Final Quality Check:
+   - dart analyze
+   - dart format
+   - Test execution
+   - Documentation update
 ```
 
-#### Phase 4: 完了処理
+#### Phase 4: Completion Processing
 
 ```
-1. 全ての作業が完了次第
-2. 変更をコミット
-3. PRを作成（説明文は日本語）
-4. GitHub Actions実行: .github/workflows/check-pr.yml の全チェック正常終了を確認
-5. Linear IssueをIn Reviewステータスに更新
-6. アラーム通知で完了を報告
+1. Upon completion of all work
+2. Commit changes
+3. Create PR (description in Japanese)
+4. Execute GitHub Actions: Confirm all checks in .github/workflows/check-pr.yml complete successfully
+5. Update Linear Issue status to In Review
+6. Report completion with alarm notification
 ```
 
-## コマンド実行例
+## Command Execution Examples
 
-### 対話形式での実行（推奨）
+### Interactive Execution (Recommended)
 
 ```bash
-# Claude Code対話モードを開始
+# Start Claude Code interactive mode
 claude
 
-# /linearコマンドで対話形式実行
+# Execute /linear command interactively
 /linear
 
-# 実行例:
-# 📋 利用可能なIssue:
-# 1) ABC-123: ユーザー認証機能の実装 (High, To Do)
-# 2) XYZ-456: バグ修正: ログイン時のエラー処理 (Urgent, In Progress)
-# 3) FEAT-789: 新機能: プッシュ通知 (Normal, To Do)
+# Execution example:
+# 📋 Available Issues:
+# 1) ABC-123: User authentication feature implementation (High, To Do)
+# 2) XYZ-456: Bug fix: Login error handling (Urgent, In Progress)
+# 3) FEAT-789: New feature: Push notifications (Normal, To Do)
 #
-# ? 処理するIssueを選択してください [1-3, または複数選択]: 1,3
-# ? 選択したIssue: ABC-123, FEAT-789 で実行しますか？ [Y/n]: y
+# ? Select Issues to process [1-3, or multiple selection]: 1,3
+# ? Execute with selected Issues: ABC-123, FEAT-789? [Y/n]: y
 #
-# 🚀 並列実行を開始しています...
+# 🚀 Starting parallel execution...
 ```
 
-### 直接指定での実行（自動実行）
+### Direct Specification Execution (Automatic)
 
 ```bash
-# Claude Code対話モード
+# Claude Code interactive mode
 claude
 
-# Issue IDを直接指定（確認なしで自動実行）
+# Specify Issue ID directly (automatic execution without confirmation)
 /linear ABC-123
-# ✅ Issue検証完了 → 🚀 自動実行開始
+# ✅ Issue validation complete → 🚀 Start automatic execution
 
-# 複数Issue IDを指定（確認なしで自動実行）
+# Specify multiple Issue IDs (automatic parallel execution without confirmation)
 /linear ABC-123 XYZ-456 FEAT-789
-# ✅ 3件のIssue検証完了 → 🚀 並列自動実行開始
+# ✅ 3 Issues validation complete → 🚀 Start parallel automatic execution
 
-# 実行例（自動モード）:
+# Execution example (automatic mode):
 # /linear ABC-123
-# ✅ Issue ID検証: ABC-123
-# ✅ Linear API確認: Issue存在確認済み
-# ✅ 権限確認: 処理可能
-# ✅ git worktree作成: feature/ABC-123
-# ✅ Flutter環境設定: fvm 3.24.0 適用済み
-# 🚀 バックグラウンド実行開始...
-# 📝 実装中: ユーザー認証機能
-# ⏰ 完了時にアラーム通知予定
+# ✅ Issue ID validation: ABC-123
+# ✅ Linear API check: Existence confirmed
+# ✅ Processing permission: OK
+# ✅ git worktree creation: feature/ABC-123
+# ✅ Flutter environment setup: fvm 3.24.0 applied
+# 🚀 Background execution started...
+# 📝 Implementing: User authentication feature
+# ⏰ Alarm notification scheduled upon completion
 ```
 
-### 補助コマンド
+### Auxiliary Commands
 
 ```bash
-# Issue一覧確認
+# Check Issue list
 /linear-list
 
-# Linear連携状況確認
+# Check Linear integration status
 /linear-status
 ```
 
-## 並列実行時の作業分離設定
+## Parallel Execution Work Isolation Settings
 
-### 問題: タスクAとタスクBの内容混在
+### Problem: Content Mixing Between Task A and Task B
 
-Claude Codeを複数並列実行した際に、異なるIssueの作業内容が混在してしまう問題の対策
+Countermeasures for the problem of different Issue work content getting mixed when running multiple Claude Code instances in parallel.
 
-### 分離戦略
+### Isolation Strategy
 
-#### 1. 物理的ディレクトリ分離
+#### 1. Physical Directory Isolation
 
 ```bash
-# プロジェクト構造例（プロジェクト内分離）
+# Project structure example (project-internal isolation)
 project-root/
-├── CLAUDE.md                    # マスター設定
-├── .claude/commands/           # 共通コマンド
-├── .claude-workspaces/         # 並列作業領域（gitignore対象）
-│   ├── ABC-123/               # タスクA専用ディレクトリ
-│   │   ├── .claude-session    # セッション識別子
-│   │   └── [git worktree]     # feature/ABC-123ブランチ
-│   └── XYZ-456/               # タスクB専用ディレクトリ
-│       ├── .claude-session    # セッション識別子
-│       └── [git worktree]     # feature/XYZ-456ブランチ
-├── src/                       # 元のソースコード
-├── pubspec.yaml              # Flutter設定
-└── .gitignore                # .claude-workspaces/ を除外
+├── CLAUDE.md                    # Master configuration
+├── .claude/commands/           # Common commands
+├── .claude-workspaces/         # Parallel work area (gitignore target)
+│   ├── ABC-123/               # Task A dedicated directory
+│   │   ├── .claude-session    # Session identifier
+│   │   └── [git worktree]     # feature/ABC-123 branch
+│   └── XYZ-456/               # Task B dedicated directory
+│       ├── .claude-session    # Session identifier
+│       └── [git worktree]     # feature/XYZ-456 branch
+├── src/                       # Original source code
+├── pubspec.yaml              # Flutter configuration
+└── .gitignore                # Exclude .claude-workspaces/
 ```
 
-#### 2. Claude Codeプロセス分離
+#### 2. Claude Code Process Isolation
 
 ```bash
-# 各タスクを別ターミナル・別プロセスで実行
-# ターミナル1: タスクA（プロジェクトルートから）
+# Execute each task in separate terminal/process
+# Terminal 1: Task A (from project root)
 claude
 /linear ABC-123
-# → .claude-workspaces/ABC-123/ で実行
+# → Execute in .claude-workspaces/ABC-123/
 
-# ターミナル2: タスクB（プロジェクトルートから）
+# Terminal 2: Task B (from project root)
 claude
 /linear XYZ-456
-# → .claude-workspaces/XYZ-456/ で実行
+# → Execute in .claude-workspaces/XYZ-456/
 ```
 
-#### 3. メモリ・コンテキスト分離
+#### 3. Memory/Context Isolation
 
 ```bash
-# 各Claude Codeインスタンスで独立したメモリ空間
+# Independent memory space for each Claude Code instance
 export CLAUDE_MEMORY_ISOLATION=true
-export CLAUDE_SESSION_ID="ABC-123"  # タスクA
-export CLAUDE_SESSION_ID="XYZ-456"  # タスクB
+export CLAUDE_SESSION_ID="ABC-123"  # Task A
+export CLAUDE_SESSION_ID="XYZ-456"  # Task B
 ```
 
-### 自動分離実装
+### Automatic Isolation Implementation
 
-#### 作業ディレクトリ自動作成
+#### Automatic Working Directory Creation
 
 ```bash
-# /linearコマンド実行時の自動分離処理（プロジェクト内）
+# Automatic isolation processing when executing /linear command (within project)
 function create_isolated_workspace() {
     ISSUE_ID=$1
     PROJECT_ROOT=$(pwd)
     WORKSPACE_DIR=".claude-workspaces/${ISSUE_ID}"
 
-    # 1. プロジェクト内に独立作業ディレクトリ作成
+    # 1. Create independent working directory within project
     mkdir -p "${WORKSPACE_DIR}"
 
-    # 2. git worktreeセットアップ (ブランチ名はISSUE_IDのみ、日本語不可)
+    # 2. git worktree setup (branch name is ISSUE_ID only, no Japanese)
     git worktree add "${WORKSPACE_DIR}" -b "feature/${ISSUE_ID}"
 
-    # 3. セッション識別子作成
+    # 3. Create session identifier
     echo "SESSION_${ISSUE_ID}" > "${WORKSPACE_DIR}/.claude-session"
     echo "CREATED_AT=$(date)" >> "${WORKSPACE_DIR}/.claude-session"
 
-    # 4. Flutter環境セットアップ（プロジェクト設定を継承）
+    # 4. Flutter environment setup (inherit project configuration)
     cd "${WORKSPACE_DIR}"
     fvm use $(cat "${PROJECT_ROOT}/.fvmrc" 2>/dev/null || echo "stable")
     flutter pub get
 
-    # 5. 作業ディレクトリ情報
-    echo "作業ディレクトリ: ${PROJECT_ROOT}/${WORKSPACE_DIR}"
+    # 5. Working directory information
+    echo "Working directory: ${PROJECT_ROOT}/${WORKSPACE_DIR}"
     echo "git worktree: feature/${ISSUE_ID}"
-    echo "セッションID: SESSION_${ISSUE_ID}"
+    echo "Session ID: SESSION_${ISSUE_ID}"
 
-    # 6. プロジェクトルートに戻る（Claude Codeはルートから実行）
+    # 6. Return to project root (Claude Code executes from root)
     cd "${PROJECT_ROOT}"
 }
 ```
 
-#### 分離実行ログ
+#### Isolated Execution Log
 
 ```bash
-# タスクA実行ログ例
-🚀 Issue ABC-123 処理開始
-📁 作業ディレクトリ: .claude-workspaces/ABC-123
+# Task A execution log example
+🚀 Issue ABC-123 processing started
+📁 Working directory: .claude-workspaces/ABC-123
 🔗 git worktree: feature/ABC-123
-💾 Claude メモリ分離: SESSION_ABC-123
-✅ 環境分離完了
+💾 Claude memory isolation: SESSION_ABC-123
+✅ Environment isolation complete
 
-# タスクB実行ログ例
-🚀 Issue XYZ-456 処理開始
-📁 作業ディレクトリ: .claude-workspaces/XYZ-456
+# Task B execution log example
+🚀 Issue XYZ-456 processing started
+📁 Working directory: .claude-workspaces/XYZ-456
 🔗 git worktree: feature/XYZ-456
-💾 Claude メモリ分離: SESSION_XYZ-456
-✅ 環境分離完了
+💾 Claude memory isolation: SESSION_XYZ-456
+✅ Environment isolation complete
 ```
 
-### 分離確認・管理
+### Isolation Verification and Management
 
-#### 進行中タスク確認
+#### Check Running Tasks
 
 ```bash
-# 並列実行中のタスク一覧
+# List of running tasks in parallel
 /linear-running
-📊 実行中のタスク:
+📊 Running tasks:
 ┌──────────┬─────────────────────┬──────────┬──────────────────────┐
-│ Issue ID │ 作業ディレクトリ     │ 進捗     │ 開始時刻              │
+│ Issue ID │ Working Directory   │ Progress │ Start Time           │
 ├──────────┼─────────────────────┼──────────┼──────────────────────┤
-│ ABC-123  │ .claude-workspaces/ABC-123│ 実装中   │ 2025-06-22 10:30:00  │
-│ XYZ-456  │ .claude-workspaces/XYZ-456│ テスト中 │ 2025-06-22 10:45:00  │
+│ ABC-123  │ .claude-workspaces/ABC-123│ Implementing│ 2025-06-22 10:30:00  │
+│ XYZ-456  │ .claude-workspaces/XYZ-456│ Testing  │ 2025-06-22 10:45:00  │
 └──────────┴─────────────────────┴──────────┴──────────────────────┘
 ```
 
-#### 作業領域クリーンアップ
+#### Work Area Cleanup
 
 ```bash
-# 完了タスクの作業領域削除
+# Delete completed task work areas
 /linear-cleanup
-? クリーンアップ対象を選択:
-  [x] .claude-workspaces/ABC-123 (完了済み)
-  [ ] .claude-workspaces/XYZ-456 (実行中)
-  [x] .claude-workspaces/OLD-789 (7日前完了)
+? Select cleanup targets:
+  [x] .claude-workspaces/ABC-123 (completed)
+  [ ] .claude-workspaces/XYZ-456 (running)
+  [x] .claude-workspaces/OLD-789 (completed 7 days ago)
 
-✅ 2個の作業領域をクリーンアップしました
+✅ Cleaned up 2 work areas
 ```
 
-#### .gitignore設定
+#### .gitignore Configuration
 
 ```bash
-# .gitignoreに追加
+# Add to .gitignore
 .claude-workspaces/
 *.lock
 .claude-session
 ```
 
-### 競合回避ルール
+### Conflict Avoidance Rules
 
-1. **同一Issue IDの重複実行禁止**: 既に実行中のIssueは再実行不可
-2. **ファイルロック**: 作業ディレクトリに.lock ファイル作成
-3. **リソース監視**: CPU/メモリ使用率が80%超過時は新規実行を待機
-4. **依存関係チェック**: 関連Issueの実行状況を確認
+1. **Duplicate Issue ID Execution Prohibition**: Issues already running cannot be re-executed
+2. **File Lock**: Create .lock file in working directory
+3. **Resource Monitoring**: Wait for new execution when CPU/memory usage exceeds 80%
+4. **Dependency Check**: Verify execution status of related Issues
 
-### 対話フローの設定
+### Interactive Flow Configuration
 
 ```bash
-# デフォルト設定で対話モード有効
+# Interactive mode enabled by default
 export INTERACTIVE_MODE=true
 export PROMPT_STYLE="enhanced"  # enhanced, simple, minimal
-export AUTO_COMPLETION=true     # Issue ID補完機能
-export ISSUE_PREVIEW=true       # Issue内容プレビュー表示
+export AUTO_COMPLETION=true     # Issue ID completion feature
+export ISSUE_PREVIEW=true       # Issue content preview display
 ```
 
-### 入力検証とエラーハンドリング
+### Input Validation and Error Handling
 
 ```
-対話時の検証項目:
-1. Issue ID形式チェック (例: ABC-123)
-2. Linear APIでの存在確認
-3. Issue状態確認（クローズ済みの場合は警告）
-4. 権限確認（アサインされていない場合は確認）
-5. 依存関係チェック（ブロッカーIssueの存在）
+Validation items during interaction:
+1. Issue ID format check (e.g., ABC-123)
+2. Existence check via Linear API
+3. Issue status check (warning if already closed)
+4. Permission check (confirmation if not assigned)
+5. Dependency check (existence of blocker Issues)
 ```
 
-### 対話UIのカスタマイズ
+### Interactive UI Customization
 
 ```bash
-# 対話モード（引数なし）- 詳細確認あり
+# Interactive mode (no arguments) - detailed confirmation
 /linear
-> 📋 利用可能なIssue:
-> 1) ABC-123: ユーザー認証機能の実装
->    ステータス: To Do | 優先度: High | 担当者: あなた
->    📝 説明: OAuth2.0を使用したログイン機能の実装
+> 📋 Available Issues:
+> 1) ABC-123: User authentication feature implementation
+>    Status: To Do | Priority: High | Assignee: You
+>    📝 Description: OAuth2.0-based login feature implementation
 >
-> ? 処理するIssueを選択してください: 1
-> ? このIssueを処理しますか？ [Y/n]: y
+> ? Select Issue to process: 1
+> ? Process this Issue? [Y/n]: y
 
-# 自動実行モード（引数あり）- 確認なし
+# Automatic execution mode (with arguments) - no confirmation
 /linear ABC-123
-> ✅ Issue ID検証: ABC-123
-> ✅ Linear API確認: 存在確認済み
-> ✅ 処理権限: OK
-> 🚀 自動実行開始...
-> 📝 実装中: ユーザー認証機能の実装
-> ⏰ 完了時にアラーム通知予定
+> ✅ Issue ID validation: ABC-123
+> ✅ Linear API check: Existence confirmed
+> ✅ Processing permission: OK
+> 🚀 Automatic execution started...
+> 📝 Implementing: User authentication feature implementation
+> ⏰ Alarm notification scheduled upon completion
 
-# エラー発生時のみ停止
+# Stop only on error
 /linear INVALID-123
-> ❌ エラー: Issue ID 'INVALID-123' が見つかりません
-> 💡 /linear-list で利用可能なIssueを確認してください
+> ❌ Error: Issue ID 'INVALID-123' not found
+> 💡 Use /linear-list to check available Issues
 ```
 
-## 自動化ルール
+## Automation Rules
 
-### PR作成ルール
+### PR Creation Rules
 
-- **タイトル**: `[ABC-123] Issue タイトルをそのまま使用`
-- **説明文**: 日本語で以下の内容を含む
+- **Title**: `[ABC-123] Use Issue title as-is`
+- **Description**: Include the following content in Japanese
 
   ```markdown
-  ## 変更内容
+  ## Changes
 
-  - 実装した機能の詳細
-  - 修正したバグの内容
+  - Details of implemented features
+  - Content of fixed bugs
 
-  ## 関連Issue
+  ## Related Issue
 
   - Closes #{Linear Issue URL}
 
-  ## テスト
+  ## Testing
 
-  - 実行したテストの概要
-  - テスト結果
+  - Overview of executed tests
+  - Test results
 
-  ## チェックリスト
+  ## Checklist
 
-  - [ ] コードレビュー準備完了
-  - [ ] テスト実行済み
-  - [ ] ドキュメント更新済み
+  - [ ] Code review ready
+  - [ ] Tests executed
+  - [ ] Documentation updated
   ```
 
-### 並列実行ルール
+### Parallel Execution Rules
 
-- 各git worktreeは独立したFlutter環境を持つ
-- 同時に複数のIssueを処理可能
-- リソース競合を避けるため、重要度に応じて優先度を調整
+- Each git worktree has independent Flutter environment
+- Can process multiple Issues simultaneously
+- Adjust priority according to importance to avoid resource conflicts
 
-### 完了通知ルール
+### Completion Notification Rules
 
-- システムアラーム音で通知
-- 通知内容: "Issue ABC-123の作業が完了しました。PRが作成されています。"
-- **完了条件**: `.github/workflows/check-pr.yml`の全チェックが正常終了すること
+- Notify with system alarm sound
+- Notification content: "Work on Issue ABC-123 has been completed. PR has been created."
+- **Completion condition**: All checks in `.github/workflows/check-pr.yml` complete successfully
 
-### ワークフロー完了条件
+### Workflow Completion Conditions
 
-以下の条件を全て満たした場合にタスク完了とみなします：
+Task is considered complete when all of the following conditions are met:
 
-1. **コード実装完了**: Issue要件に基づく機能実装
-2. **テスト実行成功**: 自動テスト・手動テストの成功
-3. **コード品質チェック**: dart analyze、dart format通過
-4. **PR作成**: 日本語説明文付きでPR作成済み
-5. **GitHub Actions成功**: `.github/workflows/check-pr.yml`の全チェック正常終了
-6. **Linear更新**: IssueステータスをIn Reviewに更新
+1. **AI Review-First Completion**: 3-4 review cycles completed
+2. **Code Implementation Complete**: Feature implementation based on Issue requirements
+3. **Quality Standards Achieved**:
+   - Security vulnerabilities: All high priority issues fixed
+   - SOLID principles: Major medium priority issues fixed
+   - Performance: Low priority issues fixed within possible scope
+4. **Test Execution Success**: Automated and manual tests successful
+5. **Code Quality Check**: dart analyze, dart format passed
+6. **Human Final Validation**: Validity confirmation of review results
+7. **PR Creation**: PR created with Japanese description
+8. **GitHub Actions Success**: All checks in `.github/workflows/check-pr.yml` completed successfully
+9. **Linear Update**: Issue status updated to In Review
 
-### GitHub Actions連携
+### GitHub Actions Integration
 
 ```bash
-# PR作成後の自動チェック監視
-1. PR作成時に.github/workflows/check-pr.ymlが自動実行
-2. Claude Codeが以下のチェック結果を監視:
+# Automatic check monitoring after PR creation
+1. .github/workflows/check-pr.yml automatically executes when PR is created
+2. Claude Code monitors the following check results:
    - Build success
    - Test suite pass
    - Code quality checks
    - Security scans
    - Lint checks
-3. 全チェック正常終了を確認後、完了通知
-4. いずれかのチェック失敗時は自動修正を試行
+3. Completion notification after confirming all checks complete successfully
+4. Attempt automatic correction if any check fails
 ```
 
-### 失敗時の自動対応
+### Automatic Response to Failures
 
 ```bash
-# GitHub Actionsチェック失敗時
-❌ GitHub Actions失敗検出
-📋 失敗内容を解析
-🔧 自動修正を試行:
-   - テスト失敗 → テストコード修正
-   - Lint エラー → dart format実行
-   - Build エラー → 依存関係確認・修正
-📤 修正コミット・プッシュ
-🔄 再チェック実行
-✅ 全チェック正常終了後に完了通知
+# When GitHub Actions check fails
+❌ GitHub Actions failure detected
+📋 Analyze failure content
+🔧 Attempt automatic correction:
+   - Test failure → Fix test code
+   - Lint error → Execute dart format
+   - Build error → Check and fix dependencies
+📤 Commit and push corrections
+🔄 Re-execute checks
+✅ Completion notification after all checks complete successfully
 ```
 
-## トラブルシューティング
+## Troubleshooting
 
-### よくある問題と解決方法
+### Common Problems and Solutions
 
-#### 1. Linear API接続エラー
+#### 1. Linear API Connection Error
 
 ```bash
-# Linear連携状況確認
+# Check Linear integration status
 /linear-status
 
-# MCP設定の再確認が必要な場合
+# If MCP configuration re-check needed
 /config
 ```
 
-#### 2. fvmバージョン競合
+#### 2. fvm Version Conflict
 
 ```bash
-# Flutterバージョンを再設定
+# Reset Flutter version
 fvm use [project_flutter_version]
 flutter clean
 flutter pub get
 ```
 
-#### 3. git worktree作成失敗
+#### 3. git worktree Creation Failure
 
 ```bash
-# 既存のworktreeを確認・削除
+# Check and delete existing worktrees
 git worktree list
 git worktree remove [worktree_path]
 ```
 
-#### 4. バックグラウンドタスクが動作しない
+#### 4. Background Tasks Not Working
 
 ```bash
-# 環境変数を確認
+# Check environment variables
 echo $ENABLE_BACKGROUND_TASKS
 export ENABLE_BACKGROUND_TASKS=true
 ```
 
-## 設定カスタマイズ
+## Configuration Customization
 
-### 通知設定
+### Notification Settings
 
-- アラーム音の変更: システム設定で調整
-- 通知タイミング: PR作成完了時
+- Alarm sound changes: Adjust in system settings
+- Notification timing: Upon PR creation completion
 
-### 品質管理
+### Quality Management
 
-- 自動テスト実行: 全てのコミット前に実行
-- コード静的解析: dart analyze自動実行
-- フォーマット: dart format自動適用
+- Automatic test execution: Execute before all commits
+- Code static analysis: Automatic dart analyze execution
+- Formatting: Automatic dart format application
 
-### パフォーマンス最適化
+### Performance Optimization
 
-- 並列実行数制限: CPU使用率に応じて調整
-- メモリ使用量監視: 大量のworktree作成時の制御
+- Parallel execution limit: Adjust according to CPU usage
+- Memory usage monitoring: Control when creating large numbers of worktrees
 
-## セキュリティ考慮事項
+## Security Considerations
 
-- Linear APIキーの安全な管理
-- git認証情報の適切な設定
-- 機密情報を含むコードの取り扱い注意
+- Safe management of Linear API keys
+- Proper configuration of git authentication credentials
+- Careful handling of code containing sensitive information
 
 ---
 
-**注意**: このファイルはClaude Codeの動作を制御する重要な設定ファイルです。変更時は十分にテストを行ってください。
+**Note**: This file is an important configuration file that controls Claude Code behavior. Test thoroughly when making changes.
 
-## 開発上の注意事項
+## Development Guidelines
 
-### コード生成
+### AI Review-First Practice
 
-- 新しいモデルクラスやプロバイダーを追加した後は必ず`melos run gen`を実行
-- 生成ファイル(`*.g.dart`, `*.freezed.dart`)は直接編集しない
+Follow these steps for all code changes:
 
-### テスト
+```text
+1. Create Minimal Implementation
+   - Minimum implementation of Issue requirements
+   - Create basic test cases
 
-- 新機能追加時は対応するウィジェットテストを`app/test/`に追加
-- `melos run test`で全パッケージのテストを実行
+2. Execute AI Review
+   Please review the following code.
+
+   Evaluation Categories:
+   1. Security vulnerabilities (high priority)
+   2. SOLID principle violations (medium priority)
+   3. Performance optimization (low priority)
+
+   Constraint: Summarize within 400 characters
+
+3. Fix Issues and Repeat Review
+   - Fix high priority issues first
+   - Execute 2-3 review cycles
+   - Re-review after each fix
+
+4. Final Validation
+   - Human validity confirmation
+   - Execute code quality checks
+```
+
+### Code Generation
+
+- Always execute `melos run gen` after adding new model classes or providers
+- Do not directly edit generated files (`*.g.dart`, `*.freezed.dart`)
+
+### Testing
+
+- Add corresponding widget tests to `app/test/` when adding new features
+- Execute `melos run test` to run tests for all packages
+- Include tests as targets for AI Review-First
 
 ### Git Workflow
 
-- コミットメッセージは[Conventional Commits](https://www.conventionalcommits.org/)形式を使用
-- **ブランチ名**: `feature/ISSUE_ID` 形式のみ使用（日本語・英語説明文は含めない）
-- PRチェックは`.github/workflows/check-pr.yml`で自動実行
-- 分析、フォーマット、テスト、i18n検証が含まれる
+- Use [Conventional Commits](https://www.conventionalcommits.org/) format for commit messages
+- **Branch naming**: Use only `feature/ISSUE_ID` format (no Japanese/English descriptions)
+- PR checks automatically execute with `.github/workflows/check-pr.yml`
+- Includes analysis, formatting, testing, i18n validation
 
-### パッケージ管理
+### Package Management
 
-- 新しい依存関係は該当するパッケージの`pubspec.yaml`に追加
-- Workspace resolutionにより、全パッケージで同じバージョンが使用される
-- `melos run get`で全パッケージの依存関係を一括更新
+- Add new dependencies to the appropriate package's `pubspec.yaml`
+- Same versions used across all packages due to Workspace resolution
+- Update all package dependencies collectively with `melos run get`

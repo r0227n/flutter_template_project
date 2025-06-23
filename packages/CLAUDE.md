@@ -1,65 +1,67 @@
-# パッケージ開発ガイド
+# Package Development Guide for Claude Code
 
-このドキュメントは、Flutter Template Projectのpackagesディレクトリでの開発方法を説明します。
+**AI-powered package development using Linear Issues for the packages directory**
 
-## 概要
+This document is specifically for developing feature-specific packages in the packages directory. For general project setup and main application development, see [../CLAUDE.md](../CLAUDE.md).
 
-packagesディレクトリには、メインアプリケーションから切り出された機能別パッケージが配置されています。各パッケージは特定の責任を持つ独立したコンポーネントとして設計されており、再利用性とテスト性を重視しています。
+## Reference Documentation
 
-## パッケージ一覧
+- **Main Project Configuration**: [../CLAUDE.md](../CLAUDE.md)
+- **Human-friendly Guide**: [HUMAN.md](HUMAN.md)
+- **Claude 4 Best Practices**: [../docs/CLAUDE_4_BEST_PRACTICES.md](../docs/CLAUDE_4_BEST_PRACTICES.md)
 
-### app_preferences
+## Package-Specific Development
 
-アプリケーションの設定管理を担当するパッケージです。
+This directory contains feature-specific packages extracted from the main application. Each package follows:
 
-**主な機能：**
+- **Single Responsibility**: One package, one clear functionality
+- **Independence**: Minimal dependencies between packages
+- **Reusability**: Designed for use across multiple applications
+- **AI Review-First**: Follows the review methodology detailed in the main configuration
 
-- 言語設定（日本語/英語）の管理
-- テーマ設定（システム/ライト/ダーク）の管理
-- SharedPreferencesを使用した設定の永続化
-- 設定変更用のダイアログとUI表示コンポーネント
+## Package Development Commands
 
-**技術仕様：**
-
-- Riverpod による状態管理
-- slang による型安全な多言語対応
-- Material 3 デザインシステム対応
-
-## 新規パッケージの作成方法
-
-### 1. パッケージの作成
+### Package-Specific Linear Commands
 
 ```bash
-# packages ディレクトリに移動
+# Package development (use package-related Issue IDs)
+/linear PKG-001    # Create new package
+/linear PKG-002    # Add feature to existing package
+/linear PKG-003    # Package refactoring/optimization
+```
+
+### Current Packages
+
+- **app_preferences**: Application settings (language, theme, persistence)
+
+## Package Creation Workflow
+
+### Manual Package Creation with Flutter Commands
+
+When creating new packages manually (before using Linear automation):
+
+```bash
+# 1. Navigate to packages directory
 cd packages
 
-# Flutter の公式パッケージテンプレートを使用
-flutter create --template=package [パッケージ名]
-cd [パッケージ名]
-```
+# 2. Create new package using Flutter command
+flutter create --template=package [package_name]
 
-### 2. プロジェクト設定の追加
-
-```bash
-# ワークスペース対応
+# 3. Configure package for workspace
+cd [package_name]
 echo "resolution: workspace" >> pubspec.yaml
 
-# 基本的な依存関係を追加
-flutter pub add hooks_riverpod riverpod_annotation
+# 4. Add standard dependencies
+flutter pub add flutter_riverpod riverpod_annotation
 flutter pub add --dev build_runner riverpod_generator yumemi_lints
-```
 
-### 3. 静的解析設定
-
-analysis_options.yaml を作成し、プロジェクト全体で統一されたコード品質を保ちます：
-
-```bash
-# Flutter バージョンを取得
+# 5. Set up yumemi_lints configuration
+# Get Flutter version for lints compatibility
 FLUTTER_VERSION=$(flutter --version | head -n 1 | grep -o "[0-9]\+\.[0-9]\+\.[0-9]\+")
 
-# analysis_options.yaml を作成
+# Create analysis_options.yaml
 cat > analysis_options.yaml << EOF
-include: package:yumemi_lints/flutter/${FLUTTER_VERSION}/recommended.yaml
+include: package:yumemi_lints/flutter/\${FLUTTER_VERSION}/recommended.yaml
 
 analyzer:
   errors:
@@ -70,259 +72,194 @@ analyzer:
 formatter:
   trailing_commas: preserve
 EOF
-```
 
-### 4. ワークスペースに登録
+# 6. Register package in workspace
+# Add to root pubspec.yaml workspace section:
+# workspace:
+#   - apps
+#   - packages/app_preferences
+#   - packages/[package_name]  # Add this line
 
-ルートの `pubspec.yaml` に新しいパッケージを追加：
-
-```yaml
-workspace:
-  - apps
-  - packages/app_preferences
-  - packages/[新しいパッケージ名] # この行を追加
-```
-
-依存関係を解決：
-
-```bash
+# 7. Install dependencies and generate code
 cd ../../
 melos run get
+melos run gen
 ```
 
-## パッケージ開発のベストプラクティス
+### Automated Package Development with Linear Issues
 
-### アーキテクチャ設計
+For automated package development:
 
-各パッケージは以下の層構造で構成することを推奨します：
+1. **Create Package Issue**: Use PKG-XXX format for package-related Issues
+2. **Execute Command**: `/linear PKG-XXX` for automatic package development
+3. **AI Review Process**: Automatic 3-4 review cycles for quality assurance
+4. **Integration**: Automatic workspace registration and main app integration
+
+## Package Architecture
+
+### Standard Package Structure
 
 ```
 lib/
-├── [package_name].dart          # パブリック API
+├── [package_name].dart     # Public API
 ├── src/
-│   ├── providers/              # 状態管理（Riverpod）
-│   ├── repositories/           # データアクセス層
-│   ├── models/                 # データモデル
-│   ├── widgets/                # UI コンポーネント
-│   └── utils/                  # ユーティリティ
-├── assets/                     # 静的リソース
-└── test/                       # テスト
+│   ├── providers/          # Riverpod state management
+│   ├── repositories/       # Data access layer
+│   ├── models/            # Data models
+│   ├── widgets/           # UI components
+│   └── utils/             # Utilities
+├── assets/                # Static resources
+└── test/                  # Tests
 ```
 
-### 単一責任の原則
+## AI Review Integration
 
-各パッケージは特定の機能領域のみを担当します：
+### Automated Quality Assurance
 
-- ✅ **良い例**: `app_preferences` - 設定管理に特化
-- ✅ **良い例**: `user_authentication` - 認証処理に特化
-- ❌ **悪い例**: `common_utils` - 様々な機能が混在
+Package development automatically includes:
 
-### 依存性注入パターン
+1. **Security Review**: Input validation, error handling, data sanitization
+2. **Architecture Review**: SOLID principles, dependency management
+3. **Performance Review**: Memory usage, async operations, state efficiency
+4. **Final Human Verification**: Business requirements and integration testing
 
-Riverpod を使用して依存性を注入します：
+### Quality Gates
 
-```dart
-// パッケージ内でプロバイダーを定義
-@Riverpod(keepAlive: true)
-SharedPreferences sharedPreferences(SharedPreferencesRef ref) {
-  throw UnimplementedError();
-}
+- Code coverage: 80% minimum
+- Static analysis: All checks pass
+- Documentation: Complete API documentation
+- Tests: Unit, widget, and integration tests
 
-// メインアプリで実装を注入
-ProviderScope(
-  overrides: [
-    sharedPreferencesProvider.overrideWithValue(actualPrefs),
-  ],
-  child: App(),
-)
+## Package Development Standards
+
+### yumemi_lints Configuration
+
+All packages must include yumemi_lints for consistent code quality:
+
+```yaml
+# analysis_options.yaml template for each package
+include: package:yumemi_lints/flutter/[FLUTTER_VERSION]/recommended.yaml
+
+analyzer:
+  errors:
+    invalid_annotation_target: ignore
+  plugins:
+    - custom_lint
+
+formatter:
+  trailing_commas: preserve
 ```
 
-## 開発ワークフロー
+### Required Dependencies
 
-### コード生成
+Standard dependencies for all packages:
 
-プロバイダーやモデルクラスを変更した後は必ずコード生成を実行：
+```yaml
+# pubspec.yaml dependencies
+dependencies:
+  flutter:
+    sdk: flutter
+  hooks_riverpod: ^2.x.x
+  riverpod_annotation: ^2.x.x
+
+dev_dependencies:
+  build_runner: ^2.x.x
+  riverpod_generator: ^2.x.x
+  yumemi_lints: ^1.x.x
+  custom_lint: ^0.5.x
+```
+
+### Design Principles
+
+- **Single Responsibility**: One package = one clear functionality
+- **Loose Coupling**: Minimal dependencies between packages
+- **High Cohesion**: Related features grouped together
+- **Dependency Injection**: Use Riverpod for clean architecture
+- **Code Quality**: Enforce yumemi_lints standards across all packages
+
+### Examples
+
+✅ **Good**: `user_authentication` - Authentication only  
+✅ **Good**: `payment_processing` - Payment handling only  
+❌ **Bad**: `common_utils` - Mixed functionalities
+
+## Development Commands
+
+### Package Development
 
 ```bash
-# 特定パッケージで実行
-cd packages/[パッケージ名]
-dart run build_runner build --delete-conflicting-outputs
+# Automatic package development via Linear
+claude
+/linear PKG-123  # Creates/updates package automatically
 
-# または、全パッケージで実行
-cd ../../
-melos run gen
+# Manual commands (when needed)
+cd packages/[package_name]
+melos run gen    # Code generation
+flutter test     # Run tests
+dart analyze     # Static analysis
 ```
 
-### テスト
+## Package Integration
 
-テストは以下の種類を実装します：
+### Automatic Integration
+
+When using `/linear PKG-XXX`, integration is automatic:
+
+- Workspace registration in root `pubspec.yaml`
+- Main app dependency configuration
+- Provider setup and initialization
+- Documentation updates
+
+### Manual Integration (if needed)
+
+Refer to [../CLAUDE.md](../CLAUDE.md) for detailed integration steps.
+
+## Package Examples
+
+### app_preferences Package
+
+**Purpose**: Application settings management  
+**Components**: Locale/theme providers, settings dialogs, preferences repository  
+**Integration**: Used in main app for user preferences
+
+For detailed implementation, see the package source code or use `/linear PKG-XXX` to analyze existing packages.
+
+## Package Guidelines
+
+### When to Create a Package
+
+- Used across multiple screens/features
+- Can be tested independently
+- Potential for reuse in other projects
+- Contains specific domain logic
+
+### When NOT to Create a Package
+
+- Single-use, simple functionality
+- Tightly coupled to main app logic
+- Very small utility functions
+- UI components specific to one screen
+
+## Monorepo Commands
+
+### Workspace-wide Commands
 
 ```bash
-# 単体テスト（プロバイダー、リポジトリ）
-# ウィジェットテスト（UI コンポーネント）
-# 統合テスト（完全なワークフロー）
-flutter test
+# From project root
+melos run gen      # Generate code for all packages
+melos run test     # Test all packages
+melos run analyze  # Analyze all packages
+melos run format   # Format all packages
+melos run get      # Get dependencies for all packages
 ```
 
-### コード品質チェック
+## Summary
 
-```bash
-# 静的解析
-dart analyze
+For package development in this project:
 
-# フォーマット
-dart format .
+1. **Use Linear Issues**: Create PKG-XXX Issues for package work
+2. **Leverage Automation**: Use `/linear PKG-XXX` for automated development
+3. **Follow Standards**: Single responsibility, loose coupling, high cohesion
+4. **Trust the Process**: AI Review-First ensures quality automatically
 
-# 翻訳チェック（slang 使用時）
-dart run slang analyze
-```
-
-## パッケージ統合ガイド
-
-### メインアプリでの使用
-
-新しいパッケージをメインアプリで使用するには：
-
-1. **依存関係の追加**：
-
-   ```yaml
-   # apps/pubspec.yaml
-   dependencies:
-     [パッケージ名]:
-       path: ../packages/[パッケージ名]
-   ```
-
-2. **初期化処理**：
-
-   ```dart
-   // main.dart で初期化
-   await SomePackageInitializer.initialize();
-   ```
-
-3. **プロバイダーの監視**：
-   ```dart
-   class SomePage extends ConsumerWidget {
-     @override
-     Widget build(BuildContext context, WidgetRef ref) {
-       final state = ref.watch(someProvider);
-       // UI の実装
-     }
-   }
-   ```
-
-### パッケージ間の依存関係
-
-- パッケージ間の依存は最小限に抑える
-- 共通機能は別の専用パッケージに切り出す
-- 循環依存は絶対に避ける
-
-## 実装例：app_preferences パッケージ
-
-### 処理フロー
-
-1. **初期化**: SharedPreferences からの設定値読み込み
-2. **状態管理**: Riverpod での設定値保持
-3. **UI表示**: 現在の設定値表示
-4. **ユーザー操作**: 設定変更ダイアログ
-5. **永続化**: 新しい設定値の保存
-6. **更新**: UI の再描画
-
-### 主要コンポーネント
-
-**プロバイダー:**
-
-- `AppLocaleProvider`: 言語設定の管理
-- `AppThemeProvider`: テーマ設定の管理
-
-**ウィジェット:**
-
-- `LocaleText`: 現在の言語表示
-- `ThemeText`: 現在のテーマ表示
-- `SelectionDialog`: 設定選択ダイアログ
-
-**リポジトリ:**
-
-- `AppPreferencesRepository`: SharedPreferences の抽象化
-
-## よくある質問
-
-### Q: 新機能をパッケージにするか、メインアプリに直接実装するか迷います
-
-**A:** 以下の条件を満たす場合、パッケージ化を検討してください：
-
-- 複数の画面で使用される
-- 独立してテストできる
-- 他のアプリでも再利用の可能性がある
-- 特定のドメイン知識を含む
-
-### Q: パッケージのバージョン管理はどうすればよいですか？
-
-**A:**
-
-- `pubspec.yaml` でバージョンを管理
-- `CHANGELOG.md` で変更内容を記録
-- セマンティックバージョニングに従う
-
-### Q: パッケージを削除したい場合は？
-
-**A:**
-
-1. 使用箇所を特定し、代替実装に移行
-2. 依存関係をすべて削除
-3. ワークスペース設定から除外
-4. ディレクトリを削除
-5. 統合テストで問題がないことを確認
-
-## 開発コマンド一覧
-
-### パッケージ固有のコマンド
-
-```bash
-# パッケージディレクトリで実行
-cd packages/[パッケージ名]
-
-# コード生成
-dart run build_runner build --delete-conflicting-outputs
-
-# テスト実行
-flutter test
-
-# 静的解析
-dart analyze
-
-# コードフォーマット
-dart format .
-```
-
-### モノレポ全体のコマンド
-
-```bash
-# ルートディレクトリで実行
-
-# 全パッケージのコード生成
-melos run gen
-
-# 全パッケージのテスト
-melos run test
-
-# 全パッケージの静的解析
-melos run analyze
-
-# 全パッケージのフォーマット
-melos run format
-
-# 全パッケージの依存関係取得
-melos run get
-```
-
-## まとめ
-
-パッケージ開発では以下の点を心がけてください：
-
-- **単一責任**: 各パッケージは明確な責任を持つ
-- **テスト性**: 独立してテストできる設計
-- **再利用性**: 他のプロジェクトでも使える汎用性
-- **文書化**: 適切なドキュメントとコメント
-- **品質**: 統一されたコード品質基準の遵守
-
-これらの原則に従うことで、保守性が高く、拡張しやすいパッケージシステムを構築できます。
+For comprehensive project setup, main app development, and detailed workflows, refer to [../CLAUDE.md](../CLAUDE.md) and [../HUMAN.md](../HUMAN.md).
