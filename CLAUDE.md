@@ -63,7 +63,7 @@ flutter_template_project/
 - Git worktree support
 - Linear MCP configuration completed
 - Claude Code ENABLE_BACKGROUND_TASKS enabled
-- Node.js (for commitlint, prettier)
+- Bun (for commitlint, prettier, faster than Node.js)
 
 ## Development Commands
 
@@ -106,14 +106,20 @@ cd app && fvm flutter build apk
 cd app && fvm flutter build ios --no-codesign
 ```
 
-### Node.js Related Commands
+### Bun Related Commands (Faster than Node.js)
 
 ```bash
+# Install dependencies with bun (faster than npm)
+bun install
+
 # YAML/Markdown lint
-npm run lint
+bun run lint
 
 # YAML/Markdown format
-npm run format
+bun run format
+
+# Clean and reinstall dependencies
+bun run clean
 ```
 
 ### Environment Variables

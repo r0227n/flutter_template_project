@@ -45,11 +45,11 @@ flutter_template_project/
 
 ### 必要な環境
 
-| ツール  | 推奨バージョン | インストール方法                  |
-| ------- | -------------- | --------------------------------- |
-| Flutter | FVM管理        | `dart pub global activate fvm`    |
-| Node.js | 18+            | [nodejs.org](https://nodejs.org/) |
-| Melos   | 7.0+           | `dart pub global activate melos`  |
+| ツール  | 推奨バージョン | インストール方法                            |
+| ------- | -------------- | ------------------------------------------- |
+| Flutter | FVM管理        | `dart pub global activate fvm`              |
+| Bun     | 1.2+           | `curl -fsSL https://bun.sh/install \| bash` |
+| Melos   | 7.0+           | `dart pub global activate melos`            |
 
 ### セットアップ手順
 
@@ -60,7 +60,7 @@ cd flutter_template_project
 
 # 2. 開発環境を構築
 fvm install && fvm use
-npm install
+bun install
 melos bootstrap
 
 # 3. コード生成を実行

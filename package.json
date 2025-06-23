@@ -1,16 +1,28 @@
 {
     "name": "flutter_template_project",
     "version": "1.0.0",
-    "description": "Flutter template project with commit linting",
+    "description": "Flutter template project with commit linting (using bun)",
     "private": true,
+    "packageManager": "bun@1.2.17",
     "scripts": {
-        "commitlint": "commitlint --edit",
-        "lint": "prettier --check '**/*.{yml,yaml,md}'",
-        "format": "prettier --write '**/*.{yml,yaml,md}'"
+        "commitlint": "bunx commitlint --edit",
+        "lint": "bunx prettier --check '**/*.{yml,yaml,md}'",
+        "format": "bunx prettier --write '**/*.{yml,yaml,md}'",
+        "install": "bun install",
+        "clean": "bun run clean:node_modules",
+        "clean:node_modules": "rm -rf node_modules && bun install",
+        "dev:lint": "bun run lint",
+        "dev:format": "bun run format",
+        "dev:setup": "bun install && bun run format",
+        "ci:check": "bun run lint && echo 'All quality checks passed'",
+        "ci:verify": "bun --version && bunx prettier --version"
     },
     "devDependencies": {
         "@commitlint/cli": "^18.0.0",
         "@commitlint/config-conventional": "^18.0.0",
         "prettier": "3.5.3"
+    },
+    "engines": {
+        "bun": ">=1.2.0"
     }
 }
