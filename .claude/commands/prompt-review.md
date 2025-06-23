@@ -4,11 +4,11 @@
 
 ## Overview
 
-Evaluate files according to Claude 4 best practices defined in `docs/CLAUDE_4_BEST_PRACTICES.md` and provide comprehensive Japanese evaluation. This command reads local files, analyzes content based on structured review templates, and creates detailed review files.
+Evaluate files according to Claude 4 best practices and provide comprehensive Japanese evaluation. This command reads local files passed as arguments, analyzes content based on structured review templates, and creates detailed review files without external references.
 
 ## Core Principles (Claude 4 Best Practices)
 
-**Reference**: `docs/CLAUDE_4_BEST_PRACTICES.md`
+**Scope**: Local file evaluation only - no external references
 
 ### AI Review-First Methodology
 
@@ -288,8 +288,8 @@ class Claude4BestPracticesEvaluator {
       issues,
       recommendations,
       bestPracticeReferences: [
-        'docs/CLAUDE_4_BEST_PRACTICES.md#セキュリティ脆弱性',
-        'https://owasp.org/www-project-top-ten/',
+        'セキュリティベストプラクティス',
+        'セキュアコーディング原則',
       ],
     }
   }
@@ -347,10 +347,7 @@ class Claude4BestPracticesEvaluator {
       score,
       issues,
       recommendations,
-      bestPracticeReferences: [
-        'docs/CLAUDE_4_BEST_PRACTICES.md#SOLID原則違反',
-        'https://en.wikipedia.org/wiki/SOLID',
-      ],
+      bestPracticeReferences: ['SOLID設計原則', 'オブジェクト指向設計パターン'],
     }
   }
 
@@ -391,9 +388,7 @@ class Claude4BestPracticesEvaluator {
       score,
       issues,
       recommendations,
-      bestPracticeReferences: [
-        'docs/CLAUDE_4_BEST_PRACTICES.md#パフォーマンス最適化',
-      ],
+      bestPracticeReferences: ['パフォーマンス最適化手法'],
     }
   }
 }
@@ -428,7 +423,7 @@ class JapaneseReviewReportGenerator {
 - **ファイル**: ${filePath}
 - **レビュー日時**: ${timestamp}
 - **総合スコア**: ${overallScore}/100 (${qualityRating})
-- **レビュー基準**: Claude 4 ベストプラクティス ([docs/CLAUDE_4_BEST_PRACTICES.md](docs/CLAUDE_4_BEST_PRACTICES.md))
+- **レビュー基準**: Claude 4 ベストプラクティス（ローカル評価）
 
 ## 評価サマリー
 
@@ -464,9 +459,9 @@ ${this.evaluatePromptEngineeringCompliance(originalContent)}
 
 ## 参考資料
 
-- [Claude 4 ベストプラクティス](docs/CLAUDE_4_BEST_PRACTICES.md)
-- [AIレビューファースト設計](https://zenn.dev/caphtech/articles/ai-review-first-design)
-- [Claude 4 公式ドキュメント](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/claude-4-best-practices)
+- Claude 4 ベストプラクティス（ローカル評価基準）
+- AIレビューファースト設計手法
+- セキュリティ・SOLID原則・パフォーマンス評価フレームワーク
 
 ## レビューアー情報
 
