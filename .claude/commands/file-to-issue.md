@@ -634,7 +634,7 @@ class LinearMCPIntegration {
     try {
       // Step 1: Get available teams
       const teams = await mcp__linear_mcp__list_teams()
-      
+
       if (!teams || teams.length === 0) {
         throw new MCPError(
           'Linear MCP is configured but no teams are accessible'
@@ -643,19 +643,22 @@ class LinearMCPIntegration {
 
       // Step 2: Select appropriate team (use first available or specific criteria)
       this.teamId = await this.selectTeam(teams)
-      
+
       // Step 3: Get available projects for the selected team
       const projects = await mcp__linear_mcp__list_projects()
-      
+
       // Step 4: Select appropriate project (optional)
       this.projectId = await this.selectProject(projects)
 
       console.log(`📋 Linear MCP initialized successfully`)
-      console.log(`🏢 Team: ${this.getTeamName(teams, this.teamId)} (${this.teamId})`)
+      console.log(
+        `🏢 Team: ${this.getTeamName(teams, this.teamId)} (${this.teamId})`
+      )
       if (this.projectId) {
-        console.log(`📁 Project: ${this.getProjectName(projects, this.projectId)} (${this.projectId})`)
+        console.log(
+          `📁 Project: ${this.getProjectName(projects, this.projectId)} (${this.projectId})`
+        )
       }
-      
     } catch (error) {
       throw new MCPError(
         `Linear MCP initialization failed: ${error.message}\n` +
@@ -667,18 +670,19 @@ class LinearMCPIntegration {
   private async selectTeam(teams: any[]): Promise<string> {
     // Strategy 1: Look for team with common development-related names
     const preferredNames = ['development', 'dev', 'main', 'primary', 'default']
-    
+
     for (const name of preferredNames) {
-      const team = teams.find(t => 
-        t.name?.toLowerCase().includes(name) || 
-        t.key?.toLowerCase().includes(name)
+      const team = teams.find(
+        t =>
+          t.name?.toLowerCase().includes(name) ||
+          t.key?.toLowerCase().includes(name)
       )
       if (team) {
         console.log(`🎯 Selected team by name preference: ${team.name}`)
         return team.id
       }
     }
-    
+
     // Strategy 2: Use first available team
     const firstTeam = teams[0]
     console.log(`📍 Using first available team: ${firstTeam.name}`)
@@ -687,24 +691,27 @@ class LinearMCPIntegration {
 
   private async selectProject(projects: any[]): Promise<string | null> {
     if (!projects || projects.length === 0) {
-      console.log('📂 No projects available, creating issue without project association')
+      console.log(
+        '📂 No projects available, creating issue without project association'
+      )
       return null
     }
 
     // Strategy 1: Look for template or default project
     const preferredNames = ['template', 'default', 'general', 'main']
-    
+
     for (const name of preferredNames) {
-      const project = projects.find(p => 
-        p.name?.toLowerCase().includes(name) || 
-        p.key?.toLowerCase().includes(name)
+      const project = projects.find(
+        p =>
+          p.name?.toLowerCase().includes(name) ||
+          p.key?.toLowerCase().includes(name)
       )
       if (project) {
         console.log(`🎯 Selected project by name preference: ${project.name}`)
         return project.id
       }
     }
-    
+
     // Strategy 2: Use first available project
     const firstProject = projects[0]
     console.log(`📍 Using first available project: ${firstProject.name}`)
@@ -726,7 +733,9 @@ class LinearMCPIntegration {
     template: IssueTemplate
   ): Promise<{ id: string; url: string }> {
     if (!this.teamId) {
-      throw new MCPError('Team ID not initialized. Please call initializeMCPLinearConnection first.')
+      throw new MCPError(
+        'Team ID not initialized. Please call initializeMCPLinearConnection first.'
+      )
     }
 
     // Prepare issue parameters for MCP Linear API
@@ -748,7 +757,7 @@ class LinearMCPIntegration {
       if (this.projectId) {
         console.log(`📁 Associating with project: ${this.projectId}`)
       }
-      
+
       const result = await mcp__linear_mcp__create_issue(issueParams)
 
       if (!result || !result.id || !result.url) {
@@ -774,7 +783,9 @@ class LinearMCPIntegration {
       }
 
       if (error.message.includes('project')) {
-        console.warn(`⚠️ Project association failed, retrying without project: ${error.message}`)
+        console.warn(
+          `⚠️ Project association failed, retrying without project: ${error.message}`
+        )
         // Retry without project association
         delete issueParams.projectId
         const retryResult = await mcp__linear_mcp__create_issue(issueParams)
@@ -1215,9 +1226,9 @@ This command relies on the following MCP Linear functions:
 
 ```typescript
 // MCP Linear API functions
-mcp__linear_mcp__list_teams()           // Retrieve available teams
-mcp__linear_mcp__list_projects()        // Retrieve available projects  
-mcp__linear_mcp__create_issue(params)   // Create issues in selected team
+mcp__linear_mcp__list_teams() // Retrieve available teams
+mcp__linear_mcp__list_projects() // Retrieve available projects
+mcp__linear_mcp__create_issue(params) // Create issues in selected team
 mcp__linear_mcp__create_comment(params) // Add Japanese content as comment
 ```
 
@@ -1241,9 +1252,8 @@ project-root/
 │   └── ISSUE_TEMPLATE/
 │       └── feature.yml
 ├── docs/
-│   └── CLAUDE_4_BEST_PRACTICES.md
-├── .env (for API keys)
-└── allowed-files/ (for file access validation)
+    └── CLAUDE_4_BEST_PRACTICES.md
+
 ```
 
 ---
