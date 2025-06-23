@@ -8,7 +8,7 @@
 
 ### 核となる特徴
 
-- **🤖 AI支援開発**: Claude Code統合によるLinear Issue駆動の自動開発
+- **🤖 AI支援開発**: Claude Code統合によるGitHub Issue駆動の自動開発
 - **📦 モノレポ構造**: Melosによる効率的なマルチパッケージ管理
 - **🎯 型安全性**: Riverpod、go_router、slangによる堅牢なアーキテクチャ
 - **⚡ 開発効率**: 自動コード生成とHot Reloadによる高速開発サイクル
@@ -23,7 +23,7 @@
 | **ナビゲーション** | go_router            | 型安全なルーティング             |
 | **国際化**         | slang                | コード生成による多言語対応       |
 | **モノレポ**       | Melos                | パッケージ統合管理               |
-| **AI開発**         | Claude Code + Linear | 自動化された開発ワークフロー     |
+| **AI開発**         | Claude Code + GitHub | 自動化された開発ワークフロー     |
 
 ## プロジェクト構成
 
@@ -85,19 +85,19 @@ melos run format   # コード整形
 
 ### AI支援開発（Claude Code）
 
-Claude CodeとLinearを連携した自動開発機能を提供：
+Claude CodeとGitHub Issuesを連携した自動開発機能を提供：
 
 ```bash
 # Claude Code起動
 claude
 
 # Issue指定で自動開発開始
-/linear ABC-123
+/task #123
 ```
 
 **特徴:**
 
-- Linear Issueの内容を解析し、自動実装
+- GitHub Issueの内容を解析し、自動実装
 - AI品質レビューによる反復改善
 - 自動テスト実行とPR作成
 - 並行開発のためのgit worktree活用
