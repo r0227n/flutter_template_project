@@ -17,18 +17,21 @@ A Claude Code slash command that records session content chronologically and sav
 ## Core Functionality
 
 ### Session Recording Features
+
 - 📝 Automatic session content analysis and recording
 - 📅 Time-based file naming (`YYYY-MM-DD_HH-mm-ss_memo.md`)
 - 📁 Saved to project root `memos/` directory
 - 🔄 Automatic append functionality within same session
 
 ### Security Features (High Priority)
+
 - 🔒 Path traversal attack prevention
 - 🛡️ Sensitive information filtering (API keys, passwords, tokens)
 - 🔐 File access restrictions and path validation
 - 🔄 Atomic file operations with locking mechanism
 
 ### Performance Features
+
 - ⚡ Streaming I/O for large file handling
 - 💾 File statistics caching for duplicate access optimization
 - 🎯 Parallel processing for concurrent operations
@@ -42,39 +45,47 @@ A Claude Code slash command that records session content chronologically and sav
 # セッション記録 - YYYY/MM/DD HH:mm:ss
 
 ## 概要
+
 Claude Code セッション内でのメモ記録
 
 ## セッション情報
-- セッションID: session_[timestamp]_[hash]
+
+- セッションID: session*[timestamp]*[hash]
 - 記録時刻: YYYY/MM/DD HH:mm:ss
 - コマンド実行: /memo
 
 ## 内容
+
 このセッション内での重要な内容や決定事項をここに記録します。
 
 ## 主要な決定事項
+
 - 技術的な決定事項
 - アーキテクチャの選択
 - 実装方針の確定
 
 ## 技術的な気づき
+
 - パフォーマンスに関する発見
 - セキュリティの考慮事項
 - ベストプラクティスの適用
 
 ## 問題解決プロセス
+
 1. 問題の特定と分析
 2. 解決方法の検討と評価
 3. 実装とテスト
 4. 検証と改善
 
 ## 次のアクション
+
 - 実装予定のタスク
 - 検証すべき項目
 - 改善すべき点
 
 ---
-*このメモは /memo コマンドにより自動生成されました*
+
+_このメモは /memo コマンドにより自動生成されました_
 
 ---
 
@@ -117,6 +128,7 @@ This command adopts AI Review-First design based on Claude 4 Best Practices:
 ### Security Implementation
 
 **Sensitive Information Filtering Patterns:**
+
 - `api_key`, `api-key` → `***FILTERED***`
 - `password` → `***FILTERED***`
 - `secret` → `***FILTERED***`
@@ -125,6 +137,7 @@ This command adopts AI Review-First design based on Claude 4 Best Practices:
 - `auth` → `***FILTERED***`
 
 **File Access Control:**
+
 - Access permitted only within project root
 - Path traversal attack prevention (`../`, `..\\` validation)
 - File size limit (10MB)
@@ -133,6 +146,7 @@ This command adopts AI Review-First design based on Claude 4 Best Practices:
 ## Expected Output
 
 ### Successful Execution
+
 ```
 🚀 /memo コマンド実行中...
 📄 新規ファイルを作成しました
@@ -141,6 +155,7 @@ This command adopts AI Review-First design based on Claude 4 Best Practices:
 ```
 
 ### Append to Existing File
+
 ```
 🚀 /memo コマンド実行中...
 📝 既存ファイルに追記しました
@@ -149,6 +164,7 @@ This command adopts AI Review-First design based on Claude 4 Best Practices:
 ```
 
 ### Error Handling
+
 ```
 ❌ メモの保存に失敗しました: [エラーメッセージ]
 ```
@@ -156,12 +172,14 @@ This command adopts AI Review-First design based on Claude 4 Best Practices:
 ## Performance Characteristics
 
 ### Benchmarks
+
 - ⚡ **Execution time**: 15-50ms average
 - 💾 **Memory usage**: Optimized for large files
 - 🔄 **Concurrency**: Lock mechanism for conflict resolution
 - 📊 **Caching**: 30-second file statistics cache
 
 ### Optimization Features
+
 - Streaming I/O for files over 1MB
 - Template caching for acceleration
 - Maximum parallel processing execution
@@ -170,12 +188,14 @@ This command adopts AI Review-First design based on Claude 4 Best Practices:
 ## Error Recovery
 
 ### Graceful Degradation
+
 - Automatic retry with exponential backoff
 - Lock timeout handling (30 seconds)
 - On-demand directory creation
 - Comprehensive error logging
 
 ### Common Error Cases
+
 - **Insufficient disk space**: Appropriate error message and recovery suggestions
 - **Permission denied**: Present access permission verification methods
 - **File lock conflicts**: Automatic wait and retry
@@ -184,23 +204,27 @@ This command adopts AI Review-First design based on Claude 4 Best Practices:
 ## Dependencies
 
 ### Required
+
 - Node.js (ES2020+)
 - File system access permissions
 - Project directory structure
 
 ### Optional
+
 - Test framework integration
 - CI/CD pipeline compatibility
 
 ## Extension Points
 
 ### Future Enhancements
+
 - 📱 Session content analysis integration
 - 🌐 Multiple output formats (JSON, HTML)
 - 🔍 Search and indexing functionality
 - 📈 Analytics and usage tracking
 
 ### Customization Options
+
 - Custom file naming strategies
 - Alternative content generators
 - Additional security filters
