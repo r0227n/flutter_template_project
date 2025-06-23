@@ -109,11 +109,12 @@ Focus on the highest priority issues first.
 
 **Actions**:
 
-1. **Human Approval**: Display Japanese content for "Approve" confirmation
-2. **Translation Processing**: Convert Japanese to English using Claude 4
-3. **Linear Issue Creation**: Create issue with English content
-4. **Japanese Comment Addition**: Add original Japanese content as comment
-5. **File Cleanup**: Remove local file after successful processing
+1. **Create Issue File**: Generate new file with `.issue.md` extension containing ISSUE_TEMPLATE
+2. **Human Approval**: Display Japanese content for "Approve" confirmation
+3. **Translation Processing**: Convert Japanese to English using Claude 4
+4. **Linear Issue Creation**: Create issue with English content
+5. **Japanese Comment Addition**: Add original Japanese content as comment
+6. **File Cleanup**: Remove created `.issue.md` file after successful processing
 
 **Quality Gate**: Successfully created Linear Issue with both languages
 
@@ -383,18 +384,25 @@ class FileToIssueCommand {
       const converter = this.templateFactory.create(templateType)
       const template = await converter.convert(bullets)
 
-      // Phase 4: Human approval workflow
-      const approved = await this.requestApproval(template)
-      if (!approved) throw new Error('Processing cancelled by user')
+      // Phase 4: Create issue file
+      const issueFilePath = await this.createIssueFile(filePath, template)
 
-      // Phase 5: Linear integration
+      // Phase 5: Human approval workflow
+      const approved = await this.requestApproval(template)
+      if (!approved) {
+        // Cleanup issue file if user doesn't approve
+        await this.fileValidator.cleanup(issueFilePath)
+        throw new Error('Processing cancelled by user')
+      }
+
+      // Phase 6: Linear integration
       const issueUrl = await this.linearIntegration.createLinearIssue(
         template,
         content
       )
 
-      // Phase 6: Cleanup
-      await this.fileValidator.cleanup(filePath)
+      // Phase 7: Cleanup
+      await this.fileValidator.cleanup(issueFilePath)
 
       return issueUrl
     } catch (error) {
@@ -411,6 +419,33 @@ class FileToIssueCommand {
     // Wait for user input
     const input = await this.getUserInput()
     return input.toLowerCase() === 'approve'
+  }
+
+  private async createIssueFile(originalPath: string, template: IssueTemplate): Promise<string> {
+    // Generate issue file path by adding .issue.md extension
+    const parsedPath = path.parse(originalPath)
+    const issueFilePath = path.join(
+      parsedPath.dir,
+      `${parsedPath.name}.issue.md`
+    )
+
+    // Create issue file content in ISSUE_TEMPLATE format
+    const issueContent = `# ${template.title}
+
+${template.description}
+
+---
+Type: ${template.type}
+Priority: ${template.priority}
+Generated from: ${path.basename(originalPath)}
+Date: ${new Date().toISOString()}
+`
+
+    // Write issue file
+    await writeFile(issueFilePath, issueContent, { encoding: 'utf8' })
+    console.log(`📝 Created issue file: ${issueFilePath}`)
+    
+    return issueFilePath
   }
 }
 ```
@@ -473,7 +508,8 @@ class FileToIssueCommand {
 - ✅ **Template Conversion**: Proper ISSUE_TEMPLATE format generation
 - ✅ **Translation**: High-quality Japanese to English conversion
 - ✅ **Linear Integration**: Successful Issue creation with bilingual content
-- ✅ **File Cleanup**: Safe removal of processed files
+- ✅ **Issue File Creation**: Generate `.issue.md` file with ISSUE_TEMPLATE format
+- ✅ **File Cleanup**: Safe removal of created `.issue.md` files
 
 ### 3. Quality Standards
 
@@ -491,6 +527,7 @@ class FileToIssueCommand {
 📖 Reading file: tasks.md
 📋 Found 5 bullet points
 🏗️ Converting to ISSUE_TEMPLATE format...
+📝 Created issue file: tasks.issue.md
 
 📝 Generated Japanese Content:
 ## タイトル
@@ -504,7 +541,7 @@ class FileToIssueCommand {
 🌐 Translating to English...
 📤 Creating Linear Issue...
 💬 Adding Japanese comment...
-🗑️ Cleaning up local file...
+🗑️ Cleaning up issue file...
 
 ✅ Issue created: https://linear.app/team/issue/ABC-123
 ```
