@@ -1,80 +1,82 @@
 # Claude 4 プロンプトエンジニアリング ベストプラクティス
 
-Claude 4を「シニアレビュアー」として活用するための実践的なガイドです。
+Claude 4を「シニアレビュアー」として活用し、高品質なFlutterアプリケーション開発を実現するための実践的なガイドです。
 
-## 参照元
+## 参照文献
 
-- **Claude 4 ベストプラクティス**: https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/claude-4-best-practices
-- **AIレビューファースト設計**: https://zenn.dev/caphtech/articles/ai-review-first-design
+- [Claude 4 Best Practices (Anthropic公式)](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/claude-4-best-practices)
+- [AIレビューファースト設計 (Zenn)](https://zenn.dev/caphtech/articles/ai-review-first-design)
 
-## AIレビューファースト設計の導入
+## 概要：AIレビューファースト設計
 
-_参照元: https://zenn.dev/caphtech/articles/ai-review-first-design_
+LLM（大規模言語モデル）は、コードを一から生成するよりも既存のコードを批評・レビューする方が効果的です。
 
-### 基本概念
+### 核心原則
 
-LLM（大規模言語モデル）は、コードを一から生成するよりも、既存のコードを批評・レビューする方が効果的です。この方法論では：
+**「小さなドラフト → 厳しい批評 → 再生成 → リリース」**
 
-- **小さなドラフト → 厳しい批評 → 再生成 → リリース** のサイクルを回す
 - AIを「ジュニア設計者」ではなく「シニアレビュアー」として活用
-- 3〜4回の反復レビューで品質を向上
+- 3〜4回の反復レビューサイクルで品質向上
+- セキュリティ → SOLID原則 → パフォーマンスの優先順位
 
-### 開発ループ
+## 1. 開発ワークフロー
 
-1. **最小限の初期設計ドラフトを作成**
-2. **ウォーキングスケルトンを生成**
-3. **AIによるクリティカルレビュー**
-4. **フィードバックに基づく反復的改善**
-5. **アーキテクチャ決定の記録**
+### 基本サイクル
 
 ```mermaid
-graph TD
-    A[最小限の初期設計ドラフト] --> B[ウォーキングスケルトン生成]
-    B --> C[AIによるクリティカルレビュー]
-    C --> D{改善が必要?}
-    D -->|はい| E[フィードバック反映]
-    E --> B
-    D -->|いいえ| F[アーキテクチャ決定記録]
-    F --> G[リリース]
-
-    style A fill:#f9f,stroke:#333,stroke-width:2px
-    style C fill:#bbf,stroke:#333,stroke-width:2px
-    style G fill:#bfb,stroke:#333,stroke-width:2px
+flowchart LR
+    A[最小実装] --> B[AIレビュー]
+    B --> C[改善実装]
+    C --> D{品質OK?}
+    D -->|No| B
+    D -->|Yes| E[リリース]
+    
+    classDef start fill:#e1f5fe
+    classDef review fill:#f3e5f5
+    classDef end fill:#e8f5e8
+    
+    class A start
+    class B,C review
+    class E end
 ```
 
-## 一般原則
+### Flutterプロジェクトでの実装ステップ
 
-_参照元: https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/claude-4-best-practices#general-principles_
+1. **最小実装**: 基本機能のみを実装
+2. **AIレビュー**: 構造化されたレビューテンプレートを使用
+3. **反復改善**: 優先度順に問題を修正
+4. **品質確認**: `melos run analyze` でコード品質チェック
+5. **リリース準備**: ドキュメント更新と最終テスト
 
-### 1. 明確な指示を提供する
+## 2. プロンプトエンジニアリング原則
 
-具体的で明確なガイダンスを提供することで、より良い出力結果を得られます。
+### 明確で具体的な指示
 
-**悪い例:**
-
+❌ **悪い例**
 ```text
-分析ダッシュボードを作成して
+Flutterウィジェットを作成して
 ```
 
-**良い例:**
-
+✅ **良い例**
 ```text
-分析ダッシュボードを作成してください。
-含める機能:
-- リアルタイムデータ更新
-- フィルタリング機能
-- データエクスポート (CSV, PDF)
-- レスポンシブデザイン
+Riverpodとhooks_riverpodを使用してユーザー設定画面を作成してください。
+要件:
+- ThemeMode切り替え（light/dark/system）
+- 言語選択（日本語/英語）
+- SharedPreferencesで設定永続化
+- slangによる多言語対応
+- Material Design 3準拠
 ```
 
-### 2. コンテキストを追加してパフォーマンスを向上させる
+### コンテキストの重要性
 
-指示の背後にある動機や理由を説明することで、Claudeがより良い理解と目的に合った応答を提供できます。
+指示の背景と制約を明確にすることで、プロジェクト固有の最適な実装が得られます。
 
-### 3. 例とディテールに注意を払う
+### 実例の効果的活用
 
-- 提供する例が望ましい動作と一致していることを確認する
-- 望ましい結果を促すために詳細を慎重に作成する
+- 既存コードの参照を促す
+- プロジェクトの命名規則を示す
+- アーキテクチャパターンを具体例で説明
 
 ## 主要な戦略
 

@@ -30,7 +30,7 @@ Flutter開発環境に最適化されたVS Code設定を提供し、開発効率
 
 | 設定項目                                    | 値                     | 目的                                     | 効果                                      |
 | ------------------------------------------- | ---------------------- | ---------------------------------------- | ----------------------------------------- |
-| `dart.flutterSdkPath`                       | `.fvm/versions/3.32.2` | fvmで管理されているFlutter SDKパスを指定 | プロジェクト固有のFlutterバージョンを使用 |
+| `dart.flutterSdkPath`                       | `.fvm/versions/stable` | fvmで管理されているFlutter SDKパスを指定 | プロジェクト固有のFlutterバージョンを使用 |
 | `dart.previewFlutterUiGuides`               | `true`                 | Flutter UIガイドラインの表示             | ウィジェット構造の視覚的な理解が向上      |
 | `dart.previewFlutterUiGuidesCustomTracking` | `true`                 | カスタムウィジェットでのUIガイド表示     | 自作ウィジェットでも構造が見やすくなる    |
 
