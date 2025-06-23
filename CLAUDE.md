@@ -32,28 +32,40 @@ This is a Flutter mobile application development project using Claude Code with 
 
 ## Project Structure
 
+<!-- AUTO-GENERATED SECTION: This section is automatically updated when project structure changes -->
+
 ```
 flutter_template_project/
 ├── app/                         # Main Flutter application
 │   ├── lib/
 │   │   ├── main.dart           # Entry point
 │   │   ├── pages/              # UI pages (home_page.dart, settings_page.dart)
+│   │   │   ├── home/           # Home page components
+│   │   │   └── settings/       # Settings page components
 │   │   ├── router/             # go_router config and type-safe route definitions
 │   │   └── i18n/               # slang-generated multilingual files
 │   ├── assets/i18n/            # JSON translation files (ja.i18n.json, en.i18n.json)
-│   └── test/                   # Widget tests
-├── packages/
-│   └── app_preferences/        # Shared preferences management package
-│       ├── lib/
-│       │   ├── src/
-│       │   │   ├── providers/  # Riverpod providers
-│       │   │   ├── repositories/
-│       │   │   └── theme/
-│       │   └── widgets/        # Reusable widgets
-│       └── assets/i18n/        # Package-specific translations
+│   ├── test/                   # Widget tests
+│   ├── android/                # Android platform specific files
+│   ├── ios/                    # iOS platform specific files
+│   ├── web/                    # Web platform specific files
+│   ├── linux/                  # Linux platform specific files
+│   ├── macos/                  # macOS platform specific files
+│   └── windows/                # Windows platform specific files
+├── packages/                   # Shared packages (currently empty)
+├── docs/                       # Project documentation
+│   ├── CLAUDE_4_BEST_PRACTICES.md
+│   ├── COMMITLINT_RULES.md
+│   ├── MELOS_SETUP.md
+│   └── WORKTREE_ARCHITECTURE.md
+├── scripts/                    # Build and utility scripts
+├── memos/                      # Development memos and notes
+├── worktrees/                  # Git worktree working directories
 ├── pubspec.yaml                # Workspace configuration
-└── melos.yaml                  # (integrated in pubspec.yaml)
+└── package.json                # Node.js dependencies (commitlint, prettier)
 ```
+
+<!-- END AUTO-GENERATED SECTION -->
 
 ## Environment Setup
 
@@ -238,3 +250,45 @@ For detailed Linear Issue processing workflow, execution examples, and configura
 - Add new dependencies to the appropriate package's `pubspec.yaml`
 - Same versions used across all packages due to Workspace resolution
 - Update all package dependencies collectively with `melos run get`
+
+## Automated Development Workflows
+
+### Workflow 1: Code Quality Assurance
+
+**Purpose**: Ensure consistent code quality across all development activities
+
+**Steps**:
+
+1. Static analysis with `melos run analyze`
+2. Code formatting validation with `melos run ci:format`
+3. Automated testing with `melos run test`
+4. Translation validation with `melos run analyze:slang`
+5. Final formatting with `melos run format:prettier`
+6. Final formatting with `melos run format`
+
+### Workflow 2: Documentation Synchronization
+
+**Purpose**: Maintain consistency between CLAUDE.md and related documentation
+
+**Steps**:
+
+1. Monitor file changes in project structure
+2. Auto-update "## Project Structure" section when files are added/removed
+3. Validate documentation compliance with Claude 4 Best Practices
+4. Synchronize HUMAN.md when CLAUDE.md is updated
+5. Final formatting with `melos run format:prettier`
+6. Final formatting with `melos run format`
+
+### Workflow 3: Development Environment Validation
+
+**Purpose**: Ensure proper development environment setup and configuration
+
+**Steps**:
+
+1. Validate Flutter version with fvm
+2. Check Linear MCP configuration
+3. Verify git worktree support
+4. Validate environment variables
+5. Test Claude Code integration
+6. Final formatting with `melos run format:prettier`
+7. Final formatting with `melos run format`
