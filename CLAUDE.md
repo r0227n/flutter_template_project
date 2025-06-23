@@ -172,17 +172,13 @@ export CHECK_PR_WORKFLOW="check-pr.yml" # Target workflow file to monitor
 ### Available Commands
 
 - `/linear` - Linear Issue processing (interactive & automatic execution)
-- `/linear-list` - Display available Issues list
-- `/linear-status` - Check Linear integration status
 
 ### Command File Placement
 
 ```
 .claude/
 └── commands/
-    ├── linear.md          # Main Issue processing command
-    ├── linear-list.md     # Issue list display command
-    └── linear-status.md   # Connection status check command
+    └── linear.md          # Main Issue processing command
 ```
 
 ## Workflow Definition
@@ -313,15 +309,6 @@ claude
 # ⏰ Alarm notification scheduled upon completion
 ```
 
-### Auxiliary Commands
-
-```bash
-# Check Issue list
-/linear-list
-
-# Check Linear integration status
-/linear-status
-```
 
 ## Parallel Execution Work Isolation Settings
 
@@ -519,7 +506,6 @@ Validation items during interaction:
 # Stop only on error
 /linear INVALID-123
 > ❌ Error: Issue ID 'INVALID-123' not found
-> 💡 Use /linear-list to check available Issues
 ```
 
 ## Automation Rules
@@ -617,9 +603,6 @@ Task is considered complete when all of the following conditions are met:
 #### 1. Linear API Connection Error
 
 ```bash
-# Check Linear integration status
-/linear-status
-
 # If MCP configuration re-check needed
 /config
 ```
