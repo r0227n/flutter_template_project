@@ -3,7 +3,7 @@
 # Enable faster dependency resolution
 cache = true
 # Use exact versions for security
-exact = false
+exact = true
 # Prefer offline cache when available
 prefer-offline = true
 
