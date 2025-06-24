@@ -1,10 +1,10 @@
 # File-to-Issue Processing Command - Claude 4 Best Practices
 
-**IMPORTANT**: This command implements AI Review-First design following Claude 4 best practices for automated Linear Issue creation with GitHub Issue Template compliance.
+**IMPORTANT**: This command implements AI Review-First design following Claude 4 best practices for automated GitHub Issue creation with GitHub Issue Template compliance.
 
 ## Overview
 
-Convert bullet-point files into Linear Issues using AI Review-First methodology. This command reads local files, transforms content into structured GitHub ISSUE_TEMPLATE format, provides translation workflow, and creates Linear Issues automatically.
+Convert bullet-point files into GitHub Issues using AI Review-First methodology. This command reads local files, transforms content into structured GitHub ISSUE_TEMPLATE format, provides translation workflow, and creates GitHub Issues automatically.
 
 ## Core Principles (Claude 4 Best Practices)
 
@@ -20,7 +20,7 @@ Convert bullet-point files into Linear Issues using AI Review-First methodology.
 ### Clear Instructions
 
 - Eliminate ambiguity in file parsing and template conversion
-- Define specific outcomes: structured Japanese content → GitHub template format → English translation → Linear Issue
+- Define specific outcomes: structured Japanese content → GitHub template format → English translation → GitHub Issue
 - Provide structured review templates for content quality
 
 ### Structured Quality Assessment
@@ -28,7 +28,7 @@ Convert bullet-point files into Linear Issues using AI Review-First methodology.
 Apply consistent evaluation framework:
 
 ```
-1. Security vulnerabilities (HIGH PRIORITY) - File access, API credentials
+1. Security vulnerabilities (HIGH PRIORITY) - File access, GitHub API credentials
 2. SOLID principle violations (MEDIUM PRIORITY) - Command architecture
 3. Performance optimization (LOW PRIORITY) - File processing speed
 Constraint: Summarize findings within 400 characters
@@ -72,7 +72,7 @@ Constraint: Summarize findings within 400 characters
 1. **File Access Validation**: Verify file exists and is readable
 2. **Content Parsing**: Extract bullet points and structure
 3. **Template Conversion**: Transform to GitHub ISSUE_TEMPLATE format in Japanese
-4. **Initial Quality Check**: Validate content structure against feature.yml
+4. **Initial Quality Check**: Validate content structure against GitHub Issue templates
 
 **Success Criteria**: Well-formed Japanese GitHub ISSUE_TEMPLATE content
 
@@ -113,11 +113,11 @@ Focus on the highest priority issues first.
 1. **Create Issue File**: Generate new file with `.issue.md` extension containing GitHub ISSUE_TEMPLATE format
 2. **Human Approval**: Display Japanese content for "Approve" confirmation
 3. **Translation Processing**: Convert Japanese to English using Claude 4
-4. **Linear Issue Creation**: Create issue with English content
+4. **GitHub Issue Creation**: Create issue with English content using GitHub CLI
 5. **Japanese Comment Addition**: Add original Japanese content as comment
 6. **File Cleanup**: Remove created `.issue.md` file after successful processing
 
-**Success Criteria**: Successfully created Linear Issue with both languages and GitHub template compliance
+**Success Criteria**: Successfully created GitHub Issue with both languages and GitHub template compliance
 
 ## Enhanced Core Workflow Implementation
 
@@ -598,71 +598,67 @@ class TemplateConverterFactory {
 }
 ```
 
-### 4. Linear MCP Integration Implementation
+### 4. GitHub CLI Integration Implementation
 
 ```typescript
-// Linear MCP integration with robust error handling and dynamic team/project resolution
-class LinearMCPIntegration {
-  private teamId: string | null = null
-  private projectId: string | null = null
+// GitHub CLI integration with robust error handling and repository management
+class GitHubCLIIntegration {
+  private repositoryName: string | null = null
 
-  async createLinearIssueViaMCP(
+  async createGitHubIssueViaCLI(
     template: IssueTemplate,
     originalContent: string
   ): Promise<string> {
     try {
-      // Step 1: Validate MCP Linear availability and get team/project info
-      await this.initializeMCPLinearConnection()
+      // Step 1: Validate GitHub CLI availability and repository access
+      await this.initializeGitHubCLIConnection()
 
       // Step 2: Translate content to English
       const translatedTemplate = await this.translateToEnglish(template)
 
-      // Step 3: Create Linear Issue via MCP
-      const issueData = await this.createIssueViaMCP(translatedTemplate)
+      // Step 3: Create GitHub Issue via CLI
+      const issueData = await this.createIssueViaCLI(translatedTemplate)
 
       // Step 4: Add Japanese content as comment
-      await this.addJapaneseComment(issueData.id, originalContent)
+      await this.addJapaneseComment(issueData.number, originalContent)
 
-      console.log(`✅ Linear Issue created: ${issueData.url}`)
+      console.log(`✅ GitHub Issue created: ${issueData.url}`)
       return issueData.url
     } catch (error) {
-      return this.handleLinearError(error)
+      return this.handleGitHubError(error)
     }
   }
 
-  private async initializeMCPLinearConnection(): Promise<void> {
+  private async initializeGitHubCLIConnection(): Promise<void> {
     try {
-      // Step 1: Get available teams
-      const teams = await mcp__linear_mcp__list_teams()
+      // Step 1: Check GitHub CLI availability
+      const { exec } = require('child_process')
+      const { promisify } = require('util')
+      const execAsync = promisify(exec)
 
-      if (!teams || teams.length === 0) {
-        throw new MCPError(
-          'Linear MCP is configured but no teams are accessible'
+      // Verify GitHub CLI is installed
+      await execAsync('gh --version')
+
+      // Step 2: Check authentication status
+      const { stdout: authStatus } = await execAsync('gh auth status')
+      if (!authStatus.includes('Logged in')) {
+        throw new GitHubError(
+          'GitHub CLI is not authenticated. Please run: gh auth login'
         )
       }
 
-      // Step 2: Select appropriate team (use first available or specific criteria)
-      this.teamId = await this.selectTeam(teams)
+      // Step 3: Verify repository access
+      const { stdout: repoInfo } = await execAsync('gh repo view --json name,owner')
+      const repo = JSON.parse(repoInfo)
+      this.repositoryName = `${repo.owner.login}/${repo.name}`
 
-      // Step 3: Get available projects for the selected team
-      const projects = await mcp__linear_mcp__list_projects()
-
-      // Step 4: Select appropriate project (optional)
-      this.projectId = await this.selectProject(projects)
-
-      console.log(`📋 Linear MCP initialized successfully`)
-      console.log(
-        `🏢 Team: ${this.getTeamName(teams, this.teamId)} (${this.teamId})`
-      )
-      if (this.projectId) {
-        console.log(
-          `📁 Project: ${this.getProjectName(projects, this.projectId)} (${this.projectId})`
-        )
-      }
+      console.log(`📋 GitHub CLI initialized successfully`)
+      console.log(`🏢 Repository: ${this.repositoryName}`)
+      console.log(`✅ Authentication verified`)
     } catch (error) {
-      throw new MCPError(
-        `Linear MCP initialization failed: ${error.message}\n` +
-          'Please ensure Linear MCP is installed and configured with proper API credentials.'
+      throw new GitHubError(
+        `GitHub CLI initialization failed: ${error.message}\n` +
+          'Please ensure GitHub CLI is installed and authenticated with proper permissions.'
       )
     }
   }
@@ -729,93 +725,93 @@ class LinearMCPIntegration {
     return project?.name || 'Unknown Project'
   }
 
-  private async createIssueViaMCP(
+  private async createIssueViaCLI(
     template: IssueTemplate
-  ): Promise<{ id: string; url: string }> {
-    if (!this.teamId) {
-      throw new MCPError(
-        'Team ID not initialized. Please call initializeMCPLinearConnection first.'
+  ): Promise<{ number: string; url: string }> {
+    if (!this.repositoryName) {
+      throw new GitHubError(
+        'Repository not initialized. Please call initializeGitHubCLIConnection first.'
       )
     }
 
-    // Prepare issue parameters for MCP Linear API
-    const issueParams: any = {
-      title: template.title,
-      description: template.description,
-      teamId: this.teamId, // REQUIRED: Create in Team, dynamically retrieved
-      priority: this.mapPriorityToLinearValue(template.priority),
-    }
-
-    // Optional: Associate with project within the team if available
-    if (this.projectId) {
-      issueParams.projectId = this.projectId
-    }
-
     try {
-      // Call Linear MCP function with dynamic team-based creation
-      console.log(`📤 Creating issue in team: ${this.teamId}`)
-      if (this.projectId) {
-        console.log(`📁 Associating with project: ${this.projectId}`)
-      }
+      const { exec } = require('child_process')
+      const { promisify } = require('util')
+      const execAsync = promisify(exec)
 
-      const result = await mcp__linear_mcp__create_issue(issueParams)
+      // Prepare issue body with proper formatting
+      const issueBody = template.description
+        .replace(/'/g, "'\''")
+        .replace(/"/g, '\"')
 
-      if (!result || !result.id || !result.url) {
-        throw new MCPError('Linear MCP returned invalid response format')
+      // Create GitHub issue using CLI
+      const labels = this.mapTemplateTypeToLabels(template.type)
+      const priority = this.mapPriorityToLabel(template.priority)
+      
+      const command = `gh issue create --title "${template.title}" --body "${issueBody}" --label "${labels}" --label "${priority}"`
+      
+      console.log(`📤 Creating GitHub issue in repository: ${this.repositoryName}`)
+      console.log(`🏷️ Labels: ${labels}, ${priority}`)
+      
+      const { stdout } = await execAsync(command)
+      const issueUrl = stdout.trim()
+      
+      // Extract issue number from URL
+      const issueNumber = issueUrl.split('/').pop()
+      
+      if (!issueNumber || !issueUrl) {
+        throw new GitHubError('GitHub CLI returned invalid response format')
       }
 
       return {
-        id: result.id,
-        url: result.url,
+        number: issueNumber,
+        url: issueUrl,
       }
     } catch (error) {
-      // Enhanced error handling for common MCP issues
-      if (error.message.includes('Authentication')) {
-        throw new MCPError(
-          'Linear MCP authentication failed. Please check API key configuration.'
+      // Enhanced error handling for common GitHub CLI issues
+      if (error.message.includes('authentication')) {
+        throw new GitHubError(
+          'GitHub CLI authentication failed. Please run: gh auth login'
         )
       }
 
-      if (error.message.includes('team')) {
-        throw new MCPError(
-          `Team access error: ${error.message}. Team ID: ${this.teamId}`
+      if (error.message.includes('permission')) {
+        throw new GitHubError(
+          `Repository access error: ${error.message}. Repository: ${this.repositoryName}`
         )
       }
 
-      if (error.message.includes('project')) {
-        console.warn(
-          `⚠️ Project association failed, retrying without project: ${error.message}`
+      if (error.message.includes('not found')) {
+        throw new GitHubError(
+          `Repository not found: ${this.repositoryName}. Please check repository name and access.`
         )
-        // Retry without project association
-        delete issueParams.projectId
-        const retryResult = await mcp__linear_mcp__create_issue(issueParams)
-        return {
-          id: retryResult.id,
-          url: retryResult.url,
-        }
       }
 
-      throw new MCPError(`Linear issue creation failed: ${error.message}`)
+      throw new GitHubError(`GitHub issue creation failed: ${error.message}`)
     }
   }
 
   private async addJapaneseComment(
-    issueId: string,
+    issueNumber: string,
     originalContent: string
   ): Promise<void> {
     try {
+      const { exec } = require('child_process')
+      const { promisify } = require('util')
+      const execAsync = promisify(exec)
+
       const comment = `## 元の日本語コンテンツ
 
 ${originalContent}
 
 ---
 *This comment contains the original Japanese content that was translated to create this issue.*`
+        .replace(/'/g, "'\''")
+        .replace(/"/g, '\"')
 
-      await mcp__linear_mcp__create_comment({
-        issueId: issueId,
-        body: comment,
-      })
-
+      const command = `gh issue comment ${issueNumber} --body "${comment}"`
+      
+      await execAsync(command)
       console.log('📝 Added Japanese content as comment')
     } catch (error) {
       console.warn(`⚠️ Failed to add Japanese comment: ${error.message}`)
@@ -870,25 +866,33 @@ ${template.description}
     return `Translation service not implemented yet. Original content:\n${prompt}`
   }
 
-  private mapPriorityToLinearValue(priority: string): number {
+  private mapPriorityToLabel(priority: string): string {
     const priorityMap = {
-      urgent: 1,
-      high: 2,
-      medium: 3,
-      low: 4,
+      urgent: 'priority: urgent',
+      high: 'priority: high',
+      medium: 'priority: medium',
+      low: 'priority: low',
     }
-    return priorityMap[priority] || 3
+    return priorityMap[priority] || 'priority: medium'
   }
 
-  private handleLinearError(error: Error): never {
-    console.error('❌ Linear Integration Error:', error.message)
+  private mapTemplateTypeToLabels(type: string): string {
+    const typeMap = {
+      feature: 'enhancement',
+      bugfix: 'bug',
+    }
+    return typeMap[type] || 'enhancement'
+  }
 
-    if (error.name === 'MCPError') {
-      console.error('🔌 MCP Connection Issue:', error.message)
+  private handleGitHubError(error: Error): never {
+    console.error('❌ GitHub Integration Error:', error.message)
+
+    if (error.name === 'GitHubError') {
+      console.error('🔌 GitHub CLI Issue:', error.message)
       console.error('💡 Troubleshooting:')
-      console.error('  1. Verify Linear MCP is installed and running')
-      console.error('  2. Check Linear API key configuration')
-      console.error('  3. Ensure team access permissions are granted')
+      console.error('  1. Verify GitHub CLI is installed: gh --version')
+      console.error('  2. Check GitHub CLI authentication: gh auth status')
+      console.error('  3. Ensure repository access permissions are granted')
     }
 
     throw error
@@ -896,10 +900,10 @@ ${template.description}
 }
 
 // Custom error types for better error handling
-class MCPError extends Error {
+class GitHubError extends Error {
   constructor(message: string) {
     super(message)
-    this.name = 'MCPError'
+    this.name = 'GitHubError'
   }
 }
 ```
@@ -913,7 +917,7 @@ class FileToIssueCommand {
     private fileValidator: FileValidator,
     private contentParser: ContentParser,
     private templateFactory: TemplateConverterFactory,
-    private linearIntegration: LinearMCPIntegration
+    private githubIntegration: GitHubCLIIntegration
   ) {}
 
   async execute(filePath?: string): Promise<string> {
@@ -951,10 +955,10 @@ class FileToIssueCommand {
         throw new Error('Processing cancelled by user')
       }
 
-      // Phase 6: Linear integration via MCP
+      // Phase 6: GitHub integration via CLI
       console.log('🌐 Translating to English...')
-      console.log('📤 Creating Linear Issue via MCP...')
-      const issueUrl = await this.linearIntegration.createLinearIssueViaMCP(
+      console.log('📤 Creating GitHub Issue via CLI...')
+      const issueUrl = await this.githubIntegration.createGitHubIssueViaCLI(
         template,
         content
       )
@@ -1069,10 +1073,10 @@ class FileToIssueCommand {
 
 ### API Security
 
-- **Credential Management**: Use environment variables for Linear API keys
-- **Rate Limiting**: Respect Linear API rate limits
+- **Credential Management**: Use GitHub CLI authentication (no manual API keys)
+- **Rate Limiting**: Respect GitHub API rate limits
 - **Error Handling**: No sensitive data in error messages
-- **Input Sanitization**: Clean content before API calls
+- **Input Sanitization**: Clean content before CLI calls
 - **Content Validation**: Validate translation results
 
 ## Error Handling and Recovery
@@ -1101,6 +1105,14 @@ class FileToIssueCommand {
 📋 Will save progress and resume automatically
 ```
 
+### GitHub CLI Errors
+
+```bash
+❌ GitHub CLI authentication failed
+💡 Please run: gh auth login
+🔧 Retry after authentication
+```
+
 ## Completion Criteria
 
 ### 1. AI Review-First Standards
@@ -1116,7 +1128,7 @@ class FileToIssueCommand {
 - ✅ **Content Parsing**: Accurate bullet point structure extraction
 - ✅ **Template Conversion**: GitHub ISSUE_TEMPLATE format generation
 - ✅ **Translation**: High-quality Japanese to English conversion
-- ✅ **Linear Integration**: Successful Issue creation with bilingual content
+- ✅ **GitHub Integration**: Successful Issue creation with bilingual content
 - ✅ **Issue File Creation**: Generate `.issue.md` file with proper format
 - ✅ **File Cleanup**: Safe removal of created `.issue.md` files
 
@@ -1148,16 +1160,16 @@ class FileToIssueCommand {
 ✅ Content looks good? Type 'Approve' to continue: Approve
 
 🌐 Translating to English...
-📤 Creating Linear Issue via MCP...
-📋 Linear MCP initialized successfully
-🏢 Team: Development Team (team-abc123)
-📁 Project: Main Project (project-xyz789)
-📤 Creating issue in team: team-abc123
-📁 Associating with project: project-xyz789
+📤 Creating GitHub Issue via CLI...
+📋 GitHub CLI initialized successfully
+🏢 Repository: owner/repository-name
+✅ Authentication verified
+📤 Creating GitHub issue in repository: owner/repository-name
+🏷️ Labels: enhancement, priority: medium
 📝 Added Japanese content as comment
 🗑️ Cleaning up issue file...
 
-✅ Linear Issue created: https://linear.app/team/issue/TASK-123
+✅ GitHub Issue created: https://github.com/owner/repository-name/issues/123
 ```
 
 ### No Arguments Example
@@ -1183,36 +1195,44 @@ class FileToIssueCommand {
 - **Large files** (>10MB) require manual splitting
 - **Complex formatting** may need manual adjustment
 - **Non-standard bullet formats** may not parse correctly
-- **MCP availability** required for Linear integration
+- **GitHub CLI availability** required for GitHub integration
 
-### MCP-Specific Considerations
+### GitHub CLI-Specific Considerations
 
 - **Session Independence**: Command works without relying on active session data
-- **MCP Connectivity**: Validates Linear MCP availability before processing
-- **Error Recovery**: Graceful fallback when MCP services are unavailable
-- **Dynamic Team Selection**: Automatically selects appropriate team from available options
-- **Project Association**: Optional project linking within the selected team structure
+- **CLI Connectivity**: Validates GitHub CLI availability and authentication before processing
+- **Error Recovery**: Graceful fallback when GitHub CLI is unavailable
+- **Repository Detection**: Automatically detects current repository context
+- **Label Management**: Applies appropriate labels based on issue type and priority
 
 ### Success Factors
 
 1. **Clear bullet-point structure** with consistent indentation
 2. **Meaningful content** with sufficient detail for Issues
 3. **Proper file permissions** for read access
-4. **Valid Linear API configuration** for Issue creation
+4. **Valid GitHub CLI authentication** for Issue creation
 5. **GitHub Issue Template compliance** for structured output
 
 ## Configuration Requirements
 
-### MCP Linear Integration
+### GitHub CLI Integration
 
-**IMPORTANT**: This command uses **Linear MCP (Model Context Protocol)** for all Linear API interactions. Direct API calls are not used.
+**IMPORTANT**: This command uses **GitHub CLI** for all GitHub API interactions. No manual API key configuration is required.
 
-#### MCP Linear Setup Requirements
+#### GitHub CLI Setup Requirements
 
 ```bash
-# MCP Linear configuration (handled automatically by Claude Code)
-# No manual API key configuration required when using MCP
-# MCP handles authentication and session management internally
+# GitHub CLI installation and authentication
+# Install GitHub CLI: https://cli.github.com/
+brew install gh  # macOS
+# or
+sudo apt install gh  # Ubuntu/Debian
+
+# Authenticate with GitHub
+gh auth login
+
+# Verify authentication
+gh auth status
 
 # Optional environment variables for customization
 export FILE_SIZE_LIMIT_MB=10
@@ -1220,26 +1240,28 @@ export ALLOWED_FILE_EXTENSIONS=".md,.txt,.markdown"
 export WORK_DIRECTORY=".claude-workspaces"
 ```
 
-#### MCP Linear Functions Used
+#### GitHub CLI Commands Used
 
-This command relies on the following MCP Linear functions:
+This command relies on the following GitHub CLI commands:
 
-```typescript
-// MCP Linear API functions
-mcp__linear_mcp__list_teams() // Retrieve available teams
-mcp__linear_mcp__list_projects() // Retrieve available projects
-mcp__linear_mcp__create_issue(params) // Create issues in selected team
-mcp__linear_mcp__create_comment(params) // Add Japanese content as comment
+```bash
+# GitHub CLI commands
+gh --version                    # Verify CLI installation
+gh auth status                  # Check authentication
+gh repo view --json name,owner  # Get repository information
+gh issue create                 # Create new issue
+gh issue comment                # Add comment to issue
 ```
 
 #### Session-Independent Operation
 
 The implementation includes robust fallback mechanisms:
 
-1. **MCP Availability Check**: Validates Linear MCP is accessible before proceeding
-2. **Dynamic Team/Project Resolution**: Automatically retrieves and selects appropriate teams/projects
-3. **Graceful Error Handling**: Clear error messages when MCP is unavailable
-4. **Fallback Content**: Original content preserved if translation fails
+1. **CLI Availability Check**: Validates GitHub CLI is installed and accessible
+2. **Authentication Verification**: Ensures proper GitHub authentication
+3. **Repository Detection**: Automatically detects current repository context
+4. **Graceful Error Handling**: Clear error messages when CLI is unavailable
+5. **Fallback Content**: Original content preserved if translation fails
 
 ### File Structure Requirements
 
