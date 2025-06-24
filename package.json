@@ -15,8 +15,7 @@
     "dev:format": "bun run format",
     "dev:setup": "bun install && bun run format",
     "ci:check": "bun run lint && echo 'All quality checks passed'",
-    "ci:verify": "bun --version && bunx prettier --version",
-    "prepare": "husky"
+    "ci:verify": "bun --version && bunx prettier --version"
   },
   "devDependencies": {
     "@commitlint/cli": "^18.0.0",
