@@ -1,3 +1,92 @@
 [tools]
 flutter = "3.32.2"
 bun = "1.2.17"
+
+# Main workflow tasks
+[tasks.dev]
+description = "Complete development workflow"
+run = """
+melos run get
+melos run gen
+melos run analyze
+melos run test
+"""
+
+[tasks.setup]
+description = "Initial project setup"
+run = """
+melos bootstrap
+bun install
+"""
+
+[tasks.quality]
+description = "Code quality workflow"
+run = """
+melos run ci:format
+melos run analyze
+melos run analyze:slang
+melos run test
+"""
+
+[tasks.ci-check]
+description = "Complete CI workflow"
+run = """
+melos run ci:format
+melos run analyze
+melos run test
+bun run ci:check
+"""
+
+# Individual Melos task wrappers
+[tasks.get]
+description = "Install dependencies"
+run = "melos run get"
+
+[tasks.gen]
+description = "Generate code (build_runner, riverpod, etc.)"
+run = "melos run gen"
+
+[tasks.analyze]
+description = "Static analysis"
+run = "melos run analyze"
+
+[tasks.analyze-slang]
+description = "Translation validation"
+run = "melos run analyze:slang"
+
+[tasks.test]
+description = "Run tests"
+run = "melos run test"
+
+# Formatting tasks
+[tasks.format]
+description = "Format Dart code"
+run = "melos run format"
+
+[tasks.format-prettier]
+description = "Format YAML/Markdown"
+run = "bun run format"
+
+[tasks.format-all]
+description = "Format all files"
+run = """
+melos run format
+bun run format
+"""
+
+# Maintenance tasks
+[tasks.clean]
+description = "Clean packages"
+run = "melos clean"
+
+[tasks.clean-deps]
+description = "Clean and reinstall dependencies"
+run = """
+melos clean
+melos bootstrap
+bun run clean
+"""
+
+[tasks.clean-branch]
+description = "Clean git branches/worktrees"
+run = "./scripts/clean-branch.sh"
