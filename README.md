@@ -18,7 +18,7 @@
 
 | 分野               | 技術                 | 役割                             |
 | ------------------ | -------------------- | -------------------------------- |
-| **フレームワーク** | Flutter + FVM        | マルチプラットフォーム開発       |
+| **フレームワーク** | Flutter + mise       | マルチプラットフォーム開発       |
 | **状態管理**       | Riverpod + Hooks     | リアクティブな状態アーキテクチャ |
 | **ナビゲーション** | go_router            | 型安全なルーティング             |
 | **国際化**         | slang                | コード生成による多言語対応       |
@@ -47,7 +47,8 @@ flutter_template_project/
 
 | ツール  | 推奨バージョン | インストール方法                  |
 | ------- | -------------- | --------------------------------- |
-| Flutter | FVM管理        | `dart pub global activate fvm`    |
+| Flutter | mise管理       | `mise install`                    |
+| bun     | mise管理       | `mise install`                    |
 | Node.js | 18+            | [nodejs.org](https://nodejs.org/) |
 | Melos   | 7.0+           | `dart pub global activate melos`  |
 
@@ -59,7 +60,8 @@ git clone <repository-url>
 cd flutter_template_project
 
 # 2. 開発環境を構築
-fvm install && fvm use
+mise install
+eval "$(mise activate bash)"
 npm install
 melos bootstrap
 
@@ -67,7 +69,7 @@ melos bootstrap
 melos run gen
 
 # 4. アプリを起動
-cd app && fvm flutter run
+cd app && flutter run
 ```
 
 ## 開発ワークフロー

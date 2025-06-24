@@ -18,21 +18,22 @@ class TranslationsEn extends Translations {
     PluralResolver? cardinalResolver,
     PluralResolver? ordinalResolver,
     TranslationMetadata<AppLocale, Translations>? meta,
-  })  : assert(
-          overrides == null,
-          'Set "translation_overrides: true" in order to enable this feature.',
-        ),
-        $meta = meta ??
-            TranslationMetadata(
-              locale: AppLocale.en,
-              overrides: overrides ?? {},
-              cardinalResolver: cardinalResolver,
-              ordinalResolver: ordinalResolver,
-            ),
-        super(
-          cardinalResolver: cardinalResolver,
-          ordinalResolver: ordinalResolver,
-        );
+  }) : assert(
+         overrides == null,
+         'Set "translation_overrides: true" in order to enable this feature.',
+       ),
+       $meta =
+           meta ??
+           TranslationMetadata(
+             locale: AppLocale.en,
+             overrides: overrides ?? {},
+             cardinalResolver: cardinalResolver,
+             ordinalResolver: ordinalResolver,
+           ),
+       super(
+         cardinalResolver: cardinalResolver,
+         ordinalResolver: ordinalResolver,
+       );
 
   /// Metadata for the translations of <en>.
   @override
@@ -43,8 +44,7 @@ class TranslationsEn extends Translations {
   @override
   TranslationsEn $copyWith({
     TranslationMetadata<AppLocale, Translations>? meta,
-  }) =>
-      TranslationsEn(meta: meta ?? this.$meta);
+  }) => TranslationsEn(meta: meta ?? this.$meta);
 
   // Translations
   @override
@@ -58,8 +58,8 @@ class TranslationsEn extends Translations {
 // Path: locale
 class _TranslationsLocaleEn extends TranslationsLocaleJa {
   _TranslationsLocaleEn._(TranslationsEn root)
-      : this._root = root,
-        super.internal(root);
+    : this._root = root,
+      super.internal(root);
 
   final TranslationsEn _root; // ignore: unused_field
 
@@ -75,8 +75,8 @@ class _TranslationsLocaleEn extends TranslationsLocaleJa {
 // Path: theme
 class _TranslationsThemeEn extends TranslationsThemeJa {
   _TranslationsThemeEn._(TranslationsEn root)
-      : this._root = root,
-        super.internal(root);
+    : this._root = root,
+      super.internal(root);
 
   final TranslationsEn _root; // ignore: unused_field
 
@@ -92,8 +92,8 @@ class _TranslationsThemeEn extends TranslationsThemeJa {
 // Path: dialog
 class _TranslationsDialogEn extends TranslationsDialogJa {
   _TranslationsDialogEn._(TranslationsEn root)
-      : this._root = root,
-        super.internal(root);
+    : this._root = root,
+      super.internal(root);
 
   final TranslationsEn _root; // ignore: unused_field
 

@@ -24,17 +24,18 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
     PluralResolver? cardinalResolver,
     PluralResolver? ordinalResolver,
     TranslationMetadata<AppLocale, Translations>? meta,
-  })  : assert(
-          overrides == null,
-          'Set "translation_overrides: true" in order to enable this feature.',
-        ),
-        $meta = meta ??
-            TranslationMetadata(
-              locale: AppLocale.ja,
-              overrides: overrides ?? {},
-              cardinalResolver: cardinalResolver,
-              ordinalResolver: ordinalResolver,
-            );
+  }) : assert(
+         overrides == null,
+         'Set "translation_overrides: true" in order to enable this feature.',
+       ),
+       $meta =
+           meta ??
+           TranslationMetadata(
+             locale: AppLocale.ja,
+             overrides: overrides ?? {},
+             cardinalResolver: cardinalResolver,
+             ordinalResolver: ordinalResolver,
+           );
 
   /// Metadata for the translations of <ja>.
   @override
@@ -44,8 +45,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 
   Translations $copyWith({
     TranslationMetadata<AppLocale, Translations>? meta,
-  }) =>
-      Translations(meta: meta ?? this.$meta);
+  }) => Translations(meta: meta ?? this.$meta);
 
   // Translations
   late final TranslationsLocaleJa locale = TranslationsLocaleJa.internal(_root);

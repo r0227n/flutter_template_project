@@ -26,11 +26,13 @@ eval "$(mise activate zsh)"   # for zsh
 ## Project Setup
 
 1. **Install project tools**:
+
    ```bash
    mise install
    ```
 
 2. **Verify installation**:
+
    ```bash
    mise list
    flutter --version
@@ -50,6 +52,7 @@ The project uses the following tool versions:
 - **bun**: 1.2.17
 
 These versions are defined in:
+
 - `.tool-versions` (asdf/mise format)
 - `.mise.toml` (mise configuration with environment variables and tasks)
 
@@ -75,6 +78,7 @@ Install the mise extension for VS Code to automatically activate the mise enviro
 ### Other IDEs
 
 Make sure your IDE is configured to use the Flutter SDK from mise:
+
 ```bash
 mise where flutter
 ```
@@ -88,6 +92,7 @@ The CI/CD pipeline automatically installs and uses mise via the `.github/actions
 ### Tools not found
 
 Make sure mise is activated in your shell:
+
 ```bash
 eval "$(mise activate bash)"
 ```
@@ -95,6 +100,7 @@ eval "$(mise activate bash)"
 ### Version conflicts
 
 Check if the correct versions are installed:
+
 ```bash
 mise list
 mise install  # reinstall if needed
@@ -103,6 +109,7 @@ mise install  # reinstall if needed
 ### PATH issues
 
 Verify the mise environment is properly set:
+
 ```bash
 echo $PATH
 which flutter
@@ -112,6 +119,7 @@ which bun
 ## Development Workflows
 
 ### Code Quality Check
+
 ```bash
 melos run analyze
 melos run test
@@ -120,6 +128,7 @@ melos run format
 ```
 
 ### Development Environment Setup
+
 ```bash
 mise install
 eval "$(mise activate bash)"
@@ -128,6 +137,7 @@ melos run gen
 ```
 
 ### Release Preparation
+
 ```bash
 melos run analyze
 melos run test

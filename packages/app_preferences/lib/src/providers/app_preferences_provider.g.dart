@@ -27,14 +27,14 @@ String _$sharedPreferencesHash() => r'91d3d8d16af3d747cec711b8a095a63e20df9b7c';
 @ProviderFor(sharedPreferences)
 final sharedPreferencesProvider =
     AutoDisposeProvider<SharedPreferences>.internal(
-  sharedPreferences,
-  name: r'sharedPreferencesProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$sharedPreferencesHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      sharedPreferences,
+      name: r'sharedPreferencesProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$sharedPreferencesHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
@@ -55,14 +55,14 @@ String _$appLocaleProviderHash() => r'5ef599be9c03cf2a9e778332a7ca43103494063a';
 @ProviderFor(AppLocaleProvider)
 final appLocaleProviderProvider =
     AutoDisposeAsyncNotifierProvider<AppLocaleProvider, Locale>.internal(
-  AppLocaleProvider.new,
-  name: r'appLocaleProviderProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$appLocaleProviderHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      AppLocaleProvider.new,
+      name: r'appLocaleProviderProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$appLocaleProviderHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 typedef _$AppLocaleProvider = AutoDisposeAsyncNotifier<Locale>;
 String _$appThemeProviderHash() => r'04ad1f520a92387683cd75c890fb6f9f6dc36fef';
@@ -81,14 +81,14 @@ String _$appThemeProviderHash() => r'04ad1f520a92387683cd75c890fb6f9f6dc36fef';
 @ProviderFor(AppThemeProvider)
 final appThemeProviderProvider =
     AutoDisposeAsyncNotifierProvider<AppThemeProvider, ThemeMode>.internal(
-  AppThemeProvider.new,
-  name: r'appThemeProviderProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$appThemeProviderHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      AppThemeProvider.new,
+      name: r'appThemeProviderProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$appThemeProviderHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 typedef _$AppThemeProvider = AutoDisposeAsyncNotifier<ThemeMode>;
 // ignore_for_file: type=lint

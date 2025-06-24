@@ -118,12 +118,11 @@ Translations get t => LocaleSettings.instance.currentTranslations;
 class TranslationProvider
     extends BaseTranslationProvider<AppLocale, Translations> {
   TranslationProvider({required super.child})
-      : super(settings: LocaleSettings.instance);
+    : super(settings: LocaleSettings.instance);
 
   static InheritedLocaleData<AppLocale, Translations> of(
     BuildContext context,
-  ) =>
-      InheritedLocaleData.of<AppLocale, Translations>(context);
+  ) => InheritedLocaleData.of<AppLocale, Translations>(context);
 }
 
 /// Method B shorthand via [BuildContext] extension method.
@@ -148,66 +147,60 @@ class LocaleSettings
   static Future<AppLocale> setLocale(
     AppLocale locale, {
     bool? listenToDeviceLocale = false,
-  }) =>
-      instance.setLocale(locale, listenToDeviceLocale: listenToDeviceLocale);
+  }) => instance.setLocale(locale, listenToDeviceLocale: listenToDeviceLocale);
   static Future<AppLocale> setLocaleRaw(
     String rawLocale, {
     bool? listenToDeviceLocale = false,
-  }) =>
-      instance.setLocaleRaw(
-        rawLocale,
-        listenToDeviceLocale: listenToDeviceLocale,
-      );
+  }) => instance.setLocaleRaw(
+    rawLocale,
+    listenToDeviceLocale: listenToDeviceLocale,
+  );
   static Future<AppLocale> useDeviceLocale() => instance.useDeviceLocale();
   static Future<void> setPluralResolver({
     String? language,
     AppLocale? locale,
     PluralResolver? cardinalResolver,
     PluralResolver? ordinalResolver,
-  }) =>
-      instance.setPluralResolver(
-        language: language,
-        locale: locale,
-        cardinalResolver: cardinalResolver,
-        ordinalResolver: ordinalResolver,
-      );
+  }) => instance.setPluralResolver(
+    language: language,
+    locale: locale,
+    cardinalResolver: cardinalResolver,
+    ordinalResolver: ordinalResolver,
+  );
 
   // synchronous versions
   static AppLocale setLocaleSync(
     AppLocale locale, {
     bool? listenToDeviceLocale = false,
-  }) =>
-      instance.setLocaleSync(
-        locale,
-        listenToDeviceLocale: listenToDeviceLocale,
-      );
+  }) => instance.setLocaleSync(
+    locale,
+    listenToDeviceLocale: listenToDeviceLocale,
+  );
   static AppLocale setLocaleRawSync(
     String rawLocale, {
     bool? listenToDeviceLocale = false,
-  }) =>
-      instance.setLocaleRawSync(
-        rawLocale,
-        listenToDeviceLocale: listenToDeviceLocale,
-      );
+  }) => instance.setLocaleRawSync(
+    rawLocale,
+    listenToDeviceLocale: listenToDeviceLocale,
+  );
   static AppLocale useDeviceLocaleSync() => instance.useDeviceLocaleSync();
   static void setPluralResolverSync({
     String? language,
     AppLocale? locale,
     PluralResolver? cardinalResolver,
     PluralResolver? ordinalResolver,
-  }) =>
-      instance.setPluralResolverSync(
-        language: language,
-        locale: locale,
-        cardinalResolver: cardinalResolver,
-        ordinalResolver: ordinalResolver,
-      );
+  }) => instance.setPluralResolverSync(
+    language: language,
+    locale: locale,
+    cardinalResolver: cardinalResolver,
+    ordinalResolver: ordinalResolver,
+  );
 }
 
 /// Provides utility functions without any side effects.
 class AppLocaleUtils extends BaseAppLocaleUtils<AppLocale, Translations> {
   AppLocaleUtils._()
-      : super(baseLocale: AppLocale.ja, locales: AppLocale.values);
+    : super(baseLocale: AppLocale.ja, locales: AppLocale.values);
 
   static final instance = AppLocaleUtils._();
 
@@ -217,12 +210,11 @@ class AppLocaleUtils extends BaseAppLocaleUtils<AppLocale, Translations> {
     required String languageCode,
     String? scriptCode,
     String? countryCode,
-  }) =>
-      instance.parseLocaleParts(
-        languageCode: languageCode,
-        scriptCode: scriptCode,
-        countryCode: countryCode,
-      );
+  }) => instance.parseLocaleParts(
+    languageCode: languageCode,
+    scriptCode: scriptCode,
+    countryCode: countryCode,
+  );
   static AppLocale findDeviceLocale() => instance.findDeviceLocale();
   static List<Locale> get supportedLocales => instance.supportedLocales;
   static List<String> get supportedLocalesRaw => instance.supportedLocalesRaw;

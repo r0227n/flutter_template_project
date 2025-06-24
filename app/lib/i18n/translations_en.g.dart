@@ -18,17 +18,18 @@ class TranslationsEn implements Translations {
     PluralResolver? cardinalResolver,
     PluralResolver? ordinalResolver,
     TranslationMetadata<AppLocale, Translations>? meta,
-  })  : assert(
-          overrides == null,
-          'Set "translation_overrides: true" in order to enable this feature.',
-        ),
-        $meta = meta ??
-            TranslationMetadata(
-              locale: AppLocale.en,
-              overrides: overrides ?? {},
-              cardinalResolver: cardinalResolver,
-              ordinalResolver: ordinalResolver,
-            );
+  }) : assert(
+         overrides == null,
+         'Set "translation_overrides: true" in order to enable this feature.',
+       ),
+       $meta =
+           meta ??
+           TranslationMetadata(
+             locale: AppLocale.en,
+             overrides: overrides ?? {},
+             cardinalResolver: cardinalResolver,
+             ordinalResolver: ordinalResolver,
+           );
 
   /// Metadata for the translations of <en>.
   @override
@@ -39,8 +40,7 @@ class TranslationsEn implements Translations {
   @override
   TranslationsEn $copyWith({
     TranslationMetadata<AppLocale, Translations>? meta,
-  }) =>
-      TranslationsEn(meta: meta ?? this.$meta);
+  }) => TranslationsEn(meta: meta ?? this.$meta);
 
   // Translations
   @override
