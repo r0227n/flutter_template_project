@@ -36,16 +36,220 @@ graph TD
     F --> G
 ```
 
-## Claude 4 Best Practices Application
+## Claude 4 Best Practices Implementation
 
-This project follows the Claude 4 prompt engineering best practices defined in `docs/CLAUDE_4_BEST_PRACTICES.md`. We emphasize the following principles:
+This project follows the Claude 4 prompt engineering best practices defined in `docs/CLAUDE_4_BEST_PRACTICES.md`. The implementation focuses on the core principle:
 
-1. **AI Review-First Design**: "Small draft → Critical review → Regenerate → Release" cycle
-2. **Clear and Specific Instructions**: Eliminate ambiguity and clearly define expected deliverables
-3. **Structured Review Templates**: Evaluate code from security, SOLID principles, and performance perspectives
-4. **Iterative Improvement**: Enhance quality through 3-4 review cycles
+**「小さなドラフト → 厳しい批評 → 再生成 → リリース」(Small draft → Critical review → Regenerate → Release)**
 
-For details, refer to [Claude 4 Best Practices](docs/CLAUDE_4_BEST_PRACTICES.md).
+### Core Implementation Principles
+
+1. **AI Review-First Design**: Use Claude as a "Senior Reviewer" rather than "Junior Designer"
+2. **Structured Quality Assessment**: Security (HIGH) → SOLID Principles (MEDIUM) → Performance (LOW)
+3. **Iterative Review Cycles**: 3-4 review iterations maximum with 400-character summaries
+4. **Human Final Validation**: Always include human verification as the final step
+
+For comprehensive details, refer to [Claude 4 Best Practices](docs/CLAUDE_4_BEST_PRACTICES.md).
+
+### AI Review-First Implementation Workflow
+
+Implement the core Claude 4 Best Practices workflow for all development tasks:
+
+#### Step 1: Minimal Implementation Draft
+
+Create basic functionality with essential features:
+
+```text
+Context: Flutter monorepo with Riverpod + go_router + slang
+Task: [Specific feature name]
+Requirements:
+- Essential functionality only
+- Follow existing project patterns
+- Use established dependencies and conventions
+Output: Minimal working implementation
+```
+
+#### Step 2: AI Review Cycles (3-4 iterations)
+
+**Review Template for All Code**:
+
+```text
+Review Request: [Brief description]
+
+Apply Claude 4 AI Review-First methodology:
+
+1. Security Analysis (HIGH Priority):
+   - Hardcoded secrets/credentials scan
+   - Input validation and sanitization
+   - Secure data storage practices
+   - Network communication security
+
+2. Architecture Review (MEDIUM Priority):
+   - SOLID principles compliance
+   - Design pattern consistency
+   - Separation of concerns
+   - Code organization and structure
+
+3. Performance Review (LOW Priority):
+   - Bottleneck identification
+   - Algorithm efficiency
+   - Resource utilization
+   - Build/runtime optimization
+
+Format: Max 400 characters per category
+Output: Specific actionable recommendations
+Priority: Mark each issue as HIGH/MEDIUM/LOW
+```
+
+#### Step 3: Quality Gate Validation
+
+All implementations must pass these gates:
+
+```bash
+# Security Gates (HIGH Priority)
+- No hardcoded secrets: grep -r "API_KEY\|SECRET\|PASSWORD" lib/
+- Input validation implemented
+- Secure storage patterns used
+
+# Architecture Gates (MEDIUM Priority)
+mise run analyze          # Static analysis
+mise run test            # All tests pass
+
+# Performance Gates (LOW Priority)
+- No obvious bottlenecks identified
+- Efficient patterns used
+```
+
+#### Step 4: Final Validation Checklist
+
+- [ ] HIGH priority security issues: ✅ Resolved
+- [ ] MEDIUM priority architecture issues: ✅ Addressed
+- [ ] LOW priority performance issues: ✅ Optimized
+- [ ] Static analysis: ✅ `mise run analyze` passes
+- [ ] All tests: ✅ `mise run test` passes
+- [ ] Translation validation: ✅ `mise run analyze-slang` passes
+- [ ] Code formatting: ✅ `mise run format-all` applied
+- [ ] Human validation: ✅ Final review completed
+
+### Context Requirements for AI Interactions
+
+When working with this codebase, always provide:
+
+1. **Project Context**: This is a Flutter monorepo using Melos for package management
+2. **Architecture Context**: Riverpod for state management, go_router for navigation, slang for i18n
+3. **Code Generation**: Uses build_runner, requires running `melos run gen` after model changes
+4. **Testing Strategy**: Widget tests in `app/test/`, run via `melos run test`
+5. **Quality Assurance**: Multi-stage pipeline with static analysis, formatting, and translation validation
+
+### Effective Prompting Guidelines
+
+#### For Feature Implementation (AI Review-First)
+
+Use this Claude 4 optimized prompt structure:
+
+```text
+Phase 1 - Minimal Implementation:
+Context: Flutter monorepo with Riverpod + go_router + slang architecture
+Task: Implement [specific feature name]
+Constraints:
+- Essential functionality only (no extra features)
+- Reference existing patterns: [provide specific file examples]
+- Follow project conventions: [naming, structure, dependencies]
+- Technology stack: Riverpod (@riverpod), go_router (type-safe), slang (ja/en)
+
+Phase 2 - AI Review Request:
+Apply Claude 4 Review-First methodology:
+1. Security scan (HIGH): secrets, validation, storage
+2. Architecture review (MEDIUM): SOLID principles, patterns
+3. Performance check (LOW): bottlenecks, efficiency
+Format: 400 chars max per category, actionable recommendations
+
+Phase 3 - Quality Validation:
+- Pass: mise run analyze (static analysis)
+- Pass: mise run test (all tests)
+- Pass: mise run analyze-slang (translations)
+- Include: Widget tests in app/test/
+- Include: Proper error handling patterns
+
+Output: Complete implementation + test cases + required commands
+```
+
+#### For Code Review (Claude 4 Enhanced)
+
+Use this AI Review-First optimized template:
+
+```text
+Code Review Request: [Brief description]
+
+Implement Claude 4 "Senior Reviewer" approach:
+
+🔴 Security Analysis (HIGH Priority - Fix Immediately):
+   - Secrets/credentials scan: grep patterns, environment variables
+   - Input validation: sanitization, type checking, bounds
+   - Data security: encryption, secure storage, transmission
+   - Authentication: proper token handling, session management
+
+🟡 Architecture Review (MEDIUM Priority - Address Next):
+   - SOLID principles: SRP, OCP, LSP, ISP, DIP compliance
+   - Design patterns: consistency with project conventions
+   - Code organization: separation of concerns, modularity
+   - Error handling: proper exception patterns, user feedback
+
+🟢 Performance Review (LOW Priority - Optimize Later):
+   - Algorithmic efficiency: O(n) complexity analysis
+   - Resource usage: memory, CPU, network optimization
+   - Flutter-specific: widget rebuilds, state management efficiency
+   - Build performance: dependency impact, code splitting
+
+Constraints:
+- Maximum 400 characters per category summary
+- Provide specific file:line references
+- Include actionable next steps
+- Prioritize issues: 🔴 HIGH → 🟡 MEDIUM → 🟢 LOW
+
+Expected: 3-4 review iterations maximum
+```
+
+#### For Documentation Updates
+
+Use this documentation prompt:
+
+```text
+Documentation Task: Update [specific documentation]
+Context: Maintain 1:1 correspondence between CLAUDE.md and README.md
+Requirements:
+- Technical accuracy for Claude Code
+- Human readability for README.md
+- Include relevant Mermaid diagrams
+- Follow project's Japanese language standard for README.md
+- Maintain existing section structure
+
+Constraints:
+- No breaking changes to existing workflow
+- Preserve all environment variable definitions
+- Keep all existing mise task references
+```
+
+### Tool Usage Optimization
+
+#### Parallel Tool Calls
+
+When performing multiple related operations, always use parallel tool calls:
+
+```text
+// Instead of sequential calls
+Read file A, then Read file B, then Read file C
+
+// Use parallel calls
+Read files A, B, and C simultaneously for better performance
+```
+
+#### Specific Tool Usage Patterns
+
+- **Search Operations**: Use Task tool for keyword searches across large codebases
+- **File Operations**: Use Read for specific files, Glob for pattern matching
+- **Code Analysis**: Combine Grep and Read tools for comprehensive analysis
+- **Testing**: Always run `melos run test` after code changes
 
 ## Project Overview
 
@@ -88,17 +292,16 @@ flutter_template_project/
 │   ├── macos/                 # macOS platform specific files
 │   └── windows/               # Windows platform specific files
 ├── packages/                  # Shared packages (currently empty)
+├── .vscode/                   # VS Code IDE configuration
+│   └── settings.json          # Editor settings for Flutter development
 ├── docs/                      # Project documentation
 │   ├── CLAUDE_4_BEST_PRACTICES.md
 │   ├── COMMITLINT_RULES.md
-│   ├── COMMITLINT_YAML_CONFIGURATION.md
-│   ├── MELOS_SETUP.md
-│   ├── VSCODE_SETTINGS.md
 │   └── WORKTREE_ARCHITECTURE.md
 ├── scripts/                   # Build and utility scripts
-├── memos/                     # Development memos and notes
 ├── pubspec.yaml               # Workspace configuration
-└── package.json               # Node.js dependencies (commitlint, prettier)
+├── package.json               # Node.js dependencies (commitlint, prettier)
+└── LICENSE                    # MIT License file
 ```
 
 <!-- END AUTO-GENERATED SECTION -->
@@ -116,85 +319,71 @@ flutter_template_project/
 
 ## Development Commands
 
-### Melos Commands (Recommended)
+### Mise Tasks (Recommended - Unified Interface)
 
 ```bash
-# Code generation (freezed, riverpod, go_router, slang)
-melos run gen
+# Complete development workflow
+mise run dev
 
-# Install dependencies
-melos run get
+# Initial project setup
+mise run setup
 
-# Static analysis
-melos run analyze
+# Code quality workflow
+mise run quality
 
-# slang translation check
-melos run analyze:slang
+# Complete CI workflow
+mise run ci-check
+```
+
+### Individual Mise Tasks
+
+```bash
+# Dependencies and code generation
+mise run get              # Install dependencies (calls melos run get)
+mise run gen              # Generate code (calls melos run gen)
+
+# Code analysis and testing
+mise run analyze          # Static analysis (calls melos run analyze)
+mise run analyze-slang    # Translation validation (calls melos run analyze:slang)
+mise run test             # Run tests (calls melos run test)
 
 # Code formatting
-melos run format
+mise run format           # Format Dart code (calls melos run format)
+mise run format-prettier  # Format YAML/Markdown (calls bun run format)
+mise run format-all       # Format all files (calls both above)
 
-# Run tests
-melos run test
+# Build and run
+mise run run              # Run app (debug) (calls melos exec --scope=app -- flutter run)
+mise run run-release      # Run app (release) (calls melos exec --scope=app -- flutter run --release)
+mise run build            # Build all platforms (calls melos exec --scope=app -- flutter build)
+mise run build-android    # Build Android APK (calls melos exec --scope=app -- flutter build apk)
+mise run build-ios        # Build iOS (calls melos exec --scope=app -- flutter build ios)
+mise run build-web        # Build web (calls melos exec --scope=app -- flutter build web)
 
-# CI format check
-melos run ci:format
+# Maintenance
+mise run clean            # Clean packages (calls melos clean)
+mise run clean-deps       # Clean and reinstall dependencies (calls melos clean, melos bootstrap, bun run clean)
+mise run clean-branch     # Clean git branches/worktrees (calls ./scripts/clean-branch.sh)
 ```
 
-### Direct Flutter Commands (using mise)
+### Legacy Commands (Still Available)
+
+#### Melos Commands
 
 ```bash
-# Activate mise environment first
-eval "$(mise activate bash)"
-
-# Run application
-cd app && flutter run
-
-# Run tests (single file)
-cd app && flutter test test/widget_test.dart
-
-# Build
-cd app && flutter build apk
-cd app && flutter build ios --no-codesign
+melos run gen             # Code generation
+melos run get             # Install dependencies
+melos run analyze         # Static analysis
+melos run format          # Code formatting
+melos run test            # Run tests
 ```
 
-### Bun Related Commands (Faster than Node.js)
+#### Bun Commands
 
 ```bash
-# Install dependencies with bun (faster than npm)
-bun install
-
-# YAML/Markdown lint
-bun run lint
-
-# YAML/Markdown format
-bun run format
-
-# Clean and reinstall dependencies
-bun run clean
-```
-
-### Development Workflow Commands
-
-```bash
-# Workflow 1: Code Quality Check
-melos run analyze
-melos run test
-melos run format:prettier
-melos run format
-
-# Workflow 2: Development Environment Setup
-mise install
-eval "$(mise activate bash)"
-melos run get
-melos run gen
-
-# Workflow 3: Release Preparation
-melos run analyze
-melos run test
-melos run ci:format
-melos run format:prettier
-melos run format
+bun run lint              # YAML/Markdown lint
+bun run format            # YAML/Markdown format
+bun run clean             # Clean and reinstall
 ```
 
 ### Environment Variables
@@ -320,44 +509,181 @@ For detailed GitHub Issue processing workflow, execution examples, and configura
 - Same versions used across all packages due to Workspace resolution
 - Update all package dependencies collectively with `melos run get`
 
-## Automated Development Workflows
+## AI Review-First Automated Workflows
 
-### Workflow 1: Code Quality Assurance
+### Workflow 1: Claude 4 Quality Assurance Pipeline
 
-**Purpose**: Ensure consistent code quality across all development activities
+**Purpose**: Implement complete AI Review-First development cycle with Claude as "Senior Reviewer"
 
-**Steps**:
+**Core Cycle: 小さなドラフト → 厳しい批評 → 再生成 → リリース**
 
-1. Static analysis with `melos run analyze`
-2. Code formatting validation with `melos run ci:format`
-3. Automated testing with `melos run test`
-4. Translation validation with `melos run analyze:slang`
-5. Final formatting with `melos run format:prettier`
-6. Final formatting with `melos run format`
+```mermaid
+flowchart LR
+    A[最小実装] --> B[AIレビュー]
+    B --> C[改善実装]
+    C --> D{品質OK?}
+    D -->|No| B
+    D -->|Yes| E[リリース]
+```
 
-### Workflow 2: Documentation Synchronization
+**Implementation Steps**:
 
-**Purpose**: Maintain consistency between CLAUDE.md and related documentation
+1. **Minimal Draft Creation**:
 
-**Steps**:
+   ```bash
+   # Create essential functionality only
+   # Follow existing project patterns
+   # Use established dependencies
+   ```
 
-1. Monitor file changes in project structure
-2. Auto-update "## Project Structure" section when files are added/removed
-3. Validate documentation compliance with Claude 4 Best Practices
-4. Synchronize corresponding README.md when CLAUDE.md is updated (1:1 relationship enforcement)
-5. Final formatting with `melos run format:prettier`
-6. Final formatting with `melos run format`
+2. **AI Security Review** (HIGH Priority - Fix Immediately):
 
-### Workflow 3: Development Environment Validation
+   ```bash
+   # Automated security scanning
+   grep -r "API_KEY\|SECRET\|PASSWORD\|TOKEN" lib/
+   # Manual security pattern review
+   # Input validation verification
+   # Secure storage pattern check
+   ```
 
-**Purpose**: Ensure proper development environment setup and configuration
+3. **AI Architecture Review** (MEDIUM Priority - Address Next):
 
-**Steps**:
+   ```bash
+   mise run analyze    # Static analysis compliance
+   # SOLID principles evaluation
+   # Design pattern consistency review
+   # Code organization assessment
+   ```
 
-1. Validate Flutter version with mise
-2. Check GitHub CLI configuration
-3. Verify git worktree support
-4. Validate environment variables
-5. Test Claude Code integration
-6. Final formatting with `melos run format:prettier`
-7. Final formatting with `melos run format`
+4. **AI Performance Review** (LOW Priority - Optimize Later):
+
+   ```bash
+   mise run test      # Performance regression testing
+   # Algorithmic efficiency analysis
+   # Resource utilization review
+   # Build impact assessment
+   ```
+
+5. **Quality Gate Validation**:
+   ```bash
+   mise run ci-check           # Complete CI validation
+   mise run analyze-slang      # Translation validation
+   mise run format-all         # Code formatting
+   # Human final validation
+   ```
+
+### Workflow 2: Documentation Synchronization with AI Review
+
+**Purpose**: Maintain CLAUDE.md and README.md consistency using AI Review-First principles
+
+**AI-Enhanced Steps**:
+
+1. **Content Monitoring**: Detect project structure changes automatically
+2. **AI Documentation Review**:
+   - Evaluate clarity and specificity of instructions
+   - Validate Claude 4 Best Practices compliance
+   - Check 1:1 relationship enforcement between CLAUDE.md and README.md
+3. **Iterative Improvement**:
+   - Apply AI feedback to documentation structure
+   - Enhance context provision and constraint definitions
+   - Validate technical accuracy
+4. **Quality Gates**:
+   ```bash
+   melos run format:prettier # Markdown formatting
+   # Manual review of AI-suggested improvements
+   ```
+
+### Workflow 3: Development Environment Validation with AI Assistance
+
+**Purpose**: Ensure robust development environment using AI-assisted validation
+
+**AI-Assisted Validation Steps**:
+
+1. **Environment Analysis**:
+   ```bash
+   mise list                    # Version validation
+   gh auth status              # GitHub CLI verification
+   git worktree list          # Worktree support check
+   ```
+2. **AI Configuration Review**:
+   - Validate environment variable completeness
+   - Check Claude Code integration settings
+   - Verify GitHub Actions workflow compatibility
+3. **Automated Validation**:
+   ```bash
+   mise run setup             # Environment setup
+   melos bootstrap           # Dependencies installation
+   melos run gen             # Code generation test
+   ```
+4. **Quality Assurance**:
+   ```bash
+   melos run ci-check        # Complete CI pipeline validation
+   ```
+
+### Claude 4 AI Review-First Quality Standards
+
+All development must meet these Claude 4 Best Practices criteria:
+
+#### 🔴 Security Standards (HIGH Priority - Critical)
+
+**Required for all implementations**:
+
+- ✅ No hardcoded secrets/credentials in source code
+- ✅ Input validation and sanitization implemented
+- ✅ Secure data storage patterns (SharedPreferences, Keychain)
+- ✅ Encrypted network communication (HTTPS/TLS)
+- ✅ Proper authentication token handling
+- ✅ Error handling without information disclosure
+
+**Validation Commands**:
+
+```bash
+grep -r "API_KEY\|SECRET\|PASSWORD\|TOKEN" lib/  # Must return empty
+mise run analyze                                # Must pass
+```
+
+#### 🟡 Architecture Standards (MEDIUM Priority - Important)
+
+**SOLID Principles Compliance**:
+
+- ✅ Single Responsibility: Each class has one reason to change
+- ✅ Open/Closed: Open for extension, closed for modification
+- ✅ Liskov Substitution: Subtypes must be substitutable
+- ✅ Interface Segregation: No unused interface dependencies
+- ✅ Dependency Inversion: Depend on abstractions, not concretions
+
+**Project Consistency**:
+
+- ✅ Riverpod provider patterns (@riverpod annotation)
+- ✅ go_router type-safe navigation
+- ✅ slang internationalization structure
+- ✅ Proper error handling and user feedback
+
+#### 🟢 Performance Standards (LOW Priority - Enhancement)
+
+**Efficiency Requirements**:
+
+- ✅ No O(n²) algorithms where O(n) is possible
+- ✅ Widget rebuild optimization (const constructors, keys)
+- ✅ Lazy loading for large datasets
+- ✅ Image optimization and caching
+- ✅ Build time impact minimization
+
+#### Review Cycle Standards
+
+**Claude 4 Iteration Requirements**:
+
+- **Maximum iterations**: 3-4 review cycles per implementation
+- **Summary constraint**: 400 characters maximum per category
+- **Issue resolution order**: 🔴 HIGH → 🟡 MEDIUM → 🟢 LOW
+- **Final validation**: Human review required for production release
+- **Quality gate**: All `mise run ci-check` tests must pass
+
+**Review Output Format**:
+
+```text
+🔴 Security: [400 char summary]
+🟡 Architecture: [400 char summary]
+🟢 Performance: [400 char summary]
+Next Action: [Specific next steps]
+```

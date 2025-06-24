@@ -283,8 +283,7 @@ worktrees/feature-FEAT-123/
 ├── apps/                        # このタスク専用のFlutterアプリ
 ├── ../../.claude/               # ✅ 共通のClaude設定
 ├── ../../scripts/               # ✅ 共通の管理スクリプト
-├── ../../docs/                  # ✅ 共通ドキュメント
-└── ../../screenshots/           # ✅ 共通スクリーンショット
+└── ../../docs/                  # ✅ 共通ドキュメント
 ```
 
 ## 技術的考慮事項
@@ -633,5 +632,3 @@ flowchart TB
 **関連ドキュメント:**
 
 - [Claude 4 ベストプラクティス](CLAUDE_4_BEST_PRACTICES.md)
-- [Commitlint YAML設定ガイド](COMMITLINT_YAML_CONFIGURATION.md)
-- [Melos環境構築ガイド](MELOS_SETUP.md)

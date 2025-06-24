@@ -648,7 +648,9 @@ class GitHubCLIIntegration {
       }
 
       // Step 3: Verify repository access
-      const { stdout: repoInfo } = await execAsync('gh repo view --json name,owner')
+      const { stdout: repoInfo } = await execAsync(
+        'gh repo view --json name,owner'
+      )
       const repo = JSON.parse(repoInfo)
       this.repositoryName = `${repo.owner.login}/${repo.name}`
 
@@ -747,18 +749,20 @@ class GitHubCLIIntegration {
       // Create GitHub issue using CLI
       const labels = this.mapTemplateTypeToLabels(template.type)
       const priority = this.mapPriorityToLabel(template.priority)
-      
+
       const command = `gh issue create --title "${template.title}" --body "${issueBody}" --label "${labels}" --label "${priority}"`
-      
-      console.log(`📤 Creating GitHub issue in repository: ${this.repositoryName}`)
+
+      console.log(
+        `📤 Creating GitHub issue in repository: ${this.repositoryName}`
+      )
       console.log(`🏷️ Labels: ${labels}, ${priority}`)
-      
+
       const { stdout } = await execAsync(command)
       const issueUrl = stdout.trim()
-      
+
       // Extract issue number from URL
       const issueNumber = issueUrl.split('/').pop()
-      
+
       if (!issueNumber || !issueUrl) {
         throw new GitHubError('GitHub CLI returned invalid response format')
       }
@@ -810,7 +814,7 @@ ${originalContent}
         .replace(/"/g, '\"')
 
       const command = `gh issue comment ${issueNumber} --body "${comment}"`
-      
+
       await execAsync(command)
       console.log('📝 Added Japanese content as comment')
     } catch (error) {

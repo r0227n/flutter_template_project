@@ -125,165 +125,286 @@ graph TB
 | **AI開発**         | Claude Code + GitHub Issues      | 自動化された開発ワークフロー     |
 | **品質管理**       | AI Review-First + GitHub Actions | 多段階品質保証システム           |
 
-## AI支援開発ワークフロー
+## Claude 4 AI Review-First開発ワークフロー
 
-### GitHub Issues統合プロセス
+### 核心原則: 「小さなドラフト → 厳しい批評 → 再生成 → リリース」
 
 ```mermaid
+flowchart TD
+    A[最小実装ドラフト] --> B[AIレビューサイクル]
+    B --> C{品質基準達成?}
+    C -->|No 3-4回まで| B
+    C -->|Yes| D[人間最終検証]
+    D --> E[リリース準備完了]
+
+    subgraph "AIレビューサイクル詳細"
+        F[🔴 セキュリティ HIGH] --> G[🟡 アーキテクチャ MEDIUM]
+        G --> H[🟢 パフォーマンス LOW]
+        H --> I[400文字要約]
+    end
+
+    B -.-> F
+```
+
+### GitHub Issues統合AI開発プロセス
+
+````mermaid
 sequenceDiagram
     participant Dev as 開発者
     participant GitHub as GitHub Issues
     participant Claude as Claude Code
-    participant Workspace as Git Worktree
+    participant AI as AI Reviewer
     participant QA as 品質保証
     participant Actions as GitHub Actions
 
     Dev->>GitHub: Issue作成
     Dev->>Claude: /task #123
     Claude->>GitHub: Issue詳細取得
-    Claude->>Workspace: 分離環境作成
+    Claude->>Claude: Git Worktree分離環境作成
 
-    Note over Claude,QA: AI Review-First実装
-    Claude->>QA: セキュリティレビュー
-    Claude->>QA: アーキテクチャレビュー
-    Claude->>QA: パフォーマンスレビュー
-    Claude->>QA: 最終検証
+    Note over Claude,AI: Claude 4 AI Review-First実装
+    Claude->>AI: 最小実装ドラフト生成
+
+    rect rgb(255, 235, 238)
+        Note over AI,QA: 反復レビューサイクル (最大3-4回)
+        AI->>QA: 🔴 セキュリティレビュー (HIGH)
+        AI->>QA: 🟡 アーキテクチャレビュー (MEDIUM)
+        AI->>QA: 🟢 パフォーマンスレビュー (LOW)
+        QA-->>AI: 改善実装
+    end
 
     Claude->>GitHub: PR作成
     GitHub->>Actions: CI/CDパイプライン実行
     Actions->>QA: 品質ゲート検証
-    QA->>Dev: 完了通知
+    QA->>Dev: 🔔 完了通知
     Dev->>GitHub: Issue完了
-```
 
-### /task コマンドの使用方法
+### /task コマンド: Claude 4 AI Review-First統合
 
 ```bash
-# インタラクティブモード
+# インタラクティブモード（推奨）
 /task
 ? Select Issues to process: #123, #456
 
 # 直接実行モード
 /task #123 #456
 
-# 実行内容:
-# ✅ GitHub Issue詳細の取得
-# ✅ 分離された作業環境の作成
-# ✅ AI Review-Firstによる実装
-# ✅ 多段階品質保証の実行
-# ✅ GitHub Actions統合
-# ✅ 完了通知
-```
+# Claude 4 AI Review-First実行プロセス:
+# 🔄 Phase 1: GitHub Issue詳細取得
+# 🔄 Phase 2: Git Worktree分離環境作成
+# 🔄 Phase 3: 最小実装ドラフト生成
+# 🔄 Phase 4: AIレビューサイクル (3-4回)
+#     ├── 🔴 セキュリティスキャン (HIGH優先度)
+#     ├── 🟡 アーキテクチャ検証 (MEDIUM優先度)
+#     └── 🟢 パフォーマンス分析 (LOW優先度)
+# 🔄 Phase 5: 品質ゲート検証
+# 🔄 Phase 6: GitHub Actions CI/CD統合
+# ✅ Phase 7: 完了通知 + 人間最終検証
+````
 
-## 品質管理システム
+### Claude 4レビュー品質基準
 
-### AI Review-First品質保証パイプライン
+| 優先度    | カテゴリ       | 評価項目                                     | 修正タイミング |
+| --------- | -------------- | -------------------------------------------- | -------------- |
+| 🔴 HIGH   | セキュリティ   | ハードコード秘密情報、入力検証、暗号化       | 即座に修正     |
+| 🟡 MEDIUM | アーキテクチャ | SOLID原則、デザインパターン、コード構成      | 次に対応       |
+| 🟢 LOW    | パフォーマンス | アルゴリズム効率、リソース使用、ビルド最適化 | 後で最適化     |
+
+## Claude 4 AI Review-First品質管理システム
+
+### 品質保証パイプライン: 「シニアレビュアー」としてのClaude活用
 
 ```mermaid
 sequenceDiagram
     participant Task as /task Command
-    participant AI as AI Reviewer
-    participant QA as Quality Assurance
+    participant Claude as Claude (Senior Reviewer)
+    participant Security as 🔴 Security Gate
+    participant Arch as 🟡 Architecture Gate
+    participant Perf as 🟢 Performance Gate
     participant GitHub as GitHub API
     participant Actions as GitHub Actions
-    participant Alert as Completion Alert
+    participant Human as 👤 Human Validator
 
-    Note over Task,Alert: 品質保証パイプラインプロセス
+    Note over Task,Human: Claude 4 「小さなドラフト → 厳しい批評 → 再生成 → リリース」
 
     Task->>GitHub: Issue #123 詳細取得
-    Task->>AI: 最小実装生成
+    Task->>Claude: 最小実装ドラフト生成要求
+    Claude->>Claude: 基本機能のみ実装
 
     rect rgb(255, 235, 238)
-        Note over AI,QA: AI Review サイクル (3-4回)
+        Note over Claude,Perf: AI Review-First サイクル (最大3-4回)
 
-        loop セキュリティレビュー
-            AI->>QA: 脆弱性スキャン
-            QA-->>AI: 高優先度問題検出
-            AI->>AI: セキュリティ修正適用
+        loop 🔴 セキュリティレビュー (HIGH Priority)
+            Claude->>Security: 秘密情報スキャン
+            Claude->>Security: 入力検証パターン確認
+            Claude->>Security: セキュアストレージ検証
+            Security-->>Claude: 高優先度問題: 即座修正
         end
 
-        loop アーキテクチャレビュー
-            AI->>QA: SOLID原則検証
-            QA-->>AI: 中優先度違反検出
-            AI->>AI: アーキテクチャ修正
+        loop 🟡 アーキテクチャレビュー (MEDIUM Priority)
+            Claude->>Arch: SOLID原則準拠チェック
+            Claude->>Arch: デザインパターン一貫性確認
+            Claude->>Arch: コード構成評価
+            Arch-->>Claude: 中優先度違反: 次に対応
         end
 
-        loop パフォーマンスレビュー
-            AI->>QA: パフォーマンス分析
-            QA-->>AI: 最適化機会発見
-            AI->>AI: パフォーマンス改善
+        loop 🟢 パフォーマンスレビュー (LOW Priority)
+            Claude->>Perf: アルゴリズム効率分析
+            Claude->>Perf: リソース使用量評価
+            Claude->>Perf: ビルド影響度測定
+            Perf-->>Claude: 最適化機会: 後で改善
         end
+
+        Note over Claude: 各カテゴリ400文字要約作成
     end
 
-    Task->>GitHub: PR作成
-    GitHub->>Actions: CI/CDパイプライン実行
+    Claude->>GitHub: PR作成 (レビュー結果含む)
+    GitHub->>Actions: mise run ci-check 実行
 
-    alt 全チェック成功
-        Actions-->>GitHub: ✅ ワークフロー成功
-        GitHub-->>Task: PR承認準備完了
-    else チェック失敗
-        Actions-->>GitHub: ❌ ワークフロー失敗
-        GitHub->>Task: 失敗詳細
-        Task->>QA: 自動修正実行
-        QA->>Actions: 修正後再実行
+    alt 全品質ゲート成功
+        Actions-->>GitHub: ✅ CI/CD成功
+        GitHub-->>Human: 人間最終検証要求
+        Human-->>Task: ✅ 承認完了
+    else 品質ゲート失敗
+        Actions-->>GitHub: ❌ CI/CD失敗
+        GitHub->>Claude: エラー詳細フィードバック
+        Claude->>Claude: 自動修正実装
+        Claude->>Actions: 修正版再提出
     end
 
-    Task->>Alert: 完了アラーム送信
-    Alert-->>Task: ✅ 品質パイプライン完了
+    Task->>Task: 🔔 完了アラーム送信
+    Note over Task,Human: ✅ Claude 4 AI Review-First完了
 ```
 
-### 品質基準
+### Claude 4品質基準: 優先度別評価システム
 
-#### セキュリティ（高優先度）
+#### 🔴 セキュリティ基準 (HIGH Priority - 即座修正)
 
-- ✅ ハードコードされたシークレットなし
-- ✅ 入力値検証の実装
-- ✅ セキュアなデータストレージ
-- ✅ ネットワーク通信の暗号化
+**クリティカル要件**:
 
-#### アーキテクチャ（中優先度）
+- ✅ ハードコードされた秘密情報の完全排除
+  ```bash
+  grep -r "API_KEY\|SECRET\|PASSWORD\|TOKEN" lib/  # 空であること
+  ```
+- ✅ 入力値検証・サニタイゼーション実装
+- ✅ セキュアなデータストレージ (SharedPreferences暗号化)
+- ✅ HTTPS/TLS通信の強制
+- ✅ 認証トークンの適切な処理
+- ✅ エラー情報漏洩防止
 
-- ✅ SOLID原則の遵守
-- ✅ 適切なデザインパターンの使用
-- ✅ 論理的なコード構成
+#### 🟡 アーキテクチャ基準 (MEDIUM Priority - 次に対応)
 
-#### パフォーマンス（低優先度）
+**SOLID原則準拠**:
 
-- ✅ 明らかなボトルネックなし
-- ✅ 効率的なアルゴリズムの使用
-- ✅ リソース使用量の最適化
+- ✅ **Single Responsibility**: 各クラス単一責任
+- ✅ **Open/Closed**: 拡張開放・修正閉鎖
+- ✅ **Liskov Substitution**: サブタイプ置換可能性
+- ✅ **Interface Segregation**: インターフェース分離
+- ✅ **Dependency Inversion**: 依存関係逆転
+
+**プロジェクト一貫性**:
+
+- ✅ Riverpod providers (@riverpod annotation)
+- ✅ go_router型安全ナビゲーション
+- ✅ slang多言語対応構造
+- ✅ 適切なエラーハンドリング
+
+#### 🟢 パフォーマンス基準 (LOW Priority - 後で最適化)
+
+**効率性要件**:
+
+- ✅ O(n²)アルゴリズムをO(n)に最適化
+- ✅ Widgetリビルド最適化 (const, keys使用)
+- ✅ 大規模データセットの遅延読み込み
+- ✅ 画像最適化・キャッシュ実装
+- ✅ ビルド時間影響最小化
+
+### Claude 4レビューサイクル標準
+
+**反復要件**:
+
+- **最大反復回数**: 3-4サイクル
+- **要約制約**: カテゴリ毎400文字以内
+- **問題解決順序**: 🔴 HIGH → 🟡 MEDIUM → 🟢 LOW
+- **最終検証**: 人間レビュー必須
+- **品質ゲート**: `mise run ci-check` 全テスト成功
+
+**レビュー出力形式**:
+
+```text
+🔴 セキュリティ: [400文字要約 + 具体的修正指示]
+🟡 アーキテクチャ: [400文字要約 + 改善提案]
+🟢 パフォーマンス: [400文字要約 + 最適化案]
+次のアクション: [優先順位付き具体的手順]
+```
 
 ## 開発コマンド
 
-### Melosコマンド（推奨）
+### Miseタスク（推奨統一インターフェース）
 
 ```bash
-# 依存関係管理
-melos run get      # 依存関係の更新
-melos run gen      # コード生成（riverpod、freezed等）
+# 完全開発ワークフロー
+mise run dev
 
-# 品質管理
-melos run analyze  # 静的解析
-melos run test     # テスト実行
-melos run format   # コード整形
-melos run ci:format # CI用フォーマットチェック
+# 初期プロジェクトセットアップ
+mise run setup
 
-# 多言語対応
-melos run analyze:slang # 翻訳キー検証
+# コード品質ワークフロー
+mise run quality
+
+# 完全CIワークフロー
+mise run ci-check
 ```
 
-### 直接Flutterコマンド
+### 個別Miseタスク
 
 ```bash
-# アプリケーション実行
-cd app && flutter run
+# 依存関係とコード生成
+mise run get              # 依存関係インストール (melos run get呼出)
+mise run gen              # コード生成 (melos run gen呼出)
 
-# 個別テスト実行
-cd app && flutter test test/widget_test.dart
+# コード解析とテスト
+mise run analyze          # 静的解析 (melos run analyze呼出)
+mise run analyze-slang    # 翻訳検証 (melos run analyze:slang呼出)
+mise run test             # テスト実行 (melos run test呼出)
 
-# ビルド
-cd app && flutter build apk
-cd app && flutter build ios --no-codesign
+# コード整形
+mise run format           # Dartコード整形 (melos run format呼出)
+mise run format-prettier  # YAML/Markdown整形 (bun run format呼出)
+mise run format-all       # 全ファイル整形 (両方の整形実行)
+
+# ビルドと実行
+mise run run              # アプリ実行（デバッグ） (melos exec --scope=app -- flutter run呼出)
+mise run run-release      # アプリ実行（リリース） (melos exec --scope=app -- flutter run --release呼出)
+mise run build            # 全プラットフォームビルド (melos exec --scope=app -- flutter build呼出)
+mise run build-android    # Android APKビルド (melos exec --scope=app -- flutter build apk呼出)
+mise run build-ios        # iOSビルド (melos exec --scope=app -- flutter build ios呼出)
+mise run build-web        # Webビルド (melos exec --scope=app -- flutter build web呼出)
+
+# メンテナンス
+mise run clean            # パッケージクリーン (melos clean呼出)
+mise run clean-deps       # 依存関係クリーンと再インストール (melos clean, melos bootstrap, bun run clean呼出)
+mise run clean-branch     # Gitブランチ/ワークツリークリーン (./scripts/clean-branch.sh呼出)
+```
+
+### レガシーコマンド（引き続き利用可能）
+
+#### Melosコマンド
+
+```bash
+melos run gen             # コード生成
+melos run get             # 依存関係取得
+melos run analyze         # 静的解析
+melos run format          # コード整形
+melos run test            # テスト実行
+```
+
+#### Bunコマンド
+
+```bash
+bun run lint              # YAML/Markdownリント
+bun run format            # YAML/Markdown整形
+bun run clean             # クリーンと再インストール
 ```
 
 ## プロジェクト構成
@@ -300,17 +421,20 @@ flutter_template_project/
 │   └── test/                   # ウィジェットテスト
 ├── 📦 packages/                 # 共有パッケージ
 ├── 🤖 .claude-workspaces/       # AI開発用分離環境
+├── ⚙️ .vscode/                  # VS Code IDE設定
+│   └── settings.json           # Flutter開発用エディタ設定
 ├── 📋 CLAUDE.md                 # AI用プロジェクト設定
 ├── 📋 README.md                 # 人間用プロジェクト説明（本文書）
 ├── 🔧 scripts/                 # 自動化スクリプト
 ├── 🔧 .claude/                 # Claude Code設定
 │   └── commands/
 │       └── task.md             # GitHub Issue処理コマンド
-└── 📚 docs/                    # 専用ドキュメント
-    ├── CLAUDE_4_BEST_PRACTICES.md # AI設計原則
-    ├── MELOS_SETUP.md          # Melos設定詳細
-    ├── VSCODE_SETTINGS.md      # エディタ設定
-    └── WORKTREE_ARCHITECTURE.md # 並列開発アーキテクチャ
+├── 📚 docs/                    # 専用ドキュメント
+│   ├── CLAUDE_4_BEST_PRACTICES.md # AI設計原則
+│   ├── COMMITLINT_RULES.md     # コミット規約
+│   └── WORKTREE_ARCHITECTURE.md # 並列開発アーキテクチャ
+├── 📄 LICENSE                   # MITライセンス
+└── 📋 pubspec.yaml              # ワークスペース設定
 ```
 
 ## 自動化されたワークフロー
@@ -356,8 +480,8 @@ flutter_template_project/
 | [README.md](README.md)                                             | プロジェクト概要 | 開発者      | 全体構成                |
 | [CLAUDE.md](CLAUDE.md)                                             | AI開発設定       | Claude Code | 全体構成                |
 | [docs/CLAUDE_4_BEST_PRACTICES.md](docs/CLAUDE_4_BEST_PRACTICES.md) | AI設計原則       | AI開発者    | AI Review-First         |
-| [docs/MELOS_SETUP.md](docs/MELOS_SETUP.md)                         | モノレポ設定     | 開発者      | 開発コマンド            |
-| [docs/VSCODE_SETTINGS.md](docs/VSCODE_SETTINGS.md)                 | エディタ設定     | 開発者      | 開発環境                |
+| [docs/COMMITLINT_RULES.md](docs/COMMITLINT_RULES.md)               | コミット規約     | 開発者      | Git Workflow            |
+| [docs/PROJECT_OVERVIEW.md](docs/PROJECT_OVERVIEW.md)               | プロジェクト概要 | 開発者      | プロジェクト概要        |
 | [docs/WORKTREE_ARCHITECTURE.md](docs/WORKTREE_ARCHITECTURE.md)     | 並列開発         | AI開発者    | Git Worktree            |
 | [.claude/commands/task.md](.claude/commands/task.md)               | Issue処理        | Claude Code | カスタムコマンド        |
 
