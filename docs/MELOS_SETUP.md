@@ -15,7 +15,7 @@ Melosは、Dartプロジェクトのモノレポ管理を効率化するツー�
 
 ## 前提条件
 
-- Flutter SDK (fvmで管理推奨)
+- Flutter SDK (miseで管理推奨)
 - Dart SDK
 - Git
 

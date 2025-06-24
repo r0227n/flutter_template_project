@@ -53,20 +53,23 @@ AI支援開発とモダンアーキテクチャを組み合わせた、GitHub Is
 
 | ツール  | 推奨バージョン | インストール方法                            |
 | ------- | -------------- | ------------------------------------------- |
-| Flutter | FVM管理        | `dart pub global activate fvm`              |
+| Flutter | mise管理       | `mise install`                              |
 | Bun     | 1.2+           | `curl -fsSL https://bun.sh/install \| bash` |
 | Melos   | 7.0+           | `dart pub global activate melos`            |
 
 ### クイックスタート
 
-```bash
+````bash
 # 1. プロジェクトを取得
 git clone <repository-url>
 cd flutter_template_project
 
 # 2. 開発環境を構築
-fvm install && fvm use
-bun install
+
+mise install
+eval "$(mise activate bash)"
+npm install
+
 melos bootstrap
 
 # 3. GitHub CLI認証（必須）
@@ -79,10 +82,6 @@ export GITHUB_ACTIONS_CHECK=true
 
 # 5. コード生成を実行
 melos run gen
-
-# 6. アプリを起動
-cd app && fvm flutter run
-```
 
 ## アーキテクチャ概要
 
@@ -112,13 +111,13 @@ graph TB
     D --> E
     A --> I
     M --> N[Production Release]
-```
+````
 
 ### 技術スタック
 
 | 分野               | 技術                             | 役割                             |
 | ------------------ | -------------------------------- | -------------------------------- |
-| **フレームワーク** | Flutter + FVM                    | マルチプラットフォーム開発       |
+| **フレームワーク** | Flutter + mise                   | マルチプラットフォーム開発       |
 | **状態管理**       | Riverpod + Hooks                 | リアクティブな状態アーキテクチャ |
 | **ナビゲーション** | go_router                        | 型安全なルーティング             |
 | **国際化**         | slang                            | コード生成による多言語対応       |
@@ -277,14 +276,14 @@ melos run analyze:slang # 翻訳キー検証
 
 ```bash
 # アプリケーション実行
-cd app && fvm flutter run
+cd app && flutter run
 
 # 個別テスト実行
-cd app && fvm flutter test test/widget_test.dart
+cd app && flutter test test/widget_test.dart
 
 # ビルド
-cd app && fvm flutter build apk
-cd app && fvm flutter build ios --no-codesign
+cd app && flutter build apk
+cd app && flutter build ios --no-codesign
 ```
 
 ## プロジェクト構成
@@ -343,7 +342,7 @@ flutter_template_project/
 
 **実行内容**:
 
-1. `fvm` Flutter バージョン検証
+1. `mise` Flutter バージョン検証
 2. GitHub CLI 設定確認
 3. `git worktree` サポート検証
 4. 環境変数の妥当性確認
@@ -378,7 +377,7 @@ flutter_template_project/
 ```bash
 # Claude Code基本設定
 export ENABLE_BACKGROUND_TASKS=true
-export FLUTTER_VERSION_MANAGEMENT=fvm
+export FLUTTER_VERSION_MANAGEMENT=mise
 export TASK_MANAGEMENT_SYSTEM=github
 
 # GitHub統合設定

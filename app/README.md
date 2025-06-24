@@ -18,5 +18,5 @@ samples, guidance on mobile development, and a full API reference.
 ## i18n
 
 ```bash
-fvm dart run slang configure
+dart run slang configure
 ```

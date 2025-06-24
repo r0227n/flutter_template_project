@@ -70,7 +70,7 @@ Constraint: Summarize findings within 400 characters
 
 **Actions**:
 
-- Configure Flutter version using fvm
+- Configure Flutter version using mise
 - Create dedicated branch via git worktree
 - Implement ONLY core functionality per Issue requirements
 - Create basic test cases
@@ -205,7 +205,7 @@ sequenceDiagram
     Task->>Workspace: Create isolated workspace
     Workspace-->>Task: feature/issue-123 branch ready
 
-    Task->>Flutter: Setup fvm environment
+    Task->>Flutter: Setup mise environment
     Flutter-->>Task: Flutter SDK configured
 
     rect rgb(255, 248, 225)
@@ -371,10 +371,10 @@ Focus: Actionable feedback only
 melos run test
 
 # Widget tests (specific files)
-cd app && fvm flutter test test/widget_test.dart
+cd app && flutter test test/widget_test.dart
 
 # Integration tests (if available)
-cd app && fvm flutter test integration_test/
+cd app && flutter test integration_test/
 ```
 
 **Coverage Requirements**:
@@ -389,13 +389,13 @@ cd app && fvm flutter test integration_test/
 
 ```bash
 # Android build
-cd app && fvm flutter build apk --debug
+cd app && flutter build apk --debug
 
 # iOS build (macOS only)
-cd app && fvm flutter build ios --no-codesign --debug
+cd app && flutter build ios --no-codesign --debug
 
 # Web build
-cd app && fvm flutter build web --debug
+cd app && flutter build web --debug
 ```
 
 #### Stage 6: CI/CD Pipeline Integration
@@ -581,7 +581,7 @@ ls .claude-workspaces/
 ✅ Issue validation: #123 confirmed in GitHub
 ✅ Workspace creation: .claude-workspaces/issue-123
 ✅ Git worktree: feature/issue-123
-✅ Flutter environment: fvm setup complete
+✅ Flutter environment: mise setup complete
 ✅ AI Review-First: Quality standards configured
 🚀 Background execution started...
 📝 Implementing: User authentication feature
@@ -647,7 +647,7 @@ ls .claude-workspaces/
 ### Required Technology Stack
 
 - **Framework**: Flutter (Workspace/Monorepo structure)
-- **Version Management**: fvm (Flutter Version Management)
+- **Version Management**: mise (polyglot tool version manager)
 - **Task Management**: GitHub Issues
 - **Development Workflow**: git worktree for parallel development
 - **State Management**: Riverpod (hooks_riverpod, riverpod_annotation)
@@ -660,7 +660,7 @@ ls .claude-workspaces/
 
 ```bash
 export ENABLE_BACKGROUND_TASKS=true
-export FLUTTER_VERSION_MANAGEMENT=fvm
+export FLUTTER_VERSION_MANAGEMENT=mise
 export TASK_MANAGEMENT_SYSTEM=github
 export PARALLEL_DEVELOPMENT=git_worktree
 export PR_LANGUAGE=japanese
@@ -716,14 +716,14 @@ melos run ci:format
 
 ```bash
 # Run application
-cd app && fvm flutter run
+cd app && flutter run
 
 # Run tests (single file)
-cd app && fvm flutter test test/widget_test.dart
+cd app && flutter test test/widget_test.dart
 
 # Build
-cd app && fvm flutter build apk
-cd app && fvm flutter build ios --no-codesign
+cd app && flutter build apk
+cd app && flutter build ios --no-codesign
 ```
 
 ### PR Creation Template Selection
@@ -750,11 +750,11 @@ The command automatically selects the appropriate PR template based on issue lab
 gh auth login
 ```
 
-#### fvm Version Conflict
+#### mise Version Conflict
 
 ```bash
 # Reset Flutter version
-fvm use [project_flutter_version]
+mise install
 flutter clean
 flutter pub get
 ```
