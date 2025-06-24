@@ -19,6 +19,11 @@ runs:
           FLUTTER_VERSION="${{ inputs.flutter-version-override }}"
         else
           FLUTTER_VERSION=$(grep "^flutter " .tool-versions | awk '{print $2}')
+          if [ -z "$FLUTTER_VERSION" ]; then
+            echo "Error: Failed to extract Flutter version from .tool-versions"
+            echo "Make sure .tool-versions contains a line like 'flutter 3.32.2'"
+            exit 1
+          fi
         fi
         echo "version=$FLUTTER_VERSION" >> $GITHUB_OUTPUT
 
@@ -35,6 +40,11 @@ runs:
       shell: bash
       run: |
         MELOS_VERSION=$(grep "melos:" pubspec.yaml | head -1 | awk '{print $2}' | sed 's/\^//')
+        if [ -z "$MELOS_VERSION" ]; then
+          echo "Error: Failed to extract melos version from pubspec.yaml"
+          echo "Make sure pubspec.yaml contains a line like 'melos: ^6.4.0'"
+          exit 1
+        fi
         echo "version=$MELOS_VERSION" >> $GITHUB_OUTPUT
 
     # Setup melos

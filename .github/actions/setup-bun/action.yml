@@ -19,6 +19,11 @@ runs:
           BUN_VERSION="${{ inputs.bun-version-override }}"
         else
           BUN_VERSION=$(grep "^bun " .tool-versions | awk '{print $2}')
+          if [ -z "$BUN_VERSION" ]; then
+            echo "Error: Failed to extract Bun version from .tool-versions"
+            echo "Make sure .tool-versions contains a line like 'bun 1.2.17'"
+            exit 1
+          fi
         fi
         echo "version=$BUN_VERSION" >> $GITHUB_OUTPUT
 
