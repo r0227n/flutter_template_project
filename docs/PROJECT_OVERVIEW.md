@@ -15,7 +15,7 @@
 - **🔍 高度な品質保証**: AI Review-First方式による多段階品質管理
 - **🔄 並列開発**: git worktreeによる分離された開発環境
 - **📋 Issue統合**: `/task` コマンドによるシームレスなGitHub Issue処理
-- **📝 Issue生成**: `/file-to-issue.md` コマンドによる要件ファイルからの自動Issue化
+- **📝 Issue生成**: `/file-to-issue` コマンドによる要件ファイルからの自動Issue化
 
 ## 技術スタック
 
@@ -51,13 +51,13 @@ flowchart LR
 
 ### AI支援開発サイクル
 
-#### 1. ファイルからIssue生成（`/file-to-issue.md`コマンド）
+#### 1. ファイルからIssue生成（`/file-to-issue`コマンド）
 
 任意のファイル（要件定義書、アイデアメモ等）からAI向けプロンプトに変換し、GitHub Issueを自動起票します。
 
 ```bash
 # 任意のファイルからGitHub Issueを起票
-/file-to-issue.md
+/file-to-issue
 
 # 実行される処理:
 # ✅ ファイル内容の解析・構造化
@@ -69,7 +69,7 @@ flowchart LR
 **使用例**:
 
 1. 要件定義書やアイデアファイルを準備
-2. `/file-to-issue.md`で課題として起票
+2. `/file-to-issue`で課題として起票
 3. `/task`で実装を開始
 
 #### 2. GitHub Issue処理（`/task`コマンド）
@@ -329,6 +329,6 @@ mise run run-release            # リリースモード
 2. **並列開発**: git worktreeによる複数Issue同時開発
 3. **統一ツールチェーン**: miseによる一貫した開発環境管理
 4. **多段階品質保証**: セキュリティ → アーキテクチャ → パフォーマンスの段階的レビュー
-5. **完全自動化**: `/file-to-issue.md`と`/task`コマンドによる要件から本番デプロイまでの一気通貫ワークフロー
+5. **完全自動化**: `/file-to-issue`と`/task`コマンドによる要件から本番デプロイまでの一気通貫ワークフロー
 
 このアプローチにより、**高品質**かつ**高速**なFlutterアプリケーション開発を実現します。
