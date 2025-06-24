@@ -19,6 +19,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### Mermaid Visualization Workflow
 
 The README.md file includes Mermaid diagrams to visualize:
+
 - Project architecture overview
 - Development workflow processes
 - Component relationships

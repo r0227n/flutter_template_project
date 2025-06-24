@@ -24,6 +24,7 @@
 
 1. **引数チェック**: 必須引数が提供されているかを確認
 2. **引数不足時の動作**:
+
    - エラーメッセージ表示: `⏺ Please provide required arguments`
    - 終了理由をログ記録
    - **「Todos更新」フェーズをスキップ**
@@ -144,10 +145,12 @@ echo "✅ Arguments provided, proceeding with command execution"
 ### よくある問題
 
 1. **コマンドが実行されない**
+
    - 必須引数が提供されているか確認
    - ローカルCLAUDE.md設定を確認
 
 2. **設定が反映されない**
+
    - ローカル設定がルート設定をオーバーライドしているか確認
    - ワークスペース分離が適切に動作しているか確認
 
@@ -164,7 +167,7 @@ echo "✅ Arguments provided, proceeding with command execution"
 /task
 # 期待される出力: "⏺ Please provide required arguments"
 
-# コマンドの引数付き実行をテスト  
+# コマンドの引数付き実行をテスト
 /task ISSUE-123
 # 期待される動作: 通常のコマンド処理
 ```

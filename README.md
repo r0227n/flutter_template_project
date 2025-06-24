@@ -23,10 +23,10 @@ graph TD
 
 ### ドキュメント構成
 
-| ファイル      | 目的                              | 読者       | 関係性 |
-| ------------- | --------------------------------- | ---------- | ------ |
-| **CLAUDE.md** | Claude Code用ワークフロー設定     | AIシステム | ←→     |
-| **README.md** | 人間向けプロジェクト説明（本文書）| 開発チーム | ←→     |
+| ファイル      | 目的                               | 読者       | 関係性 |
+| ------------- | ---------------------------------- | ---------- | ------ |
+| **CLAUDE.md** | Claude Code用ワークフロー設定      | AIシステム | ←→     |
+| **README.md** | 人間向けプロジェクト説明（本文書） | 開発チーム | ←→     |
 
 **1:1対応の原則**: CLAUDE.mdの各セクションは、README.mdで対応する人間向け説明を持ちます。
 
@@ -83,6 +83,7 @@ melos run gen
 # 6. アプリを起動
 cd app && fvm flutter run
 ```
+
 ## アーキテクチャ概要
 
 ### システム構成図
@@ -94,20 +95,20 @@ graph TB
         B --> C[Git Worktree]
         C --> D[Isolated Development]
     end
-    
+
     subgraph "Flutter Architecture"
         E[Riverpod State] --> F[Go Router Navigation]
         F --> G[Slang i18n]
         G --> H[UI Components]
     end
-    
+
     subgraph "Quality Assurance Pipeline"
         I[AI Review Cycles] --> J[Static Analysis]
         J --> K[Automated Tests]
         K --> L[GitHub Actions]
         L --> M[Quality Gates]
     end
-    
+
     D --> E
     A --> I
     M --> N[Production Release]
@@ -115,15 +116,15 @@ graph TB
 
 ### 技術スタック
 
-| 分野               | 技術                     | 役割                             |
-| ------------------ | ------------------------ | -------------------------------- |
-| **フレームワーク** | Flutter + FVM            | マルチプラットフォーム開発       |
-| **状態管理**       | Riverpod + Hooks         | リアクティブな状態アーキテクチャ |
-| **ナビゲーション** | go_router                | 型安全なルーティング             |
-| **国際化**         | slang                    | コード生成による多言語対応       |
-| **モノレポ**       | Melos                    | パッケージ統合管理               |
-| **AI開発**         | Claude Code + GitHub Issues | 自動化された開発ワークフロー     |
-| **品質管理**       | AI Review-First + GitHub Actions | 多段階品質保証システム |
+| 分野               | 技術                             | 役割                             |
+| ------------------ | -------------------------------- | -------------------------------- |
+| **フレームワーク** | Flutter + FVM                    | マルチプラットフォーム開発       |
+| **状態管理**       | Riverpod + Hooks                 | リアクティブな状態アーキテクチャ |
+| **ナビゲーション** | go_router                        | 型安全なルーティング             |
+| **国際化**         | slang                            | コード生成による多言語対応       |
+| **モノレポ**       | Melos                            | パッケージ統合管理               |
+| **AI開発**         | Claude Code + GitHub Issues      | 自動化された開発ワークフロー     |
+| **品質管理**       | AI Review-First + GitHub Actions | 多段階品質保証システム           |
 
 ## AI支援開発ワークフロー
 
@@ -137,18 +138,18 @@ sequenceDiagram
     participant Workspace as Git Worktree
     participant QA as 品質保証
     participant Actions as GitHub Actions
-    
+
     Dev->>GitHub: Issue作成
     Dev->>Claude: /task #123
     Claude->>GitHub: Issue詳細取得
     Claude->>Workspace: 分離環境作成
-    
+
     Note over Claude,QA: AI Review-First実装
     Claude->>QA: セキュリティレビュー
-    Claude->>QA: アーキテクチャレビュー  
+    Claude->>QA: アーキテクチャレビュー
     Claude->>QA: パフォーマンスレビュー
     Claude->>QA: 最終検証
-    
+
     Claude->>GitHub: PR作成
     GitHub->>Actions: CI/CDパイプライン実行
     Actions->>QA: 品質ゲート検証
@@ -163,7 +164,7 @@ sequenceDiagram
 /task
 ? Select Issues to process: #123, #456
 
-# 直接実行モード  
+# 直接実行モード
 /task #123 #456
 
 # 実行内容:
@@ -192,32 +193,32 @@ sequenceDiagram
 
     Task->>GitHub: Issue #123 詳細取得
     Task->>AI: 最小実装生成
-    
+
     rect rgb(255, 235, 238)
         Note over AI,QA: AI Review サイクル (3-4回)
-        
+
         loop セキュリティレビュー
             AI->>QA: 脆弱性スキャン
             QA-->>AI: 高優先度問題検出
             AI->>AI: セキュリティ修正適用
         end
-        
+
         loop アーキテクチャレビュー
             AI->>QA: SOLID原則検証
             QA-->>AI: 中優先度違反検出
             AI->>AI: アーキテクチャ修正
         end
-        
+
         loop パフォーマンスレビュー
             AI->>QA: パフォーマンス分析
             QA-->>AI: 最適化機会発見
             AI->>AI: パフォーマンス改善
         end
     end
-    
+
     Task->>GitHub: PR作成
     GitHub->>Actions: CI/CDパイプライン実行
-    
+
     alt 全チェック成功
         Actions-->>GitHub: ✅ ワークフロー成功
         GitHub-->>Task: PR承認準備完了
@@ -227,7 +228,7 @@ sequenceDiagram
         Task->>QA: 自動修正実行
         QA->>Actions: 修正後再実行
     end
-    
+
     Task->>Alert: 完了アラーム送信
     Alert-->>Task: ✅ 品質パイプライン完了
 ```
@@ -235,17 +236,20 @@ sequenceDiagram
 ### 品質基準
 
 #### セキュリティ（高優先度）
+
 - ✅ ハードコードされたシークレットなし
 - ✅ 入力値検証の実装
 - ✅ セキュアなデータストレージ
 - ✅ ネットワーク通信の暗号化
 
 #### アーキテクチャ（中優先度）
+
 - ✅ SOLID原則の遵守
 - ✅ 適切なデザインパターンの使用
 - ✅ 論理的なコード構成
 
 #### パフォーマンス（低優先度）
+
 - ✅ 明らかなボトルネックなし
 - ✅ 効率的なアルゴリズムの使用
 - ✅ リソース使用量の最適化
@@ -317,6 +321,7 @@ flutter_template_project/
 **目的**: 全開発活動において一貫したコード品質を保証
 
 **実行内容**:
+
 1. `melos run analyze` - 静的解析
 2. `melos run ci:format` - フォーマット検証
 3. `melos run test` - 自動テスト
@@ -327,6 +332,7 @@ flutter_template_project/
 **目的**: CLAUDE.mdと関連ドキュメントの整合性維持
 
 **実行内容**:
+
 1. プロジェクト構造変更の監視
 2. 自動更新による構造セクションの維持
 3. Claude 4 Best Practices準拠の検証
@@ -336,6 +342,7 @@ flutter_template_project/
 **目的**: 適切な開発環境のセットアップと設定の保証
 
 **実行内容**:
+
 1. `fvm` Flutter バージョン検証
 2. GitHub CLI 設定確認
 3. `git worktree` サポート検証
@@ -345,15 +352,15 @@ flutter_template_project/
 
 ### 包括的ドキュメント構成
 
-| ドキュメント                                         | 内容           | 対象者      | CLAUDE.md対応セクション |
-| ---------------------------------------------------- | -------------- | ----------- | ----------------------- |
-| [README.md](README.md)                               | プロジェクト概要| 開発者      | 全体構成                |
-| [CLAUDE.md](CLAUDE.md)                               | AI開発設定     | Claude Code | 全体構成                |
-| [docs/CLAUDE_4_BEST_PRACTICES.md](docs/CLAUDE_4_BEST_PRACTICES.md) | AI設計原則 | AI開発者 | AI Review-First |
-| [docs/MELOS_SETUP.md](docs/MELOS_SETUP.md)         | モノレポ設定   | 開発者      | 開発コマンド            |
-| [docs/VSCODE_SETTINGS.md](docs/VSCODE_SETTINGS.md) | エディタ設定   | 開発者      | 開発環境                |
-| [docs/WORKTREE_ARCHITECTURE.md](docs/WORKTREE_ARCHITECTURE.md) | 並列開発 | AI開発者 | Git Worktree |
-| [.claude/commands/task.md](.claude/commands/task.md) | Issue処理 | Claude Code | カスタムコマンド |
+| ドキュメント                                                       | 内容             | 対象者      | CLAUDE.md対応セクション |
+| ------------------------------------------------------------------ | ---------------- | ----------- | ----------------------- |
+| [README.md](README.md)                                             | プロジェクト概要 | 開発者      | 全体構成                |
+| [CLAUDE.md](CLAUDE.md)                                             | AI開発設定       | Claude Code | 全体構成                |
+| [docs/CLAUDE_4_BEST_PRACTICES.md](docs/CLAUDE_4_BEST_PRACTICES.md) | AI設計原則       | AI開発者    | AI Review-First         |
+| [docs/MELOS_SETUP.md](docs/MELOS_SETUP.md)                         | モノレポ設定     | 開発者      | 開発コマンド            |
+| [docs/VSCODE_SETTINGS.md](docs/VSCODE_SETTINGS.md)                 | エディタ設定     | 開発者      | 開発環境                |
+| [docs/WORKTREE_ARCHITECTURE.md](docs/WORKTREE_ARCHITECTURE.md)     | 並列開発         | AI開発者    | Git Worktree            |
+| [.claude/commands/task.md](.claude/commands/task.md)               | Issue処理        | Claude Code | カスタムコマンド        |
 
 ### Mermaid可視化の活用
 
