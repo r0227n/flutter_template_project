@@ -40,6 +40,35 @@ graph TD
 
 AI支援開発とモダンアーキテクチャを組み合わせた、GitHub Issues統合エンタープライズ対応Flutterアプリケーションテンプレートです。
 
+### ドキュメント構造とAI統合システム
+
+このプロジェクトは、AI支援開発と人間による開発の両方を最適化するための統合ドキュメントシステムを採用しています：
+
+```mermaid
+graph TD
+    A[CLAUDE.md] --> B[Claude Code処理]
+    C[README.md] --> D[人間の理解]
+    A -.->|1:1対応関係| C
+    B --> E[自動化開発]
+    D --> F[手動レビュー]
+    E --> G[品質保証]
+    F --> G
+    G --> H[リリース準備]
+```
+
+#### ドキュメント分担
+
+| ファイル      | 対象者           | 内容                         | 言語   |
+| ------------- | ---------------- | ---------------------------- | ------ |
+| **CLAUDE.md** | Claude Code (AI) | ワークフロー、設定、技術指示 | 英語   |
+| **README.md** | 開発者 (人間)    | プロジェクト概要、使用方法   | 日本語 |
+
+#### 1:1対応原則
+
+- CLAUDE.mdの各セクションは、README.mdの対応セクションで人間向けに説明
+- 技術的な詳細は両方のファイルで一貫性を保持
+- 変更時は両ファイルを同期更新
+
 ### 核となる特徴
 
 - **🤖 AI支援開発**: Claude CodeとGitHub Issuesの統合による自動開発
@@ -285,6 +314,42 @@ cd app && fvm flutter build apk
 cd app && fvm flutter build ios --no-codesign
 ```
 
+#### AI支援開発プロセス
+
+```mermaid
+sequenceDiagram
+    participant Dev as 開発者
+    participant Claude as Claude Code
+    participant GitHub as GitHub Issues
+    participant Git as Git Repository
+    participant CI as GitHub Actions
+
+    Dev->>Claude: /task #123
+    Claude->>GitHub: Issue詳細取得
+    GitHub->>Claude: 要件・受け入れ条件
+    Claude->>Git: git worktree作成
+    Claude->>Claude: AI Review-First実装
+    loop 品質改善サイクル (3-4回)
+        Claude->>Claude: コード実装
+        Claude->>Claude: セキュリティレビュー
+        Claude->>Claude: SOLID原則チェック
+        Claude->>Claude: パフォーマンス最適化
+    end
+    Claude->>Git: コミット＆プッシュ
+    Claude->>CI: PR作成・自動テスト
+    CI->>Claude: 品質チェック結果
+    Claude->>GitHub: ステータス更新
+    Claude->>Dev: 完了通知
+```
+
+**特徴:**
+
+- GitHub Issueの内容を解析し、自動実装
+- AI品質レビューによる反復改善（3-4サイクル）
+- 自動テスト実行とPR作成
+- 並行開発のためのgit worktree活用
+- セキュリティ・SOLID原則・パフォーマンスの体系的チェック
+
 ## プロジェクト構成
 
 ```
@@ -327,6 +392,52 @@ flutter_template_project/
 ### Workflow 2: ドキュメント同期
 
 **目的**: CLAUDE.mdと関連ドキュメントの整合性維持
+
+### 品質管理パイプライン
+
+```mermaid
+flowchart LR
+    subgraph "AI Review-First"
+        A1[小さなドラフト作成]
+        A2[批判的レビュー]
+        A3[再生成・改善]
+        A4[リリース判定]
+        A1 --> A2 --> A3 --> A4
+        A3 -.->|3-4サイクル| A2
+    end
+
+    subgraph "自動品質チェック"
+        B1[静的解析<br/>dart analyze]
+        B2[コード整形<br/>dart format]
+        B3[自動テスト<br/>flutter test]
+        B4[多言語検証<br/>slang check]
+    end
+
+    subgraph "CI/CD Pipeline"
+        C1[GitHub Actions]
+        C2[全品質チェック実行]
+        C3[結果レポート]
+        C4[マージ可否判定]
+    end
+
+    A4 --> B1
+    B1 --> B2 --> B3 --> B4
+    B4 --> C1 --> C2 --> C3 --> C4
+
+    C4 -.->|失敗時| A2
+
+    style A2 fill:#ffeb3b
+    style C2 fill:#4caf50
+    style C4 fill:#2196f3
+```
+
+### コード品質ツール
+
+- **commitlint**: [Conventional Commits](https://conventionalcommits.org/)準拠
+- **prettier**: YAML/Markdown自動フォーマット
+- **dart analyze**: Flutter静的解析
+- **自動テスト**: ユニット・ウィジェット・統合テスト
+- **AI Review-First**: セキュリティ・SOLID原則・パフォーマンスの体系的評価
 
 **実行内容**:
 1. プロジェクト構造変更の監視
@@ -392,6 +503,126 @@ export INTERACTIVE_MODE=true
 export ISSUE_SELECTION_UI=enabled
 ```
 
+## アーキテクチャ概要
+
+### システム全体構成
+
+```mermaid
+graph TB
+    subgraph "開発環境"
+        IDE[VS Code + Extensions]
+        Claude[Claude Code AI]
+        Git[Git + Worktree]
+    end
+
+    subgraph "プロジェクト管理"
+        GitHub[GitHub Issues]
+        GitHubRepo[GitHub Repository]
+        Actions[GitHub Actions]
+    end
+
+    subgraph "Flutter アプリケーション"
+        App[メインアプリ]
+        Packages[共有パッケージ]
+        subgraph "アーキテクチャ層"
+            UI[UI Layer - Pages/Widgets]
+            State[State Layer - Riverpod]
+            Domain[Domain Layer - Models]
+            Data[Data Layer - Repositories]
+        end
+    end
+
+    subgraph "品質管理"
+        Tests[自動テスト]
+        Lint[静的解析]
+        Format[コード整形]
+        I18n[多言語対応]
+    end
+
+    Claude <--> GitHub
+    Claude <--> Git
+    Claude <--> App
+    Git <--> GitHubRepo
+    GitHubRepo <--> Actions
+    Actions <--> Tests
+    Actions <--> Lint
+    Actions <--> Format
+    Actions <--> I18n
+
+    UI --> State
+    State --> Domain
+    Domain --> Data
+```
+
+### 状態管理パターン
+
+**Riverpod + Hooks** による宣言的UI：
+
+```dart
+@riverpod
+class CounterNotifier extends _$CounterNotifier {
+  @override
+  int build() => 0;
+
+  void increment() => state++;
+}
+
+// UI での使用
+class CounterPage extends ConsumerWidget {
+  Widget build(context, ref) {
+    final count = ref.watch(counterNotifierProvider);
+    return Text('Count: $count');
+  }
+}
+```
+
+### 国際化アプローチ
+
+**slang** による型安全な多言語対応：
+
+```dart
+// assets/i18n/ja.i18n.json
+{
+  "welcome": "ようこそ",
+  "settings": {
+    "title": "設定"
+  }
+}
+
+// UI での使用
+Text(context.i18n.welcome)
+Text(context.i18n.settings.title)
+```
+
+## テスト戦略
+
+| テストレベル | 対象              | ツール           |
+| ------------ | ----------------- | ---------------- |
+| ユニット     | ビジネスロジック  | flutter_test     |
+| ウィジェット | UI コンポーネント | flutter_test     |
+| 統合         | ユーザーフロー    | integration_test |
+
+```bash
+# 全テスト実行
+melos run test
+
+# カバレッジ付き実行
+melos run test --coverage
+```
+
+## ドキュメント体系
+
+### 包括的ドキュメント構成
+
+| ドキュメント                                         | 内容           | 対象者      | CLAUDE.md対応セクション |
+| ---------------------------------------------------- | -------------- | ----------- | ----------------------- |
+| [README.md](README.md)                               | プロジェクト概要| 開発者      | 全体構成                |
+| [CLAUDE.md](CLAUDE.md)                               | AI開発設定     | Claude Code | 全体構成                |
+| [docs/CLAUDE_4_BEST_PRACTICES.md](docs/CLAUDE_4_BEST_PRACTICES.md) | AI設計原則 | AI開発者 | AI Review-First |
+| [docs/MELOS_SETUP.md](docs/MELOS_SETUP.md)         | モノレポ設定   | 開発者      | 開発コマンド            |
+| [docs/VSCODE_SETTINGS.md](docs/VSCODE_SETTINGS.md) | エディタ設定   | 開発者      | 開発環境                |
+| [docs/WORKTREE_ARCHITECTURE.md](docs/WORKTREE_ARCHITECTURE.md) | 並列開発 | AI開発者 | Git Worktree |
+| [.claude/commands/task.md](.claude/commands/task.md) | Issue処理 | Claude Code | カスタムコマンド |
 ## 貢献方法
 
 1. このリポジトリをフォーク
