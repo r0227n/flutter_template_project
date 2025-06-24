@@ -15,11 +15,8 @@ runs:
   using: 'composite'
   steps:
     # Install mise
-    - name: Install mise
-      shell: bash
-      run: |
-        curl https://mise.run | sh
-        echo "$HOME/.local/bin" >> $GITHUB_PATH
+    # https://github.com/jdx/mise-action/releases/tag/v2.2.3
+    - uses: jdx/mise-action@13abe502c30c1559a5c37dff303831bab82c9402
 
     # Override versions if provided
     - name: Override tool versions
@@ -32,20 +29,6 @@ runs:
         if [ -n "${{ inputs.bun-version-override }}" ]; then
           sed -i 's/bun .*/bun ${{ inputs.bun-version-override }}/' .tool-versions
         fi
-
-    # Install tools using mise
-    - name: Install tools with mise
-      shell: bash
-      run: |
-        mise install
-
-    # Activate mise environment
-    - name: Activate mise environment
-      shell: bash
-      run: |
-        eval "$(mise activate bash)"
-        echo "PATH=$PATH" >> $GITHUB_ENV
-        echo "FLUTTER_ROOT=$(mise where flutter)" >> $GITHUB_ENV
 
     # Verify installation
     - name: Verify tool installation
