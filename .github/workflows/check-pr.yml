@@ -26,9 +26,6 @@ jobs:
       - name: Setup Flutter
         uses: ./.github/actions/setup-flutter
 
-      - name: Setup Bun
-        uses: ./.github/actions/setup-bun
-
       - name: Run melos analyze
         run: melos run analyze
 

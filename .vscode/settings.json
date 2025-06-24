@@ -2,7 +2,7 @@
   // ===========================================
   // Flutter & Dart Configuration
   // ===========================================
-  "dart.flutterSdkPath": ".fvm/versions/3.32.2",
+  "dart.flutterSdkPath": "~/.local/share/mise/installs/flutter/3.32.2-stable",
   "dart.previewFlutterUiGuides": true,
   "dart.previewFlutterUiGuidesCustomTracking": true,
 
@@ -61,7 +61,7 @@
   // ===========================================
   // Language-Specific Settings
   // ===========================================
-  
+
   // Dart Configuration
   "[dart]": {
     "editor.defaultFormatter": "Dart-Code.dart-code",
