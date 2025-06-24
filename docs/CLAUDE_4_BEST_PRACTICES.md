@@ -30,14 +30,6 @@ flowchart LR
     C --> D{品質OK?}
     D -->|No| B
     D -->|Yes| E[リリース]
-
-    classDef start fill:#e1f5fe
-    classDef review fill:#f3e5f5
-    classDef end fill:#e8f5e8
-
-    class A start
-    class B,C review
-    class E end
 ```
 
 ### Flutterプロジェクトでの実装ステップ
@@ -80,11 +72,9 @@ Riverpodとhooks_riverpodを使用してユーザー設定画面を作成して�
 - プロジェクトの命名規則を示す
 - アーキテクチャパターンを具体例で説明
 
-## 主要な戦略
+## 3. 主要な戦略
 
-### 1. クリティカルレビューテンプレートの活用
-
-_参照元: https://zenn.dev/caphtech/articles/ai-review-first-design#critical-review-template_
+### クリティカルレビューテンプレートの活用
 
 ```text
 以下のコードをレビューしてください。
@@ -97,9 +87,7 @@ _参照元: https://zenn.dev/caphtech/articles/ai-review-first-design#critical-r
 制約: 400文字以内で要約
 ```
 
-### 2. レスポンスフォーマットの制御
-
-_参照元: https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/claude-4-best-practices#controlling-response-formatting_
+### レスポンスフォーマットの制御
 
 #### やるべきことを伝える（避けるべきことではなく）
 
@@ -128,9 +116,7 @@ _参照元: https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineer
 
 プロンプトの書き方（フォーマル/カジュアル）が出力スタイルに影響します。
 
-### 3. 思考能力を活用する
-
-_参照元: https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/claude-4-best-practices#leverage-thinking-capabilities_
+### 思考能力を活用する
 
 マルチステップの推論と反映を促すプロンプトを使用します。
 
@@ -141,9 +127,7 @@ _参照元: https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineer
 3. 次のアクションを決定
 ```
 
-### 4. ツール使用の最適化
-
-_参照元: https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/claude-4-best-practices#optimize-for-tool-use_
+### ツール使用の最適化
 
 #### 並列ツール呼び出しを促す
 
@@ -152,9 +136,7 @@ _参照元: https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineer
 関連ツールを同時呼び出し
 ```
 
-### 5. フロントエンドとコード生成
-
-_参照元: https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/claude-4-best-practices#frontend-and-code-generation_
+### フロントエンドとコード生成
 
 #### 明確な奨励を提供する
 
@@ -169,17 +151,13 @@ _参照元: https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineer
 ✓ WCAG 2.1 AA準拠
 ```
 
-### 6. テストへの過度な焦点を避ける
-
-_参照元: https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/claude-4-best-practices#avoid-overfocusing-on-tests_
+### テストへの過度な焦点を避ける
 
 - ロバストで汎用的なソリューションの作成を強調
 - 問題要件の理解に焦点を当てる
 - 原則に基づいた保守可能なコードの実装
 
-## AIレビューファースト設計の実践
-
-_参照元: https://zenn.dev/caphtech/articles/ai-review-first-design#implementation-strategy_
+## 4. AIレビューファースト設計の実践
 
 ### 実装戦略
 
@@ -210,14 +188,16 @@ graph TB
     J --> K
     K --> L[リリース準備完了]
 
-    style A fill:#fbb,stroke:#333,stroke-width:2px
-    style K fill:#bbf,stroke:#333,stroke-width:2px
-    style L fill:#bfb,stroke:#333,stroke-width:2px
+    classDef start fill:#fbb,stroke:#333,stroke-width:2px
+    classDef process fill:#bbf,stroke:#333,stroke-width:2px
+    classDef end fill:#bfb,stroke:#333,stroke-width:2px
+
+    class A start
+    class K process
+    class L end
 ```
 
 ### 制限事項の認識
-
-_参照元: https://zenn.dev/caphtech/articles/ai-review-first-design#limitations_
 
 AIレビューファースト設計が効果的でないケース：
 
@@ -225,7 +205,7 @@ AIレビューファースト設計が効果的でないケース：
 - ドメイン固有の技術コンテキスト
 - 最先端技術領域
 
-## 実践的なヒント
+## 5. 実践的なヒント
 
 ### 効果的なプロンプトの構造
 
@@ -258,7 +238,7 @@ structure:
    - 避ける: 「関数を作成して」
    - 使用する: 「ユーザー認証のための関数を作成して。JWT トークンを使用し、セキュリティベストプラクティスに従ってください」
 
-## 実例: AIレビューファーストプロンプト
+## 6. 実例: AIレビューファーストプロンプト
 
 ### コード生成とレビューの組み合わせ
 
@@ -285,10 +265,10 @@ JWTベースのユーザー認証機能を実装してください。
 """
 ```
 
-## Claude 4活用の全体ワークフロー
+## 7. Claude 4活用の全体ワークフロー
 
 ```mermaid
-flowchart LR
+graph LR
     A[要件定義] --> B[プロンプト設計]
     B --> C{アプローチ選択}
 
@@ -307,9 +287,13 @@ flowchart LR
     F --> L[人間による検証]
     K --> L
 
-    style A fill:#f9f,stroke:#333,stroke-width:2px
-    style E fill:#bbf,stroke:#333,stroke-width:2px
-    style L fill:#bfb,stroke:#333,stroke-width:2px
+    classDef start fill:#f9f,stroke:#333,stroke-width:2px
+    classDef process fill:#bbf,stroke:#333,stroke-width:2px
+    classDef end fill:#bfb,stroke:#333,stroke-width:2px
+
+    class A start
+    class E process
+    class L end
 ```
 
 ## まとめ
