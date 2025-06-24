@@ -59,7 +59,7 @@ AI支援開発とモダンアーキテクチャを組み合わせた、GitHub Is
 
 ### クイックスタート
 
-```bash
+````bash
 # 1. プロジェクトを取得
 git clone <repository-url>
 cd flutter_template_project
@@ -111,7 +111,7 @@ graph TB
     D --> E
     A --> I
     M --> N[Production Release]
-```
+````
 
 ### 技術スタック
 

@@ -354,7 +354,7 @@ For detailed GitHub Issue processing workflow, execution examples, and configura
 
 **Steps**:
 
-1. Validate Flutter version with fvm
+1. Validate Flutter version with mise
 2. Check GitHub CLI configuration
 3. Verify git worktree support
 4. Validate environment variables
