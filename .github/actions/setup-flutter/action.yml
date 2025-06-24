@@ -1,33 +1,32 @@
 name: 'Setup Flutter'
-description: 'Sets up Flutter Version Management (FVM) with the correct Flutter version'
+description: 'Sets up Flutter with the version specified in .tool-versions'
 
 inputs:
   flutter-version-override:
-    description: 'Optional Flutter version to override the one in .fvmrc'
+    description: 'Optional Flutter version to override the one in .tool-versions'
     required: false
     default: ''
 
 runs:
   using: 'composite'
   steps:
-    # Update .fvmrc if override is provided
-    - name: Override Flutter Version in .fvmrc
-      if: inputs.flutter-version-override != ''
+    # Extract Flutter version from .tool-versions
+    - name: Get Flutter version from .tool-versions
+      id: flutter-version
       shell: bash
       run: |
-        echo '{"flutter": "${{ inputs.flutter-version-override }}"}' > .fvmrc
-
-    # https://github.com/kuhnroyal/flutter-fvm-config-action
-    - name: Fetch flutter config
-      uses: kuhnroyal/flutter-fvm-config-action@34c3905bc939a4ff9d9cb07d5a977493fa73b2aa # v2.0
-      id: fvm-config-action
+        if [ -n "${{ inputs.flutter-version-override }}" ]; then
+          FLUTTER_VERSION="${{ inputs.flutter-version-override }}"
+        else
+          FLUTTER_VERSION=$(grep "^flutter " .tool-versions | awk '{print $2}')
+        fi
+        echo "version=$FLUTTER_VERSION" >> $GITHUB_OUTPUT
 
     # https://github.com/subosito/flutter-action
     - name: Setup flutter
       uses: subosito/flutter-action@1c5eb12d812966ca84680edc38353a0851c8fd56 # v2.14.0
       with:
-        flutter-version: ${{ steps.fvm-config-action.outputs.FLUTTER_VERSION }}
-        channel: ${{ steps.fvm-config-action.outputs.FLUTTER_CHANNEL }}
+        flutter-version: ${{ steps.flutter-version.outputs.version }}
         cache: true
 
     # Parse melos version from pubspec.yaml

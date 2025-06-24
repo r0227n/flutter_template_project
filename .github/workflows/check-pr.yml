@@ -23,30 +23,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-      - name: Setup Development Environment with mise
-        uses: ./.github/actions/setup-mise
+      - name: Setup Flutter
+        uses: ./.github/actions/setup-flutter
+
+      - name: Setup Bun
+        uses: ./.github/actions/setup-bun
 
       - name: Run melos analyze
-        run: |
-          eval "$(mise activate bash)"
-          melos run analyze
+        run: melos run analyze
 
       - name: Run melos test
-        run: |
-          eval "$(mise activate bash)"
-          melos run test
+        run: melos run test
 
       - name: Check melos format
-        run: |
-          eval "$(mise activate bash)"
-          melos run ci:format
+        run: melos run ci:format
 
   check-file-changes:
     name: Check File Changes
     runs-on: ubuntu-24.04
     outputs:
       dart_changed: ${{ steps.check_changes.outputs.dart_changed }}
-      i18n_files_exist: ${{ steps.check_i18n_files.outputs.files_exists }}
+      i18n_files_exist: ${{ steps.check_changes.outputs.i18n_files_exist }}
       yml_changed: ${{ steps.check_changes.outputs.yml_changed }}
       yaml_changed: ${{ steps.check_changes.outputs.yaml_changed }}
       md_changed: ${{ steps.check_changes.outputs.md_changed }}
@@ -58,13 +55,6 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
-
-      # Check for i18n files existence
-      - name: Check for i18n files existence
-        id: check_i18n_files
-        uses: andstor/file-existence-action@076e0072799f4942c8bc574a82233e1e4d13e9d6 # v3.0.0
-        with:
-          files: 'apps/assets/i18n/*.i18n.json'
 
       # Check for file changes
       - name: Check for file changes
@@ -85,13 +75,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-      - name: Setup Development Environment with mise
-        uses: ./.github/actions/setup-mise
+      - name: Setup Flutter
+        uses: ./.github/actions/setup-flutter
+
+      - name: Setup Bun
+        uses: ./.github/actions/setup-bun
 
       - name: Run slang analyze
-        run: |
-          eval "$(mise activate bash)"
-          melos run analyze:slang
+        run: melos run analyze:slang
 
   lint-yaml-markdown:
     name: Lint YAML and Markdown
@@ -104,9 +95,7 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: '1.2.17'
+        uses: ./.github/actions/setup-bun
 
       - name: Install dependencies
         run: bun install
