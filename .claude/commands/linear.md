@@ -70,7 +70,7 @@ Constraint: Summarize findings within 400 characters
 
 **Actions**:
 
-- Configure Flutter version using fvm
+- Configure Flutter version using mise
 - Create dedicated branch via git worktree
 - Implement ONLY core functionality per Issue requirements
 - Create basic test cases
@@ -255,7 +255,7 @@ ls .claude-workspaces/
 ✅ Issue validation: ABC-123 confirmed in Linear
 ✅ Workspace creation: .claude-workspaces/ABC-123
 ✅ Git worktree: feature/ABC-123
-✅ Flutter environment: fvm setup complete
+✅ Flutter environment: mise setup complete
 ✅ AI Review-First: Quality standards configured
 🚀 Background execution started...
 📝 Implementing: User authentication feature
@@ -321,7 +321,7 @@ ls .claude-workspaces/
 ### Required Technology Stack
 
 - **Framework**: Flutter (Workspace/Monorepo structure)
-- **Version Management**: fvm (Flutter Version Management)
+- **Version Management**: mise (polyglot tool version manager)
 - **Task Management**: Linear (MCP integrated)
 - **Development Workflow**: git worktree for parallel development
 - **State Management**: Riverpod (hooks_riverpod, riverpod_annotation)
@@ -334,7 +334,7 @@ ls .claude-workspaces/
 
 ```bash
 export ENABLE_BACKGROUND_TASKS=true
-export FLUTTER_VERSION_MANAGEMENT=fvm
+export FLUTTER_VERSION_MANAGEMENT=mise
 export TASK_MANAGEMENT_SYSTEM=linear
 export PARALLEL_DEVELOPMENT=git_worktree
 export PR_LANGUAGE=japanese
@@ -390,14 +390,14 @@ melos run ci:format
 
 ```bash
 # Run application
-cd app && fvm flutter run
+cd app && flutter run
 
 # Run tests (single file)
-cd app && fvm flutter test test/widget_test.dart
+cd app && flutter test test/widget_test.dart
 
 # Build
-cd app && fvm flutter build apk
-cd app && fvm flutter build ios --no-codesign
+cd app && flutter build apk
+cd app && flutter build ios --no-codesign
 ```
 
 ### PR Creation Template
@@ -433,11 +433,11 @@ cd app && fvm flutter build ios --no-codesign
 /config
 ```
 
-#### fvm Version Conflict
+#### mise Version Conflict
 
 ```bash
 # Reset Flutter version
-fvm use [project_flutter_version]
+mise install
 flutter clean
 flutter pub get
 ```
