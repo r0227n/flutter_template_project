@@ -1,0 +1,20 @@
+# Bun configuration for optimal performance and security
+[install]
+# Enable faster dependency resolution
+cache = true
+# Use exact versions for security
+exact = true
+# Prefer offline cache when available
+prefer-offline = true
+
+[install.lockfile]
+# Save exact versions in lockfile
+save-exact = true
+# Print lockfile diff for security auditing
+print = false
+
+[registry]
+# Use npm registry for compatibility
+url = "https://registry.npmjs.org"
+# Enable package signature verification
+verify = true
