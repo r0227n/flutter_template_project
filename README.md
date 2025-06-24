@@ -53,7 +53,7 @@ AI支援開発とモダンアーキテクチャを組み合わせた、GitHub Is
 
 | ツール  | 推奨バージョン | インストール方法                            |
 | ------- | -------------- | ------------------------------------------- |
-| Flutter | mise管理       | `mise install`                               |
+| Flutter | mise管理       | `mise install`                              |
 | Bun     | 1.2+           | `curl -fsSL https://bun.sh/install \| bash` |
 | Melos   | 7.0+           | `dart pub global activate melos`            |
 
