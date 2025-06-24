@@ -107,7 +107,7 @@ All implementations must pass these gates:
 
 ```bash
 # Security Gates (HIGH Priority)
-- No hardcoded secrets: grep -r "API_KEY\|SECRET\|PASSWORD" lib/
+- No hardcoded secrets: grep -r -E "(API_KEY|SECRET|PASSWORD|TOKEN|PRIVATE_KEY)" lib/
 - Input validation implemented
 - Secure storage patterns used
 

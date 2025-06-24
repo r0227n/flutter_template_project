@@ -31,6 +31,7 @@ melos run test
 [tasks.ci-check]
 description = "Complete CI workflow"
 run = """
+set -e
 melos run ci:format
 melos run analyze
 melos run test
