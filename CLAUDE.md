@@ -2,6 +2,39 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Documentation Structure and Relationship
+
+### CLAUDE.md - README.md Integration System
+
+- **CLAUDE.md** (this file): Contains workflows and configurations for Claude Code to understand prompts and project structure
+- **README.md**: Provides human-readable documentation that mirrors and explains the content in CLAUDE.md
+- **1:1 Relationship**: CLAUDE.md and README.md maintain a one-to-one correspondence where each section in CLAUDE.md has an equivalent explanation in README.md. This constraint applies to the entire project structure - any CLAUDE.md file must have a corresponding README.md file in the same directory.
+
+### Language Configuration
+
+- **Default Language**: Japanese
+- **README.md Language**: The README.md file uses the default language setting for all documentation
+- **Translation Support**: Multi-language documentation can be provided through the i18n system
+
+### Mermaid Visualization Workflow
+
+The README.md file includes Mermaid diagrams to visualize:
+- Project architecture overview
+- Development workflow processes
+- Component relationships
+- System integration patterns
+
+```mermaid
+graph TD
+    A[CLAUDE.md] --> B[Claude Code Processing]
+    C[README.md] --> D[Human Understanding]
+    A -.->|1:1 Relationship| C
+    B --> E[Automated Development]
+    D --> F[Manual Review]
+    E --> G[Quality Assurance]
+    F --> G
+```
+
 ## Claude 4 Best Practices Application
 
 This project follows the Claude 4 prompt engineering best practices defined in `docs/CLAUDE_4_BEST_PRACTICES.md`. We emphasize the following principles:
@@ -277,7 +310,7 @@ For detailed GitHub Issue processing workflow, execution examples, and configura
 1. Monitor file changes in project structure
 2. Auto-update "## Project Structure" section when files are added/removed
 3. Validate documentation compliance with Claude 4 Best Practices
-4. Synchronize HUMAN.md when CLAUDE.md is updated
+4. Synchronize corresponding README.md when CLAUDE.md is updated (1:1 relationship enforcement)
 5. Final formatting with `melos run format:prettier`
 6. Final formatting with `melos run format`
 
