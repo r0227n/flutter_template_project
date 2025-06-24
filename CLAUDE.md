@@ -2,6 +2,39 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Documentation Structure and Relationship
+
+### CLAUDE.md - README.md Integration System
+
+- **CLAUDE.md** (this file): Contains workflows and configurations for Claude Code to understand prompts and project structure
+- **README.md**: Provides human-readable documentation that mirrors and explains the content in CLAUDE.md
+- **1:1 Relationship**: CLAUDE.md and README.md maintain a one-to-one correspondence where each section in CLAUDE.md has an equivalent explanation in README.md. This constraint applies to the entire project structure - any CLAUDE.md file must have a corresponding README.md file in the same directory.
+
+### Language Configuration
+
+- **Default Language**: Japanese
+- **README.md Language**: The README.md file uses the default language setting for all documentation
+- **Translation Support**: Multi-language documentation can be provided through the i18n system
+
+### Mermaid Visualization Workflow
+
+The README.md file includes Mermaid diagrams to visualize:
+- Project architecture overview
+- Development workflow processes
+- Component relationships
+- System integration patterns
+
+```mermaid
+graph TD
+    A[CLAUDE.md] --> B[Claude Code Processing]
+    C[README.md] --> D[Human Understanding]
+    A -.->|1:1 Relationship| C
+    B --> E[Automated Development]
+    D --> F[Manual Review]
+    E --> G[Quality Assurance]
+    F --> G
+```
+
 ## Claude 4 Best Practices Application
 
 This project follows the Claude 4 prompt engineering best practices defined in `docs/CLAUDE_4_BEST_PRACTICES.md`. We emphasize the following principles:
@@ -15,13 +48,13 @@ For details, refer to [Claude 4 Best Practices](docs/CLAUDE_4_BEST_PRACTICES.md)
 
 ## Project Overview
 
-This is a Flutter mobile application development project using Claude Code with automated development workflow integrated with Linear Issue management system.
+This is a Flutter mobile application development project using Claude Code with automated development workflow integrated with GitHub Issue management system.
 
 ### Technology Stack
 
 - **Framework**: Flutter (Workspace/Monorepo structure)
 - **Version Management**: fvm (Flutter Version Management)
-- **Task Management**: Linear (MCP integrated)
+- **Task Management**: GitHub Issues
 - **Parallel Development**: git worktree
 - **Automation**: Claude Code with background tasks
 - **State Management**: Riverpod (hooks_riverpod, riverpod_annotation)
@@ -32,28 +65,42 @@ This is a Flutter mobile application development project using Claude Code with 
 
 ## Project Structure
 
+<!-- AUTO-GENERATED SECTION: This section is automatically updated when project structure changes -->
+
 ```
 flutter_template_project/
-├── app/                         # Main Flutter application
+├── .claude-workspaces/         # Claude Code working directories (replaces worktrees/)
+├── app/                        # Main Flutter application
 │   ├── lib/
-│   │   ├── main.dart           # Entry point
-│   │   ├── pages/              # UI pages (home_page.dart, settings_page.dart)
-│   │   ├── router/             # go_router config and type-safe route definitions
-│   │   └── i18n/               # slang-generated multilingual files
-│   ├── assets/i18n/            # JSON translation files (ja.i18n.json, en.i18n.json)
-│   └── test/                   # Widget tests
-├── packages/
-│   └── app_preferences/        # Shared preferences management package
-│       ├── lib/
-│       │   ├── src/
-│       │   │   ├── providers/  # Riverpod providers
-│       │   │   ├── repositories/
-│       │   │   └── theme/
-│       │   └── widgets/        # Reusable widgets
-│       └── assets/i18n/        # Package-specific translations
-├── pubspec.yaml                # Workspace configuration
-└── melos.yaml                  # (integrated in pubspec.yaml)
+│   │   ├── main.dart          # Entry point
+│   │   ├── pages/             # UI pages
+│   │   │   ├── home/          # Home page components
+│   │   │   └── settings/      # Settings page components
+│   │   ├── router/            # go_router config and type-safe route definitions
+│   │   └── i18n/              # slang-generated multilingual files
+│   ├── assets/i18n/           # JSON translation files (ja.i18n.json, en.i18n.json)
+│   ├── test/                  # Widget tests
+│   ├── android/               # Android platform specific files
+│   ├── ios/                   # iOS platform specific files
+│   ├── web/                   # Web platform specific files
+│   ├── linux/                 # Linux platform specific files
+│   ├── macos/                 # macOS platform specific files
+│   └── windows/               # Windows platform specific files
+├── packages/                  # Shared packages (currently empty)
+├── docs/                      # Project documentation
+│   ├── CLAUDE_4_BEST_PRACTICES.md
+│   ├── COMMITLINT_RULES.md
+│   ├── COMMITLINT_YAML_CONFIGURATION.md
+│   ├── MELOS_SETUP.md
+│   ├── VSCODE_SETTINGS.md
+│   └── WORKTREE_ARCHITECTURE.md
+├── scripts/                   # Build and utility scripts
+├── memos/                     # Development memos and notes
+├── pubspec.yaml               # Workspace configuration
+└── package.json               # Node.js dependencies (commitlint, prettier)
 ```
+
+<!-- END AUTO-GENERATED SECTION -->
 
 ## Environment Setup
 
@@ -61,7 +108,7 @@ flutter_template_project/
 
 - Flutter SDK (managed by fvm)
 - Git worktree support
-- Linear MCP configuration completed
+- GitHub CLI (gh) installed and authenticated
 - Claude Code ENABLE_BACKGROUND_TASKS enabled
 - Bun (for commitlint, prettier, faster than Node.js)
 
@@ -127,7 +174,7 @@ bun run clean
 ```bash
 export ENABLE_BACKGROUND_TASKS=true
 export FLUTTER_VERSION_MANAGEMENT=fvm
-export TASK_MANAGEMENT_SYSTEM=linear
+export TASK_MANAGEMENT_SYSTEM=github
 export PARALLEL_DEVELOPMENT=git_worktree
 export PR_LANGUAGE=japanese
 export COMPLETION_NOTIFICATION=alarm
@@ -177,14 +224,14 @@ export CHECK_PR_WORKFLOW="check-pr.yml" # Target workflow file to monitor
 
 ### Available Commands
 
-- `/linear` - Linear Issue processing command (see `.claude/commands/linear.md` for detailed implementation)
+- `/task` - GitHub Issue processing command (see `.claude/commands/task.md` for detailed implementation)
 
 ### Command File Placement
 
 ```
 .claude/
 └── commands/
-    └── linear.md          # Complete Linear Issue processing implementation
+    └── task.md            # Complete GitHub Issue processing implementation
 ```
 
 ## Development Workflow
@@ -211,9 +258,9 @@ git worktree list
 git worktree remove path/to/worktree
 ```
 
-**Note**: The `/linear` command handles git worktree creation automatically for Linear Issue processing.
+**Note**: The `/task` command handles git worktree creation automatically for GitHub Issue processing.
 
-For detailed Linear Issue processing workflow, execution examples, and configuration options, refer to `.claude/commands/linear.md`.
+For detailed GitHub Issue processing workflow, execution examples, and configuration options, refer to `.claude/commands/task.md`.
 
 ---
 
@@ -244,3 +291,45 @@ For detailed Linear Issue processing workflow, execution examples, and configura
 - Add new dependencies to the appropriate package's `pubspec.yaml`
 - Same versions used across all packages due to Workspace resolution
 - Update all package dependencies collectively with `melos run get`
+
+## Automated Development Workflows
+
+### Workflow 1: Code Quality Assurance
+
+**Purpose**: Ensure consistent code quality across all development activities
+
+**Steps**:
+
+1. Static analysis with `melos run analyze`
+2. Code formatting validation with `melos run ci:format`
+3. Automated testing with `melos run test`
+4. Translation validation with `melos run analyze:slang`
+5. Final formatting with `melos run format:prettier`
+6. Final formatting with `melos run format`
+
+### Workflow 2: Documentation Synchronization
+
+**Purpose**: Maintain consistency between CLAUDE.md and related documentation
+
+**Steps**:
+
+1. Monitor file changes in project structure
+2. Auto-update "## Project Structure" section when files are added/removed
+3. Validate documentation compliance with Claude 4 Best Practices
+4. Synchronize corresponding README.md when CLAUDE.md is updated (1:1 relationship enforcement)
+5. Final formatting with `melos run format:prettier`
+6. Final formatting with `melos run format`
+
+### Workflow 3: Development Environment Validation
+
+**Purpose**: Ensure proper development environment setup and configuration
+
+**Steps**:
+
+1. Validate Flutter version with fvm
+2. Check GitHub CLI configuration
+3. Verify git worktree support
+4. Validate environment variables
+5. Test Claude Code integration
+6. Final formatting with `melos run format:prettier`
+7. Final formatting with `melos run format`
