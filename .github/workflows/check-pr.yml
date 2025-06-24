@@ -104,13 +104,4 @@ jobs:
         run: bun install
 
       - name: Run Prettier check
-        run: bun run lint
-
-      - name: Check formatting
-        run: |
-          if ! bun run lint; then
-            echo "❌ Formatting issues found. Run 'bun run format' to fix them."
-            exit 1
-          else
-            echo "✅ All files are properly formatted."
-          fi
+        run: bun run ci:check
