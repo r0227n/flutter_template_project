@@ -85,7 +85,6 @@ melos run gen
 # 6. アプリを起動
 cd app && fvm flutter run
 ```
-
 ## アーキテクチャ概要
 
 ### システム構成図

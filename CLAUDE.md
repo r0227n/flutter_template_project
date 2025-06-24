@@ -48,13 +48,13 @@ For details, refer to [Claude 4 Best Practices](docs/CLAUDE_4_BEST_PRACTICES.md)
 
 ## Project Overview
 
-This is a Flutter mobile application development project using Claude Code with automated development workflow integrated with Linear Issue management system.
+This is a Flutter mobile application development project using Claude Code with automated development workflow integrated with GitHub Issue management system.
 
 ### Technology Stack
 
 - **Framework**: Flutter (Workspace/Monorepo structure)
 - **Version Management**: fvm (Flutter Version Management)
-- **Task Management**: Linear (MCP integrated)
+- **Task Management**: GitHub Issues
 - **Parallel Development**: git worktree
 - **Automation**: Claude Code with background tasks
 - **State Management**: Riverpod (hooks_riverpod, riverpod_annotation)
@@ -108,7 +108,7 @@ flutter_template_project/
 
 - Flutter SDK (managed by fvm)
 - Git worktree support
-- Linear MCP configuration completed
+- GitHub CLI (gh) installed and authenticated
 - Claude Code ENABLE_BACKGROUND_TASKS enabled
 - Node.js (for commitlint, prettier)
 
@@ -168,7 +168,7 @@ npm run format
 ```bash
 export ENABLE_BACKGROUND_TASKS=true
 export FLUTTER_VERSION_MANAGEMENT=fvm
-export TASK_MANAGEMENT_SYSTEM=linear
+export TASK_MANAGEMENT_SYSTEM=github
 export PARALLEL_DEVELOPMENT=git_worktree
 export PR_LANGUAGE=japanese
 export COMPLETION_NOTIFICATION=alarm
@@ -218,14 +218,14 @@ export CHECK_PR_WORKFLOW="check-pr.yml" # Target workflow file to monitor
 
 ### Available Commands
 
-- `/linear` - Linear Issue processing command (see `.claude/commands/linear.md` for detailed implementation)
+- `/task` - GitHub Issue processing command (see `.claude/commands/task.md` for detailed implementation)
 
 ### Command File Placement
 
 ```
 .claude/
 └── commands/
-    └── linear.md          # Complete Linear Issue processing implementation
+    └── task.md            # Complete GitHub Issue processing implementation
 ```
 
 ## Development Workflow
@@ -252,9 +252,9 @@ git worktree list
 git worktree remove path/to/worktree
 ```
 
-**Note**: The `/linear` command handles git worktree creation automatically for Linear Issue processing.
+**Note**: The `/task` command handles git worktree creation automatically for GitHub Issue processing.
 
-For detailed Linear Issue processing workflow, execution examples, and configuration options, refer to `.claude/commands/linear.md`.
+For detailed GitHub Issue processing workflow, execution examples, and configuration options, refer to `.claude/commands/task.md`.
 
 ---
 
@@ -321,7 +321,7 @@ For detailed Linear Issue processing workflow, execution examples, and configura
 **Steps**:
 
 1. Validate Flutter version with fvm
-2. Check Linear MCP configuration
+2. Check GitHub CLI configuration
 3. Verify git worktree support
 4. Validate environment variables
 5. Test Claude Code integration
