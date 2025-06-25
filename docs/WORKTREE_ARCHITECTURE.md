@@ -1,8 +1,19 @@
-# Git Worktree配置アーキテクチャ
+# Claude Code Git Worktree アーキテクチャ設計書
 
-## 概要
+## 文書概要
 
-このドキュメントでは、Claude CodeとLinearを連携したFlutter並行開発システムにおいて、なぜ`worktrees`ディレクトリをプロジェクトルートに配置し、`.git`ディレクトリ直下に配置しないのかについて説明します。
+本文書では、Claude CodeとGitHub Issueを統合したFlutter並行開発システムにおける、git worktreeアーキテクチャの設計思想と実装詳細を解説します。
+
+### 設計目標
+
+- **並行開発の実現**: 複数のGitHub Issueを同時並行で安全に開発
+- **環境独立性の確保**: タスク間での干渉・競合状態の完全排除  
+- **開発効率の最大化**: 統一されたツールチェーンによる開発体験の向上
+- **保守性の担保**: 明確なディレクトリ構造による管理コストの削減
+
+### アーキテクチャ方針
+
+`.claude-workspaces`ディレクトリをプロジェクトルートに配置することで、Git内部構造との分離、IDE認識の最適化、管理スクリプトの簡素化を実現します。各GitHub Issueは独立したワークスペースを持ち、mise による統一されたタスク実行環境で動作します。
 
 ## 目次
 
@@ -28,10 +39,25 @@ flutter_template_project/
 │   ├── refs/
 │   ├── objects/
 │   └── config
+├── .vscode/                     # VS Code設定
+│   └── settings.json
 ├── app/                         # メインFlutterアプリケーション
-├── packages/                    # 共有パッケージ
-├── docs/                        # ドキュメント
-└── .claude/                     # Claude設定
+│   ├── lib/                     # Dartソースコード
+│   │   ├── pages/              # UI ページ
+│   │   ├── router/             # go_router設定
+│   │   └── i18n/               # slang生成多言語ファイル
+│   ├── assets/i18n/            # JSON翻訳ファイル
+│   ├── test/                   # ウィジェットテスト
+│   └── [platform]/             # プラットフォーム固有ファイル
+├── packages/                    # 共有パッケージ（現在空）
+├── docs/                        # プロジェクトドキュメント
+│   ├── CLAUDE_4_BEST_PRACTICES.md
+│   ├── COMMITLINT_RULES.md
+│   └── WORKTREE_ARCHITECTURE.md
+├── scripts/                     # ビルド・ユーティリティスクリプト
+├── pubspec.yaml                 # ワークスペース設定
+├── package.json                 # Node.js依存関係
+└── LICENSE                      # MITライセンス
 ```
 
 ### Git Worktreeアーキテクチャ概要
@@ -199,7 +225,7 @@ drwxrwxrwx  worktrees/feature-FEAT-123/  # 読み書き実行権限
 
 ```bash
 # scripts/manage-flutter-tasks.sh
-for worktree in worktrees/*/; do
+for workspace in .claude-workspaces/*/; do
     if [ -d "$worktree" ]; then
         cd "$worktree"
         flutter analyze
@@ -234,18 +260,18 @@ done
 
 ```bash
 flutter_template_project/
-├── worktrees/                   # ✅ 一目で作業ディレクトリと分かる
-│   ├── feature-FEAT-123/        # ✅ 各タスクが明確
-│   └── feature-UI-456/          # ✅ 進行中のタスクが把握しやすい
+├── .claude-workspaces/          # ✅ 一目で作業ディレクトリと分かる
+│   ├── issue-123/               # ✅ 各GitHub Issueが明確
+│   └── issue-456/               # ✅ 進行中のタスクが把握しやすい
 ```
 
 ### 2. IDE・エディタでの適切な認識
 
 ```bash
 # VS Codeでの認識例
-worktrees/feature-FEAT-123/apps/
+.claude-workspaces/issue-123/
 ├── .vscode/                     # ✅ 設定ファイルが正しく動作
-├── lib/                         # ✅ Dartコード解析が正常
+├── app/lib/                     # ✅ Dartコード解析が正常
 ├── pubspec.yaml                 # ✅ Flutter SDKが正しく検出
 └── analysis_options.yaml       # ✅ Lintルールが適用
 ```
@@ -253,15 +279,15 @@ worktrees/feature-FEAT-123/apps/
 ### 3. 並行開発での独立性
 
 ```bash
-# 各タスクが完全に独立
-cd worktrees/feature-FEAT-123    # タスク1: 新機能開発
-flutter run --device=android
+# 各GitHub Issueが完全に独立
+cd .claude-workspaces/issue-123  # GitHub Issue #123: 新機能開発
+mise run run                     # 統一されたコマンド実行
 
-cd ../feature-UI-456             # タスク2: UI改善
-flutter run --device=ios
+cd ../issue-456                  # GitHub Issue #456: UI改善
+mise run run-release             # リリースビルドで実行
 
-cd ../feature-BUG-789            # タスク3: バグ修正
-flutter test --coverage
+cd ../issue-789                  # GitHub Issue #789: バグ修正
+mise run test                    # テスト実行
 ```
 
 ### 4. 管理スクリプトでの効率的な処理
@@ -279,11 +305,13 @@ flutter test --coverage
 ### 5. 共通リソースへの適切なアクセス
 
 ```bash
-worktrees/feature-FEAT-123/
-├── apps/                        # このタスク専用のFlutterアプリ
-├── ../../.claude/               # ✅ 共通のClaude設定
+.claude-workspaces/issue-123/
+├── app/                         # このGitHub Issue専用のFlutterアプリ
+├── packages/                    # 共有パッケージ
+├── ../../.vscode/               # ✅ 共通のVS Code設定
 ├── ../../scripts/               # ✅ 共通の管理スクリプト
-└── ../../docs/                  # ✅ 共通ドキュメント
+├── ../../docs/                  # ✅ 共通ドキュメント
+└── ../../CLAUDE.md              # ✅ Claude Code設定
 ```
 
 ## 技術的考慮事項
@@ -371,21 +399,21 @@ git worktree add .claude-workspaces/FEAT-123 feature/FEAT-123
 ```mermaid
 sequenceDiagram
     participant User as 👤 開発者
-    participant Linear as 📋 Linear
+    participant GitHub as 📋 GitHub Issues
     participant Claude as 🤖 Claude Code
     participant Git as 📚 Git Worktree
     participant Flutter as 📱 Flutter
 
-    User->>Claude: /linear FEAT-123
-    Claude->>Linear: Issue詳細取得
-    Linear-->>Claude: Issue情報
+    User->>Claude: /task #123
+    Claude->>GitHub: Issue詳細取得
+    GitHub-->>Claude: Issue情報
 
     Claude->>Git: worktree作成
-    Note over Git: .claude-workspaces/FEAT-123/
+    Note over Git: .claude-workspaces/issue-123/
     Git-->>Claude: 作業環境準備完了
 
     Claude->>Flutter: 環境セットアップ
-    Note over Flutter: flutter pub get<br/>コード生成
+    Note over Flutter: mise run setup<br/>コード生成
     Flutter-->>Claude: セットアップ完了
 
     loop 開発サイクル
@@ -396,8 +424,8 @@ sequenceDiagram
     end
 
     Claude->>Git: PR作成
-    Claude->>Linear: Issue更新
-    Linear-->>User: 完了通知
+    Claude->>GitHub: Issue更新
+    GitHub-->>User: 完了通知
 ```
 
 #### プロセス管理での利点
@@ -405,9 +433,9 @@ sequenceDiagram
 ```bash
 # PIDファイルでの管理
 pids/
-├── claude-flutter-FEAT-123.pid  # ✅ タスクIDが明確
-├── claude-flutter-UI-456.pid    # ✅ プロセス特定が容易
-└── claude-flutter-BUG-789.pid   # ✅ 管理スクリプトで一元処理
+├── claude-flutter-issue-123.pid  # ✅ GitHub Issue IDが明確
+├── claude-flutter-issue-456.pid  # ✅ プロセス特定が容易
+└── claude-flutter-issue-789.pid  # ✅ 管理スクリプトで一元処理
 ```
 
 #### ログ管理での利点
@@ -415,9 +443,9 @@ pids/
 ```bash
 # ログファイルでの追跡
 logs/
-├── claude-flutter-FEAT-123.log  # ✅ タスク別ログが明確
-├── claude-flutter-UI-456.log    # ✅ デバッグが容易
-└── claude-flutter-BUG-789.log   # ✅ 進捗監視が効率的
+├── claude-flutter-issue-123.log  # ✅ GitHub Issue別ログが明確
+├── claude-flutter-issue-456.log  # ✅ デバッグが容易
+└── claude-flutter-issue-789.log  # ✅ 進捗監視が効率的
 ```
 
 ### 3. リソース管理
@@ -425,20 +453,20 @@ logs/
 #### メモリ・CPU使用量
 
 ```bash
-# 各worktreeでの独立実行
-worktrees/feature-FEAT-123/: CPU 15.2%, MEM 8.1%
-worktrees/feature-UI-456/:   CPU 8.7%,  MEM 5.3%
-worktrees/feature-BUG-789/:  CPU 12.1%, MEM 6.8%
+# 各GitHub Issue対応ワークスペースでの独立実行
+.claude-workspaces/issue-123/: CPU 15.2%, MEM 8.1%
+.claude-workspaces/issue-456/: CPU 8.7%, MEM 5.3%
+.claude-workspaces/issue-789/: CPU 12.1%, MEM 6.8%
 ```
 
 #### ディスク使用量
 
 ```bash
 # 効率的な容量管理
-du -sh worktrees/*/
-480M    worktrees/feature-FEAT-123/
-320M    worktrees/feature-UI-456/
-180M    worktrees/feature-BUG-789/
+du -sh .claude-workspaces/*/
+480M    .claude-workspaces/issue-123/
+320M    .claude-workspaces/issue-456/
+180M    .claude-workspaces/issue-789/
 ```
 
 ## 配置方式の比較分析
@@ -482,7 +510,7 @@ flowchart TD
 
 ```bash
 flutter_template_project/
-├── worktrees/                   # ✅ ルート直下
+├── .claude-workspaces/          # ✅ ルート直下
 ```
 
 **利点:**
@@ -562,15 +590,18 @@ flutter_template_project/
 
 ✅ **DO（推奨）:**
 
-- `worktrees/` をプロジェクトルートに配置
+- `.claude-workspaces/` をプロジェクトルートに配置
 - 各タスクを独立したディレクトリで管理
 - 共通リソースへの相対パス参照を使用
+- mise コマンドによる統一されたタスク実行
+- Claude Code との最適な連携
 
 ❌ **DON'T（非推奨）:**
 
 - `.git/worktrees/` 内での作業ディレクトリ配置
 - 隠しディレクトリでの開発作業
 - Git内部構造との名前空間競合
+- 直接的なflutter/melos コマンド実行（mise経由を推奨）
 
 ### 結論
 
@@ -579,56 +610,104 @@ flutter_template_project/
 #### アーキテクチャ決定図
 
 ```mermaid
-flowchart TB
-    subgraph "意思決定プロセス"
-        Start(["Git Worktree配置の検討"]) --> Analysis["要件分析"]
-
-        Analysis --> Req1["📱 Flutter並行開発"]
-        Analysis --> Req2["🤖 Claude Code連携"]
-        Analysis --> Req3["📋 Linear統合"]
-        Analysis --> Req4["👥 チーム開発"]
-
-        Req1 --> Eval["配置方式評価"]
-        Req2 --> Eval
-        Req3 --> Eval
-        Req4 --> Eval
-
-        Eval --> Option1["🏠 ルート直下"]
-        Eval --> Option2["🔒 .git直下"]
-        Eval --> Option3["📁 専用ディレクトリ"]
-
-        Option1 --> Decision["✅ 最適解"]
-        Option2 --> Reject1["❌ 問題あり"]
-        Option3 --> Reject2["⚠️ 複雑化"]
-
-        Decision --> Final(["📁 .claude-workspaces/<br/>プロジェクトルート配置"])
+flowchart TD
+    Start["🎯 目標: Claude Code × GitHub Issue<br/>自動並行Flutter開発システム"]
+    
+    Start --> Problem["⚡ 解決すべき課題"]
+    
+    subgraph "技術的課題"
+        Problem --> P1["複数Issue同時開発"]
+        Problem --> P2["環境競合の回避"]
+        Problem --> P3["開発効率の最大化"]
+    end
+    
+    subgraph "配置方式の評価"
+        P1 --> Choice
+        P2 --> Choice  
+        P3 --> Choice
+        
+        Choice{"配置場所の選択"}
+        Choice --> Opt1["❌ .git/worktrees/<br/>IDE認識不良・権限問題"]
+        Choice --> Opt2["⚠️ 深いディレクトリ<br/>管理複雑・パス長"]
+        Choice --> Opt3["✅ プロジェクトルート<br/>最適な可視性・管理性"]
+    end
+    
+    subgraph "Claude Code価値の実現"
+        Opt3 --> Value1["🚀 /task コマンド<br/>gh issue → 自動ワークスペース"]
+        Opt3 --> Value2["⚙️ mise統一実行<br/>analyze/test/format/run"]
+        Opt3 --> Value3["🔄 自動PR作成<br/>gh pr create --title 'Close #N'"]
+    end
+    
+    subgraph "最終アーキテクチャ"
+        Value1 --> Final[".claude-workspaces/<br/>├── issue-123/<br/>├── issue-456/<br/>└── issue-789/"]
+        Value2 --> Final
+        Value3 --> Final
+        
+        Final --> Benefit1["👥 複数開発者が<br/>異なるIssueを並行開発"]
+        Final --> Benefit2["🛡️ 完全な環境分離<br/>依存関係・設定の独立性"]
+        Final --> Benefit3["📊 統一された開発体験<br/>mise run コマンドですべて実行"]
     end
 
-    subgraph "実現効果"
-        Final --> Effect1["🚀 開発効率向上"]
-        Final --> Effect2["🔧 環境独立性"]
-        Final --> Effect3["👁️ 高い可視性"]
-        Final --> Effect4["📊 簡単な管理"]
-    end
+    classDef startNode fill:#e1f5fe,stroke:#0277bd,stroke-width:3px
+    classDef problemNode fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    classDef rejectNode fill:#ffebee,stroke:#c62828,stroke-width:2px
+    classDef warningNode fill:#fff8e1,stroke:#f9a825,stroke-width:2px
+    classDef acceptNode fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px
+    classDef valueNode fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    classDef finalNode fill:#e8f5e8,stroke:#2e7d32,stroke-width:4px
+    classDef benefitNode fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
 
-    classDef start fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
-    classDef requirement fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
-    classDef decision fill:#e8f5e8,stroke:#2e7d32,stroke-width:3px
-    classDef effect fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    classDef reject fill:#ffebee,stroke:#c62828,stroke-width:2px
-
-    class Start,Final start
-    class Req1,Req2,Req3,Req4 requirement
-    class Decision,Effect1,Effect2,Effect3,Effect4 decision
-    class Reject1,Reject2 reject
+    class Start startNode
+    class Problem,P1,P2,P3 problemNode
+    class Opt1 rejectNode
+    class Opt2 warningNode
+    class Opt3 acceptNode
+    class Value1,Value2,Value3 valueNode
+    class Final finalNode
+    class Benefit1,Benefit2,Benefit3 benefitNode
 ```
 
-この設計により、Claude CodeとLinearを連携した複数のFlutterタスクを安全かつ効率的に並行実行できる環境が実現されています。
+この設計により、Claude Codeによる並行Flutter開発において、**技術的安定性**、**開発者体験**、**運用効率性**のバランスを最適化した環境が実現されています。
 
-**注意**: 現在のプロジェクトでは`.claude-workspaces`ディレクトリを使用しています。これはCLAUDE.mdの設定に従った構成です。
+## 現在のプロジェクト状況
+
+**実装済み要素:**
+- ✅ `.claude-workspaces` ディレクトリ構成
+- ✅ mise による統一されたタスク管理システム
+- ✅ Riverpod + go_router + slang アーキテクチャ
+- ✅ VS Code 統合設定（.vscode/settings.json）
+- ✅ Claude 4 Best Practices 準拠のドキュメント構造
+- ✅ GitHub Issue 連携ワークフロー
+
+**技術スタック:**
+- **Flutter SDK**: mise による統一バージョン管理
+- **Melos**: monorepo パッケージ管理とワークスペース設定
+- **Riverpod**: type-safe な状態管理（@riverpod annotation）
+- **go_router**: 宣言的ルーティング（type-safe navigation）
+- **slang**: 国際化・多言語対応（ja/en サポート）
+- **build_runner**: コード生成（freezed, json_annotation）
+- **GitHub CLI**: Issue管理とPR作成の自動化
+
+**開発コマンド例:**
+```bash
+# GitHub Issue ワークスペース内での開発
+cd .claude-workspaces/issue-[NUMBER]/
+mise run dev        # 開発環境起動
+mise run test       # テスト実行
+mise run analyze    # 静的解析
+mise run format-all # コード整形
+
+# GitHub Issue 連携
+gh issue view [NUMBER]              # Issue詳細表示  
+gh pr create --title "Close #[NUMBER]"  # Issueクローズを含むPR作成
+gh issue comment [NUMBER] --body "実装完了"  # Issue進捗更新
+```
 
 ---
 
 **関連ドキュメント:**
 
 - [Claude 4 ベストプラクティス](CLAUDE_4_BEST_PRACTICES.md)
+- [コミットルール](COMMITLINT_RULES.md)
+- [プロジェクト設定](../CLAUDE.md)
+- [README（日本語）](../README.md)
