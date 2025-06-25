@@ -107,7 +107,7 @@ All implementations must pass these gates:
 
 ```bash
 # Security Gates (HIGH Priority)
-- No hardcoded secrets: grep -r -E "(API_KEY|SECRET|PASSWORD|TOKEN|PRIVATE_KEY)" lib/
+- No hardcoded secrets: grep -r --exclude-dir=.git -E "(API_KEY|SECRET|PASSWORD|TOKEN|PRIVATE_KEY)" .
 - Input validation implemented
 - Secure storage patterns used
 
