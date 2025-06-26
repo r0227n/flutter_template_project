@@ -128,7 +128,7 @@ mise run test            # All tests pass
 - [ ] Static analysis: ✅ `mise run analyze` passes
 - [ ] All tests: ✅ `mise run test` passes
 - [ ] Translation validation: ✅ `mise run analyze-slang` passes
-- [ ] Code formatting: ✅ `mise run format-all` applied
+- [ ] Code formatting: ✅ `mise run format` applied
 - [ ] Human validation: ✅ Final review completed
 
 ### Context Requirements for AI Interactions
@@ -338,19 +338,13 @@ mise run ci-check
 ### Individual Mise Tasks
 
 ```bash
-# Dependencies and code generation
-mise run get              # Install dependencies (calls melos run get)
-mise run gen              # Generate code (calls melos run gen)
-
 # Code analysis and testing
 mise run analyze          # Static analysis (calls melos run analyze)
 mise run analyze-slang    # Translation validation (calls melos run analyze:slang)
 mise run test             # Run tests (calls melos run test)
 
 # Code formatting
-mise run format           # Format Dart code (calls melos run format)
-mise run format-prettier  # Format YAML/Markdown (calls bun run format)
-mise run format-all       # Format all files (calls both above)
+mise run format       # Format all files (calls both above)
 
 # Build and run
 mise run run              # Run app (debug) (calls melos exec --scope=app -- flutter run)
@@ -361,8 +355,6 @@ mise run build-ios        # Build iOS (calls melos exec --scope=app -- flutter b
 mise run build-web        # Build web (calls melos exec --scope=app -- flutter build web)
 
 # Maintenance
-mise run clean            # Clean packages (calls melos clean)
-mise run clean-deps       # Clean and reinstall dependencies (calls melos clean, melos bootstrap, bun run clean)
 mise run clean-branch     # Clean git branches/worktrees (calls ./scripts/clean-branch.sh)
 ```
 
@@ -568,7 +560,7 @@ flowchart LR
    ```bash
    mise run ci-check           # Complete CI validation
    mise run analyze-slang      # Translation validation
-   mise run format-all         # Code formatting
+   mise run format         # Code formatting
    # Human final validation
    ```
 

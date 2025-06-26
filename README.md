@@ -359,19 +359,13 @@ mise run ci-check
 ### 個別Miseタスク
 
 ```bash
-# 依存関係とコード生成
-mise run get              # 依存関係インストール (melos run get呼出)
-mise run gen              # コード生成 (melos run gen呼出)
-
 # コード解析とテスト
 mise run analyze          # 静的解析 (melos run analyze呼出)
 mise run analyze-slang    # 翻訳検証 (melos run analyze:slang呼出)
 mise run test             # テスト実行 (melos run test呼出)
 
 # コード整形
-mise run format           # Dartコード整形 (melos run format呼出)
-mise run format-prettier  # YAML/Markdown整形 (bun run format呼出)
-mise run format-all       # 全ファイル整形 (両方の整形実行)
+mise run format       # 全ファイル整形 (両方の整形実行)
 
 # ビルドと実行
 mise run run              # アプリ実行（デバッグ） (melos exec --scope=app -- flutter run呼出)
@@ -382,8 +376,6 @@ mise run build-ios        # iOSビルド (melos exec --scope=app -- flutter buil
 mise run build-web        # Webビルド (melos exec --scope=app -- flutter build web呼出)
 
 # メンテナンス
-mise run clean            # パッケージクリーン (melos clean呼出)
-mise run clean-deps       # 依存関係クリーンと再インストール (melos clean, melos bootstrap, bun run clean呼出)
 mise run clean-branch     # Gitブランチ/ワークツリークリーン (./scripts/clean-branch.sh呼出)
 ```
 

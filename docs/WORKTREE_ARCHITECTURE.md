@@ -7,7 +7,7 @@
 ### 設計目標
 
 - **並行開発の実現**: 複数のGitHub Issueを同時並行で安全に開発
-- **環境独立性の確保**: タスク間での干渉・競合状態の完全排除  
+- **環境独立性の確保**: タスク間での干渉・競合状態の完全排除
 - **開発効率の最大化**: 統一されたツールチェーンによる開発体験の向上
 - **保守性の担保**: 明確なディレクトリ構造による管理コストの削減
 
@@ -568,17 +568,14 @@ flutter_template_project/
 ### ルートディレクトリ配置を選択する理由
 
 1. **開発者体験の向上**
-
    - 明確な可視性による作業効率の向上
    - IDE・エディタでの適切な機能利用
 
 2. **技術的な安定性**
-
    - Git内部構造との競合回避
    - 権限・セキュリティ問題の回避
 
 3. **運用の効率性**
-
    - 管理スクリプトのシンプル性
    - バックアップ・同期の確実性
 
@@ -612,37 +609,37 @@ flutter_template_project/
 ```mermaid
 flowchart TD
     Start["🎯 目標: Claude Code × GitHub Issue<br/>自動並行Flutter開発システム"]
-    
+
     Start --> Problem["⚡ 解決すべき課題"]
-    
+
     subgraph "技術的課題"
         Problem --> P1["複数Issue同時開発"]
         Problem --> P2["環境競合の回避"]
         Problem --> P3["開発効率の最大化"]
     end
-    
+
     subgraph "配置方式の評価"
         P1 --> Choice
-        P2 --> Choice  
+        P2 --> Choice
         P3 --> Choice
-        
+
         Choice{"配置場所の選択"}
         Choice --> Opt1["❌ .git/worktrees/<br/>IDE認識不良・権限問題"]
         Choice --> Opt2["⚠️ 深いディレクトリ<br/>管理複雑・パス長"]
         Choice --> Opt3["✅ プロジェクトルート<br/>最適な可視性・管理性"]
     end
-    
+
     subgraph "Claude Code価値の実現"
         Opt3 --> Value1["🚀 /task コマンド<br/>gh issue → 自動ワークスペース"]
         Opt3 --> Value2["⚙️ mise統一実行<br/>analyze/test/format/run"]
         Opt3 --> Value3["🔄 自動PR作成<br/>gh pr create --title 'Close #N'"]
     end
-    
+
     subgraph "最終アーキテクチャ"
         Value1 --> Final[".claude-workspaces/<br/>├── issue-123/<br/>├── issue-456/<br/>└── issue-789/"]
         Value2 --> Final
         Value3 --> Final
-        
+
         Final --> Benefit1["👥 複数開発者が<br/>異なるIssueを並行開発"]
         Final --> Benefit2["🛡️ 完全な環境分離<br/>依存関係・設定の独立性"]
         Final --> Benefit3["📊 統一された開発体験<br/>mise run コマンドですべて実行"]
@@ -672,6 +669,7 @@ flowchart TD
 ## 現在のプロジェクト状況
 
 **実装済み要素:**
+
 - ✅ `.claude-workspaces` ディレクトリ構成
 - ✅ mise による統一されたタスク管理システム
 - ✅ Riverpod + go_router + slang アーキテクチャ
@@ -680,6 +678,7 @@ flowchart TD
 - ✅ GitHub Issue 連携ワークフロー
 
 **技術スタック:**
+
 - **Flutter SDK**: mise による統一バージョン管理
 - **Melos**: monorepo パッケージ管理とワークスペース設定
 - **Riverpod**: type-safe な状態管理（@riverpod annotation）
@@ -689,16 +688,17 @@ flowchart TD
 - **GitHub CLI**: Issue管理とPR作成の自動化
 
 **開発コマンド例:**
+
 ```bash
 # GitHub Issue ワークスペース内での開発
 cd .claude-workspaces/issue-[NUMBER]/
 mise run dev        # 開発環境起動
 mise run test       # テスト実行
 mise run analyze    # 静的解析
-mise run format-all # コード整形
+mise run format # コード整形
 
 # GitHub Issue 連携
-gh issue view [NUMBER]              # Issue詳細表示  
+gh issue view [NUMBER]              # Issue詳細表示
 gh pr create --title "Close #[NUMBER]"  # Issueクローズを含むPR作成
 gh issue comment [NUMBER] --body "実装完了"  # Issue進捗更新
 ```

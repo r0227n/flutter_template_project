@@ -38,15 +38,6 @@ melos run test
 bun run ci:check
 """
 
-# Individual Melos task wrappers
-[tasks.get]
-description = "Install dependencies"
-run = "melos run get"
-
-[tasks.gen]
-description = "Generate code (build_runner, riverpod, etc.)"
-run = "melos run gen"
-
 [tasks.analyze]
 description = "Static analysis"
 run = "melos run analyze"
@@ -61,31 +52,10 @@ run = "melos run test"
 
 # Formatting tasks
 [tasks.format]
-description = "Format Dart code"
-run = "melos run format"
-
-[tasks.format-prettier]
-description = "Format YAML/Markdown"
-run = "bun run format"
-
-[tasks.format-all]
 description = "Format all files"
 run = """
 melos run format
 bun run format
-"""
-
-# Maintenance tasks
-[tasks.clean]
-description = "Clean packages"
-run = "melos clean"
-
-[tasks.clean-deps]
-description = "Clean and reinstall dependencies"
-run = """
-melos clean
-melos bootstrap
-bun run clean
 """
 
 [tasks.clean-branch]

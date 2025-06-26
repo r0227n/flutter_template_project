@@ -241,7 +241,7 @@ melos run analyze  # 静的解析パス
 
 # 推奨チェック
 melos run analyze-slang  # 翻訳検証
-mise run format-all      # コード整形
+mise run format      # コード整形
 ```
 
 ## まとめ
