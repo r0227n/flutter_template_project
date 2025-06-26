@@ -3,12 +3,16 @@ import 'dart:async';
 import 'package:app_preferences/app_preferences.dart' as prefs;
 import 'package:apps/i18n/translations.g.dart';
 import 'package:apps/router/app_router.dart';
+import 'package:debug/debug.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize debug service for development
+  DebugService.initialize();
 
   // Initialize locale from stored preferences or use device locale as fallback
   final sharedPrefs = await prefs.AppPreferencesInitializer.initializeLocale(

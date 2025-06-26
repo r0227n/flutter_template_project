@@ -10,6 +10,7 @@ dev_dependencies:
 workspace:
   - app
   - packages/app_preferences
+  - packages/debug
 
 melos:
   name: flutter_template_project
