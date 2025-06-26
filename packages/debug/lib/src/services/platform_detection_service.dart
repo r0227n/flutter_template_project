@@ -2,6 +2,9 @@ import 'package:flutter/foundation.dart';
 
 /// Service for platform detection (Single Responsibility Principle)
 class PlatformDetectionService {
+  // Private constructor to prevent instantiation
+  PlatformDetectionService._();
+
   /// Check if current platform supports shake detection
   static bool get isShakeSupported {
     return (kDebugMode || kProfileMode) &&

@@ -1,5 +1,5 @@
-import 'package:flutter_test/flutter_test.dart';
 import 'package:debug/debug.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 /// Tests for DebugService following F.I.R.S.T. principles:
 /// - Fast: < 0.1 seconds execution
@@ -13,7 +13,7 @@ void main() {
       // Given: Debug service is not initialized
       // When: Initializing debug service
       // Then: Should complete without errors
-      expect(() => DebugService.initialize(), returnsNormally);
+      expect(DebugService.initialize, returnsNormally);
     });
 
     test('should provide Talker instance', () {

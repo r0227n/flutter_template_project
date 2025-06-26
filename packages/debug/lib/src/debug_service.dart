@@ -1,28 +1,30 @@
-import 'interfaces/debug_logger.dart';
-import 'interfaces/shake_detector.dart';
-import 'implementations/talker_debug_logger.dart';
-import 'implementations/physical_shake_detector.dart';
-import 'services/platform_detection_service.dart';
-import 'services/log_filter_service.dart';
+import 'package:debug/src/implementations/physical_shake_detector.dart';
+import 'package:debug/src/implementations/talker_debug_logger.dart';
+import 'package:debug/src/interfaces/debug_logger.dart';
+import 'package:debug/src/interfaces/shake_detector.dart';
+import 'package:debug/src/services/log_filter_service.dart';
+import 'package:debug/src/services/platform_detection_service.dart';
 
-/// Main debug service coordinating debug functionality (Single Responsibility Principle)
+/// Main debug service coordinating debug functionality
+/// (Single Responsibility Principle)
 class DebugService {
   static DebugLogger? _logger;
   static ShakeDetectorInterface? _shakeDetector;
-  static bool _isInitialized = false;
 
-  /// Initialize debug service with dependency injection (Dependency Inversion Principle)
+  /// Initialize debug service with dependency injection
+  /// (Dependency Inversion Principle)
   static void initialize({
     DebugLogger? logger,
     ShakeDetectorInterface? shakeDetector,
   }) {
-    if (!PlatformDetectionService.isDebugModeEnabled) return;
+    if (!PlatformDetectionService.isDebugModeEnabled) {
+      return;
+    }
 
     _logger = logger ?? TalkerDebugLogger();
     _shakeDetector = shakeDetector ?? PhysicalShakeDetector();
     
     _shakeDetector?.initialize();
-    _isInitialized = true;
   }
 
   /// Get current logger instance
@@ -69,7 +71,6 @@ class DebugService {
     _shakeDetector?.dispose();
     _logger = null;
     _shakeDetector = null;
-    _isInitialized = false;
     
     // Clean up filter service cache
     LogFilterService.dispose();

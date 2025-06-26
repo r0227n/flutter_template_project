@@ -1,19 +1,21 @@
+import 'package:debug/src/interfaces/shake_detector.dart';
+import 'package:debug/src/services/platform_detection_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shake_detector/shake_detector.dart';
-import '../interfaces/shake_detector.dart';
-import '../services/platform_detection_service.dart';
 
 /// Physical shake detector implementation (Dependency Inversion Principle)
 class PhysicalShakeDetector implements ShakeDetectorInterface {
+  PhysicalShakeDetector({void Function()? onShake}) : _onShake = onShake;
+
   ShakeDetector? _detector;
   bool _isInitialized = false;
   final void Function()? _onShake;
 
-  PhysicalShakeDetector({void Function()? onShake}) : _onShake = onShake;
-
   @override
   void initialize() {
-    if (!isSupported) return;
+    if (!isSupported) {
+      return;
+    }
 
     try {
       _detector = ShakeDetector.autoStart(
@@ -24,7 +26,7 @@ class PhysicalShakeDetector implements ShakeDetectorInterface {
         },
       );
       _isInitialized = true;
-    } catch (e) {
+    } on Object catch (e) {
       // Fail silently to prevent information disclosure
       if (kDebugMode) {
         debugPrint('Shake detector initialization failed: $e');
@@ -50,7 +52,9 @@ class PhysicalShakeDetector implements ShakeDetectorInterface {
   }
 
   void _handleShakeEvent() {
-    if (PlatformDetectionService.isReleaseMode) return;
+    if (PlatformDetectionService.isReleaseMode) {
+      return;
+    }
     
     _onShake?.call();
     debugPrint('Shake detected - navigating to debug screen');

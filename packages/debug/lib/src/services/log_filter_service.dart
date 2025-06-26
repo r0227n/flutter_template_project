@@ -1,5 +1,18 @@
-/// Service for filtering sensitive data from logs (Single Responsibility Principle)
+/// Service for filtering sensitive data from logs
+/// (Single Responsibility Principle)
 class LogFilterService {
+  /// Singleton factory constructor (Performance optimization)
+  factory LogFilterService() {
+    return _instance ??= LogFilterService._();
+  }
+
+  /// Private constructor for singleton pattern (Performance optimization)
+  LogFilterService._({
+    List<RegExp>? patterns,
+    List<String>? replacements,
+  })  : _patterns = patterns ?? _getCompiledPatterns(),
+        _replacements = replacements ?? _defaultReplacements;
+
   static LogFilterService? _instance;
   
   static List<RegExp>? _compiledPatterns;
@@ -20,18 +33,6 @@ class LogFilterService {
   final List<RegExp> _patterns;
   final List<String> _replacements;
 
-  /// Private constructor for singleton pattern (Performance optimization)
-  LogFilterService._({
-    List<RegExp>? patterns,
-    List<String>? replacements,
-  })  : _patterns = patterns ?? _getCompiledPatterns(),
-        _replacements = replacements ?? _defaultReplacements;
-
-  /// Singleton factory constructor (Performance optimization)
-  factory LogFilterService() {
-    return _instance ??= LogFilterService._();
-  }
-
   /// Lazy compilation of RegExp patterns (Performance optimization)
   static List<RegExp> _getCompiledPatterns() {
     return _compiledPatterns ??= _patternStrings
@@ -41,9 +42,9 @@ class LogFilterService {
 
   /// Filter sensitive data from message
   String filter(String message) {
-    String filtered = message;
+    var filtered = message;
     
-    for (int i = 0; i < _patterns.length && i < _replacements.length; i++) {
+    for (var i = 0; i < _patterns.length && i < _replacements.length; i++) {
       filtered = filtered.replaceAll(_patterns[i], _replacements[i]);
     }
     

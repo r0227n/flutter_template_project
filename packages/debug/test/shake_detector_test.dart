@@ -1,24 +1,19 @@
-import 'package:flutter_test/flutter_test.dart';
 import 'package:debug/debug.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 /// Tests for ShakeDetectorService following F.I.R.S.T. principles
 void main() {
-  setUpAll(() {
-    // Initialize Flutter bindings for platform tests
-    TestWidgetsFlutterBinding.ensureInitialized();
-  });
+  setUpAll(TestWidgetsFlutterBinding.ensureInitialized);
 
-  tearDownAll(() {
-    // Clean up resources after tests
-    ShakeDetectorService.dispose();
-  });
+  tearDownAll(ShakeDetectorService.dispose);
 
   group('ShakeDetectorService', () {
     test('should initialize on supported platforms', () {
       // Given: Shake detector service
       // When: Initializing on supported platform
-      // Then: Should complete without errors (may fail silently on unsupported platforms)
-      expect(() => ShakeDetectorService.initialize(), returnsNormally);
+      // Then: Should complete without errors
+      // (may fail silently on unsupported platforms)
+      expect(ShakeDetectorService.initialize, returnsNormally);
     });
 
     test('should detect platform support correctly', () {
@@ -34,7 +29,7 @@ void main() {
       // Given: Shake detection capability
       // When: Simulating shake event
       // Then: Should not throw exceptions
-      expect(() => ShakeDetectorService.simulateShake(), returnsNormally);
+      expect(ShakeDetectorService.simulateShake, returnsNormally);
     });
   });
 }

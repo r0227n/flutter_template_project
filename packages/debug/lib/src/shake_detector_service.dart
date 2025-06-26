@@ -3,6 +3,9 @@ import 'package:shake_detector/shake_detector.dart';
 
 /// Security-enhanced shake detector service implementation
 class ShakeDetectorService {
+  // Private constructor to prevent instantiation
+  ShakeDetectorService._();
+
   static ShakeDetector? _detector;
   static bool _isInitialized = false;
 
@@ -20,7 +23,7 @@ class ShakeDetectorService {
           },
         );
         _isInitialized = true;
-      } catch (e) {
+      } on Object catch (e) {
         // Security: Fail silently to prevent information disclosure
         if (kDebugMode) {
           debugPrint('Shake detector initialization failed: $e');
@@ -48,7 +51,9 @@ class ShakeDetectorService {
   /// Handle shake events securely
   static void _handleShakeEvent() {
     // Security: Additional validation before navigation
-    if (kReleaseMode) return;
+    if (kReleaseMode) {
+      return;
+    }
     
     // TODO: Navigate to Talker screen with proper authorization
     debugPrint('Shake detected - navigating to debug screen');
