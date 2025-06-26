@@ -12,7 +12,6 @@ When executing commands defined in `.claude/commands/`, the following workflow a
 
 1. **Check Arguments**: Verify if required arguments are provided
 2. **Missing Arguments Action**:
-
    - Display error message: `⏺ Please provide required arguments`
    - Log termination reason
    - **Skip "Update Todos" phase**
