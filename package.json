@@ -18,10 +18,10 @@
     "ci:verify": "bun --version && bunx prettier --version"
   },
   "devDependencies": {
-    "@commitlint/cli": "^18.0.0",
-    "@commitlint/config-conventional": "^18.0.0",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
     "husky": "^9.1.7",
-    "prettier": "3.5.3"
+    "prettier": "3.6.1"
   },
   "engines": {
     "bun": ">=1.2.0"
