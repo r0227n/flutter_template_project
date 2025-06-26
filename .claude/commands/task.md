@@ -1,37 +1,50 @@
-# GitHub Issue Processing Command - Claude 4 Best Practices
+# GitHub Issue Processing Command - Claude 4 Best Practices & TDD Integration
 
-**IMPORTANT**: This command implements AI Review-First design following Claude 4 best practices for high-quality Flutter development using GitHub Issues.
+**IMPORTANT**: This command implements TDD + AI Review-First design following Claude 4 best practices and Test-Driven Development principles for high-quality Flutter development using GitHub Issues.
 
 ## Overview
 
-Process GitHub Issues using AI Review-First methodology. This command creates isolated work environments, applies structured review cycles, and ensures quality standards through automated validation.
+Process GitHub Issues using TDD + AI Review-First methodology. This command creates isolated work environments, applies Red-Green-Refactor cycles with structured AI review integration, and ensures quality standards through automated validation.
 
-## Core Principles (Claude 4 Best Practices)
+## Core Principles (Claude 4 + TDD Best Practices)
 
-**Reference**: `docs/CLAUDE_4_BEST_PRACTICES.md`
+**References**:
 
-### AI Review-First Methodology
+- `docs/CLAUDE_4_BEST_PRACTICES.md`
+- `docs/TEST_DRIVEN_DEVELOPMENT.md`
 
-- **Pattern**: Small draft → Critical review → Regenerate → Release
-- **Approach**: Use AI as "Senior Reviewer" not "Junior Designer"
-- **Cycles**: 3-4 iterative review cycles for quality improvement
-- **Priority**: Security (High) → SOLID Principles (Medium) → Performance (Low)
+### TDD + AI Review-First Methodology
 
-### Clear Instructions
+- **Core Cycle**: Red (failing test) → Green (minimal implementation) → AI Review → Refactor → Release
+- **30% Test Strategy**: Start with minimal failing tests, implement to pass, then improve through AI review
+- **Approach**: Use AI as "Senior Reviewer" for TDD cycles, not "Junior Designer"
+- **Review Cycles**: 3-4 iterative AI review cycles during Refactor phase
+- **Priority Order**: Security (HIGH) → SOLID Principles (MEDIUM) → Performance (LOW)
 
-- Eliminate ambiguity in task definitions
-- Define specific deliverables and quality criteria
-- Provide structured review templates with evaluation categories
+### F.I.R.S.T. Principles Integration
 
-### Structured Quality Assessment
+- **F**ast: Tests execute in < 0.1 seconds
+- **I**ndependent: Tests don't depend on each other
+- **R**epeatable: Consistent results across environments
+- **S**elf-validating: Clear pass/fail outcomes
+- **T**imely: Tests written before implementation
 
-Apply consistent evaluation framework:
+### Clear Instructions with TDD Context
+
+- Eliminate ambiguity in test requirements and implementation goals
+- Define specific TDD acceptance criteria and quality gates
+- Provide structured AI review templates for Red-Green-Refactor cycles
+
+### Structured Quality Assessment with TDD Focus
+
+Apply consistent TDD + AI evaluation framework:
 
 ```
-1. Security vulnerabilities (HIGH PRIORITY)
-2. SOLID principle violations (MEDIUM PRIORITY)
-3. Performance optimization (LOW PRIORITY)
-Constraint: Summarize findings within 400 characters
+1. Test Quality (F.I.R.S.T. compliance) - validation phase
+2. Security vulnerabilities (HIGH PRIORITY) - AI review phase
+3. SOLID principle violations (MEDIUM PRIORITY) - AI review phase
+4. Performance optimization (LOW PRIORITY) - AI review phase
+Constraint: Summarize findings within 400 characters per category
 ```
 
 ## Execution Modes
@@ -44,10 +57,13 @@ Constraint: Summarize findings within 400 characters
 
 **Behavior**:
 
-1. Fetch Issues from GitHub using `gh issue list`
-2. Display interactive Issue selection list (title, labels, assignee)
-3. Support multiple Issue selection
-4. Confirm selections before parallel execution
+1. Fetch Issues from GitHub using `gh issue list --assignee @me --state open`
+2. Parse and categorize Issues by type:
+   - **Features**: Labels containing 'enhancement', 'feature'
+   - **Bugs**: Labels containing 'bug', 'bugfix'
+3. Display interactive selection with Issue Template compliance indicators
+4. Support multiple Issue selection with TDD readiness validation
+5. Confirm selections before parallel TDD + AI Review-First execution
 
 ### Automatic Mode (With Arguments)
 
@@ -57,128 +73,258 @@ Constraint: Summarize findings within 400 characters
 
 **Behavior**:
 
-- **No confirmation prompts** - immediate execution
-- Validate Issue numbers via GitHub CLI
-- Create isolated work environments automatically
-- Begin background processing with completion notifications
+- **No confirmation prompts** - immediate TDD + AI Review-First execution
+- Validate Issue numbers and template compliance via `gh issue view`
+- Check Issue Template fields (acceptance criteria, testing strategy, AI review criteria)
+- Create isolated TDD work environments automatically via git worktree
+- Begin background processing with Red-Green-Refactor + AI Review cycles
+- Send completion notifications with TDD quality metrics
 
-## AI Review-First Processing Flow
+## TDD + AI Review-First Processing Flow
 
-### Phase 1: Minimal Implementation
+### Phase 1: Red - Failing Test Creation (5 minutes)
 
-**Objective**: Create walking skeleton for review
+**Objective**: Create minimal failing tests following F.I.R.S.T. principles
 
-**Actions**:
+**TDD Actions**:
 
-- Configure Flutter version using mise
-- Create dedicated branch via git worktree
-- Implement ONLY core functionality per Issue requirements
-- Create basic test cases
-
-**Quality Gate**: Compilable code with basic functionality
-
-### Phase 2: Critical Review Cycles (3-4 Iterations)
-
-**Review Template** (Use this exact format):
-
-```
-Please review the following code implementation.
-
-Evaluation Categories:
-1. Security vulnerabilities (high priority)
-2. SOLID principle violations (medium priority)
-3. Performance optimization opportunities (low priority)
-
-Constraint: Provide specific, actionable feedback within 400 characters.
-Focus on the highest priority issues first.
-```
-
-**Iterative Improvement Process**:
-
-1. **Cycle 1**: Address ALL high priority security issues
-2. **Cycle 2**: Fix major SOLID principle violations
-3. **Cycle 3**: Optimize performance within feasible scope
-4. **Final Validation**: Human review of AI recommendations
+- Parse Issue Template acceptance criteria and testing strategy
+- Configure Flutter test environment using `mise`
+- Create dedicated feature branch via `git worktree add .claude-workspaces/issue-{number}/`
+- Write 30% tests: single behavior, minimal expectations
+- Validate Issue Template compliance (functional/non-functional/security requirements)
 
 **Quality Gates**:
 
-- Security: Zero high-severity vulnerabilities
-- Architecture: Major design principle violations resolved
-- Performance: Identified bottlenecks addressed
+- ✅ Tests fail as expected (Red state confirmed)
+- ✅ Test intent clear without implementation
+- ✅ F.I.R.S.T. principles followed
+- ✅ Issue Template requirements translated to test cases
 
-### Phase 3: Release Preparation
+### Phase 2: Green - Minimal Implementation (10 minutes)
 
-**Actions**:
+**Objective**: Make tests pass with simplest possible implementation
 
-- Execute code quality checks: `dart analyze`, `dart format`
-- Run automated and manual test suites
-- Create Pull Request with appropriate template
+**Implementation Strategy Selection**:
+
+- **Obvious**: Clear, direct implementation
+- **Fake It**: Hard-coded values, then generalize
+- **Triangulation**: Multiple test cases to drive abstraction
+
+**Quality Gates**:
+
+- ✅ All tests pass (Green state achieved)
+- ✅ Minimal code changes applied
+- ✅ No over-engineering or premature optimization
+- ✅ Compilable, functional walking skeleton
+
+### Phase 3: Refactor - AI Review Cycles (15 minutes, 3-4 Iterations)
+
+**Objective**: Improve code quality through structured AI review while maintaining test success
+
+**TDD + AI Review Template** (Use this exact format):
+
+```
+Code Review Request: [Brief description]
+
+Implement TDD + AI Review-First methodology:
+
+1. Test Quality Validation (F.I.R.S.T. compliance):
+   - Fast: < 0.1 seconds execution
+   - Independent: No test interdependencies
+   - Repeatable: Consistent results
+   - Self-validating: Clear pass/fail
+   - Timely: Written before implementation
+
+2. Security Analysis (HIGH Priority - Fix Immediately):
+   - Hardcoded secrets/credentials scan
+   - Input validation and sanitization
+   - Secure data storage patterns
+   - Authentication/authorization security
+
+3. Architecture Review (MEDIUM Priority - Address Next):
+   - SOLID principles compliance (SRP, OCP, LSP, ISP, DIP)
+   - Design pattern consistency with project conventions
+   - Code organization and separation of concerns
+   - Error handling and user feedback patterns
+
+4. Performance Review (LOW Priority - Optimize Later):
+   - Algorithmic efficiency and O(n) complexity
+   - Resource usage: memory, CPU, network
+   - Flutter-specific: widget rebuilds, state management
+   - Build performance and dependency impact
+
+Constraints:
+- Maximum 400 characters per category summary
+- Provide specific file:line references
+- Include actionable next steps
+- Maintain test success throughout refactoring
+```
+
+**Iterative AI Review Process**:
+
+1. **Cycle 1**: Validate F.I.R.S.T. test quality + address ALL HIGH priority security issues
+2. **Cycle 2**: Fix major SOLID principle violations while preserving test success
+3. **Cycle 3**: Optimize performance within feasible scope, validate test performance
+4. **Final Validation**: Human review of AI recommendations + full test suite execution
+
+**TDD Quality Gates**:
+
+- ✅ **Test Integrity**: All tests continue to pass after each refactor iteration
+- ✅ **Security**: Zero high-severity vulnerabilities identified
+- ✅ **Architecture**: Major SOLID principle violations resolved
+- ✅ **Performance**: Test execution < 0.1s, no obvious bottlenecks
+- ✅ **F.I.R.S.T. Compliance**: All tests meet independence, repeatability criteria
+
+### Phase 4: Release Preparation with TDD Validation
+
+**TDD Release Actions**:
+
+- Execute complete TDD validation suite:
+  ```bash
+  melos run test              # All tests (unit, widget, integration)
+  melos run analyze          # Static analysis (dart analyze)
+  melos run format           # Code formatting (dart format)
+  melos run analyze-slang    # Translation validation
+  ```
+- Verify F.I.R.S.T. compliance: test independence, speed, repeatability
+- Run TDD quality metrics: cycle time (Red: 5min, Green: 10min, Refactor: 15min)
+- Generate test coverage report and ensure quality thresholds met
+- Create Pull Request with Issue Template-compliant description
 - Monitor GitHub Actions: `.github/workflows/check-pr.yml`
-- Update GitHub Issue with progress comments
-- Send completion notification with alarm
+- Update GitHub Issue with TDD metrics and completion status
+- Send completion notification with TDD quality metrics summary
 
-**Quality Gate**: All CI/CD checks pass, human validation complete
+**TDD Quality Gates**:
 
-## GitHub CLI Integration
+- ✅ **Complete Test Suite**: All Red-Green-Refactor cycles completed successfully
+- ✅ **F.I.R.S.T. Compliance**: All tests meet speed, independence, repeatability criteria
+- ✅ **Test Coverage**: Unit tests ≥90%, Widget tests ≥80%, Critical paths 100%
+- ✅ **AI Review Standards**: All security, SOLID, performance criteria met
+- ✅ **CI/CD Pipeline**: All GitHub Actions checks pass including test execution
+- ✅ **Issue Template Compliance**: All acceptance criteria validated and documented
+
+## GitHub CLI Integration (Unified Approach)
+
+**IMPORTANT**: All GitHub operations MUST use GitHub CLI (`gh`) commands. Direct GitHub API calls are deprecated.
 
 ### Issue Management Commands
 
 ```bash
-# List open issues assigned to current user
-gh issue list --assignee @me --state open
+# List issues with Issue Template compliance check
+gh issue list --assignee @me --state open --json number,title,labels,body
 
-# Get issue details
-gh issue view #123
+# Get issue details with template field validation
+gh issue view #123 --json body,title,labels | jq '.body' | grep -E "(Acceptance Criteria|Testing Strategy|AI Review)"
 
-# Add comment to issue
-gh issue comment #123 --body "Progress update"
+# Issue Template compliance validation
+gh issue view #123 --json body | jq -r '.body' | grep -c "- \[ \]" # Count unchecked checkboxes
 
-# Close issue with PR reference
-gh issue close #123 --comment "Fixed in PR #456"
+# Add TDD progress comment with metrics
+gh issue comment #123 --body "TDD Progress: Red(5min) → Green(10min) → Refactor(15min). F.I.R.S.T. compliance: ✅"
+
+# Close issue with TDD completion metrics
+gh issue close #123 --comment "Fixed in PR #456. TDD Metrics: Tests(90%+), Security(✅), SOLID(✅), Performance(✅)"
 ```
 
-### PR Creation with Templates
+### Issue Template Field Extraction
 
 ```bash
-# Create PR using feature template
-gh pr create --template .github/pull_request_template/feature.md \
-  --title "feat: Issue title [#123]" \
-  --body "$(cat pr_body.md)"
+# Extract acceptance criteria from Issue Template
+gh issue view #123 --json body | jq -r '.body' | sed -n '/### Acceptance Criteria/,/###/p' | grep -v "###"
 
-# Create PR using bugfix template
-gh pr create --template .github/pull_request_template/bugfix.md \
-  --title "fix: Bug description [#123]" \
-  --body "$(cat pr_body.md)"
+# Extract testing strategy requirements
+gh issue view #123 --json body | jq -r '.body' | sed -n '/### Testing Strategy/,/###/p' | grep "- \[ \]"
+
+# Extract AI review criteria
+gh issue view #123 --json body | jq -r '.body' | sed -n '/### AI Review-First Quality Criteria/,/###/p'
+
+# Validate required Issue Template fields
+gh issue view #123 --json body | jq -r '.body' | grep -E "(Functional Requirements|Security Requirements|Testing Strategy)" || echo "❌ Issue Template incomplete"
 ```
 
-## Completion Criteria
+### Pull Request Creation with Issue Template Compliance
 
-Task completion requires ALL conditions met:
+```bash
+# Determine PR template based on issue labels
+ISSUE_LABELS=$(gh issue view #123 --json labels | jq -r '.labels[].name')
+if echo "$ISSUE_LABELS" | grep -q "enhancement\|feature"; then
+    TEMPLATE=".github/pull_request_template/feature.md"
+elif echo "$ISSUE_LABELS" | grep -q "bug\|bugfix"; then
+    TEMPLATE=".github/pull_request_template/bugfix.md"
+else
+    TEMPLATE=".github/pull_request_template.md"
+fi
 
-### 1. AI Review-First Standards
+# Create PR with Issue Template compliance validation
+gh pr create \
+  --title "$(gh issue view #123 --json title | jq -r '.title') [#123]" \
+  --body "$(cat <<EOF
+## Issue Template Compliance
+✅ Acceptance Criteria: $(gh issue view #123 --json body | jq -r '.body' | grep -c '✅.*Acceptance')
+✅ TDD Implementation: Red-Green-Refactor cycles completed
+✅ F.I.R.S.T. Principles: All tests meet Fast, Independent, Repeatable, Self-validating, Timely criteria
+✅ AI Review Cycles: 3-4 iterations completed (Security → SOLID → Performance)
 
-- ✅ **3-4 review cycles completed successfully**
-- ✅ **Security**: All high priority vulnerabilities resolved
-- ✅ **SOLID Principles**: Major architectural issues fixed
-- ✅ **Performance**: Optimization opportunities addressed within scope
+## TDD Quality Metrics
+- Test Coverage: Unit(≥90%), Widget(≥80%), Critical(100%)
+- Cycle Time: Red(5min), Green(10min), Refactor(15min)
+- F.I.R.S.T. Compliance: $(test_first_compliance_score)
+- AI Review Standards: Security(✅), SOLID(✅), Performance(✅)
 
-### 2. Implementation Quality Standards
+Closes #123
+EOF
+)"
 
-- ✅ **Feature Complete**: All Issue requirements implemented
-- ✅ **Test Coverage**: Automated and manual tests passing
-- ✅ **Code Quality**: Static analysis and formatting checks pass
-- ✅ **Human Validation**: Final review confirms AI recommendations
+# Monitor PR status and Issue Template validation
+gh pr view --json checks,reviews | jq '.checks[] | select(.name == "check-pr") | .status'
+```
 
-### 3. Release Readiness
+## TDD + AI Review-First Completion Criteria
 
-- ✅ **Documentation**: Pull Request with appropriate template
-- ✅ **CI/CD Pipeline**: All GitHub Actions checks successful
-- ✅ **Issue Management**: GitHub Issue updated with PR reference
+Task completion requires ALL conditions met following TDD + AI Review-First methodology:
 
-### 4. Failure Recovery
+### 1. TDD Cycle Completion Standards
 
-- ✅ **Automatic Correction**: Attempt fixes for common CI failures
-- ✅ **Quality Assurance**: Re-validate after corrections
+- ✅ **Red Phase**: All failing tests created following F.I.R.S.T. principles
+- ✅ **Green Phase**: Minimal implementation achieves test success
+- ✅ **Refactor Phase**: 3-4 AI review cycles completed successfully with test integrity maintained
+- ✅ **Test Quality**: F.I.R.S.T. compliance validated (Fast < 0.1s, Independent, Repeatable, Self-validating, Timely)
+
+### 2. AI Review-First Quality Standards
+
+- ✅ **Security Review**: All HIGH priority vulnerabilities resolved (hardcoded secrets, input validation, secure storage)
+- ✅ **SOLID Principles**: MEDIUM priority architectural issues fixed (SRP, OCP, LSP, ISP, DIP compliance)
+- ✅ **Performance Review**: LOW priority optimization opportunities addressed (algorithm efficiency, resource usage)
+- ✅ **Review Constraint**: Each category summary ≤ 400 characters with actionable feedback
+
+### 3. Issue Template Compliance Standards
+
+- ✅ **Acceptance Criteria**: All Issue Template acceptance criteria validated and met
+- ✅ **Testing Strategy**: Issue Template testing requirements implemented and verified
+- ✅ **AI Review Criteria**: Issue Template AI review criteria satisfied with documented results
+- ✅ **Security Requirements**: Issue Template security requirements validated and implemented
+
+### 4. Quality Gate Validation
+
+- ✅ **Test Coverage**: Unit tests ≥90%, Widget tests ≥80%, Critical paths 100%
+- ✅ **TDD Metrics**: Red(≤5min), Green(≤10min), Refactor(≤15min) cycle times achieved
+- ✅ **Static Analysis**: `melos run analyze` passes with zero warnings/errors
+- ✅ **Code Formatting**: `melos run format` applied and validated
+- ✅ **Translation Validation**: `melos run analyze-slang` passes for i18n compliance
+
+### 5. Release Readiness with TDD Documentation
+
+- ✅ **Pull Request**: Created with Issue Template compliance validation and TDD metrics
+- ✅ **CI/CD Pipeline**: All GitHub Actions checks successful including test execution
+- ✅ **Issue Management**: GitHub Issue updated with TDD completion metrics and PR reference
+- ✅ **TDD Documentation**: F.I.R.S.T. compliance report and AI review cycle summary included
+
+### 6. Failure Recovery with TDD Validation
+
+- ✅ **Test Integrity**: Automatic correction maintains test success throughout recovery
+- ✅ **Quality Assurance**: Re-validation includes full TDD cycle verification
+- ✅ **F.I.R.S.T. Recovery**: Failed tests maintain independence and repeatability during fixes
 
 ## GitHub Actions Integration
 

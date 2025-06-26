@@ -1,4 +1,4 @@
-# File-to-Issue Processing Command - Claude 4 Best Practices
+# File-to-Issue Processing Command - Claude 4 Best Practices Implementation
 
 **IMPORTANT**: This command implements AI Review-First design following Claude 4 best practices for automated GitHub Issue creation with GitHub Issue Template compliance.
 
@@ -1276,10 +1276,14 @@ project-root/
 │       └── file-to-issue.md
 ├── .github/
 │   └── ISSUE_TEMPLATE/
-│       └── feature.yml
+│       ├── feature.yml
+│       └── bugfix.yml
 ├── docs/
-    └── CLAUDE_4_BEST_PRACTICES.md
-
+│   └── CLAUDE_4_BEST_PRACTICES.md
+├── app/
+│   └── (Flutter app structure)
+└── packages/
+    └── (Package modules)
 ```
 
 ---
