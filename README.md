@@ -82,6 +82,7 @@ export GITHUB_ACTIONS_CHECK=true
 
 # 5. コード生成を実行
 melos run gen
+```
 
 ## アーキテクチャ概要
 
@@ -178,6 +179,7 @@ sequenceDiagram
     Actions->>QA: 品質ゲート検証
     QA->>Dev: 🔔 完了通知
     Dev->>GitHub: Issue完了
+```
 
 ### /task コマンド: Claude 4 AI Review-First統合
 
