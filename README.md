@@ -59,7 +59,7 @@ AI支援開発とモダンアーキテクチャを組み合わせた、GitHub Is
 
 ### クイックスタート
 
-````bash
+```bash
 # 1. プロジェクトを取得
 git clone <repository-url>
 cd flutter_template_project
@@ -112,7 +112,7 @@ graph TB
     D --> E
     A --> I
     M --> N[Production Release]
-````
+```
 
 ### 技術スタック
 
@@ -149,7 +149,7 @@ flowchart TD
 
 ### GitHub Issues統合AI開発プロセス
 
-````mermaid
+```mermaid
 sequenceDiagram
     participant Dev as 開発者
     participant GitHub as GitHub Issues
@@ -202,7 +202,7 @@ sequenceDiagram
 # 🔄 Phase 5: 品質ゲート検証
 # 🔄 Phase 6: GitHub Actions CI/CD統合
 # ✅ Phase 7: 完了通知 + 人間最終検証
-````
+```
 
 ### Claude 4レビュー品質基準
 
@@ -371,11 +371,6 @@ mise run format       # 全ファイル整形 (両方の整形実行)
 
 # ビルドと実行
 mise run run              # アプリ実行（デバッグ） (melos exec --scope=app -- flutter run呼出)
-mise run run-release      # アプリ実行（リリース） (melos exec --scope=app -- flutter run --release呼出)
-mise run build            # 全プラットフォームビルド (melos exec --scope=app -- flutter build呼出)
-mise run build-android    # Android APKビルド (melos exec --scope=app -- flutter build apk呼出)
-mise run build-ios        # iOSビルド (melos exec --scope=app -- flutter build ios呼出)
-mise run build-web        # Webビルド (melos exec --scope=app -- flutter build web呼出)
 
 # メンテナンス
 mise run clean-branch     # Gitブランチ/ワークツリークリーン (./scripts/clean-branch.sh呼出)
@@ -403,7 +398,7 @@ bun run clean             # クリーンと再インストール
 
 ## プロジェクト構成
 
-```
+```bash
 flutter_template_project/
 ├── 📱 app/                      # メインアプリケーション
 │   ├── lib/                     # アプリケーションコード

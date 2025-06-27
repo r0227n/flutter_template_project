@@ -281,10 +281,7 @@ flutter_template_project/
 ```bash
 # 各GitHub Issueが完全に独立
 cd .claude-workspaces/issue-123  # GitHub Issue #123: 新機能開発
-mise run run                     # 統一されたコマンド実行
-
-cd ../issue-456                  # GitHub Issue #456: UI改善
-mise run run-release             # リリースビルドで実行
+mise run test                     # テスト実行
 
 cd ../issue-789                  # GitHub Issue #789: バグ修正
 mise run test                    # テスト実行

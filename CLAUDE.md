@@ -272,7 +272,7 @@ This is a Flutter mobile application development project using Claude Code with 
 
 <!-- AUTO-GENERATED SECTION: This section is automatically updated when project structure changes -->
 
-```
+```bash
 flutter_template_project/
 ├── .claude-workspaces/         # Claude Code working directories (replaces worktrees/)
 ├── app/                        # Main Flutter application
@@ -348,11 +348,6 @@ mise run format       # Format all files (calls both above)
 
 # Build and run
 mise run run              # Run app (debug) (calls melos exec --scope=app -- flutter run)
-mise run run-release      # Run app (release) (calls melos exec --scope=app -- flutter run --release)
-mise run build            # Build all platforms (calls melos exec --scope=app -- flutter build)
-mise run build-android    # Build Android APK (calls melos exec --scope=app -- flutter build apk)
-mise run build-ios        # Build iOS (calls melos exec --scope=app -- flutter build ios)
-mise run build-web        # Build web (calls melos exec --scope=app -- flutter build web)
 
 # Maintenance
 mise run clean-branch     # Clean git branches/worktrees (calls ./scripts/clean-branch.sh)
@@ -507,15 +502,15 @@ For detailed GitHub Issue processing workflow, execution examples, and configura
 
 **Purpose**: Implement complete AI Review-First development cycle with Claude as "Senior Reviewer"
 
-**Core Cycle: 小さなドラフト → 厳しい批評 → 再生成 → リリース**
+**Core Cycle: Small draft → Critical review → Regenerate → Release**
 
 ```mermaid
 flowchart LR
-    A[最小実装] --> B[AIレビュー]
-    B --> C[改善実装]
-    C --> D{品質OK?}
+    A[Minimal Implementation] --> B[AI Review]
+    B --> C[Improved Implementation]
+    C --> D{Quality OK?}
     D -->|No| B
-    D -->|Yes| E[リリース]
+    D -->|Yes| E[Release]
 ```
 
 **Implementation Steps**:
