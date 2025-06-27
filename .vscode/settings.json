@@ -2,7 +2,7 @@
   // ===========================================
   // Flutter & Dart Configuration
   // ===========================================
-  "dart.flutterSdkPath": "~/.local/share/mise/installs/flutter/3.32.2-stable",
+  "dart.flutterSdkPath": "~/.local/share/mise/installs/flutter/3.32.5-stable",
   "dart.previewFlutterUiGuides": true,
   "dart.previewFlutterUiGuidesCustomTracking": true,
 
@@ -60,6 +60,7 @@
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit"
   },
+  "editor.inlayHints.enabled": "off",
 
   // ===========================================
   // Language-Specific Settings
