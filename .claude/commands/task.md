@@ -249,11 +249,11 @@ gh issue view #123 --json body | jq -r '.body' | grep -E "(Functional Requiremen
 # Determine PR template based on issue labels
 ISSUE_LABELS=$(gh issue view #123 --json labels | jq -r '.labels[].name')
 if echo "$ISSUE_LABELS" | grep -q "enhancement\|feature"; then
-    TEMPLATE=".github/pull_request_template/feature.md"
+    TEMPLATE=".github/PULL_REQUEST_TEMPLATE/feature.md"
 elif echo "$ISSUE_LABELS" | grep -q "bug\|bugfix"; then
-    TEMPLATE=".github/pull_request_template/bugfix.md"
+    TEMPLATE=".github/PULL_REQUEST_TEMPLATE/bugfix.md"
 else
-    TEMPLATE=".github/pull_request_template.md"
+    TEMPLATE=".github/PULL_REQUEST_TEMPLATE.md"
 fi
 
 # Create PR with Issue Template compliance validation
@@ -878,13 +878,13 @@ The command automatically selects the appropriate PR template based on issue lab
 
 ```bash
 # For feature issues (labels: enhancement, feature)
-.github/pull_request_template/feature.md
+.github/PULL_REQUEST_TEMPLATE/feature.md
 
 # For bug fixes (labels: bug, bugfix)
-.github/pull_request_template/bugfix.md
+.github/PULL_REQUEST_TEMPLATE/bugfix.md
 
 # Default template if no specific label
-.github/pull_request_template.md
+.github/PULL_REQUEST_TEMPLATE.md
 ```
 
 ### Troubleshooting Guide
