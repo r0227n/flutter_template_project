@@ -37,8 +37,8 @@ fi
 
 **IMPORTANT**: This local `.claude/CLAUDE.md` configuration **overrides** and **ignores** the root-level CLAUDE.md file located at the project root.
 
-- Root CLAUDE.md path: `/Users/r0227n/dev/flutter_template_project/CLAUDE.md` (IGNORED)
-- Local CLAUDE.md path: `/Users/r0227n/dev/flutter_template_project/.claude-workspaces/TASK-84/.claude/CLAUDE.md` (ACTIVE)
+- Root CLAUDE.md path: `CLAUDE.md` (IGNORED)
+- Local CLAUDE.md path: `.claude-workspaces/TASK-84/.claude/CLAUDE.md` (ACTIVE)
 
 ## Command-Specific Rules
 
