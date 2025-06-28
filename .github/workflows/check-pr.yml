@@ -8,9 +8,6 @@ concurrency:
   group: check-pr-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  WORKING_DIR: apps
-
 jobs:
   analyze-and-format:
     name: Dart Analysis and Format Check
