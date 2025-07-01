@@ -26,7 +26,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 /// await showLicense(
 ///   context,
 ///   applicationName: 'My App',
-///   applicationIcon: Icon(Icons.apps),
+///   applicationIcon: Icon(Icons.app),
 ///   applicationLegalese: '© 2024 My Company',
 /// );
 /// ```
@@ -43,7 +43,7 @@ Future<void> showLicense(
     final packageInfo = await PackageInfo.fromPlatform();
 
     // パラメータが指定されていない場合はPackageInfoから取得
-    final name = applicationName ?? packageInfo.appName;
+    final name = applicationName ?? packageInfo.APP_NAME;
     final version = applicationVersion ?? packageInfo.version;
     final legalese = applicationLegalese ?? '© ${DateTime.now().year} $name';
 

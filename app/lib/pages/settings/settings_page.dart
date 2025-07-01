@@ -1,7 +1,7 @@
 import 'dart:async';
 
+import 'package:app/i18n/translations.g.dart';
 import 'package:app_preferences/app_preferences.dart' as app_prefs;
-import 'package:apps/i18n/translations.g.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 

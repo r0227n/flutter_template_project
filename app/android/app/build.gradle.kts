@@ -27,7 +27,7 @@ val copySources by tasks.registering(Copy::class) {
 }
 
 android {
-    namespace = "com.example.apps"
+    namespace = "com.flutter.template.app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -51,7 +51,7 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
-        resValue("string", "app_name", dartDefines["appName"] ?: "")
+        resValue("string", "app_name", dartDefines["APP_NAME"] ?: "")
     }
 
     buildTypes {
