@@ -43,7 +43,7 @@ Future<void> showLicense(
     final packageInfo = await PackageInfo.fromPlatform();
 
     // パラメータが指定されていない場合はPackageInfoから取得
-    final name = applicationName ?? packageInfo.APP_NAME;
+    final name = applicationName ?? packageInfo.appName;
     final version = applicationVersion ?? packageInfo.version;
     final legalese = applicationLegalese ?? '© ${DateTime.now().year} $name';
 
