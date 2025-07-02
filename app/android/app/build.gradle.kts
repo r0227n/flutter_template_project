@@ -27,7 +27,7 @@ val copySources by tasks.registering(Copy::class) {
 }
 
 android {
-    namespace = "com.flutter.template.app"
+    namespace = "com.template.app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
