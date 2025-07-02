@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Dart defineを書き出すファイルパスを指定します。
 # ここでは `Environment.xcconfig` というファイル名で作成することにします。
