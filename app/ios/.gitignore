@@ -34,4 +34,4 @@ Runner/GeneratedPluginRegistrant.*
 !default.perspectivev3
 
 # Dart Defines
-Runner/DartDefines.xcconfig
+Flutter/DartDefines.xcconfig
