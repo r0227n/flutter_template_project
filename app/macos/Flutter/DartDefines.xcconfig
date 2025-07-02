@@ -1,0 +1,4 @@
+FLAVOR=staging
+APP_ID=com.example.app
+APP_ID_SUFFIX=.staging
+APP_NAME=Template Staging
