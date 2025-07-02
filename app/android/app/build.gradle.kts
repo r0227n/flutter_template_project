@@ -1,3 +1,5 @@
+import java.util.Base64
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -5,8 +7,27 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+val dartDefines = if (project.hasProperty("dart-defines")) {
+    project.property("dart-defines")
+        .toString()
+        .split(",")
+        .associate { entry ->
+            val pair = String(Base64.getDecoder().decode(entry), Charsets.UTF_8).split("=")
+            // valueがemptyの時にlastがkeyになるので、lengthが2でなければ空のmapにする
+            if (pair.size == 2) pair[0] to pair[1] else "" to ""
+        }
+        .filterKeys { it.isNotEmpty() }
+} else {
+    emptyMap<String, String>()
+}
+
+val copySources by tasks.registering(Copy::class) {
+    from("src/${dartDefines["FLAVOR"]}/res")
+    into("src/main/res")
+}
+
 android {
-    namespace = "com.example.apps"
+    namespace = "com.template.app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -20,14 +41,17 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.apps"
+        applicationId = dartDefines["APP_ID"]
+        dartDefines["APP_ID_SUFFIX"]?.let {
+            applicationIdSuffix = it
+        }
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        resValue("string", "app_name", dartDefines["APP_NAME"] ?: "")
     }
 
     buildTypes {

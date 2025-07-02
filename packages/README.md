@@ -88,7 +88,7 @@ EOF
 # 6. ワークスペースへのパッケージ登録
 # ルートpubspec.yamlのworkspaceセクションに追加:
 # workspace:
-#   - apps
+#   - app
 #   - packages/app_preferences
 #   - packages/[package_name]  # この行を追加
 

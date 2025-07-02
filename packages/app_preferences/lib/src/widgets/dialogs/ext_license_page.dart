@@ -26,7 +26,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 /// await showLicense(
 ///   context,
 ///   applicationName: 'My App',
-///   applicationIcon: Icon(Icons.apps),
+///   applicationIcon: Icon(Icons.app),
 ///   applicationLegalese: '© 2024 My Company',
 /// );
 /// ```

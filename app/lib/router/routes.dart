@@ -1,5 +1,5 @@
-import 'package:apps/pages/home/home_page.dart';
-import 'package:apps/pages/settings/settings_page.dart';
+import 'package:app/pages/home/home_page.dart';
+import 'package:app/pages/settings/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
