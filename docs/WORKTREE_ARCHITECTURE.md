@@ -147,7 +147,7 @@ flutter_template_project/
 #### IntelliJ IDEA での問題例
 
 ```bash
-.git/worktrees/feature-FEAT-123/apps/
+.git/worktrees/feature-FEAT-123/app/
 # ↑ IDEがプロジェクトルートとして認識しにくい
 # ↑ Flutter SDKの検出に失敗する可能性
 # ↑ 設定ファイル（.idea/）が正しく動作しない
@@ -244,7 +244,7 @@ for worktree in .git/worktrees/*/; do
         # 権限チェック
         if [ -r "$worktree" ] && [ -w "$worktree" ]; then
             # Git内部ファイルとの区別
-            if [ -f "$worktree/apps/pubspec.yaml" ]; then
+            if [ -f "$worktree/app/pubspec.yaml" ]; then
                 cd "$worktree"
                 flutter analyze
                 cd - > /dev/null

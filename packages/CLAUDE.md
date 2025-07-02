@@ -76,7 +76,7 @@ EOF
 # 6. Register package in workspace
 # Add to root pubspec.yaml workspace section:
 # workspace:
-#   - apps
+#   - app
 #   - packages/app_preferences
 #   - packages/[package_name]  # Add this line
 

@@ -1,4 +1,4 @@
-import 'package:apps/router/routes.dart';
+import 'package:app/router/routes.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
