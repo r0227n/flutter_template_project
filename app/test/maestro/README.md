@@ -249,7 +249,6 @@ appId: ${FULL_APP_ID}
 ## 参考リンク
 
 - [Maestro公式ドキュメント](https://maestro.mobile.dev/)
-- [Maestro YAMLリファレンス](https://maestro.mobile.dev/reference/yaml-reference)
 - [Flutter UIテストガイド](https://docs.flutter.dev/testing)
 - [Claude Code公式ドキュメント](https://docs.anthropic.com/en/docs/claude-code)
 
