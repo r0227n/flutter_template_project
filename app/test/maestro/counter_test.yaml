@@ -1,0 +1,11 @@
+appId: ${FULL_APP_ID}
+---
+- launchApp
+- assertVisible: 'Flutter Demo Home Page'
+- assertVisible: 'カウンター: 0'
+- tapOn:
+    text: 'Increment'
+- assertVisible: 'カウンター: 1'
+- tapOn:
+    text: 'Increment'
+- assertVisible: 'カウンター: 2'

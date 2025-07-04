@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(*/.dart_define/*.json)",
+      "Write(*/.dart_define/*.json)",
+      "Bash(*:*/.dart_define/*.json)"
+    ]
+  }
+}
