@@ -27,8 +27,8 @@ void main() {
           home: Builder(
             builder: (context) => Scaffold(
               body: ElevatedButton(
-                onPressed: () {
-                  showDialog<void>(
+                onPressed: () async {
+                  await showDialog<void>(
                     context: context,
                     builder: (context) => ThemeSelectionDialog(
                       title: 'Select Theme',
