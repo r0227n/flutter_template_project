@@ -174,7 +174,8 @@ void main() {
 
   group('Provider Dependencies', () {
     test(
-      'appPreferencesRepositoryProvider creates repository with SharedPreferences',
+      'appPreferencesRepositoryProvider creates repository with '
+      'SharedPreferences',
       () async {
         SharedPreferences.setMockInitialValues({});
         final mockPrefs = await SharedPreferences.getInstance();
