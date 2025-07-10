@@ -14,6 +14,10 @@ jobs:
     runs-on: ubuntu-24.04
     needs: check-file-changes
     if: needs.check-file-changes.outputs.dart_changed > 0
+    permissions:
+      contents: read
+      actions: read
+      checks: write
 
     steps:
       # https://github.com/actions/checkout
@@ -27,16 +31,16 @@ jobs:
         run: melos run analyze
 
       - name: Run melos test
-        run: melos run test
+        run: melos run test > test_report.log
 
       - name: Publish Test Results
         uses: dorny/test-reporter@dc3a92680fcc15842eef52e8c4606ea7ce6bd3f3 # v2.1.1
         if: always()
         with:
           name: Flutter Tests
-          path: '**/test-results.json'
-          reporter: flutter-json
-          fail-on-error: true
+          path: 'test_report.log'
+          reporter: 'flutter-json'
+          fail-on-error: false
 
       - name: Check melos format
         run: melos run ci:format
