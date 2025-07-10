@@ -31,14 +31,16 @@ jobs:
         run: melos run analyze
 
       - name: Run melos test
-        run: melos run test > test_report.log
+        run: |
+          melos run test 2>&1 | tee test-output.log
+          grep '^{' test-output.log > test-results.json || echo '{"success":false,"type":"done","time":0}' > test-results.json
 
       - name: Publish Test Results
         uses: dorny/test-reporter@dc3a92680fcc15842eef52e8c4606ea7ce6bd3f3 # v2.1.1
         if: always()
         with:
           name: Flutter Tests
-          path: 'test_report.log'
+          path: 'test-results.json'
           reporter: 'flutter-json'
           fail-on-error: false
 
