@@ -30,15 +30,15 @@ jobs:
       - name: Run melos analyze
         run: melos run analyze
 
-      - name: Run melos test
-        run: melos run test
+      - name: Run melos test report
+        run: melos run report:test
 
       - name: Publish Test Results
         uses: dorny/test-reporter@dc3a92680fcc15842eef52e8c4606ea7ce6bd3f3 # v2.1.1
         if: always()
         with:
           name: Flutter Tests
-          path: '**/test-results.json'
+          path: '**/test-report.json'
           reporter: 'flutter-json'
           fail-on-error: false
 
