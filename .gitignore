@@ -49,3 +49,6 @@ node_modules/
 # mise
 .mise/cache/
 .mise/plugins/
+
+# Test results
+**/test-report.json
