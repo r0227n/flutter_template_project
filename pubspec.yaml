@@ -55,7 +55,8 @@ melos:
       description: Run tests for all packages
       run: melos exec --fail-fast --concurrency=1 -- "flutter test"
 
-    report:test:
+    # Report test results
+    ci:test:
       description: Report test results
       run: melos exec --fail-fast --concurrency=1 -- "flutter test --no-pub --machine > test-report.json"
 
