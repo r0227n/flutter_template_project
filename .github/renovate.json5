@@ -13,7 +13,6 @@
     ':timezone(Asia/Tokyo)',
     ':label(dependencies)',
   ],
-  repositories: ['r0227n/flutter_template_project'],
   packageRules: [
     {
       description: 'Flutter SDK and related packages',
