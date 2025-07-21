@@ -1,0 +1,25 @@
+name: app_logger
+description: A reusable logging package for Flutter applications using Talker
+version: 1.0.0
+publish_to: 'none'
+
+environment:
+  sdk: ^3.5.3
+  flutter: ^3.0.0
+
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  talker_flutter: ^4.8.4
+  riverpod: ^2.6.1
+  firebase_crashlytics: ^4.3.9
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  yumemi_lints: ^4.1.1
+
+flutter:

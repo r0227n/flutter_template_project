@@ -9,6 +9,7 @@ dev_dependencies:
 
 workspace:
   - app
+  - packages/app_logger
   - packages/app_preferences
 
 melos:
