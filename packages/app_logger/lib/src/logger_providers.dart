@@ -35,6 +35,9 @@ mixin LoggerMixin {
   void logError(String message, [Object? exception, StackTrace? stackTrace]) =>
       logger.error(message, _formatLogData(exception), stackTrace);
 
+  void logUserAction(String action, [Map<String, dynamic>? metadata]) =>
+      logger.logUserAction(action, metadata);
+
   /// Full log output (no truncation)
   void logFull(String message, [Object? data]) => logger.logFull(message, data);
 
