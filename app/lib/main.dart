@@ -9,7 +9,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  print('main');
 
   // Initialize locale from stored preferences or use device locale as fallback
   final sharedPrefs = await prefs.AppPreferencesInitializer.initializeLocale(
