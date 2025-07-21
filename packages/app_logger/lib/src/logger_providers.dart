@@ -1,10 +1,26 @@
 import 'package:riverpod/riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 import 'app_logger.dart';
 
+part 'logger_providers.g.dart';
+
 /// Provider for the Talker instance for advanced usage
-final talkerProvider = Provider<Talker>((ref) => throw UnimplementedError());
+@riverpod
+Talker talker(Ref ref) {
+  if (!AppLogger.isInitialized) {
+    throw StateError(
+        'AppLogger has not been initialized. Call AppLogger.initialize() first.');
+  }
+  return AppLogger.instance.talker;
+}
+
+/// Provider for the AppLogger instance
+@riverpod
+AppLogger appLogger(Ref ref) {
+  return AppLogger.instance;
+}
 
 /// Mixin for easy logger access in Riverpod-based classes
 mixin LoggerMixin {
