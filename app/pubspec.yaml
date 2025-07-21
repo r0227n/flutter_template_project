@@ -10,6 +10,8 @@ environment:
 resolution: workspace
 
 dependencies:
+  app_logger:
+    path: ../packages/app_logger
   app_preferences:
     path: ../packages/app_preferences
   cupertino_icons: ^1.0.8

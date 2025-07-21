@@ -1,5 +1,6 @@
 import 'package:app/i18n/translations.g.dart';
 import 'package:app/router/routes.dart';
+import 'package:app_logger/app_logger.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -19,13 +20,39 @@ class HomePage extends ConsumerStatefulWidget {
   ConsumerState<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends ConsumerState<HomePage> {
+class _HomePageState extends ConsumerState<HomePage> with LoggerMixin {
   var _counter = 0;
 
+  /// Performance measurement helper method
+  void _measurePerformance(
+    String operation,
+    VoidCallback callback, {
+    Map<String, dynamic>? metadata,
+  }) {
+    final stopwatch = Stopwatch()..start();
+    callback();
+    stopwatch.stop();
+
+    logger.logPerformance(
+      operation,
+      stopwatch.elapsed,
+      metadata,
+    );
+  }
+
   void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+    // Log user action with structured logging using mixin
+    logUserAction(
+      'counter_increment',
+      {'previous_value': _counter, 'new_value': _counter + 1},
+    );
+
+    // Use performance measurement helper
+    _measurePerformance('counter_update', () {
+      setState(() {
+        _counter++;
+      });
+    }, metadata: {'counter_value': _counter + 1});
   }
 
   @override
@@ -36,9 +63,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         title: Text(widget.title),
         actions: [
           IconButton(
-            onPressed: () async {
-              await const SettingsRoute().push<void>(context);
-            },
+            onPressed: () => const SettingsRoute().push<void>(context),
             icon: const Icon(Icons.settings),
           ),
         ],
