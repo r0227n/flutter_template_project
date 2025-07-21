@@ -29,6 +29,8 @@ dependencies:
   shared_preferences: ^2.5.3
   slang: ^4.7.2
   slang_flutter: ^4.7.0
+  talker_flutter: ^4.9.2
+  talker_riverpod_logger: ^4.9.2
 
 dev_dependencies:
   build_runner: ^2.5.3
