@@ -7,12 +7,20 @@
 
 import 'package:app/i18n/translations.g.dart' as app_translations;
 import 'package:app/pages/home/home_page.dart';
+import 'package:app_logger/app_logger.dart';
 import 'package:app_preferences/app_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 void main() {
+  setUpAll(() {
+    // Initialize AppLogger for all tests
+    if (!AppLogger.isInitialized) {
+      AppLogger.initialize(LoggerConfig.development());
+    }
+  });
+
   group('Basic Widget Tests', () {
     testWidgets('Counter increments smoke test', (tester) async {
       // Build our app and trigger a frame.
