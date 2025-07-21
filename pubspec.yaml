@@ -39,7 +39,7 @@ melos:
     # Analyze all packages
     analyze:
       description: Analyze all packages
-      run: melos exec -- "dart analyze"
+      run: melos exec -- "dart analyze --fatal-infos"
 
     # Check slang translations
     analyze:slang:
