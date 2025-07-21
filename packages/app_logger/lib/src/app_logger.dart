@@ -87,17 +87,17 @@ class AppLogger {
 
     if (extra is Map) {
       final entries = extra.entries.map((e) => '${e.key}: ${e.value}');
-      // 改行を使って見やすく整形し、省略を防ぐ
+      // Format with newlines for readability and prevent truncation
       return '{\n${entries.map((e) => '  $e').join(',\n')}\n}';
     }
 
     if (extra is List) {
-      // リストも改行で見やすく整形
+      // Format lists with newlines for better readability
       return '[\n${extra.map((e) => '  $e').join(',\n')}\n]';
     }
 
     final str = extra.toString();
-    // 長い文字列は改行で分割して見やすくする
+    // Split long strings with newlines for better readability
     if (str.length > 100) {
       return '\n$str';
     }
@@ -123,7 +123,7 @@ class AppLogger {
     info('Performance: $operation took ${duration.inMilliseconds}ms', data);
   }
 
-  /// 完全なログ出力（省略なし）
+  /// Full log output (no truncation)
   void logFull(String message, [Object? data]) {
     if (data != null) {
       _talker.info('$message\n${_formatExtra(data)}');
@@ -132,7 +132,7 @@ class AppLogger {
     }
   }
 
-  /// デバッグ用の完全なログ出力
+  /// Full debug log output
   void debugFull(String message, [Object? data]) {
     if (data != null) {
       _talker.debug('$message\n${_formatExtra(data)}');

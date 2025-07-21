@@ -35,10 +35,10 @@ mixin LoggerMixin {
   void logError(String message, [Object? exception, StackTrace? stackTrace]) =>
       logger.error(message, _formatLogData(exception), stackTrace);
 
-  /// 完全なログ出力（省略なし）
+  /// Full log output (no truncation)
   void logFull(String message, [Object? data]) => logger.logFull(message, data);
 
-  /// デバッグ用の完全なログ出力
+  /// Full debug log output
   void logDebugFull(String message, [Object? data]) =>
       logger.debugFull(message, data);
 
