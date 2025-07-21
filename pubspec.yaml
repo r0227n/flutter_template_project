@@ -9,6 +9,7 @@ dev_dependencies:
 
 workspace:
   - app
+  - packages/app_logger
   - packages/app_preferences
 
 melos:
@@ -53,12 +54,12 @@ melos:
     # Run tests for all packages
     test:
       description: Run tests for all packages
-      run: melos exec --fail-fast --concurrency=1 -- "flutter test"
+      run: melos exec --fail-fast --concurrency=1 --dir-exists=test -- "flutter test"
 
     # Report test results
     ci:test:
       description: Report test results
-      run: melos exec --fail-fast --concurrency=1 -- "flutter test --no-pub --machine > test-report.json"
+      run: melos exec --fail-fast --concurrency=1 --dir-exists=test -- "flutter test --no-pub --machine > test-report.json"
 
     # Check if formatting is correct (for CI)
     ci:format:
