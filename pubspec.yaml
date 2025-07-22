@@ -61,13 +61,10 @@ melos:
       description: Analyze changed workspaces or all if none specified
       run: |
         if [ -n "$CHANGED_WORKSPACES" ]; then
-          echo "Changed workspaces detected: $CHANGED_WORKSPACES"
           for workspace in $CHANGED_WORKSPACES; do
-            echo "Running analyze for workspace: $workspace"
             melos exec --scope="$workspace" -- "dart analyze --fatal-infos"
           done
         else
-          echo "No workspaces specified, running full analyze"
           melos run analyze
         fi
 
@@ -75,13 +72,10 @@ melos:
       description: Test changed workspaces or all if none specified
       run: |
         if [ -n "$CHANGED_WORKSPACES" ]; then
-          echo "Changed workspaces detected: $CHANGED_WORKSPACES"
           for workspace in $CHANGED_WORKSPACES; do
-            echo "Running tests for workspace: $workspace"
             melos exec --scope="$workspace" --dir-exists=test -- "flutter test --no-pub --machine > test-report.json"
           done
         else
-          echo "No workspaces specified, running full test"
           melos run ci:test
         fi
 
@@ -89,13 +83,10 @@ melos:
       description: Format check changed workspaces or all if none specified
       run: |
         if [ -n "$CHANGED_WORKSPACES" ]; then
-          echo "Changed workspaces detected: $CHANGED_WORKSPACES"
           for workspace in $CHANGED_WORKSPACES; do
-            echo "Checking format for workspace: $workspace"
             melos exec --scope="$workspace" -- "dart format --output=none --set-exit-if-changed ."
           done
         else
-          echo "No workspaces specified, running full format check"
           melos run ci:format
         fi
 
