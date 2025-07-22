@@ -56,15 +56,48 @@ melos:
       description: Run tests for all packages
       run: melos exec --fail-fast --concurrency=1 --dir-exists=test -- "flutter test"
 
-    # Report test results
-    ci:test:
-      description: Report test results
-      run: melos exec --fail-fast --concurrency=1 --dir-exists=test -- "flutter test --no-pub --machine > test-report.json"
+    # CI commands with workspace detection
+    ci:analyze-changed:
+      description: Analyze changed workspaces or all if none specified
+      run: |
+        if [ -n "$CHANGED_WORKSPACES" ]; then
+          echo "Changed workspaces detected: $CHANGED_WORKSPACES"
+          for workspace in $CHANGED_WORKSPACES; do
+            echo "Running analyze for workspace: $workspace"
+            melos exec --scope="$workspace" -- "dart analyze --fatal-infos"
+          done
+        else
+          echo "No workspaces specified, running full analyze"
+          melos run analyze
+        fi
 
-    # Check if formatting is correct (for CI)
-    ci:format:
-      description: Check if all packages are formatted correctly
-      run: melos exec -- "dart format --output=none --set-exit-if-changed ."
+    ci:test-changed:
+      description: Test changed workspaces or all if none specified
+      run: |
+        if [ -n "$CHANGED_WORKSPACES" ]; then
+          echo "Changed workspaces detected: $CHANGED_WORKSPACES"
+          for workspace in $CHANGED_WORKSPACES; do
+            echo "Running tests for workspace: $workspace"
+            melos exec --scope="$workspace" --dir-exists=test -- "flutter test --no-pub --machine > test-report.json"
+          done
+        else
+          echo "No workspaces specified, running full test"
+          melos run ci:test
+        fi
+
+    ci:format-changed:
+      description: Format check changed workspaces or all if none specified
+      run: |
+        if [ -n "$CHANGED_WORKSPACES" ]; then
+          echo "Changed workspaces detected: $CHANGED_WORKSPACES"
+          for workspace in $CHANGED_WORKSPACES; do
+            echo "Checking format for workspace: $workspace"
+            melos exec --scope="$workspace" -- "dart format --output=none --set-exit-if-changed ."
+          done
+        else
+          echo "No workspaces specified, running full format check"
+          melos run ci:format
+        fi
 
   environment:
     sdk: '>=3.6.0 <4.0.0'

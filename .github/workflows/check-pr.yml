@@ -28,38 +28,10 @@ jobs:
         uses: ./.github/actions/setup-flutter
 
       - name: Run analyze for changed workspaces
-        run: |
-          CHANGED_WORKSPACES="${{ needs.check-file-changes.outputs.changed_workspaces }}"
-          if [ -n "$CHANGED_WORKSPACES" ]; then
-            for workspace in $CHANGED_WORKSPACES; do
-              echo "Running analyze for workspace: $workspace"
-              if [ "$workspace" = "app" ]; then
-                melos exec --scope="app" -- "dart analyze --fatal-infos"
-              else
-                melos exec --scope="$workspace" -- "dart analyze --fatal-infos"
-              fi
-            done
-          else
-            echo "No workspaces changed, running full analyze"
-            melos run analyze
-          fi
+        run: CHANGED_WORKSPACES="${{ needs.check-file-changes.outputs.changed_workspaces }}" melos run ci:analyze-changed
 
       - name: Run test for changed workspaces
-        run: |
-          CHANGED_WORKSPACES="${{ needs.check-file-changes.outputs.changed_workspaces }}"
-          if [ -n "$CHANGED_WORKSPACES" ]; then
-            for workspace in $CHANGED_WORKSPACES; do
-              echo "Running tests for workspace: $workspace"
-              if [ "$workspace" = "app" ]; then
-                melos exec --scope="app" --dir-exists=test -- "flutter test --no-pub --machine > test-report.json"
-              else
-                melos exec --scope="$workspace" --dir-exists=test -- "flutter test --no-pub --machine > test-report.json"
-              fi
-            done
-          else
-            echo "No workspaces changed, running full test"
-            melos run ci:test
-          fi
+        run: CHANGED_WORKSPACES="${{ needs.check-file-changes.outputs.changed_workspaces }}" melos run ci:test-changed
 
       - name: Publish Test Results
         uses: dorny/test-reporter@dc3a92680fcc15842eef52e8c4606ea7ce6bd3f3 # v2.1.1
@@ -71,21 +43,7 @@ jobs:
           fail-on-error: false
 
       - name: Check format for changed workspaces
-        run: |
-          CHANGED_WORKSPACES="${{ needs.check-file-changes.outputs.changed_workspaces }}"
-          if [ -n "$CHANGED_WORKSPACES" ]; then
-            for workspace in $CHANGED_WORKSPACES; do
-              echo "Checking format for workspace: $workspace"
-              if [ "$workspace" = "app" ]; then
-                melos exec --scope="app" -- "dart format --output=none --set-exit-if-changed ."
-              else
-                melos exec --scope="$workspace" -- "dart format --output=none --set-exit-if-changed ."
-              fi
-            done
-          else
-            echo "No workspaces changed, running full format check"
-            melos run ci:format
-          fi
+        run: CHANGED_WORKSPACES="${{ needs.check-file-changes.outputs.changed_workspaces }}" melos run ci:format-changed
 
   check-file-changes:
     name: Check File Changes
@@ -135,7 +93,7 @@ jobs:
         uses: ./.github/actions/setup-bun
 
       - name: Run slang analyze for app workspace
-        run: melos exec --scope="app" -- "dart run slang analyze"
+        run: melos run analyze:slang
 
   lint-yaml-markdown:
     name: Lint YAML and Markdown
