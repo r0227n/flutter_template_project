@@ -73,7 +73,7 @@ melos:
       run: |
         if [ -n "$CHANGED_WORKSPACES" ]; then
           for workspace in $CHANGED_WORKSPACES; do
-            melos exec --scope="$workspace" --dir-exists=test -- "dart test --reporter=json --file-reporter=json:test-report.json"
+            melos exec --scope="$workspace" --dir-exists=test -- "flutter test --no-pub --machine --coverage --test-randomize-ordering-seed random"
           done
         else
           melos run ci:test
