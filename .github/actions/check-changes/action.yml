@@ -56,34 +56,47 @@ runs:
         echo "md_changed=$(echo "$CHANGED_FILES" | grep -E '\.md$' | wc -l | xargs)" >> $GITHUB_OUTPUT
         echo "i18n_changed=$(echo "$CHANGED_FILES" | grep -E '\.i18n\.json$' | wc -l | xargs)" >> $GITHUB_OUTPUT
 
-        # Check for changed workspaces
+        # Dynamically detect changed workspaces
         CHANGED_WORKSPACES=""
-        APP_CHANGED="false"
-        APP_LOGGER_CHANGED="false" 
-        APP_PREFERENCES_CHANGED="false"
 
+        # Check for app directory
         if echo "$CHANGED_FILES" | grep -q "^app/"; then
           CHANGED_WORKSPACES="$CHANGED_WORKSPACES app"
-          APP_CHANGED="true"
         fi
 
-        if echo "$CHANGED_FILES" | grep -q "^packages/app_logger/"; then
-          CHANGED_WORKSPACES="$CHANGED_WORKSPACES app_logger"
-          APP_LOGGER_CHANGED="true"
-        fi
-
-        if echo "$CHANGED_FILES" | grep -q "^packages/app_preferences/"; then
-          CHANGED_WORKSPACES="$CHANGED_WORKSPACES app_preferences"
-          APP_PREFERENCES_CHANGED="true"
-        fi
+        # Check for packages subdirectories
+        for package_dir in packages/*/; do
+          if [ -d "$package_dir" ]; then
+            package_name=$(basename "$package_dir")
+            if echo "$CHANGED_FILES" | grep -q "^packages/$package_name/"; then
+              CHANGED_WORKSPACES="$CHANGED_WORKSPACES $package_name"
+            fi
+          fi
+        done
 
         # Trim leading whitespace
         CHANGED_WORKSPACES=$(echo "$CHANGED_WORKSPACES" | xargs)
 
         echo "changed_workspaces=$CHANGED_WORKSPACES" >> $GITHUB_OUTPUT
-        echo "app_changed=$APP_CHANGED" >> $GITHUB_OUTPUT
-        echo "app_logger_changed=$APP_LOGGER_CHANGED" >> $GITHUB_OUTPUT
-        echo "app_preferences_changed=$APP_PREFERENCES_CHANGED" >> $GITHUB_OUTPUT
+
+        # Legacy outputs for backward compatibility
+        if echo "$CHANGED_WORKSPACES" | grep -q "\bapp\b"; then
+          echo "app_changed=true" >> $GITHUB_OUTPUT
+        else
+          echo "app_changed=false" >> $GITHUB_OUTPUT
+        fi
+
+        if echo "$CHANGED_WORKSPACES" | grep -q "\bapp_logger\b"; then
+          echo "app_logger_changed=true" >> $GITHUB_OUTPUT
+        else
+          echo "app_logger_changed=false" >> $GITHUB_OUTPUT
+        fi
+
+        if echo "$CHANGED_WORKSPACES" | grep -q "\bapp_preferences\b"; then
+          echo "app_preferences_changed=true" >> $GITHUB_OUTPUT
+        else
+          echo "app_preferences_changed=false" >> $GITHUB_OUTPUT
+        fi
 
         # Debug output
         echo "Changed files:"
@@ -94,6 +107,3 @@ runs:
         echo "MD files changed: $(echo "$CHANGED_FILES" | grep -E '\.md$' | wc -l | xargs)"
         echo "i18n files changed: $(echo "$CHANGED_FILES" | grep -E '\.i18n\.json$' | wc -l | xargs)"
         echo "Changed workspaces: $CHANGED_WORKSPACES"
-        echo "App changed: $APP_CHANGED"
-        echo "App logger changed: $APP_LOGGER_CHANGED"  
-        echo "App preferences changed: $APP_PREFERENCES_CHANGED"
