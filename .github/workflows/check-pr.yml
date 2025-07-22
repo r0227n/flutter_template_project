@@ -33,16 +33,6 @@ jobs:
       - name: Run test for changed workspaces
         run: CHANGED_WORKSPACES="${{ needs.check-file-changes.outputs.changed_workspaces }}" melos run ci:test-changed
 
-      - name: Publish Flutter Test Results
-        uses: dorny/test-reporter@dc3a92680fcc15842eef52e8c4606ea7ce6bd3f3 # v2.1.1
-        if: always()
-        continue-on-error: true
-        with:
-          name: Flutter Tests
-          path: '**/test-report.json'
-          reporter: 'flutter-json'
-          fail-on-error: false
-
       - name: Publish Dart Test Results
         uses: dorny/test-reporter@dc3a92680fcc15842eef52e8c4606ea7ce6bd3f3 # v2.1.1
         if: always()
