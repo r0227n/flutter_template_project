@@ -1,6 +1,5 @@
 import 'dart:async';
 
-// Test change for app workspace optimization
 import 'package:app/i18n/translations.g.dart';
 import 'package:app/router/app_router.dart';
 import 'package:app_logger/app_logger.dart';
