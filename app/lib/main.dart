@@ -1,5 +1,6 @@
 import 'dart:async';
 
+// Test change for app workspace optimization
 import 'package:app/i18n/translations.g.dart';
 import 'package:app/router/app_router.dart';
 import 'package:app_logger/app_logger.dart';
@@ -11,7 +12,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:talker_riverpod_logger/talker_riverpod_logger_observer.dart';
 import 'package:talker_riverpod_logger/talker_riverpod_logger_settings.dart';
 
-/// test cheanged
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
