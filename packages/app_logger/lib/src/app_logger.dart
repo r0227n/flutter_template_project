@@ -1,6 +1,7 @@
 import 'package:app_logger/src/crashlytics_observer.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
+// Test change for app_logger workspace optimization
 import 'logger_config.dart';
 
 /// Application logger wrapper for TalkerFlutter
