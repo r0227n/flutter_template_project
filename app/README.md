@@ -20,5 +20,3 @@ samples, guidance on mobile development, and a full API reference.
 ```bash
 dart run slang configure
 ```
-
-hoge
