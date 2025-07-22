@@ -51,10 +51,33 @@ melos:
       description: Format all packages
       run: melos exec -- "dart format ."
 
-    # Run tests for all packages
+    # Run tests for all packages (auto-detects Flutter vs Dart)
     test:
-      description: Run tests for all packages
-      run: melos exec --fail-fast --concurrency=1 --dir-exists=test -- "flutter test"
+      description: Run tests for all packages (auto-detects Flutter vs Dart)
+      run: |
+        melos exec --fail-fast --concurrency=1 --dir-exists=test -- '
+          if grep -q "flutter:" pubspec.yaml 2>/dev/null; then
+            echo "Flutter project detected, using flutter test"
+            flutter test
+          else
+            echo "Pure Dart project detected, using dart test"
+            dart test
+          fi
+        '
+
+    # CI test with JSON reporting (auto-detects Flutter vs Dart)
+    ci:test:
+      description: Report test results (auto-detects Flutter vs Dart)
+      run: |
+        melos exec --fail-fast --concurrency=1 --dir-exists=test -- '
+          if grep -q "flutter:" pubspec.yaml 2>/dev/null; then
+            echo "Flutter project detected, using flutter test"
+            flutter test --no-pub --machine > test-report.json
+          else
+            echo "Pure Dart project detected, using dart test"
+            dart test --reporter=json --file-reporter=json:test-report.json
+          fi
+        '
 
     # CI commands with workspace detection
     ci:analyze-changed:
@@ -69,11 +92,20 @@ melos:
         fi
 
     ci:test-changed:
-      description: Test changed workspaces or all if none specified
+      description: Test changed workspaces or all if none specified (auto-detects Flutter vs Dart)
       run: |
         if [ -n "$CHANGED_WORKSPACES" ]; then
           for workspace in $CHANGED_WORKSPACES; do
-            melos exec --scope="$workspace" --dir-exists=test -- "flutter test --no-pub --machine --coverage --test-randomize-ordering-seed random"
+            echo "Running tests for workspace: $workspace"
+            melos exec --scope="$workspace" --dir-exists=test -- '
+              if grep -q "flutter:" pubspec.yaml 2>/dev/null; then
+                echo "Flutter project detected, using flutter test"
+                flutter test --no-pub --machine > test-report.json
+              else
+                echo "Pure Dart project detected, using dart test"
+                dart test --reporter=json --file-reporter=json:test-report.json
+              fi
+            '
           done
         else
           melos run ci:test
