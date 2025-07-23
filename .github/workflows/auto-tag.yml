@@ -38,9 +38,12 @@ jobs:
             const path = require('path');
             const labelsToAdd = [];
 
-            // Get changed workspaces from check-changes action
+            // Get changed workspaces and tags from check-changes action
             const changedWorkspaces = '${{ steps.check_changes.outputs.changed_workspaces }}';
+            const changedTags = '${{ steps.check_changes.outputs.changed_tags }}';
+            const allTags = '${{ steps.check_changes.outputs.all_tags }}';
 
+            // Add workspace-specific labels
             if (changedWorkspaces && changedWorkspaces.trim() !== '') {
               // Add general workspace label
               labelsToAdd.push('workspace');
@@ -56,9 +59,30 @@ jobs:
               console.log(`Detected changed workspaces: ${workspaces.join(', ')}`);
             }
 
+            // Add directory-based tags
+            if (changedTags && changedTags.trim() !== '') {
+              const tags = changedTags.trim().split(' ');
+              tags.forEach(tag => {
+                if (tag) {
+                  labelsToAdd.push(tag);
+                }
+              });
+              
+              console.log(`Detected directory-based tags: ${tags.join(', ')}`);
+            }
+
             if (labelsToAdd.length > 0) {
               console.log(`Adding labels: ${labelsToAdd.join(', ')}`);
               
+              // Define label colors based on type
+              const getColor = (label) => {
+                if (label === 'workspace') return '1d76db';
+                if (label === 'CI') return 'e99695';
+                if (label === 'documentation') return '0075ca';
+                if (label === 'script') return 'fbca04';
+                return '0969da'; // Default color for workspace labels
+              };
+
               // Create labels that don't exist
               for (const label of labelsToAdd) {
                 try {
@@ -66,7 +90,7 @@ jobs:
                     owner: context.repo.owner,
                     repo: context.repo.repo,
                     name: label,
-                    color: label === 'workspace' ? '1d76db' : '0969da'
+                    color: getColor(label)
                   });
                 } catch (error) {
                   // Label already exists, which is fine
@@ -84,5 +108,5 @@ jobs:
                 labels: labelsToAdd
               });
             } else {
-              console.log('No workspace changes detected, no labels added');
+              console.log('No workspace or directory changes detected, no labels added');
             }
