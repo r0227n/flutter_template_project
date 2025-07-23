@@ -40,9 +40,6 @@ jobs:
               CI: { color: 'e99695', description: 'Changes to CI/CD workflows and automation' },
               documentation: { color: '0075ca', description: 'Documentation updates and improvements' },
               script: { color: 'fbca04', description: 'Build scripts and automation tools' },
-              
-              // Workspace-specific labels (default color for dynamic workspaces)
-              default: { color: '0969da', description: 'Workspace-specific changes' }
             };
 
             // Function to get label configuration
