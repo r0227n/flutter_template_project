@@ -35,10 +35,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             // Label configuration with colors and descriptions
-            const LABEL_CONFIG = {
-              // General category labels
-              workspace: { color: '1d76db', description: 'Changes affect workspace components' },
-              
+            const LABEL_CONFIG = {              
               // Directory-based labels
               CI: { color: 'e99695', description: 'Changes to CI/CD workflows and automation' },
               documentation: { color: '0075ca', description: 'Documentation updates and improvements' },
