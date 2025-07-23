@@ -71,7 +71,7 @@ jobs:
 
       - name: Publish Test Results
         uses: dorny/test-reporter@dc3a92680fcc15842eef52e8c4606ea7ce6bd3f3 # v2.1.1
-        if: always() && needs.check-file-changes.outputs.dart_changed != '0'
+        if: (success() || failure()) && needs.check-file-changes.outputs.dart_changed != '0'
         with:
           name: Flutter Test Results
           path: '**/test-report.json'
