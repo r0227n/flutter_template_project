@@ -2,7 +2,7 @@ name: Auto Label PR
 
 on:
   pull_request:
-    types: [opened, reopened]
+    types: [opened, synchronize, reopened]
 
 concurrency:
   group: auto-label-${{ github.ref }}
@@ -44,8 +44,13 @@ jobs:
 
             // Function to get label configuration
             const getLabelConfig = (labelName) => {
+              // Generate random color for labels not in config
+              const generateRandomColor = () => {
+                return Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+              };
+
               return LABEL_CONFIG[labelName] || {
-                color: LABEL_CONFIG.default.color,
+                color: generateRandomColor(),
                 description: `Changes to ${labelName} workspace`
               };
             };
