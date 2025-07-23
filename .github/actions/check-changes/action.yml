@@ -29,6 +29,12 @@ outputs:
   changed_workspaces:
     description: 'List of changed workspaces (space-separated)'
     value: ${{ steps.check_changes.outputs.changed_workspaces }}
+  changed_tags:
+    description: 'List of directory-based tags (space-separated)'
+    value: ${{ steps.check_changes.outputs.changed_tags }}
+  all_tags:
+    description: 'Combined list of workspaces and directory tags (space-separated)'
+    value: ${{ steps.check_changes.outputs.all_tags }}
   app_changed:
     description: 'Whether app workspace changed'
     value: ${{ steps.check_changes.outputs.app_changed }}
@@ -56,8 +62,9 @@ runs:
         echo "md_changed=$(echo "$CHANGED_FILES" | grep -E '\.md$' | wc -l | xargs)" >> $GITHUB_OUTPUT
         echo "i18n_changed=$(echo "$CHANGED_FILES" | grep -E '\.i18n\.json$' | wc -l | xargs)" >> $GITHUB_OUTPUT
 
-        # Dynamically detect changed workspaces
+        # Dynamically detect changed workspaces and directories
         CHANGED_WORKSPACES=""
+        CHANGED_TAGS=""
 
         # Check for app directory
         if echo "$CHANGED_FILES" | grep -q "^app/"; then
@@ -74,10 +81,30 @@ runs:
           fi
         done
 
+        # Check for mapped directories and add corresponding tags
+        if echo "$CHANGED_FILES" | grep -q "^\.github/"; then
+          CHANGED_TAGS="$CHANGED_TAGS CI"
+        fi
+
+        if echo "$CHANGED_FILES" | grep -q "^docs/"; then
+          CHANGED_TAGS="$CHANGED_TAGS documentation"
+        fi
+
+        if echo "$CHANGED_FILES" | grep -q "^scripts/"; then
+          CHANGED_TAGS="$CHANGED_TAGS script"
+        fi
+
         # Trim leading whitespace
         CHANGED_WORKSPACES=$(echo "$CHANGED_WORKSPACES" | xargs)
+        CHANGED_TAGS=$(echo "$CHANGED_TAGS" | xargs)
+
+        # Combine workspaces and tags for output
+        ALL_TAGS="$CHANGED_WORKSPACES $CHANGED_TAGS"
+        ALL_TAGS=$(echo "$ALL_TAGS" | xargs)
 
         echo "changed_workspaces=$CHANGED_WORKSPACES" >> $GITHUB_OUTPUT
+        echo "changed_tags=$CHANGED_TAGS" >> $GITHUB_OUTPUT
+        echo "all_tags=$ALL_TAGS" >> $GITHUB_OUTPUT
 
         # Legacy outputs for backward compatibility
         if echo "$CHANGED_WORKSPACES" | grep -q "\bapp\b"; then
@@ -107,3 +134,5 @@ runs:
         echo "MD files changed: $(echo "$CHANGED_FILES" | grep -E '\.md$' | wc -l | xargs)"
         echo "i18n files changed: $(echo "$CHANGED_FILES" | grep -E '\.i18n\.json$' | wc -l | xargs)"
         echo "Changed workspaces: $CHANGED_WORKSPACES"
+        echo "Changed directory tags: $CHANGED_TAGS"
+        echo "All tags: $ALL_TAGS"
