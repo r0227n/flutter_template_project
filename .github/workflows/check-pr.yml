@@ -38,7 +38,7 @@ jobs:
           head_sha: ${{ github.event.pull_request.head.sha }}
 
   analyze-and-format:
-    name: Flutter Analysis, Testing & i18n Validation
+    name: Analysis and Testing
     runs-on: ubuntu-24.04
     needs: check-file-changes
     if: |
