@@ -35,15 +35,6 @@ outputs:
   all_tags:
     description: 'Combined list of workspaces and directory tags (space-separated)'
     value: ${{ steps.check_changes.outputs.all_tags }}
-  app_changed:
-    description: 'Whether app workspace changed'
-    value: ${{ steps.check_changes.outputs.app_changed }}
-  app_logger_changed:
-    description: 'Whether app_logger workspace changed'
-    value: ${{ steps.check_changes.outputs.app_logger_changed }}
-  app_preferences_changed:
-    description: 'Whether app_preferences workspace changed'
-    value: ${{ steps.check_changes.outputs.app_preferences_changed }}
 
 runs:
   using: 'composite'
@@ -106,24 +97,6 @@ runs:
         echo "changed_tags=$CHANGED_TAGS" >> $GITHUB_OUTPUT
         echo "all_tags=$ALL_TAGS" >> $GITHUB_OUTPUT
 
-        # Legacy outputs for backward compatibility
-        if echo "$CHANGED_WORKSPACES" | grep -q "\bapp\b"; then
-          echo "app_changed=true" >> $GITHUB_OUTPUT
-        else
-          echo "app_changed=false" >> $GITHUB_OUTPUT
-        fi
-
-        if echo "$CHANGED_WORKSPACES" | grep -q "\bapp_logger\b"; then
-          echo "app_logger_changed=true" >> $GITHUB_OUTPUT
-        else
-          echo "app_logger_changed=false" >> $GITHUB_OUTPUT
-        fi
-
-        if echo "$CHANGED_WORKSPACES" | grep -q "\bapp_preferences\b"; then
-          echo "app_preferences_changed=true" >> $GITHUB_OUTPUT
-        else
-          echo "app_preferences_changed=false" >> $GITHUB_OUTPUT
-        fi
 
         # Debug output
         echo "Changed files:"

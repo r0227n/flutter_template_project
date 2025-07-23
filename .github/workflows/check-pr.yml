@@ -9,56 +9,18 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  analyze-and-format:
-    name: Analysis and Format Check
-    runs-on: ubuntu-24.04
-    needs: check-file-changes
-    if: needs.check-file-changes.outputs.dart_changed > 0
-    permissions:
-      contents: read
-      actions: read
-      checks: write
-
-    steps:
-      # https://github.com/actions/checkout
-      - name: Checkout code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-
-      - name: Setup Flutter
-        uses: ./.github/actions/setup-flutter
-
-      - name: Run analyze for changed workspaces
-        run: CHANGED_WORKSPACES="${{ needs.check-file-changes.outputs.changed_workspaces }}" melos run ci:analyze-changed
-
-      - name: Run test for changed workspaces
-        run: CHANGED_WORKSPACES="${{ needs.check-file-changes.outputs.changed_workspaces }}" melos run ci:test-changed
-
-      - name: Publish Test Results
-        uses: dorny/test-reporter@dc3a92680fcc15842eef52e8c4606ea7ce6bd3f3 # v2.1.1
-        if: always()
-        with:
-          name: Dart Tests
-          path: '**/test-report.json'
-          reporter: 'dart-json'
-          fail-on-error: false
-
-      - name: Check format for changed workspaces
-        run: CHANGED_WORKSPACES="${{ needs.check-file-changes.outputs.changed_workspaces }}" melos run ci:format-changed
-
   check-file-changes:
     name: Check File Changes
     runs-on: ubuntu-24.04
     outputs:
+      # File type change counts
       dart_changed: ${{ steps.check_changes.outputs.dart_changed }}
-      i18n_files_exist: ${{ steps.check_changes.outputs.i18n_files_exist }}
       yml_changed: ${{ steps.check_changes.outputs.yml_changed }}
       yaml_changed: ${{ steps.check_changes.outputs.yaml_changed }}
       md_changed: ${{ steps.check_changes.outputs.md_changed }}
       i18n_changed: ${{ steps.check_changes.outputs.i18n_changed }}
+      # Workspace detection
       changed_workspaces: ${{ steps.check_changes.outputs.changed_workspaces }}
-      app_changed: ${{ steps.check_changes.outputs.app_changed }}
-      app_logger_changed: ${{ steps.check_changes.outputs.app_logger_changed }}
-      app_preferences_changed: ${{ steps.check_changes.outputs.app_preferences_changed }}
 
     steps:
       # https://github.com/actions/checkout
@@ -75,31 +37,59 @@ jobs:
           base_sha: ${{ github.event.pull_request.base.sha }}
           head_sha: ${{ github.event.pull_request.head.sha }}
 
-  i18n-validation:
-    name: i18n Validation
+  analyze-and-format:
+    name: Flutter Analysis, Testing & i18n Validation
     runs-on: ubuntu-24.04
     needs: check-file-changes
-    if: needs.check-file-changes.outputs.app_changed == 'true' && needs.check-file-changes.outputs.i18n_changed > 0
+    if: |
+      needs.check-file-changes.outputs.dart_changed || 
+      needs.check-file-changes.outputs.i18n_changed
+    permissions:
+      contents: read
+      actions: read
+      checks: write
 
     steps:
-      # https://github.com/actions/checkout  ss
+      # https://github.com/actions/checkout
       - name: Checkout code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Setup Flutter
         uses: ./.github/actions/setup-flutter
 
-      - name: Setup Bun
-        uses: ./.github/actions/setup-bun
+      - name: Run analyze for changed workspaces
+        if: needs.check-file-changes.outputs.dart_changed
+        env:
+          CHANGED_WORKSPACES: ${{ needs.check-file-changes.outputs.changed_workspaces }}
+        run: melos run ci:analyze-changed
 
-      - name: Run slang analyze for app workspace
+      - name: Run test for changed workspaces
+        if: needs.check-file-changes.outputs.dart_changed
+        env:
+          CHANGED_WORKSPACES: ${{ needs.check-file-changes.outputs.changed_workspaces }}
+        run: melos run ci:test-changed
+
+      - name: Publish Test Results
+        uses: dorny/test-reporter@dc3a92680fcc15842eef52e8c4606ea7ce6bd3f3 # v2.1.1
+        if: always() && needs.check-file-changes.outputs.dart_changed
+        with:
+          name: Flutter Test Results
+          path: '**/test-report.json'
+          reporter: 'dart-json'
+          fail-on-error: false
+
+      - name: Validate i18n translations
+        if: needs.check-file-changes.outputs.i18n_changed
         run: melos run analyze:slang
 
   lint-yaml-markdown:
     name: Lint YAML and Markdown
     runs-on: ubuntu-24.04
     needs: check-file-changes
-    if: needs.check-file-changes.outputs.yml_changed > 0 || needs.check-file-changes.outputs.yaml_changed > 0 || needs.check-file-changes.outputs.md_changed > 0
+    if: |
+      needs.check-file-changes.outputs.yml_changed || 
+      needs.check-file-changes.outputs.yaml_changed || 
+      needs.check-file-changes.outputs.md_changed
 
     steps:
       - name: Checkout code
