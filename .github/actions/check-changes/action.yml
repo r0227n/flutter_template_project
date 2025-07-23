@@ -63,6 +63,7 @@ runs:
         fi
 
         # Check for packages subdirectories
+        shopt -s nullglob
         for package_dir in packages/*/; do
           if [ -d "$package_dir" ]; then
             package_name=$(basename "$package_dir")
@@ -96,8 +97,6 @@ runs:
         echo "changed_workspaces=$CHANGED_WORKSPACES" >> $GITHUB_OUTPUT
         echo "changed_tags=$CHANGED_TAGS" >> $GITHUB_OUTPUT
         echo "all_tags=$ALL_TAGS" >> $GITHUB_OUTPUT
-
-
         # Debug output
         echo "Changed files:"
         echo "$CHANGED_FILES"
