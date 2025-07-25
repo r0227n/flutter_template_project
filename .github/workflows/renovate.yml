@@ -6,7 +6,7 @@ on:
     - cron: '0 11 * * 5'
   push:
     branches:
-      - fix/renovate
+      - fix/renovete
   workflow_dispatch:
     inputs:
       logLevel:
