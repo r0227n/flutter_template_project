@@ -5,7 +5,6 @@
     'config:recommended',
     ':semanticCommits',
     ':maintainLockFilesWeekly',
-    ':separateMultipleMajorReleases',
     ':dependencyDashboard',
     ':automergeMinor',
     ':pinAllExceptPeerDependencies',
