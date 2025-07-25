@@ -194,7 +194,7 @@
   prHourlyLimit: 10,
   prConcurrentLimit: 20,
   rebaseWhen: 'conflicted',
-  platformCommit: 'enabled',
+  platformCommit: true,
   automergeStrategy: 'squash',
   vulnerabilityAlerts: {
     enabled: true,
