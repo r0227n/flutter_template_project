@@ -226,9 +226,8 @@
   rangeStrategy: 'bump',
   bumpVersion: 'patch',
   constraints: {
-    flutter: 'latest',
-    dart: 'latest',
-    bun: 'latest',
+    dart: '^3.0.0',
+    bun: '^1.0.0',
   },
   mise: {
     enabled: true,
