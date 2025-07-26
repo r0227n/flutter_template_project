@@ -164,7 +164,9 @@
     packageRules: [
       {
         matchFileNames: ['**/pubspec.yaml'],
-        commitMessageTopic: '{{depName}}',
+        commitMessage: {
+          topic: '{{depName}}',
+        },
       },
     ],
   },
