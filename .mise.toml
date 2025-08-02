@@ -33,7 +33,11 @@ melos run test
 description = "Complete CI workflow"
 run = """
 set -e
-melos run ci:format
+melos run format
+if [ $? -ne 0 ]; then
+    echo "Formatting changes detected. Please commit the changes and run again."
+    exit 1
+fi
 melos run analyze
 melos run test
 bun run ci:check
