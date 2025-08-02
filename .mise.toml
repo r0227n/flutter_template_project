@@ -1,5 +1,6 @@
 [tools]
 flutter = "3.32.8"
+node = "22.18.0"
 bun = "1.2.17"
 
 # Main workflow tasks
