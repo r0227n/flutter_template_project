@@ -49,6 +49,7 @@ node_modules/
 # mise
 .mise/cache/
 .mise/plugins/
+.vscode/mise-tools/
 
 # Test results
 **/test-report.json
