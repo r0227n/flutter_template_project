@@ -1,22 +1,68 @@
+# Commitlint configuration for conventional commits
+# Enhanced configuration following Flutter/Dart project best practices
+
 extends:
   - '@commitlint/config-conventional'
 
+# Enhanced rules configuration
 rules:
+  # Enforce conventional commit types with descriptions
   type-enum:
     - 2
     - always
-    - - build
-      - chore
-      - ci
-      - docs
-      - feat
-      - fix
-      - perf
-      - refactor
-      - revert
-      - style
-      - test
+    - - build # Changes that affect the build system or dependencies
+      - chore # Maintenance tasks
+      - ci # Changes to CI configuration files and scripts
+      - docs # Documentation only changes
+      - feat # New features
+      - fix # Bug fixes
+      - perf # Performance improvements
+      - refactor # Code changes that neither fix a bug nor add a feature
+      - revert # Reverts a previous commit
+      - style # Changes that do not affect code meaning (formatting, etc.)
+      - test # Adding missing tests or correcting existing tests
+
+  # Subject line rules - enhanced
   subject-case:
     - 2
     - never
-    - - upper-case
+    - - sentence-case
+      - start-case
+      - pascal-case
+      - upper-case
+
+  subject-empty:
+    - 2
+    - never
+
+  subject-full-stop:
+    - 2
+    - never
+    - '.'
+
+  subject-max-length:
+    - 2
+    - always
+    - 72
+
+  # Type rules
+  type-case:
+    - 2
+    - always
+    - 'lower-case'
+
+  type-empty:
+    - 2
+    - never
+
+  # Scope rules (optional but consistent when used)
+  scope-case:
+    - 2
+    - always
+    - 'lower-case'
+
+  # Header rules
+  header-max-length:
+    - 2
+    - always
+    - 100
