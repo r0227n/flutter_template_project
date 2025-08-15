@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/i18n/translations.g.dart';
+import 'package:app/router/routes.dart';
 import 'package:app_preferences/app_preferences.dart' as app_prefs;
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -45,11 +46,7 @@ class SettingsPage extends ConsumerWidget {
           ListTile(
             title: Text(t.settings.licenses),
             trailing: const Icon(Icons.chevron_right),
-            onTap: () => showLicensePage(
-              context: context,
-              applicationName: 'Flutter Template',
-              applicationVersion: '1.0.0',
-            ),
+            onTap: () => const LicenseRoute().go(context),
           ),
           const Divider(),
         ],

@@ -13,7 +13,14 @@ RouteBase get $homeRoute => GoRouteData.$route(
 
   factory: _$HomeRoute._fromState,
   routes: [
-    GoRouteData.$route(path: 'settings', factory: _$SettingsRoute._fromState),
+    GoRouteData.$route(
+      path: 'settings',
+
+      factory: _$SettingsRoute._fromState,
+      routes: [
+        GoRouteData.$route(path: 'license', factory: _$LicenseRoute._fromState),
+      ],
+    ),
   ],
 );
 
@@ -42,6 +49,26 @@ mixin _$SettingsRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/settings');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin _$LicenseRoute on GoRouteData {
+  static LicenseRoute _fromState(GoRouterState state) => const LicenseRoute();
+
+  @override
+  String get location => GoRouteData.$location('/settings/license');
 
   @override
   void go(BuildContext context) => context.go(location);
