@@ -2,7 +2,7 @@ name: workspace
 publish_to: none
 
 environment:
-  sdk: ^3.6.0
+  sdk: ^3.9.0
 
 dev_dependencies:
   melos: ^7.0.0-dev.9
@@ -120,5 +120,5 @@ melos:
         fi
 
   environment:
-    sdk: '>=3.6.0 <4.0.0'
-    flutter: '>=3.0.0'
+    sdk: '>=3.9.0 <4.0.0'
+    flutter: '>=3.35.1'

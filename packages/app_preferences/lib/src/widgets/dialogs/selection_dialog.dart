@@ -1,6 +1,8 @@
 // Generic types with function parameters trigger unsafe_variance warnings
 // but this is the intended design for a reusable selection dialog component
 // ignore_for_file: unsafe_variance
+// TODO: Replace deprecated Radio groupValue/onChanged with RadioGroup when available
+// ignore_for_file: deprecated_member_use
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -198,16 +200,24 @@ class _SelectionOptionTile<T> extends StatelessWidget {
         ? valueSelector!(currentValue as T)
         : currentValue;
 
-    return RadioListTile<Object?>(
+    return ListTile(
       title: Text(option.displayText),
-      value: optionValue,
-      groupValue: selectedValue,
-      onChanged: (value) async {
-        if (value != null) {
-          await onChanged(option.value);
-          if (context.mounted) {
-            Navigator.of(context).pop();
+      leading: Radio<Object?>(
+        value: optionValue,
+        groupValue: selectedValue,
+        onChanged: (value) async {
+          if (value != null) {
+            await onChanged(option.value);
+            if (context.mounted) {
+              Navigator.of(context).pop();
+            }
           }
+        },
+      ),
+      onTap: () async {
+        await onChanged(option.value);
+        if (context.mounted) {
+          Navigator.of(context).pop();
         }
       },
     );
