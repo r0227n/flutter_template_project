@@ -82,20 +82,20 @@ jobs:
               const labelsToAdd = new Set(); // Use Set to avoid duplicates
 
               // Get change analysis results
-              const changedPackages = '${{ steps.analyze_changes.outputs.changed_packages }}';
+              const changedWorkspaces = '${{ steps.analyze_changes.outputs.changed_workspaces }}';
               const changedTags = '${{ steps.analyze_changes.outputs.changed_tags }}';
 
               console.log('=== Auto Label Analysis ===');
-              console.log(`Changed packages: ${changedPackages || '(none)'}`);
+              console.log(`Changed workspaces: ${changedWorkspaces || '(none)'}`);
               console.log(`Directory tags: ${changedTags || '(none)'}`);
 
-              // Process package changes
-              if (changedPackages && changedPackages.trim()) {
-                // Add specific package labels
-                const packages = changedPackages.trim().split(/\s+/).filter(Boolean);
-                packages.forEach(pkg => labelsToAdd.add(pkg));
+              // Process workspace changes
+              if (changedWorkspaces && changedWorkspaces.trim()) {
+                // Add specific workspace labels
+                const workspaces = changedWorkspaces.trim().split(/\s+/).filter(Boolean);
+                workspaces.forEach(ws => labelsToAdd.add(ws));
                 
-                console.log(`📦 Detected packages: ${packages.join(', ')}`);
+                console.log(`📦 Detected workspaces: ${workspaces.join(', ')}`);
               }
 
               // Process directory-based tags
