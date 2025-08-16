@@ -24,7 +24,8 @@ class AppLogger {
   static AppLogger get instance {
     if (_instance == null) {
       throw StateError(
-          'AppLogger has not been initialized. Call AppLogger.initialize() first.');
+        'AppLogger has not been initialized. Call AppLogger.initialize() first.',
+      );
     }
     return _instance!;
   }
@@ -48,8 +49,12 @@ class AppLogger {
       _logWithFullData(LogLevel.critical, message, exception, stackTrace);
 
   /// Log with full data display, preventing truncation
-  void _logWithFullData(LogLevel level, String message, Object? extra,
-      [StackTrace? stackTrace]) {
+  void _logWithFullData(
+    LogLevel level,
+    String message,
+    Object? extra, [
+    StackTrace? stackTrace,
+  ]) {
     final formattedMessage = _formatLogMessage(message, extra);
 
     switch (level) {
@@ -114,8 +119,11 @@ class AppLogger {
     debug('API Call: $endpoint', metadata);
   }
 
-  void logPerformance(String operation, Duration duration,
-      [Map<String, dynamic>? metadata]) {
+  void logPerformance(
+    String operation,
+    Duration duration, [
+    Map<String, dynamic>? metadata,
+  ]) {
     final data = <String, dynamic>{
       'duration_ms': duration.inMilliseconds,
       ...?metadata,

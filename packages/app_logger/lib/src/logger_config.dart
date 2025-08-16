@@ -7,13 +7,14 @@ class LoggerConfig {
     this.enableConsoleOutput = true,
     this.enableFileOutput = false,
     TalkerSettings? settings,
-  }) : settings = settings ??
-            TalkerSettings(
-              useConsoleLogs: true,
-              maxHistoryItems: 3000,
-              enabled: true,
-              useHistory: true,
-            );
+  }) : settings =
+           settings ??
+           TalkerSettings(
+             useConsoleLogs: true,
+             maxHistoryItems: 3000,
+             enabled: true,
+             useHistory: true,
+           );
 
   final LogLevel logLevel;
   final bool enableConsoleOutput;
@@ -26,10 +27,7 @@ class LoggerConfig {
       logLevel: LogLevel.warning,
       enableConsoleOutput: false,
       enableFileOutput: true,
-      settings: TalkerSettings(
-        useConsoleLogs: false,
-        maxHistoryItems: 100,
-      ),
+      settings: TalkerSettings(useConsoleLogs: false, maxHistoryItems: 100),
     );
   }
 

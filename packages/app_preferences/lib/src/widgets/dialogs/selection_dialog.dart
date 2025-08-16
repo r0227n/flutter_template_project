@@ -2,7 +2,6 @@
 // but this is the intended design for a reusable selection dialog component
 // ignore_for_file: unsafe_variance
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 /// A generic selection dialog component
@@ -34,92 +33,121 @@ import 'package:flutter/material.dart';
 /// ```
 class SelectionDialog<T> extends StatelessWidget {
   const SelectionDialog({
-    required this.title,
-    required this.options,
-    required this.currentValue,
-    required this.onChanged,
-    required this.cancelLabel,
-    this.valueSelector,
-    this.icon,
+    required String title,
+    required List<SelectionOption<T>> options,
+    required T? currentValue,
+    required Future<void> Function(T value) onChanged,
+    required String cancelLabel,
+    T? Function(T value)? valueSelector,
+    Widget? icon,
     super.key,
-  });
+  }) : _title = title,
+       _options = options,
+       _currentValue = currentValue,
+       _onChanged = onChanged,
+       _cancelLabel = cancelLabel,
+       _valueSelector = valueSelector,
+       _icon = icon;
 
   /// The title of the dialog
-  final String title;
+  final String _title;
 
   /// List of selectable options
-  final List<SelectionOption<T>> options;
+  final List<SelectionOption<T>> _options;
 
   /// Currently selected value
-  final T? currentValue;
+  final T? _currentValue;
 
   /// Callback when a value is selected
-  final Future<void> Function(T value) onChanged;
+  final Future<void> Function(T value) _onChanged;
 
   /// Label for the cancel button
-  final String cancelLabel;
+  final String _cancelLabel;
 
   /// Optional value selector function for complex objects
   /// If null, uses the value directly for comparison
-  final Object? Function(T value)? valueSelector;
+  final T? Function(T value)? _valueSelector;
 
-  /// Optional icon to display in the dialog title
-  final Widget? icon;
+  /// Optional icon to display in the dialog _title
+  final Widget? _icon;
+
+  /// Gets the currently selected value using _valueSelector if provided
+  T? _getSelectedValue() {
+    if (_currentValue == null) {
+      return null;
+    }
+    if (_valueSelector != null) {
+      return _valueSelector(_currentValue as T);
+    }
+    return _currentValue;
+  }
+
+  /// Handles selection from RadioGroup
+  Future<void> _handleSelection(T? value, BuildContext context) async {
+    if (value == null) {
+      return;
+    }
+
+    // Find the option that matches the selected value
+    for (final option in _options) {
+      final optionValue = _valueSelector?.call(option.value) ?? option.value;
+      if (optionValue == value) {
+        await _onChanged(option.value);
+        if (context.mounted) {
+          Navigator.of(context).pop();
+        }
+        return;
+      }
+    }
+  }
 
   /// Builds the selection dialog UI
   ///
   /// Creates an AlertDialog with:
-  /// - Optional icon in the title
-  /// - Radio button list for options
+  /// - Optional _icon in the _title
+  /// - Radio button list for _options
   /// - Cancel button to dismiss without selection
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      icon: icon,
-      title: Text(title),
+      icon: _icon,
+      title: Text(_title),
       content: Column(
         mainAxisSize: MainAxisSize.min,
-        children: options
-            .map(
-              (option) => _SelectionOptionTile<T>(
-                option: option,
-                currentValue: currentValue,
-                onChanged: onChanged,
-                valueSelector: valueSelector,
-              ),
-            )
-            .toList(),
+        children: [
+          RadioGroup<T?>(
+            groupValue: _getSelectedValue(),
+            onChanged: (value) => _handleSelection(value, context),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: _options.map(
+                (option) {
+                  final optionValue =
+                      _valueSelector?.call(option.value) ?? option.value;
+                  return ListTile(
+                    leading: Radio<T?>(
+                      value: optionValue,
+                    ),
+                    title: Text(option.displayText),
+                    onTap: () async {
+                      await _onChanged(option.value);
+                      if (context.mounted) {
+                        Navigator.of(context).pop();
+                      }
+                    },
+                  );
+                },
+              ).toList(),
+            ),
+          ),
+        ],
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text(cancelLabel),
+          child: Text(_cancelLabel),
         ),
       ],
-    );
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(StringProperty('title', title));
-    properties.add(IterableProperty<SelectionOption<T>>('options', options));
-    properties.add(DiagnosticsProperty<T?>('currentValue', currentValue));
-    properties.add(StringProperty('cancelLabel', cancelLabel));
-    properties.add(
-      ObjectFlagProperty<Future<void> Function(T value)?>.has(
-        'onChanged',
-        onChanged,
-      ),
-    );
-    properties.add(
-      ObjectFlagProperty<Object? Function(T value)?>.has(
-        'valueSelector',
-        valueSelector,
-      ),
-    );
-    properties.add(
-      DiagnosticsProperty<Widget?>('icon', icon),
     );
   }
 }
@@ -139,77 +167,4 @@ class SelectionOption<T> {
 
   /// The text to display for this option
   final String displayText;
-}
-
-/// A radio list tile for selection options
-///
-/// Internal widget that renders a single option as a radio button.
-/// Handles the selection logic and automatically dismisses the dialog
-/// when an option is selected.
-class _SelectionOptionTile<T> extends StatelessWidget {
-  const _SelectionOptionTile({
-    required this.option,
-    required this.currentValue,
-    required this.onChanged,
-    this.valueSelector,
-  });
-
-  /// The selection option to display
-  final SelectionOption<T> option;
-
-  /// The currently selected value
-  final T? currentValue;
-
-  /// Callback when this option is selected
-  final Future<void> Function(T value) onChanged;
-
-  /// Optional value selector for complex object comparison
-  final Object? Function(T value)? valueSelector;
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<SelectionOption<T>>('option', option));
-    properties.add(DiagnosticsProperty<T?>('currentValue', currentValue));
-    properties.add(
-      ObjectFlagProperty<Future<void> Function(T value)?>.has(
-        'onChanged',
-        onChanged,
-      ),
-    );
-    properties.add(
-      ObjectFlagProperty<Object? Function(T value)?>.has(
-        'valueSelector',
-        valueSelector,
-      ),
-    );
-  }
-
-  /// Builds the radio list tile
-  ///
-  /// Uses [valueSelector] if provided to compare values, otherwise
-  /// compares the values directly. Automatically closes the dialog
-  /// when selected.
-  @override
-  Widget build(BuildContext context) {
-    // Use valueSelector if provided, otherwise use the value directly
-    final optionValue = valueSelector?.call(option.value) ?? option.value;
-    final selectedValue = currentValue != null && valueSelector != null
-        ? valueSelector!(currentValue as T)
-        : currentValue;
-
-    return RadioListTile<Object?>(
-      title: Text(option.displayText),
-      value: optionValue,
-      groupValue: selectedValue,
-      onChanged: (value) async {
-        if (value != null) {
-          await onChanged(option.value);
-          if (context.mounted) {
-            Navigator.of(context).pop();
-          }
-        }
-      },
-    );
-  }
 }

@@ -1,5 +1,5 @@
 [tools]
-flutter = "3.32.8"
+flutter = "3.35.1"
 node = "22.18.0"
 bun = "1.2.17"
 
