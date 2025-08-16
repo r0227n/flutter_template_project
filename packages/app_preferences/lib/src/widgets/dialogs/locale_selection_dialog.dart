@@ -141,7 +141,7 @@ class LocaleSelectionDialog extends ConsumerWidget {
         }
       },
       cancelLabel: cancelLabel,
-      valueSelector: (option) => option.languageCode,
+      valueSelector: (option) => option,
     );
   }
 }
