@@ -15,8 +15,9 @@ String _$talkerHash() => r'7ca7ab610f51f2b7b504f187daf9610046a6344f';
 final talkerProvider = AutoDisposeProvider<Talker>.internal(
   talker,
   name: r'talkerProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$talkerHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$talkerHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
@@ -33,8 +34,9 @@ String _$appLoggerHash() => r'44f6c1d01f2569f543772098417524a1a8a4e798';
 final appLoggerProvider = AutoDisposeProvider<AppLogger>.internal(
   appLogger,
   name: r'appLoggerProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$appLoggerHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$appLoggerHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );

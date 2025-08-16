@@ -11,7 +11,8 @@ part 'logger_providers.g.dart';
 Talker talker(Ref ref) {
   if (!AppLogger.isInitialized) {
     throw StateError(
-        'AppLogger has not been initialized. Call AppLogger.initialize() first.');
+      'AppLogger has not been initialized. Call AppLogger.initialize() first.',
+    );
   }
   return AppLogger.instance.talker;
 }
