@@ -2,7 +2,6 @@ import 'package:app/i18n/translations.g.dart' as app_translations;
 import 'package:app/pages/license/license_page.dart';
 import 'package:app/router/routes.dart';
 import 'package:app_logger/app_logger.dart';
-import 'package:app_preferences/app_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
@@ -44,7 +43,8 @@ void main() {
       // Verify settings page loads
       expect(find.text('設定'), findsOneWidget);
 
-      // Try to navigate to license route - this should work after implementation
+      // Try to navigate to license route - this should work after 
+      // implementation
       router.go('/settings/license');
       await tester.pumpAndSettle();
 
@@ -83,7 +83,8 @@ void main() {
     });
 
     testWidgets(
-      'Settings page should use LicenseRoute navigation instead of showLicensePage',
+      'Settings page should use LicenseRoute navigation instead of '
+      'showLicensePage',
       (tester) async {
         // RED phase: Verify navigation method change
 
