@@ -1,9 +1,8 @@
 [tools]
 flutter = "3.35.1"
-node = "22.18.0"
 bun = "1.2.17"
 
-# Main workflow tasks
+# Main workflow tasks 
 [tasks.dev]
 description = "Complete development workflow"
 run = """
@@ -18,6 +17,7 @@ description = "Initial project setup"
 run = """
 melos bootstrap
 bun install
+bunx husky init
 """
 
 [tasks.quality]

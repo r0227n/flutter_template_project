@@ -100,5 +100,6 @@
   },
   "debug.javascript.defaultRuntimeExecutable": {
     "pwa-node": "${workspaceFolder}/.vscode/mise-tools/node"
-  }
+  },
+  "bun.runtime": "${workspaceFolder}/.vscode/mise-tools/bun"
 }
