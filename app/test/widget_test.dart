@@ -7,11 +7,11 @@
 
 import 'package:app/i18n/translations.g.dart' as app_translations;
 import 'package:app/pages/home/home_page.dart';
-import 'package:app_logger/app_logger.dart';
-import 'package:app_preferences/app_preferences.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   setUpAll(() {
@@ -184,7 +184,7 @@ void main() {
   group('Localization Tests', () {
     testWidgets('App initializes with correct locale', (tester) async {
       // Create a test SharedPreferences instance
-      SharedPreferences.setMockInitialValues({});
+      SharedPreferences.setMockInitialValues(<String, Object>{});
       final prefs = await SharedPreferences.getInstance();
 
       await tester.pumpWidget(
