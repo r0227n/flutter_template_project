@@ -1,9 +1,8 @@
-include: package:yumemi_lints/flutter/3.32/recommended.yaml
+include: package:yumemi_lints/flutter/3.35/recommended.yaml
 
 analyzer:
   exclude:
     - '**/*.g.dart'
     - '**/*.freezed.dart'
   plugins:
-    # TODO: Re-enable custom_lint after Flutter 3.35.1 compatibility
-    # - custom_lint
+    - custom_lint
