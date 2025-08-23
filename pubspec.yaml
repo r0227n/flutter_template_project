@@ -9,8 +9,7 @@ dev_dependencies:
 
 workspace:
   - app
-  - packages/app_logger
-  - packages/app_preferences
+  - packages/core
 
 melos:
   name: flutter_template_project
