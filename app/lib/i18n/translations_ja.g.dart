@@ -48,7 +48,10 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
   }) => Translations(meta: meta ?? this.$meta);
 
   // Translations
+
+  /// ja: 'こんにちは'
   String get hello => 'こんにちは';
+
   late final TranslationsSettingsJa settings = TranslationsSettingsJa._(_root);
 }
 
@@ -59,9 +62,19 @@ class TranslationsSettingsJa {
   final Translations _root; // ignore: unused_field
 
   // Translations
+
+  /// ja: '設定'
   String get title => '設定';
+
+  /// ja: '言語'
   String get language => '言語';
+
+  /// ja: 'テーマ'
   String get theme => 'テーマ';
+
+  /// ja: 'バージョン'
   String get version => 'バージョン';
+
+  /// ja: 'ライセンス'
   String get licenses => 'ライセンス';
 }

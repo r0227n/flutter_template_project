@@ -60,8 +60,14 @@ class TranslationsLocaleJa {
   final Translations _root; // ignore: unused_field
 
   // Translations
+
+  /// ja: 'システム'
   String get system => 'システム';
+
+  /// ja: '日本語'
   String get japanese => '日本語';
+
+  /// ja: 'English'
   String get english => 'English';
 }
 
@@ -72,8 +78,14 @@ class TranslationsThemeJa {
   final Translations _root; // ignore: unused_field
 
   // Translations
+
+  /// ja: 'システム'
   String get system => 'システム';
+
+  /// ja: 'ライト'
   String get light => 'ライト';
+
+  /// ja: 'ダーク'
   String get dark => 'ダーク';
 }
 
@@ -84,5 +96,7 @@ class TranslationsDialogJa {
   final Translations _root; // ignore: unused_field
 
   // Translations
+
+  /// ja: 'キャンセル'
   String get cancel => 'キャンセル';
 }
