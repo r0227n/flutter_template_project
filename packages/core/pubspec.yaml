@@ -29,6 +29,17 @@ flutter:
   assets:
     - assets/i18n/
 
+slang:
+  base_locale: ja
+  fallback_strategy: base_locale
+  input_directory: assets/i18n
+  input_file_pattern: .i18n.json
+  output_directory: lib/i18n
+  output_file_name: strings.g.dart
+  locale_handling: true
+  flutter_integration: true
+  namespaces: false
+
 dev_dependencies:
   build_runner: ^2.5.4
   custom_lint: ^0.7.6

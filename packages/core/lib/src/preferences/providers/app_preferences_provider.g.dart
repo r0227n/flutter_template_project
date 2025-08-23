@@ -39,7 +39,7 @@ final sharedPreferencesProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef SharedPreferencesRef = AutoDisposeProviderRef<SharedPreferences>;
-String _$appLocaleProviderHash() => r'5ef599be9c03cf2a9e778332a7ca43103494063a';
+String _$appLocaleProviderHash() => r'57cb3a40e4c3dab11a60c693c8081868eb368830';
 
 /// Manages locale preferences and state
 ///
@@ -54,7 +54,7 @@ String _$appLocaleProviderHash() => r'5ef599be9c03cf2a9e778332a7ca43103494063a';
 /// Copied from [AppLocaleProvider].
 @ProviderFor(AppLocaleProvider)
 final appLocaleProviderProvider =
-    AutoDisposeAsyncNotifierProvider<AppLocaleProvider, Locale>.internal(
+    AutoDisposeNotifierProvider<AppLocaleProvider, Locale>.internal(
       AppLocaleProvider.new,
       name: r'appLocaleProviderProvider',
       debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -64,7 +64,7 @@ final appLocaleProviderProvider =
       allTransitiveDependencies: null,
     );
 
-typedef _$AppLocaleProvider = AutoDisposeAsyncNotifier<Locale>;
+typedef _$AppLocaleProvider = AutoDisposeNotifier<Locale>;
 String _$appThemeProviderHash() => r'04ad1f520a92387683cd75c890fb6f9f6dc36fef';
 
 /// Manages theme mode preferences and state

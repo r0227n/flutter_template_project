@@ -1,6 +1,5 @@
-import 'package:core/i18n/strings.g.dart' as app_prefs;
+import 'package:core/i18n/core_translations.g.dart';
 import 'package:core/src/preferences/providers/app_preferences_provider.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -8,19 +7,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 ///
 /// This widget automatically watches the current locale setting through
 /// the [appLocaleProviderProvider] and displays the appropriate localized
-/// text for the current language. It supports Japanese, English, and
-/// falls back to the language code for other locales.
+/// text for the current language. It uses the core package's unified
+/// i18n system.
 ///
-/// The widget automatically updates when the locale changes and uses
-/// the app's internationalization system to display localized names.
+/// The widget automatically updates when the locale changes and ensures
+/// consistency across the app.
 ///
 /// Example usage:
 /// ```dart
-/// // Basic usage with default styling
-/// LocaleText()
+/// // Basic usage
+/// const LocaleText()
 ///
 /// // With custom text style
-/// LocaleText(
+/// const LocaleText(
 ///   style: TextStyle(
 ///     fontSize: 16,
 ///     fontWeight: FontWeight.bold,
@@ -30,59 +29,27 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class LocaleText extends ConsumerWidget {
   /// Creates a locale text widget
   const LocaleText({
-    this.style,
+    TextStyle? style,
     super.key,
-  });
+  }) : _style = style;
 
   /// Optional text style for the locale text
   ///
   /// If not provided, uses the default text style from the theme.
-  final TextStyle? style;
+  final TextStyle? _style;
 
   /// Builds the locale text widget
   ///
   /// Watches the current locale provider and displays the appropriate
-  /// localized text based on the current language setting.
+  /// localized text based on the current language setting using the
+  /// unified i18n system.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentLocale = ref.watch(appLocaleProviderProvider);
-    final t = app_prefs.Translations.of(context);
+    final t = CoreTranslations.of(context);
 
     return Text(
-      _getLocaleDisplayText(currentLocale.valueOrNull, t),
-      style: style,
-    );
-  }
-
-  /// Gets the display text for a given locale
-  ///
-  /// Maps locale language codes to their localized display names:
-  /// - 'ja' -> Japanese name from translations
-  /// - 'en' -> English name from translations
-  /// - null -> 'System' from translations
-  /// - others -> Raw language code as fallback
-  ///
-  /// Parameters:
-  /// - [locale]: The locale to get display text for
-  /// - [t]: The translations instance for localized strings
-  ///
-  /// Returns the appropriate display text for the locale.
-  String _getLocaleDisplayText(Locale? locale, app_prefs.Translations t) {
-    if (locale == null) {
-      return t.locale.system;
-    }
-    return switch (locale.languageCode) {
-      'ja' => t.locale.japanese,
-      'en' => t.locale.english,
-      _ => locale.languageCode,
-    };
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(
-      DiagnosticsProperty<TextStyle?>('style', style, defaultValue: null),
+      t.locale.language,
+      style: _style,
     );
   }
 }

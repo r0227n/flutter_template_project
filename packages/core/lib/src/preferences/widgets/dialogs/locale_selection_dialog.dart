@@ -114,7 +114,7 @@ class LocaleSelectionDialog extends ConsumerWidget {
   /// the locale change through both the provider and optional callback.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentLocale = ref.read(appLocaleProviderProvider).valueOrNull;
+    final currentLocale = ref.read(appLocaleProviderProvider);
 
     return SelectionDialog<LocaleOption>(
       title: title,
@@ -128,7 +128,7 @@ class LocaleSelectionDialog extends ConsumerWidget {
           )
           .toList(),
       currentValue: availableLocales.firstWhere(
-        (option) => option.languageCode == currentLocale?.languageCode,
+        (option) => option.languageCode == currentLocale.languageCode,
         orElse: () => availableLocales.first,
       ),
       onChanged: (selectedOption) async {

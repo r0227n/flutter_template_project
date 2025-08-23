@@ -65,7 +65,7 @@ class AppPreferencesRepository {
   ///   print('Stored locale: ${locale.languageCode}');
   /// }
   /// ```
-  Future<Locale?> getLocale() async {
+  Locale? getLocale() {
     final localeJson = _prefs.getString(_localeKey);
 
     if (localeJson == null) {

@@ -1,8 +1,7 @@
 {
   "locale": {
     "system": "システム",
-    "japanese": "日本語",
-    "english": "English"
+    "language": "日本語"
   },
   "theme": {
     "system": "システム",
