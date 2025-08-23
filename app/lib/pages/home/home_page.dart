@@ -1,7 +1,5 @@
-import 'package:app/i18n/translations.g.dart';
 import 'package:app/router/routes.dart';
-import 'package:core/core.dart'
-    hide AppLocale, LocaleSettings, TranslationProvider, Translations;
+import 'package:core/core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -58,7 +56,6 @@ class _HomePageState extends ConsumerState<HomePage> with LoggerMixin {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translations.of(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,

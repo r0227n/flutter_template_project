@@ -6,7 +6,6 @@ export 'src/logger/crashlytics_observer.dart';
 export 'src/logger/logger_config.dart';
 export 'src/logger/logger_providers.dart';
 // Preferences exports
-export 'src/preferences/app_preferences_initializer.dart';
 export 'src/preferences/providers/app_preferences_provider.dart';
 export 'src/preferences/repositories/app_preferences_repository.dart';
 export 'src/preferences/theme/app_theme.dart';
