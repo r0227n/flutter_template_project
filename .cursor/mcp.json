@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "dart": {
+      "command": "~/.local/share/mise/installs/flutter/3.35.1-stable/bin/dart",
+      "args": ["mcp-server", "--force-roots-fallback"]
+    },
+    "serena": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/oraios/serena",
+        "serena-mcp-server",
+        "--context",
+        "ide-assistant"
+      ]
+    }
+  }
+}

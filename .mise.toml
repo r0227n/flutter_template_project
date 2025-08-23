@@ -18,7 +18,9 @@ run = """
 melos bootstrap
 bun install
 bunx husky init
+claude mcp reset-project-choices
 """
+dir = "{{cwd}}"
 
 [tasks.quality]
 description = "Code quality workflow"
