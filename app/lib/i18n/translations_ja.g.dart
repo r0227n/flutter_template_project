@@ -48,10 +48,6 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
   }) => Translations(meta: meta ?? this.$meta);
 
   // Translations
-
-  /// ja: 'こんにちは'
-  String get hello => 'こんにちは';
-
   late final TranslationsSettingsJa settings = TranslationsSettingsJa._(_root);
 }
 

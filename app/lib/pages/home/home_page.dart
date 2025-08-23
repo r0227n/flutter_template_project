@@ -74,7 +74,6 @@ class _HomePageState extends ConsumerState<HomePage> with LoggerMixin {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(t.hello),
             Text(
               'カウンター: $_counter',
               style: Theme.of(context).textTheme.headlineMedium,
