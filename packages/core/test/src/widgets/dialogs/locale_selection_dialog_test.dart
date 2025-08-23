@@ -110,7 +110,7 @@ void main() {
       expect(find.text('Select Language'), findsNothing);
 
       // Verify locale was updated
-      final storedLocale = await repository.getLocale();
+      final storedLocale = repository.getLocale();
       expect(storedLocale?.languageCode, 'es');
     });
 
@@ -154,7 +154,7 @@ void main() {
       expect(find.text('Select Language'), findsNothing);
 
       // Verify locale was not changed
-      final storedLocale = await repository.getLocale();
+      final storedLocale = repository.getLocale();
       expect(storedLocale?.languageCode, 'en');
     });
   });

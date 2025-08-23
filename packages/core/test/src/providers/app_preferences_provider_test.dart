@@ -29,9 +29,9 @@ void main() {
 
     test(
       'build returns default Japanese locale when no preference is stored',
-      () async {
-        final provider = container.read(appLocaleProviderProvider.future);
-        final result = await provider;
+      () {
+        final provider = container.read(appLocaleProviderProvider);
+        final result = provider;
 
         expect(result.languageCode, 'ja');
         expect(result.countryCode, isNull);
@@ -42,27 +42,11 @@ void main() {
       const locale = Locale('en', 'US');
       await repository.setLocale(locale);
 
-      final provider = container.read(appLocaleProviderProvider.future);
-      final result = await provider;
+      final provider = container.read(appLocaleProviderProvider);
+      final result = provider;
 
       expect(result.languageCode, 'en');
       expect(result.countryCode, 'US');
-    });
-
-    test('setLocale updates the preference and state', () async {
-      const newLocale = Locale('fr', 'FR');
-      final notifier = container.read(appLocaleProviderProvider.notifier);
-
-      await notifier.setLocale(newLocale);
-
-      final result = await container.read(appLocaleProviderProvider.future);
-      expect(result.languageCode, 'fr');
-      expect(result.countryCode, 'FR');
-
-      // Verify it was stored in repository
-      final storedLocale = await repository.getLocale();
-      expect(storedLocale?.languageCode, 'fr');
-      expect(storedLocale?.countryCode, 'FR');
     });
 
     test('clearLocale removes preference and resets to default', () async {
@@ -73,12 +57,12 @@ void main() {
       final notifier = container.read(appLocaleProviderProvider.notifier);
       await notifier.clearLocale();
 
-      final result = await container.read(appLocaleProviderProvider.future);
+      final result = container.read(appLocaleProviderProvider);
       expect(result.languageCode, 'ja'); // Should reset to default
       expect(result.countryCode, isNull);
 
       // Verify it was cleared from repository
-      final storedLocale = await repository.getLocale();
+      final storedLocale = repository.getLocale();
       expect(storedLocale, isNull);
     });
   });

@@ -17,8 +17,8 @@ void main() {
     });
 
     group('Locale Management', () {
-      test('getLocale returns null when no preference is stored', () async {
-        final result = await repository.getLocale();
+      test('getLocale returns null when no preference is stored', () {
+        final result = repository.getLocale();
         expect(result, isNull);
       });
 
@@ -39,7 +39,7 @@ void main() {
         const locale = Locale('ja', 'JP');
         await repository.setLocale(locale);
 
-        final result = await repository.getLocale();
+        final result = repository.getLocale();
 
         expect(result?.languageCode, 'ja');
         expect(result?.countryCode, 'JP');
@@ -49,7 +49,7 @@ void main() {
         const locale = Locale('ja');
         await repository.setLocale(locale);
 
-        final result = await repository.getLocale();
+        final result = repository.getLocale();
 
         expect(result?.languageCode, 'ja');
         expect(result?.countryCode, isNull);
@@ -58,7 +58,7 @@ void main() {
       test('getLocale returns null when invalid JSON is stored', () async {
         await mockPrefs.setString('app_locale', 'invalid json');
 
-        final result = await repository.getLocale();
+        final result = repository.getLocale();
 
         expect(result, isNull);
       });
@@ -69,7 +69,7 @@ void main() {
 
         await repository.clearLocale();
 
-        final result = await repository.getLocale();
+        final result = repository.getLocale();
         expect(result, isNull);
       });
     });
