@@ -7,7 +7,7 @@ targets:
           input_directory: assets/i18n
           input_file_pattern: .i18n.json
           output_directory: lib/i18n
-          output_file_name: strings.g.dart
+          output_file_name: core_translations.g.dart
           output_format: single_file
           locale_handling: true
           flutter_integration: true
@@ -18,3 +18,5 @@ targets:
           format:
             enabled: true
           timestamp: false
+          enum_name: CoreLocale
+          class_name: CoreTranslations

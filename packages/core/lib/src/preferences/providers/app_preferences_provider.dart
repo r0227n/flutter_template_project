@@ -1,3 +1,4 @@
+import 'package:core/i18n/core_translations.g.dart';
 import 'package:core/src/preferences/repositories/app_preferences_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -42,9 +43,9 @@ class AppLocaleProvider extends _$AppLocaleProvider {
   /// Returns:
   /// A [Future<Locale>] representing the current locale preference
   @override
-  Future<Locale> build() async {
+  Locale build() {
     final repository = ref.read(appPreferencesRepositoryProvider);
-    final locale = await repository.getLocale();
+    final locale = repository.getLocale();
 
     if (locale != null) {
       return locale;
@@ -55,10 +56,16 @@ class AppLocaleProvider extends _$AppLocaleProvider {
     return const Locale('ja');
   }
 
-  /// Sets the locale preference and updates the state
+  /// Sets the locale preference and updates both Riverpod and slang state
   ///
-  /// Stores the new locale preference in SharedPreferences and invalidates
+  /// Stores the new locale preference in SharedPreferences, updates the
+  /// slang LocaleSettings for immediate UI consistency, and invalidates
   /// the provider state to trigger UI updates.
+  ///
+  /// This ensures complete synchronization between:
+  /// - SharedPreferences storage
+  /// - slang LocaleSettings (for immediate translation updates)
+  /// - Riverpod provider state (for UI rebuilds)
   ///
   /// Parameters:
   /// - [locale]: The new locale to set as preference
@@ -71,8 +78,26 @@ class AppLocaleProvider extends _$AppLocaleProvider {
   Future<void> setLocale(Locale locale) async {
     final repository = ref.read(appPreferencesRepositoryProvider);
 
+    // Store in SharedPreferences
     await repository.setLocale(locale);
+
+    // Immediately update slang LocaleSettings for UI consistency
+    final coreLocale = _mapLocaleToCoreLocale(locale);
+    await LocaleSettings.setLocale(coreLocale);
+
+    // Trigger provider rebuild
     ref.invalidateSelf();
+  }
+
+  /// Maps Flutter Locale to core slang CoreLocale
+  ///
+  /// Converts a Flutter [Locale] to the corresponding slang [CoreLocale]
+  /// with fallback to Japanese if the locale is not supported.
+  CoreLocale _mapLocaleToCoreLocale(Locale locale) {
+    return CoreLocale.values.firstWhere(
+      (coreLocale) => coreLocale.languageCode == locale.languageCode,
+      orElse: () => CoreLocale.ja,
+    );
   }
 
   /// Clears the stored locale preference and resets to default

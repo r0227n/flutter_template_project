@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:core/i18n/strings.g.dart' as app_prefs;
+import 'package:core/i18n/core_translations.g.dart';
 import 'package:core/src/preferences/widgets/dialogs/locale_selection_dialog.dart';
 import 'package:core/src/preferences/widgets/dialogs/theme_selection_dialog.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +63,7 @@ class PreferencesDialogHelpers {
     String? cancelLabel,
     Widget icon = const Icon(Icons.palette),
   }) async {
-    final t = app_prefs.Translations.of(context);
+    final t = CoreTranslations.of(context);
 
     await showDialog<void>(
       context: context,
@@ -117,13 +117,13 @@ class PreferencesDialogHelpers {
     Widget icon = const Icon(Icons.language),
     Future<void> Function(String languageCode)? onLocaleChanged,
   }) async {
-    final t = app_prefs.Translations.of(context);
+    final t = CoreTranslations.of(context);
 
     final locales =
         availableLocales ??
         [
-          LocaleOption(languageCode: 'ja', displayName: t.locale.japanese),
-          LocaleOption(languageCode: 'en', displayName: t.locale.english),
+          const LocaleOption(languageCode: 'ja', displayName: '日本語'),
+          const LocaleOption(languageCode: 'en', displayName: 'English'),
         ];
 
     await showDialog<void>(
