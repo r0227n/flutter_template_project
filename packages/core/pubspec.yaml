@@ -41,6 +41,3 @@ dev_dependencies:
   riverpod_lint: ^2.6.5
   slang_build_runner: ^4.8.0
   yumemi_lints: ^4.2.0
-
-dependency_overrides:
-  custom_lint: ^0.7.6
