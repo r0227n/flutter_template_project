@@ -5,7 +5,7 @@ environment:
   sdk: ^3.9.0
 
 dev_dependencies:
-  melos: ^7.0.0-dev.9
+  melos: ^7.1.0
 
 workspace:
   - app
