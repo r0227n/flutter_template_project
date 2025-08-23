@@ -137,7 +137,11 @@ extension BuildContextTranslationsExtension on BuildContext {
 /// Manages all translation instances and the current locale
 class LocaleSettings
     extends BaseFlutterLocaleSettings<CoreLocale, CoreTranslations> {
-  LocaleSettings._() : super(utils: AppLocaleUtils.instance, lazy: true);
+  LocaleSettings._()
+    : super(
+        utils: AppLocaleUtils.instance,
+        lazy: true,
+      );
 
   static final instance = LocaleSettings._();
 
@@ -200,7 +204,10 @@ class LocaleSettings
 /// Provides utility functions without any side effects.
 class AppLocaleUtils extends BaseAppLocaleUtils<CoreLocale, CoreTranslations> {
   AppLocaleUtils._()
-    : super(baseLocale: CoreLocale.ja, locales: CoreLocale.values);
+    : super(
+        baseLocale: CoreLocale.ja,
+        locales: CoreLocale.values,
+      );
 
   static final instance = AppLocaleUtils._();
 

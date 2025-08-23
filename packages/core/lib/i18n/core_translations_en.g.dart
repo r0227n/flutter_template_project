@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:slang/generated.dart';
 
 // Path: <root>
-class CoreTranslationsEn implements CoreTranslations {
+class CoreTranslationsEn extends CoreTranslations {
   /// You can call this constructor and build your own translation instance of this locale.
   /// Constructing via the enum [CoreLocale.build] is preferred.
   CoreTranslationsEn({
@@ -29,7 +29,11 @@ class CoreTranslationsEn implements CoreTranslations {
              overrides: overrides ?? {},
              cardinalResolver: cardinalResolver,
              ordinalResolver: ordinalResolver,
-           );
+           ),
+       super(
+         cardinalResolver: cardinalResolver,
+         ordinalResolver: ordinalResolver,
+       );
 
   /// Metadata for the translations of <en>.
   @override
@@ -56,8 +60,10 @@ class CoreTranslationsEn implements CoreTranslations {
 }
 
 // Path: locale
-class _CoreTranslationsLocaleEn implements CoreTranslationsLocaleJa {
-  _CoreTranslationsLocaleEn._(this._root);
+class _CoreTranslationsLocaleEn extends CoreTranslationsLocaleJa {
+  _CoreTranslationsLocaleEn._(CoreTranslationsEn root)
+    : this._root = root,
+      super.internal(root);
 
   final CoreTranslationsEn _root; // ignore: unused_field
 
@@ -69,8 +75,10 @@ class _CoreTranslationsLocaleEn implements CoreTranslationsLocaleJa {
 }
 
 // Path: theme
-class _CoreTranslationsThemeEn implements CoreTranslationsThemeJa {
-  _CoreTranslationsThemeEn._(this._root);
+class _CoreTranslationsThemeEn extends CoreTranslationsThemeJa {
+  _CoreTranslationsThemeEn._(CoreTranslationsEn root)
+    : this._root = root,
+      super.internal(root);
 
   final CoreTranslationsEn _root; // ignore: unused_field
 
@@ -84,8 +92,10 @@ class _CoreTranslationsThemeEn implements CoreTranslationsThemeJa {
 }
 
 // Path: dialog
-class _CoreTranslationsDialogEn implements CoreTranslationsDialogJa {
-  _CoreTranslationsDialogEn._(this._root);
+class _CoreTranslationsDialogEn extends CoreTranslationsDialogJa {
+  _CoreTranslationsDialogEn._(CoreTranslationsEn root)
+    : this._root = root,
+      super.internal(root);
 
   final CoreTranslationsEn _root; // ignore: unused_field
 
