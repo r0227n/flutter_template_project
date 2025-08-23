@@ -51,18 +51,18 @@ class CoreTranslations
   }) => CoreTranslations(meta: meta ?? this.$meta);
 
   // Translations
-  late final CoreTranslationsLocaleJa locale = CoreTranslationsLocaleJa._(
+  late final CoreTranslationsLocaleJa locale =
+      CoreTranslationsLocaleJa.internal(_root);
+  late final CoreTranslationsThemeJa theme = CoreTranslationsThemeJa.internal(
     _root,
   );
-  late final CoreTranslationsThemeJa theme = CoreTranslationsThemeJa._(_root);
-  late final CoreTranslationsDialogJa dialog = CoreTranslationsDialogJa._(
-    _root,
-  );
+  late final CoreTranslationsDialogJa dialog =
+      CoreTranslationsDialogJa.internal(_root);
 }
 
 // Path: locale
 class CoreTranslationsLocaleJa {
-  CoreTranslationsLocaleJa._(this._root);
+  CoreTranslationsLocaleJa.internal(this._root);
 
   final CoreTranslations _root; // ignore: unused_field
 
@@ -77,7 +77,7 @@ class CoreTranslationsLocaleJa {
 
 // Path: theme
 class CoreTranslationsThemeJa {
-  CoreTranslationsThemeJa._(this._root);
+  CoreTranslationsThemeJa.internal(this._root);
 
   final CoreTranslations _root; // ignore: unused_field
 
@@ -95,7 +95,7 @@ class CoreTranslationsThemeJa {
 
 // Path: dialog
 class CoreTranslationsDialogJa {
-  CoreTranslationsDialogJa._(this._root);
+  CoreTranslationsDialogJa.internal(this._root);
 
   final CoreTranslations _root; // ignore: unused_field
 

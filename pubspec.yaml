@@ -30,6 +30,11 @@ melos:
       run: |
         melos exec --depends-on="build_runner" -- "dart run build_runner build --delete-conflicting-outputs"
 
+    gen:slang:
+      description: Run slang build_runner for all packages
+      run: |
+        melos exec --depends-on="build_runner" -- "dart run slang build_runner build --delete-conflicting-outputs"
+
     # Clean and get dependencies for all packages
     get:
       description: Get dependencies for all packages
