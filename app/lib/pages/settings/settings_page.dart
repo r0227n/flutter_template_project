@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:app/i18n/translations.g.dart';
 import 'package:app/router/routes.dart';
-import 'package:core/core.dart' hide AppLocale, LocaleSettings, TranslationProvider, Translations;
+import 'package:core/core.dart'
+    hide AppLocale, LocaleSettings, TranslationProvider, Translations;
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 

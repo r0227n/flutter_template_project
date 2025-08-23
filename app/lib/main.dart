@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:app/i18n/translations.g.dart';
 import 'package:app/router/app_router.dart';
-import 'package:core/core.dart' hide AppLocale, LocaleSettings, TranslationProvider, Translations;
+import 'package:core/core.dart'
+    hide AppLocale, LocaleSettings, TranslationProvider, Translations;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';

@@ -43,7 +43,7 @@ void main() {
       // Verify settings page loads
       expect(find.text('設定'), findsOneWidget);
 
-      // Try to navigate to license route - this should work after 
+      // Try to navigate to license route - this should work after
       // implementation
       router.go('/settings/license');
       await tester.pumpAndSettle();
