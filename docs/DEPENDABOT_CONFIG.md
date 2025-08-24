@@ -172,6 +172,7 @@ update-types:
 ### よくある問題
 
 **1. コンフリクト発生時**
+
 ```bash
 # ローカルで最新を取得
 git pull origin main
@@ -180,6 +181,7 @@ mise run ci-check  # 品質チェック
 ```
 
 **2. 依存関係の互換性エラー**
+
 ```bash
 # 依存関係を再構築
 melos clean
@@ -188,6 +190,7 @@ melos run gen  # コード再生成
 ```
 
 **3. テスト失敗時**
+
 ```bash
 # 個別にテスト実行して問題を特定
 mise run test
