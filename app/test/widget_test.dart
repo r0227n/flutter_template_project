@@ -6,7 +6,7 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:app/i18n/translations.g.dart' as app_translations;
-import 'package:app/pages/home/home_page.dart';
+import 'package:app/pages/home_page.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
