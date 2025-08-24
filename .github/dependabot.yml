@@ -1,0 +1,139 @@
+version: 2
+updates:
+  # Flutter/Dart dependencies in main app
+  - package-ecosystem: 'pub'
+    directory: '/app'
+    schedule:
+      interval: 'monthly'
+      day: 'monday'
+      time: '06:00'
+      timezone: 'Asia/Tokyo'
+    open-pull-requests-limit: 10
+    reviewers:
+      - 'r0227n'
+    assignees:
+      - 'r0227n'
+    labels:
+      - 'dependencies'
+      - 'flutter'
+    commit-message:
+      prefix: 'deps'
+      prefix-development: 'deps'
+      include: 'scope'
+    groups:
+      flutter-sdk:
+        patterns:
+          - 'flutter'
+          - 'flutter_*'
+        update-types:
+          - 'minor'
+          - 'patch'
+      state-management:
+        patterns:
+          - 'riverpod*'
+          - 'hooks_riverpod'
+        update-types:
+          - 'minor'
+          - 'patch'
+      code-generation:
+        patterns:
+          - 'build_runner'
+          - 'freezed*'
+          - 'json_*'
+          - '*_generator'
+          - '*_builder'
+        update-types:
+          - 'minor'
+          - 'patch'
+      navigation:
+        patterns:
+          - 'go_router*'
+        update-types:
+          - 'minor'
+          - 'patch'
+      internationalization:
+        patterns:
+          - 'slang*'
+        update-types:
+          - 'minor'
+          - 'patch'
+      linting:
+        patterns:
+          - '*_lint*'
+          - 'flutter_lints'
+          - 'custom_lint'
+        update-types:
+          - 'minor'
+          - 'patch'
+
+  # Flutter/Dart dependencies in packages
+  - package-ecosystem: 'pub'
+    directory: '/packages/core'
+    schedule:
+      interval: 'monthly'
+      day: 'monday'
+      time: '06:00'
+      timezone: 'Asia/Tokyo'
+    open-pull-requests-limit: 5
+    reviewers:
+      - 'r0227n'
+    assignees:
+      - 'r0227n'
+    labels:
+      - 'dependencies'
+      - 'packages'
+    commit-message:
+      prefix: 'deps'
+      prefix-development: 'deps'
+      include: 'scope'
+
+  # Node.js dependencies (commitlint, prettier, etc.)
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'monthly'
+      day: 'monday'
+      time: '06:00'
+      timezone: 'Asia/Tokyo'
+    open-pull-requests-limit: 5
+    reviewers:
+      - 'r0227n'
+    assignees:
+      - 'r0227n'
+    labels:
+      - 'dependencies'
+      - 'nodejs'
+    commit-message:
+      prefix: 'deps'
+      prefix-development: 'deps'
+      include: 'scope'
+    groups:
+      dev-tools:
+        patterns:
+          - '@commitlint/*'
+          - 'husky'
+          - 'prettier'
+        update-types:
+          - 'minor'
+          - 'patch'
+
+  # GitHub Actions
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'monthly'
+      day: 'monday'
+      time: '06:00'
+      timezone: 'Asia/Tokyo'
+    open-pull-requests-limit: 5
+    reviewers:
+      - 'r0227n'
+    assignees:
+      - 'r0227n'
+    labels:
+      - 'dependencies'
+      - 'github-actions'
+    commit-message:
+      prefix: 'deps'
+      prefix-development: 'deps'
+      include: 'scope'
