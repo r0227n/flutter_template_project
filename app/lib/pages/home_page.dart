@@ -1,19 +1,10 @@
 import 'package:app/router/routes.dart';
 import 'package:core/core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class HomePage extends ConsumerStatefulWidget {
-  const HomePage({required this.title, super.key});
-
-  final String title;
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(StringProperty('title', title));
-  }
+  const HomePage({super.key});
 
   @override
   ConsumerState<HomePage> createState() => _HomePageState();
@@ -59,7 +50,6 @@ class _HomePageState extends ConsumerState<HomePage> with LoggerMixin {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
         actions: [
           IconButton(
             onPressed: () => const SettingsRoute().push<void>(context),
