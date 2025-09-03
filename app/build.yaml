@@ -1,6 +1,8 @@
 targets:
   $default:
     builders:
+      go_router_builder:
+        enabled: true
       slang_build_runner:
         options:
           base_locale: ja
