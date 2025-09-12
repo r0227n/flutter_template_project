@@ -1,3 +1,4 @@
+import 'package:app/pages/debug_page.dart';
 import 'package:app/pages/home_page.dart';
 import 'package:app/pages/settings/license_page.dart';
 import 'package:app/pages/settings/settings_page.dart';
@@ -16,6 +17,9 @@ part 'routes.g.dart';
           path: 'license',
         ),
       ],
+    ),
+    TypedGoRoute<DebugRoute>(
+      path: 'debug',
     ),
   ],
 )
@@ -46,5 +50,15 @@ class LicenseRoute extends GoRouteData with _$LicenseRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const CustomLicensePage();
+  }
+}
+
+@immutable
+class DebugRoute extends GoRouteData with _$DebugRoute {
+  const DebugRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const DebugPage();
   }
 }
