@@ -1,2 +1,2 @@
 #!/bin/sh
-mise exec bun -- bunx commitlint --edit $1
+~/.local/share/mise/installs/bun/1.2.17/bin/bunx commitlint --edit $1
