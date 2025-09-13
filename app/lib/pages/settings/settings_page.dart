@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:app/core/constants.dart';
-import 'package:app/core/i18n.dart';
+import 'package:app/core/core.dart';
 import 'package:app/router/routes.dart';
 import 'package:core/core.dart' hide LocaleSettings;
 import 'package:flutter/material.dart';
