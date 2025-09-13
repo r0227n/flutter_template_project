@@ -66,4 +66,21 @@ class _TranslationsSettingsEn implements TranslationsSettingsJa {
   String get version => 'Version';
   @override
   String get licenses => 'Licenses';
+  @override
+  late final _TranslationsSettingsSectionsEn sections =
+      _TranslationsSettingsSectionsEn._(_root);
+}
+
+// Path: settings.sections
+class _TranslationsSettingsSectionsEn
+    implements TranslationsSettingsSectionsJa {
+  _TranslationsSettingsSectionsEn._(this._root);
+
+  final TranslationsEn _root; // ignore: unused_field
+
+  // Translations
+  @override
+  String get appSettings => 'App Settings';
+  @override
+  String get other => 'Other';
 }
