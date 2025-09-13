@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:app/core/i18n.dart' as app;
+import 'package:app/core/i18n/slang.g.dart' as app;
 import 'package:app/router/app_router.dart';
 import 'package:core/core.dart' as core;
 import 'package:flutter/foundation.dart';
