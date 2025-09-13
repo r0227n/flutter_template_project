@@ -1,5 +1,5 @@
-final class Spacing {
-  const Spacing._();
+final class AppSpacing {
+  const AppSpacing._();
 
   static const double xs = 4;
   static const double s = 8;
@@ -8,8 +8,9 @@ final class Spacing {
   static const double xl = 32;
 }
 
-final class Radius {
-  const Radius._();
+final class AppRadius {
+  const AppRadius._();
 
-  static const double s = 4;
+  static const double xs = 4;
+  static const double s = 8;
 }
