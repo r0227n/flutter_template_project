@@ -1,6 +1,6 @@
 // Logger exports
 // i18n exports
-export 'i18n/core_translations.g.dart';
+export 'i18n/core_translations.g.dart' hide CoreTranslations, t;
 export 'src/logger/app_logger.dart';
 export 'src/logger/crashlytics_observer.dart';
 export 'src/logger/logger_config.dart';
