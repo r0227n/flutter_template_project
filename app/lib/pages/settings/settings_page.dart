@@ -78,7 +78,7 @@ class SettingsPage extends ConsumerWidget {
       ListItem(
         title: Text(t.settings.licenses),
         trailing: ListItem.iconOpenPage,
-        onTap: () => const LicenseRoute().go(context),
+        onTap: () => const LicenseMenuRoute().go(context),
       ),
     ];
 

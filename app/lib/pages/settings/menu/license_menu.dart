@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-class CustomLicensePage extends StatefulWidget {
-  const CustomLicensePage({super.key});
+class LicenseMenu extends StatefulWidget {
+  const LicenseMenu({super.key});
 
   @override
-  State<CustomLicensePage> createState() => _CustomLicensePageState();
+  State<LicenseMenu> createState() => _LicenseMenuState();
 }
 
-class _CustomLicensePageState extends State<CustomLicensePage> {
+class _LicenseMenuState extends State<LicenseMenu> {
   late final Future<PackageInfo> _packageInfoFuture;
 
   @override

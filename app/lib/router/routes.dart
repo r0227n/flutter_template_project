@@ -1,5 +1,5 @@
 import 'package:app/pages/home_page.dart';
-import 'package:app/pages/settings/license_page.dart';
+import 'package:app/pages/settings/menu.dart';
 import 'package:app/pages/settings/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -12,7 +12,7 @@ part 'routes.g.dart';
     TypedGoRoute<SettingsRoute>(
       path: 'settings',
       routes: <TypedGoRoute<GoRouteData>>[
-        TypedGoRoute<LicenseRoute>(
+        TypedGoRoute<LicenseMenuRoute>(
           path: 'license',
         ),
       ],
@@ -40,11 +40,11 @@ class SettingsRoute extends GoRouteData with _$SettingsRoute {
 }
 
 @immutable
-class LicenseRoute extends GoRouteData with _$LicenseRoute {
-  const LicenseRoute();
+class LicenseMenuRoute extends GoRouteData with _$LicenseMenuRoute {
+  const LicenseMenuRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const CustomLicensePage();
+    return const LicenseMenu();
   }
 }
