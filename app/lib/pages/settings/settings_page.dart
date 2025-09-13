@@ -18,7 +18,7 @@ class SettingsPage extends ConsumerWidget {
       body: Scrollbar(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(Spacing.l),
+            padding: const EdgeInsets.all(AppSpacing.l),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -93,9 +93,9 @@ class _SectionHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
-        left: Spacing.xs,
-        top: Spacing.l,
-        bottom: Spacing.s,
+        left: AppSpacing.xs,
+        top: AppSpacing.l,
+        bottom: AppSpacing.s,
       ),
       child: Text(
         _title,
@@ -118,13 +118,13 @@ class _SettingsCard extends StatelessWidget {
     return Card(
       elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Radius.s),
+        borderRadius: BorderRadius.circular(AppRadius.s),
         side: BorderSide(
           color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(Radius.s),
+        borderRadius: BorderRadius.circular(AppRadius.s),
         child: Column(
           children: _children,
         ),
