@@ -18,7 +18,11 @@ RouteBase get $homeRoute => GoRouteData.$route(
 
       factory: _$SettingsRoute._fromState,
       routes: [
-        GoRouteData.$route(path: 'license', factory: _$LicenseRoute._fromState),
+        GoRouteData.$route(
+          path: 'license',
+
+          factory: _$LicenseMenuRoute._fromState,
+        ),
       ],
     ),
   ],
@@ -64,8 +68,9 @@ mixin _$SettingsRoute on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-mixin _$LicenseRoute on GoRouteData {
-  static LicenseRoute _fromState(GoRouterState state) => const LicenseRoute();
+mixin _$LicenseMenuRoute on GoRouteData {
+  static LicenseMenuRoute _fromState(GoRouterState state) =>
+      const LicenseMenuRoute();
 
   @override
   String get location => GoRouteData.$location('/settings/license');
