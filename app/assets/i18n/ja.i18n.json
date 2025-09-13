@@ -4,6 +4,10 @@
     "language": "言語",
     "theme": "テーマ",
     "version": "バージョン",
-    "licenses": "ライセンス"
+    "licenses": "ライセンス",
+    "sections": {
+      "appSettings": "アプリ設定",
+      "other": "その他"
+    }
   }
 }

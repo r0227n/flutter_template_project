@@ -4,6 +4,10 @@
     "language": "Language",
     "theme": "Theme",
     "version": "Version",
-    "licenses": "Licenses"
+    "licenses": "Licenses",
+    "sections": {
+      "appSettings": "App Settings",
+      "other": "Other"
+    }
   }
 }

@@ -73,4 +73,22 @@ class TranslationsSettingsJa {
 
   /// ja: 'ライセンス'
   String get licenses => 'ライセンス';
+
+  late final TranslationsSettingsSectionsJa sections =
+      TranslationsSettingsSectionsJa._(_root);
+}
+
+// Path: settings.sections
+class TranslationsSettingsSectionsJa {
+  TranslationsSettingsSectionsJa._(this._root);
+
+  final Translations _root; // ignore: unused_field
+
+  // Translations
+
+  /// ja: 'アプリ設定'
+  String get appSettings => 'アプリ設定';
+
+  /// ja: 'その他'
+  String get other => 'その他';
 }
