@@ -22,13 +22,13 @@ dependencies:
   go_router: ^16.0.0
   hooks_riverpod: ^2.6.1
   json_annotation: ^4.9.0
-  package_info_plus: ^8.3.1
+  package_info_plus: ^9.0.0
   riverpod_annotation: ^2.6.1
   shared_preferences: ^2.5.3
   slang: ^4.8.1
   slang_flutter: ^4.8.0
-  talker_flutter: ^4.9.3
-  talker_riverpod_logger: ^4.9.3
+  talker_flutter: ^5.0.1
+  talker_riverpod_logger: ^5.0.1
 
 dev_dependencies:
   build_runner: ^2.5.4
@@ -42,7 +42,7 @@ dev_dependencies:
   json_serializable: ^6.9.5
   riverpod_generator: ^2.6.5
   riverpod_lint: ^2.6.5
-  slang_build_runner: ^4.8.0
+  slang_build_runner: ^4.8.1
   yumemi_lints: ^4.2.0
 
 # Dependency overrides to resolve build tool conflicts
