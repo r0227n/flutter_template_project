@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "dart": {
-      "command": "~/.local/share/mise/installs/flutter/3.35.1-stable/bin/dart",
+      "command": "~/.local/share/mise/installs/flutter/3.35.4-stable/bin/dart",
       "args": ["mcp-server", "--force-roots-fallback"]
     },
     "serena": {
