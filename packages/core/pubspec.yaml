@@ -10,13 +10,13 @@ environment:
 resolution: workspace
 
 dependencies:
-  firebase_crashlytics: ^4.3.10
+  firebase_crashlytics: ^5.0.5
   flutter:
     sdk: flutter
   flutter_riverpod: ^3.0.3
   freezed_annotation: ^3.1.0
   json_annotation: ^4.9.0
-  package_info_plus: ^8.3.1
+  package_info_plus: ^9.0.0
   riverpod_annotation: ^3.0.3
   shared_preferences: ^2.5.3
   slang: ^4.8.1
@@ -36,7 +36,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   freezed: ^3.2.3
-  json_serializable: ^6.9.5
+  json_serializable: ^6.11.2
   riverpod_generator: ^3.0.3
   slang_build_runner: ^4.8.0
   yumemi_lints: ^4.2.0

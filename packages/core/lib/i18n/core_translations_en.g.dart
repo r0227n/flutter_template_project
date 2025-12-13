@@ -10,7 +10,8 @@ import 'package:intl/intl.dart';
 import 'package:slang/generated.dart';
 
 // Path: <root>
-class CoreTranslationsEn extends CoreTranslations {
+class CoreTranslationsEn extends CoreTranslations
+    with BaseTranslations<CoreLocale, CoreTranslations> {
   /// You can call this constructor and build your own translation instance of this locale.
   /// Constructing via the enum [CoreLocale.build] is preferred.
   CoreTranslationsEn({

@@ -9,8 +9,7 @@ part of 'core_translations.g.dart';
 // Path: <root>
 typedef CoreTranslationsJa = CoreTranslations; // ignore: unused_element
 
-class CoreTranslations
-    implements BaseTranslations<CoreLocale, CoreTranslations> {
+class CoreTranslations with BaseTranslations<CoreLocale, CoreTranslations> {
   /// Returns the current translations of the given [context].
   ///
   /// Usage:
