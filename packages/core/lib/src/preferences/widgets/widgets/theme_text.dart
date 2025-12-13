@@ -49,7 +49,7 @@ class ThemeText extends ConsumerWidget {
     final t = CoreTranslations.of(context);
 
     return Text(
-      _getThemeDisplayText(currentTheme.valueOrNull, t),
+      _getThemeDisplayText(currentTheme.asData?.value, t),
       style: _style,
     );
   }
