@@ -45,11 +45,11 @@ class ThemeText extends ConsumerWidget {
   /// unified i18n system.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentTheme = ref.watch(appThemeProviderProvider);
+    final currentTheme = ref.watch(appThemeProviderProvider).value;
     final t = CoreTranslations.of(context);
 
     return Text(
-      _getThemeDisplayText(currentTheme.valueOrNull, t),
+      _getThemeDisplayText(currentTheme, t),
       style: _style,
     );
   }

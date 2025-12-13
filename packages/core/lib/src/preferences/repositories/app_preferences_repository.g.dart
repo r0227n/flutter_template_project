@@ -6,8 +6,19 @@ part of 'app_preferences_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$appPreferencesRepositoryHash() =>
-    r'70f9f013d024973fe76a29fb3fa41a355aed5281';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+/// Provides the app preferences repository instance
+///
+/// This provider creates and configures an [AppPreferencesRepository] instance
+/// with the SharedPreferences dependency injected from
+/// [sharedPreferencesProvider].
+///
+/// Returns:
+/// A configured [AppPreferencesRepository] instance
+
+@ProviderFor(appPreferencesRepository)
+const appPreferencesRepositoryProvider = AppPreferencesRepositoryProvider._();
 
 /// Provides the app preferences repository instance
 ///
@@ -17,23 +28,56 @@ String _$appPreferencesRepositoryHash() =>
 ///
 /// Returns:
 /// A configured [AppPreferencesRepository] instance
-///
-/// Copied from [appPreferencesRepository].
-@ProviderFor(appPreferencesRepository)
-final appPreferencesRepositoryProvider =
-    AutoDisposeProvider<AppPreferencesRepository>.internal(
-      appPreferencesRepository,
-      name: r'appPreferencesRepositoryProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$appPreferencesRepositoryHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef AppPreferencesRepositoryRef =
-    AutoDisposeProviderRef<AppPreferencesRepository>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class AppPreferencesRepositoryProvider
+    extends
+        $FunctionalProvider<
+          AppPreferencesRepository,
+          AppPreferencesRepository,
+          AppPreferencesRepository
+        >
+    with $Provider<AppPreferencesRepository> {
+  /// Provides the app preferences repository instance
+  ///
+  /// This provider creates and configures an [AppPreferencesRepository] instance
+  /// with the SharedPreferences dependency injected from
+  /// [sharedPreferencesProvider].
+  ///
+  /// Returns:
+  /// A configured [AppPreferencesRepository] instance
+  const AppPreferencesRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'appPreferencesRepositoryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$appPreferencesRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<AppPreferencesRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  AppPreferencesRepository create(Ref ref) {
+    return appPreferencesRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AppPreferencesRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AppPreferencesRepository>(value),
+    );
+  }
+}
+
+String _$appPreferencesRepositoryHash() =>
+    r'70f9f013d024973fe76a29fb3fa41a355aed5281';

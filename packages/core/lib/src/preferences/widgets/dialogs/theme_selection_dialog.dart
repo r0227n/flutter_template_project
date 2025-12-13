@@ -77,7 +77,7 @@ class ThemeSelectionDialog extends ConsumerWidget {
   /// handles theme changes through the theme provider.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentTheme = ref.read(appThemeProviderProvider).valueOrNull;
+    final currentTheme = ref.watch(appThemeProviderProvider).value;
 
     return SelectionDialog<ThemeMode>(
       title: title,

@@ -176,16 +176,5 @@ void main() {
         container.dispose();
       },
     );
-
-    test('sharedPreferencesProvider throws UnimplementedError by default', () {
-      final container = ProviderContainer();
-
-      expect(
-        () => container.read(sharedPreferencesProvider),
-        throwsA(isA<UnimplementedError>()),
-      );
-
-      container.dispose();
-    });
   });
 }

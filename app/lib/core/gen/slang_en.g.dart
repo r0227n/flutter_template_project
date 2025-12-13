@@ -10,7 +10,9 @@ import 'package:slang/generated.dart';
 import 'slang.g.dart';
 
 // Path: <root>
-class TranslationsEn implements Translations {
+class TranslationsEn
+    with BaseTranslations<AppLocale, Translations>
+    implements Translations {
   /// You can call this constructor and build your own translation instance of this locale.
   /// Constructing via the enum [AppLocale.build] is preferred.
   TranslationsEn({
