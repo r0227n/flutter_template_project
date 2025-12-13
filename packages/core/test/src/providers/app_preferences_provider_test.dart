@@ -180,10 +180,17 @@ void main() {
     test('sharedPreferencesProvider throws UnimplementedError by default', () {
       final container = ProviderContainer();
 
-      expect(
-        () => container.read(sharedPreferencesProvider),
-        throwsA(isA<UnimplementedError>()),
-      );
+      try {
+        container.read(sharedPreferencesProvider);
+        fail('Expected an exception to be thrown');
+      } catch (e) {
+        // Riverpod wraps the error in a ProviderException
+        // We check that the underlying error is UnimplementedError
+        expect(
+          e.toString(),
+          contains('UnimplementedError'),
+        );
+      }
 
       container.dispose();
     });
