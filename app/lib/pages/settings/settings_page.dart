@@ -6,6 +6,9 @@ import 'package:core/core.dart' hide LocaleSettings;
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+/// PAGE-2 Settings-Page
+///
+/// アプリの設定画面を表示する
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
 

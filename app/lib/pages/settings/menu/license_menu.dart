@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
+/// PAGE-3 License-Menu
+///
+/// ライセンス画面を表示する
 class LicenseMenu extends StatefulWidget {
   const LicenseMenu({super.key});
 

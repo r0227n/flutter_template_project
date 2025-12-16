@@ -3,6 +3,9 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+/// PAGE-1 Home-Page
+///
+/// ホーム画面
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
