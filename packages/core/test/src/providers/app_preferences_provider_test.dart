@@ -108,7 +108,7 @@ void main() {
     });
 
     test('setThemeMode updates the preference and state', () async {
-      const newThemeMode = ThemeMode.light;
+      final newThemeMode = ThemeMode.light;
       final notifier = container.read(appThemeProviderProvider.notifier);
 
       await notifier.setThemeMode(newThemeMode);

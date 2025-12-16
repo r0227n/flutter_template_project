@@ -78,7 +78,7 @@ void main() {
 
     testWidgets('updates theme when system option is selected', (tester) async {
       // Set initial theme to light
-      await repository.setTheme(ThemeMode.light);
+      await repository.setTheme(.light);
 
       await tester.pumpWidget(await createTestWidget());
       await tester.tap(find.text('Show Dialog'));

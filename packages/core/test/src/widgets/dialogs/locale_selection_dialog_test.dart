@@ -140,7 +140,7 @@ void main() {
 
     testWidgets('does not update locale when cancelled', (tester) async {
       // Set initial locale
-      await repository.setLocale(const Locale('en'));
+      await repository.setLocale(Locale('en'));
 
       await tester.pumpWidget(await createTestWidget());
       await tester.tap(find.text('Show Dialog'));
