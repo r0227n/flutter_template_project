@@ -88,7 +88,6 @@ Future<void> main() async {
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locale = ref.watch(core.appLocaleProviderProvider);
@@ -110,7 +109,7 @@ class MyApp extends ConsumerWidget {
       darkTheme: core.AppTheme.darkTheme,
       themeMode: switch (themeMode) {
         AsyncData(value: final mode) => mode,
-        _ => ThemeMode.system,
+        _ => .system,
       },
       routerConfig: router,
     );

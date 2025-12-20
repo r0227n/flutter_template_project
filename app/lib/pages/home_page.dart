@@ -3,6 +3,9 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+/// The home page of the application.
+///
+/// This page displays a counter and a button to increment it.
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
@@ -10,10 +13,11 @@ class HomePage extends ConsumerStatefulWidget {
   ConsumerState<HomePage> createState() => _HomePageState();
 }
 
+/// The state for the [HomePage].
 class _HomePageState extends ConsumerState<HomePage> with LoggerMixin {
   var _counter = 0;
 
-  /// Performance measurement helper method
+  /// A helper method for measuring the performance of an operation.
   void _measurePerformance(
     String operation,
     VoidCallback callback, {
@@ -30,6 +34,7 @@ class _HomePageState extends ConsumerState<HomePage> with LoggerMixin {
     );
   }
 
+  /// Increments the counter and logs the action.
   void _incrementCounter() {
     // Log user action with structured logging using mixin
     logUserAction(
@@ -59,7 +64,7 @@ class _HomePageState extends ConsumerState<HomePage> with LoggerMixin {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: .center,
           children: <Widget>[
             Text(
               'カウンター: $_counter',

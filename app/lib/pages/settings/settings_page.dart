@@ -6,6 +6,10 @@ import 'package:core/core.dart' hide LocaleSettings;
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+/// The settings page of the application.
+///
+/// This page allows the user to configure application settings, such as
+/// language and theme, and view application information.
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
 
@@ -18,9 +22,9 @@ class SettingsPage extends ConsumerWidget {
       body: Scrollbar(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(AppSpacing.l),
+            padding: const .all(AppSpacing.l),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: .start,
               children: [
                 _SectionHeader(t.settings.sections.appSettings),
                 _SettingsCard(
@@ -44,7 +48,7 @@ class SettingsPage extends ConsumerWidget {
                     ),
                     const Divider(),
                     ListTile(
-                      leading: Theme.of(context).brightness == Brightness.dark
+                      leading: Theme.of(context).brightness == .dark
                           ? const Icon(Icons.dark_mode)
                           : const Icon(Icons.light_mode),
                       title: Text(t.settings.theme),
@@ -84,6 +88,7 @@ class SettingsPage extends ConsumerWidget {
   }
 }
 
+/// A widget that displays a section header.
 class _SectionHeader extends StatelessWidget {
   const _SectionHeader(String title) : _title = title;
 
@@ -92,7 +97,7 @@ class _SectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
+      padding: const .only(
         left: AppSpacing.xs,
         top: AppSpacing.l,
         bottom: AppSpacing.s,
@@ -100,7 +105,7 @@ class _SectionHeader extends StatelessWidget {
       child: Text(
         _title,
         style: Theme.of(context).textTheme.titleMedium?.copyWith(
-          fontWeight: FontWeight.w600,
+          fontWeight: .w600,
           color: Theme.of(context).colorScheme.primary,
         ),
       ),
@@ -108,6 +113,7 @@ class _SectionHeader extends StatelessWidget {
   }
 }
 
+/// A card widget that wraps a list of settings widgets.
 class _SettingsCard extends StatelessWidget {
   const _SettingsCard({required List<Widget> children}) : _children = children;
 
@@ -118,13 +124,13 @@ class _SettingsCard extends StatelessWidget {
     return Card(
       elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(AppRadius.s),
+        borderRadius: .circular(AppRadius.s),
         side: BorderSide(
           color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(AppRadius.s),
+        borderRadius: .circular(AppRadius.s),
         child: Column(
           children: _children,
         ),
