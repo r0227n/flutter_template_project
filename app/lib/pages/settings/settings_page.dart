@@ -11,7 +11,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 /// This page allows the user to configure application settings, such as
 /// language and theme, and view application information.
 class SettingsPage extends ConsumerWidget {
-  /// Creates a new [SettingsPage] instance.
   const SettingsPage({super.key});
 
   @override
@@ -91,7 +90,6 @@ class SettingsPage extends ConsumerWidget {
 
 /// A widget that displays a section header.
 class _SectionHeader extends StatelessWidget {
-  /// Creates a new [_SectionHeader] instance.
   const _SectionHeader(String title) : _title = title;
 
   final String _title;
@@ -117,7 +115,6 @@ class _SectionHeader extends StatelessWidget {
 
 /// A card widget that wraps a list of settings widgets.
 class _SettingsCard extends StatelessWidget {
-  /// Creates a new [_SettingsCard] instance.
   const _SettingsCard({required List<Widget> children}) : _children = children;
 
   final List<Widget> _children;

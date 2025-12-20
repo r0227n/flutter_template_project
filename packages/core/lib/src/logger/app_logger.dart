@@ -8,9 +8,6 @@ import 'package:talker_flutter/talker_flutter.dart';
 /// This class must be initialized by calling [initialize] before it can be
 /// used.
 class AppLogger {
-  /// Creates a new [AppLogger] instance.
-  ///
-  /// This constructor is internal and should not be called directly.
   AppLogger._internal(this._talker);
 
   static AppLogger? _instance;

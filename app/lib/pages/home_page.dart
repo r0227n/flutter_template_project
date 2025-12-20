@@ -7,7 +7,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 ///
 /// This page displays a counter and a button to increment it.
 class HomePage extends ConsumerStatefulWidget {
-  /// Creates a new [HomePage] instance.
   const HomePage({super.key});
 
   @override

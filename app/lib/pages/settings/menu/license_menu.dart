@@ -3,7 +3,6 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 /// A widget that displays the license page.
 class LicenseMenu extends StatefulWidget {
-  /// Creates a new [LicenseMenu] instance.
   const LicenseMenu({super.key});
 
   @override

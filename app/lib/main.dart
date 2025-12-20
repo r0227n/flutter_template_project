@@ -92,7 +92,6 @@ Future<void> main() async {
 ///
 /// This widget is responsible for setting up the `MaterialApp` and routing.
 class MyApp extends ConsumerWidget {
-  /// Creates a new [MyApp] instance.
   const MyApp({super.key});
 
   @override

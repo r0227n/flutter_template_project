@@ -19,9 +19,10 @@ part 'routes.g.dart';
     ),
   ],
 )
-/// The route for the home page.
+/// The main application route, corresponding to the home screen.
+///
+/// This route is configured with nested routes for settings and license pages.
 class HomeRoute extends GoRouteData with $HomeRoute {
-  /// Creates a new [HomeRoute] instance.
   const HomeRoute();
 
   @override
@@ -30,9 +31,10 @@ class HomeRoute extends GoRouteData with $HomeRoute {
   }
 }
 
-/// The route for the settings page.
+/// The route for the settings screen, accessible from the home screen.
+///
+/// This route includes a nested route for the license page.
 class SettingsRoute extends GoRouteData with $SettingsRoute {
-  /// Creates a new [SettingsRoute] instance.
   const SettingsRoute();
 
   @override
@@ -41,9 +43,10 @@ class SettingsRoute extends GoRouteData with $SettingsRoute {
   }
 }
 
-/// The route for the license menu page.
+/// The route for the license page, accessible from the settings screen.
+///
+/// This route displays the open-source licenses for the application.
 class LicenseMenuRoute extends GoRouteData with $LicenseMenuRoute {
-  /// Creates a new [LicenseMenuRoute] instance.
   const LicenseMenuRoute();
 
   @override
