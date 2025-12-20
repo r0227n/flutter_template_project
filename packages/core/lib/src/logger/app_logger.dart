@@ -2,18 +2,14 @@ import 'package:core/src/logger/crashlytics_observer.dart';
 import 'package:core/src/logger/logger_config.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
-/// A wrapper around the `TalkerFlutter` logger that provides a singleton
-/// instance and convenient logging methods.
-///
-/// This class must be initialized by calling [initialize] before it can be
-/// used.
+/// Application logger wrapper for TalkerFlutter
 class AppLogger {
   AppLogger._internal(this._talker);
 
   static AppLogger? _instance;
   final Talker _talker;
 
-  /// Initializes the logger with the given [config].
+  /// Initialize the logger with configuration
   static void initialize(LoggerConfig config) {
     final talker = TalkerFlutter.init(
       observer: CrashlyticsTalkerObserver(),
@@ -23,9 +19,7 @@ class AppLogger {
     _instance = AppLogger._internal(talker);
   }
 
-  /// Returns the singleton instance of the logger.
-  ///
-  /// Throws a [StateError] if the logger has not been initialized.
+  /// Get the current logger instance
   static AppLogger get instance {
     if (_instance == null) {
       throw StateError(
@@ -35,37 +29,25 @@ class AppLogger {
     return _instance!;
   }
 
-  /// Returns `true` if the logger has been initialized.
+  /// Check if logger is initialized
   static bool get isInitialized => _instance != null;
 
-  /// Returns the underlying `Talker` instance.
+  /// Get Talker instance for advanced usage
   Talker get talker => _talker;
 
   // Convenience methods for logging
-  /// Logs a debug message.
   void debug(String message, [Object? extra]) =>
       _logWithFullData(LogLevel.debug, message, extra);
-
-  /// Logs an info message.
   void info(String message, [Object? extra]) =>
       _logWithFullData(LogLevel.info, message, extra);
-
-  /// Logs a warning message.
   void warning(String message, [Object? extra]) =>
       _logWithFullData(LogLevel.warning, message, extra);
-
-  /// Logs an error message.
   void error(String message, [Object? exception, StackTrace? stackTrace]) =>
       _logWithFullData(LogLevel.error, message, exception, stackTrace);
-
-  /// Logs a critical message.
   void critical(String message, [Object? exception, StackTrace? stackTrace]) =>
       _logWithFullData(LogLevel.critical, message, exception, stackTrace);
 
-  /// Logs a message with the given [level], [message], and optional [extra]
-  /// data and [stackTrace].
-  ///
-  /// This method formats the message and extra data to prevent truncation.
+  /// Log with full data display, preventing truncation
   void _logWithFullData(
     LogLevel level,
     String message,
@@ -90,7 +72,7 @@ class AppLogger {
     }
   }
 
-  /// Formats the log message and extra data.
+  /// Format log message with full data display
   String _formatLogMessage(String message, Object? extra) {
     if (extra == null) {
       return message;
@@ -100,7 +82,7 @@ class AppLogger {
     return '$message $extraStr';
   }
 
-  /// Formats the extra data to prevent truncation.
+  /// Format extra data to prevent truncation
   String _formatExtra(Object? extra) {
     if (extra == null) {
       return '';
@@ -127,17 +109,14 @@ class AppLogger {
   }
 
   // Structured logging methods
-  /// Logs a user action.
   void logUserAction(String action, [Map<String, dynamic>? metadata]) {
     info('User Action: $action', metadata);
   }
 
-  /// Logs an API call.
   void logApiCall(String endpoint, [Map<String, dynamic>? metadata]) {
     debug('API Call: $endpoint', metadata);
   }
 
-  /// Logs the performance of an operation.
   void logPerformance(
     String operation,
     Duration duration, [
@@ -150,7 +129,7 @@ class AppLogger {
     info('Performance: $operation took ${duration.inMilliseconds}ms', data);
   }
 
-  /// Logs a message with the full data displayed, preventing truncation.
+  /// Full log output (no truncation)
   void logFull(String message, [Object? data]) {
     if (data != null) {
       _talker.info('$message\n${_formatExtra(data)}');
@@ -159,7 +138,7 @@ class AppLogger {
     }
   }
 
-  /// Logs a debug message with the full data displayed, preventing truncation.
+  /// Full debug log output
   void debugFull(String message, [Object? data]) {
     if (data != null) {
       _talker.debug('$message\n${_formatExtra(data)}');

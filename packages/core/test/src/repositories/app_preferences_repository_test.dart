@@ -81,21 +81,21 @@ void main() {
       });
 
       test('setTheme stores system theme preference correctly', () async {
-        await repository.setTheme(.system);
+        await repository.setTheme(ThemeMode.system);
 
         final stored = mockPrefs.getString('app_theme');
         expect(stored, 'system');
       });
 
       test('setTheme stores light theme preference correctly', () async {
-        await repository.setTheme(.light);
+        await repository.setTheme(ThemeMode.light);
 
         final stored = mockPrefs.getString('app_theme');
         expect(stored, 'light');
       });
 
       test('setTheme stores dark theme preference correctly', () async {
-        await repository.setTheme(.dark);
+        await repository.setTheme(ThemeMode.dark);
 
         final stored = mockPrefs.getString('app_theme');
         expect(stored, 'dark');
@@ -134,7 +134,7 @@ void main() {
       });
 
       test('clearTheme removes stored preference', () async {
-        await repository.setTheme(.dark);
+        await repository.setTheme(ThemeMode.dark);
 
         await repository.clearTheme();
 

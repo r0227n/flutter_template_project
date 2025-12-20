@@ -113,13 +113,13 @@ class SelectionDialog<T> extends StatelessWidget {
       icon: _icon,
       title: Text(_title),
       content: Column(
-        mainAxisSize: .min,
+        mainAxisSize: MainAxisSize.min,
         children: [
           RadioGroup<T?>(
             groupValue: _getSelectedValue(),
             onChanged: (value) => _handleSelection(value, context),
             child: Column(
-              mainAxisSize: .min,
+              mainAxisSize: MainAxisSize.min,
               children: _options.map(
                 (option) {
                   final optionValue =

@@ -84,15 +84,15 @@ class ThemeSelectionDialog extends ConsumerWidget {
       icon: icon,
       options: [
         SelectionOption(
-          value: .system,
+          value: ThemeMode.system,
           displayText: systemLabel,
         ),
         SelectionOption(
-          value: .light,
+          value: ThemeMode.light,
           displayText: lightLabel,
         ),
         SelectionOption(
-          value: .dark,
+          value: ThemeMode.dark,
           displayText: darkLabel,
         ),
       ],
