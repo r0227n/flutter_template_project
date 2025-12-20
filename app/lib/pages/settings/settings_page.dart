@@ -6,9 +6,10 @@ import 'package:core/core.dart' hide LocaleSettings;
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-/// PAGE-2 Settings-Page
+/// The settings page of the application.
 ///
-/// アプリの設定画面を表示する
+/// This page allows the user to configure application settings, such as
+/// language and theme, and view application information.
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
 
@@ -87,6 +88,7 @@ class SettingsPage extends ConsumerWidget {
   }
 }
 
+/// A widget that displays a section header.
 class _SectionHeader extends StatelessWidget {
   const _SectionHeader(String title) : _title = title;
 
@@ -111,6 +113,7 @@ class _SectionHeader extends StatelessWidget {
   }
 }
 
+/// A card widget that wraps a list of settings widgets.
 class _SettingsCard extends StatelessWidget {
   const _SettingsCard({required List<Widget> children}) : _children = children;
 
