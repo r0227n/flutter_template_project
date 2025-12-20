@@ -1,0 +1,10 @@
+analyzer:
+  exclude:
+    # Build / generated artifacts (these can contain third-party sources and
+    # should never be part of the repo-wide static analysis).
+    - '**/build/**'
+    - '**/.dart_tool/**'
+    - '**/.symlinks/**'
+
+    # Tooling / non-Dart sources.
+    - 'node_modules/**'

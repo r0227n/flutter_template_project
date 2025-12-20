@@ -110,7 +110,7 @@ class MyApp extends ConsumerWidget {
       darkTheme: core.AppTheme.darkTheme,
       themeMode: switch (themeMode) {
         AsyncData(value: final mode) => mode,
-        _ => ThemeMode.system,
+        _ => .system,
       },
       routerConfig: router,
     );

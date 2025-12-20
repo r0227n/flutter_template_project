@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widget_previews.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 /// A text widget that displays the application version
@@ -122,4 +123,56 @@ class _VersionTextState extends State<VersionText> {
           ),
     );
   }
+}
+
+// ========================================
+// Widget Previews
+// ========================================
+
+/// Preview for VersionText with default styling
+@Preview(name: 'Default Version Text')
+Widget versionTextDefaultPreview() {
+  return const MaterialApp(
+    home: Scaffold(
+      body: Center(
+        child: VersionText(
+          dummyVersion: 'v1.0.0',
+        ),
+      ),
+    ),
+  );
+}
+
+/// Preview for VersionText with custom styling
+@Preview(name: 'Custom Style Version Text')
+Widget versionTextCustomStylePreview() {
+  return const MaterialApp(
+    home: Scaffold(
+      body: Center(
+        child: VersionText(
+          dummyVersion: 'v2.5.3',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Colors.blue,
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+/// Preview for VersionText with dark theme
+@Preview(name: 'Dark Theme Version Text')
+Widget versionTextDarkThemePreview() {
+  return MaterialApp(
+    theme: ThemeData.dark(),
+    home: const Scaffold(
+      body: Center(
+        child: VersionText(
+          dummyVersion: 'v3.0.0-beta',
+        ),
+      ),
+    ),
+  );
 }

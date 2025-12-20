@@ -3,6 +3,9 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+/// PAGE-1 Home-Page
+///
+/// ホーム画面
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
@@ -59,7 +62,7 @@ class _HomePageState extends ConsumerState<HomePage> with LoggerMixin {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: .center,
           children: <Widget>[
             Text(
               'カウンター: $_counter',
