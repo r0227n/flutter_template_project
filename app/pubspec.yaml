@@ -4,8 +4,8 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.9.0
-  flutter: 3.35.4
+  sdk: ^3.10.0
+  flutter: 3.38.5
 
 resolution: workspace
 
@@ -44,7 +44,7 @@ dev_dependencies:
   json_serializable: ^6.11.2
   riverpod_generator: ^3.0.3
   slang_build_runner: ^4.11.0
-  yumemi_lints: ^4.2.0
+  yumemi_lints: ^4.3.0
 
 flutter:
   uses-material-design: true
