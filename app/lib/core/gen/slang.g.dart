@@ -26,7 +26,8 @@ part 'slang_ja.g.dart';
 /// - if (LocaleSettings.currentLocale == AppLocale.ja) // locale check
 enum AppLocale with BaseAppLocale<AppLocale, Translations> {
   ja(languageCode: 'ja'),
-  en(languageCode: 'en');
+  en(languageCode: 'en')
+  ;
 
   const AppLocale({
     required this.languageCode,

@@ -26,7 +26,8 @@ part 'core_translations_ja.g.dart';
 /// - if (LocaleSettings.currentLocale == CoreLocale.ja) // locale check
 enum CoreLocale with BaseAppLocale<CoreLocale, CoreTranslations> {
   ja(languageCode: 'ja'),
-  en(languageCode: 'en');
+  en(languageCode: 'en')
+  ;
 
   const CoreLocale({
     required this.languageCode,

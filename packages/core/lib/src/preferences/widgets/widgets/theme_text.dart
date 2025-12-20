@@ -71,9 +71,9 @@ class ThemeText extends ConsumerWidget {
     }
 
     return switch (themeMode) {
-      ThemeMode.system => t.theme.system,
-      ThemeMode.light => t.theme.light,
-      ThemeMode.dark => t.theme.dark,
+      .system => t.theme.system,
+      .light => t.theme.light,
+      .dark => t.theme.dark,
     };
   }
 }

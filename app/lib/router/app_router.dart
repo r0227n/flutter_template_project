@@ -7,6 +7,9 @@ import 'package:talker_flutter/talker_flutter.dart';
 
 part 'app_router.g.dart';
 
+/// The application's router provider.
+///
+/// This provider creates and configures the `GoRouter` instance for the app.
 @riverpod
 GoRouter appRouter(Ref ref) {
   final talker = ref.watch(talkerProvider);
