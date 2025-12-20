@@ -19,7 +19,9 @@ part 'routes.g.dart';
     ),
   ],
 )
+/// The route for the home page.
 class HomeRoute extends GoRouteData with $HomeRoute {
+  /// Creates a new [HomeRoute] instance.
   const HomeRoute();
 
   @override
@@ -28,7 +30,9 @@ class HomeRoute extends GoRouteData with $HomeRoute {
   }
 }
 
+/// The route for the settings page.
 class SettingsRoute extends GoRouteData with $SettingsRoute {
+  /// Creates a new [SettingsRoute] instance.
   const SettingsRoute();
 
   @override
@@ -37,7 +41,9 @@ class SettingsRoute extends GoRouteData with $SettingsRoute {
   }
 }
 
+/// The route for the license menu page.
 class LicenseMenuRoute extends GoRouteData with $LicenseMenuRoute {
+  /// Creates a new [LicenseMenuRoute] instance.
   const LicenseMenuRoute();
 
   @override

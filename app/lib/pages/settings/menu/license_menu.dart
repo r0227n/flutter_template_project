@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
+/// A widget that displays the license page.
 class LicenseMenu extends StatefulWidget {
+  /// Creates a new [LicenseMenu] instance.
   const LicenseMenu({super.key});
 
   @override
   State<LicenseMenu> createState() => _LicenseMenuState();
 }
 
+/// The state for the [LicenseMenu].
 class _LicenseMenuState extends State<LicenseMenu> {
   late final Future<PackageInfo> _packageInfoFuture;
 

@@ -11,6 +11,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:talker_riverpod_logger/talker_riverpod_logger_observer.dart';
 import 'package:talker_riverpod_logger/talker_riverpod_logger_settings.dart';
 
+/// The entry point of the application.
+///
+/// This function initializes the necessary services and runs the app.
 Future<void> main() async {
   /// Initialize locale settings
   Future<void> initializeLocale(SharedPreferences prefs) async {
@@ -85,10 +88,13 @@ Future<void> main() async {
   );
 }
 
+/// The root widget of the application.
+///
+/// This widget is responsible for setting up the `MaterialApp` and routing.
 class MyApp extends ConsumerWidget {
+  /// Creates a new [MyApp] instance.
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locale = ref.watch(core.appLocaleProviderProvider);
