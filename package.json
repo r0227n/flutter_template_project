@@ -6,7 +6,7 @@
   "packageManager": "bun@1.2.17",
   "scripts": {
     "lint": "prettier --check '**/*.{yml,yaml,md}'",
-    "format": "bunx prettier --write '**/*.{yml,yaml,md}'",
+    "format": "prettier --write '**/*.{yml,yaml,md}'",
     "postinstall": "echo 'Dependencies installed with bun'",
     "clean": "bun run clean:node_modules",
     "clean:node_modules": "rm -rf node_modules && bun install",
