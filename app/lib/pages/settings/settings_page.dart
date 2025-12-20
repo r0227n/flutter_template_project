@@ -6,7 +6,7 @@ import 'package:core/core.dart' hide LocaleSettings;
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-/// The settings page of the application.
+/// PG-2 The settings page of the application.
 ///
 /// This page allows the user to configure application settings, such as
 /// language and theme, and view application information.

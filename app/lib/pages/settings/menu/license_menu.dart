@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-/// A widget that displays the license page.
+/// PG-2-1 A widget that displays the license page.
 class LicenseMenu extends StatefulWidget {
   const LicenseMenu({super.key});
 

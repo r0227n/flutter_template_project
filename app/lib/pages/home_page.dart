@@ -3,7 +3,7 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-/// The home page of the application.
+/// PG-1 The home page of the application.
 ///
 /// This page displays a counter and a button to increment it.
 class HomePage extends ConsumerStatefulWidget {
