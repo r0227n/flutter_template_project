@@ -22,9 +22,9 @@ class SettingsPage extends ConsumerWidget {
       body: Scrollbar(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const .all(AppSpacing.l),
+            padding: const EdgeInsets.all(AppSpacing.l),
             child: Column(
-              crossAxisAlignment: .start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _SectionHeader(t.settings.sections.appSettings),
                 _SettingsCard(
@@ -48,7 +48,7 @@ class SettingsPage extends ConsumerWidget {
                     ),
                     const Divider(),
                     ListTile(
-                      leading: Theme.of(context).brightness == .dark
+                      leading: Theme.of(context).brightness == Brightness.dark
                           ? const Icon(Icons.dark_mode)
                           : const Icon(Icons.light_mode),
                       title: Text(t.settings.theme),
@@ -97,7 +97,7 @@ class _SectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const .only(
+      padding: const EdgeInsets.only(
         left: AppSpacing.xs,
         top: AppSpacing.l,
         bottom: AppSpacing.s,
@@ -105,7 +105,7 @@ class _SectionHeader extends StatelessWidget {
       child: Text(
         _title,
         style: Theme.of(context).textTheme.titleMedium?.copyWith(
-          fontWeight: .w600,
+          fontWeight: FontWeight.w600,
           color: Theme.of(context).colorScheme.primary,
         ),
       ),
@@ -124,13 +124,13 @@ class _SettingsCard extends StatelessWidget {
     return Card(
       elevation: 0,
       shape: RoundedRectangleBorder(
-        borderRadius: .circular(AppRadius.s),
+        borderRadius: BorderRadius.circular(AppRadius.s),
         side: BorderSide(
           color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: ClipRRect(
-        borderRadius: .circular(AppRadius.s),
+        borderRadius: BorderRadius.circular(AppRadius.s),
         child: Column(
           children: _children,
         ),

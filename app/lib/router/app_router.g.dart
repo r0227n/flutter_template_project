@@ -8,13 +8,23 @@ part of 'app_router.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
+/// The application's router provider.
+///
+/// This provider creates and configures the `GoRouter` instance for the app.
 
 @ProviderFor(appRouter)
 const appRouterProvider = AppRouterProvider._();
 
+/// The application's router provider.
+///
+/// This provider creates and configures the `GoRouter` instance for the app.
+
 final class AppRouterProvider
     extends $FunctionalProvider<GoRouter, GoRouter, GoRouter>
     with $Provider<GoRouter> {
+  /// The application's router provider.
+  ///
+  /// This provider creates and configures the `GoRouter` instance for the app.
   const AppRouterProvider._()
     : super(
         from: null,

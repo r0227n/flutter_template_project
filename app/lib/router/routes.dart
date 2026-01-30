@@ -1,6 +1,6 @@
-import 'package:app/pages/home_page.dart';
-import 'package:app/pages/settings/menu.dart';
-import 'package:app/pages/settings/settings_page.dart';
+import 'package:app/presentation/pages/home/home_page.dart';
+import 'package:app/presentation/pages/settings/menu.dart';
+import 'package:app/presentation/pages/settings/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
