@@ -18,7 +18,7 @@ part of 'app_preferences_repository.dart';
 /// A configured [AppPreferencesRepository] instance
 
 @ProviderFor(appPreferencesRepository)
-const appPreferencesRepositoryProvider = AppPreferencesRepositoryProvider._();
+final appPreferencesRepositoryProvider = AppPreferencesRepositoryProvider._();
 
 /// Provides the app preferences repository instance
 ///
@@ -45,7 +45,7 @@ final class AppPreferencesRepositoryProvider
   ///
   /// Returns:
   /// A configured [AppPreferencesRepository] instance
-  const AppPreferencesRepositoryProvider._()
+  AppPreferencesRepositoryProvider._()
     : super(
         from: null,
         argument: null,

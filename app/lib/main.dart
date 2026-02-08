@@ -3,10 +3,11 @@ import 'dart:async';
 import 'package:app/core/gen/slang.g.dart' as app;
 import 'package:app/router/app_router.dart';
 import 'package:core/core.dart' as core;
+import 'package:design_system/design_system.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:talker_riverpod_logger/talker_riverpod_logger_observer.dart';
 import 'package:talker_riverpod_logger/talker_riverpod_logger_settings.dart';
@@ -105,11 +106,11 @@ class MyApp extends ConsumerWidget {
         (locale) => locale.flutterLocale,
       ),
       locale: locale,
-      theme: core.AppTheme.lightTheme,
-      darkTheme: core.AppTheme.darkTheme,
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
       themeMode: switch (themeMode) {
         AsyncData(value: final mode) => mode,
-        _ => .system,
+        _ => ThemeMode.system,
       },
       routerConfig: router,
     );

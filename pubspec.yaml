@@ -6,10 +6,13 @@ environment:
 
 dev_dependencies:
   melos: ^7.3.0
+  very_good_analysis: ^10.1.0
 
 workspace:
   - app
   - packages/core
+  - packages/database
+  - packages/design_system
 
 melos:
   name: flutter_template_project
@@ -126,3 +129,8 @@ melos:
   environment:
     sdk: '>=3.10.0 <4.0.0'
     flutter: '>=3.38.5'
+
+# TODO: Flutter SDK が test_api 0.7.9+ を同梱するようになったら削除する
+dependency_overrides:
+  test_api: 0.7.9
+  test: 1.29.0

@@ -24,7 +24,7 @@ part of 'app_preferences_provider.dart';
 /// ```
 
 @ProviderFor(sharedPreferences)
-const sharedPreferencesProvider = SharedPreferencesProvider._();
+final sharedPreferencesProvider = SharedPreferencesProvider._();
 
 /// Provides access to SharedPreferences instance
 ///
@@ -63,7 +63,7 @@ final class SharedPreferencesProvider
   ///   child: MyApp(),
   /// )
   /// ```
-  const SharedPreferencesProvider._()
+  SharedPreferencesProvider._()
     : super(
         from: null,
         argument: null,
@@ -110,7 +110,7 @@ String _$sharedPreferencesHash() => r'91d3d8d16af3d747cec711b8a095a63e20df9b7c';
 /// The default locale is Japanese ('ja') to match the main application default.
 
 @ProviderFor(AppLocaleProvider)
-const appLocaleProviderProvider = AppLocaleProviderProvider._();
+final appLocaleProviderProvider = AppLocaleProviderProvider._();
 
 /// Manages locale preferences and state
 ///
@@ -132,7 +132,7 @@ final class AppLocaleProviderProvider
   /// - Invalidating state when preferences change
   ///
   /// The default locale is Japanese ('ja') to match the main application default.
-  const AppLocaleProviderProvider._()
+  AppLocaleProviderProvider._()
     : super(
         from: null,
         argument: null,
@@ -176,7 +176,6 @@ abstract class _$AppLocaleProvider extends $Notifier<Locale> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
     final ref = this.ref as $Ref<Locale, Locale>;
     final element =
         ref.element
@@ -186,7 +185,7 @@ abstract class _$AppLocaleProvider extends $Notifier<Locale> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    element.handleCreate(ref, build);
   }
 }
 
@@ -201,7 +200,7 @@ abstract class _$AppLocaleProvider extends $Notifier<Locale> {
 /// The default theme mode is system to respect user's device preferences.
 
 @ProviderFor(AppThemeProvider)
-const appThemeProviderProvider = AppThemeProviderProvider._();
+final appThemeProviderProvider = AppThemeProviderProvider._();
 
 /// Manages theme mode preferences and state
 ///
@@ -223,7 +222,7 @@ final class AppThemeProviderProvider
   /// - Invalidating state when preferences change
   ///
   /// The default theme mode is system to respect user's device preferences.
-  const AppThemeProviderProvider._()
+  AppThemeProviderProvider._()
     : super(
         from: null,
         argument: null,
@@ -259,7 +258,6 @@ abstract class _$AppThemeProvider extends $AsyncNotifier<ThemeMode> {
   @$mustCallSuper
   @override
   void runBuild() {
-    final created = build();
     final ref = this.ref as $Ref<AsyncValue<ThemeMode>, ThemeMode>;
     final element =
         ref.element
@@ -269,6 +267,6 @@ abstract class _$AppThemeProvider extends $AsyncNotifier<ThemeMode> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    element.handleCreate(ref, build);
   }
 }

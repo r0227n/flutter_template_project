@@ -5,6 +5,7 @@
 import FlutterMacOS
 import Foundation
 
+import dart_duckdb
 import firebase_core
 import firebase_crashlytics
 import package_info_plus
@@ -13,6 +14,7 @@ import share_plus
 import shared_preferences_foundation
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
+  DuckDBPlugin.register(with: registry.registrar(forPlugin: "DuckDBPlugin"))
   FLTFirebaseCorePlugin.register(with: registry.registrar(forPlugin: "FLTFirebaseCorePlugin"))
   FLTFirebaseCrashlyticsPlugin.register(with: registry.registrar(forPlugin: "FLTFirebaseCrashlyticsPlugin"))
   FPPPackageInfoPlusPlugin.register(with: registry.registrar(forPlugin: "FPPPackageInfoPlusPlugin"))

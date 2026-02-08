@@ -8,6 +8,5 @@ export 'src/logger/logger_providers.dart';
 // Preferences exports
 export 'src/preferences/providers/app_preferences_provider.dart';
 export 'src/preferences/repositories/app_preferences_repository.dart';
-export 'src/preferences/theme/app_theme.dart';
 // Widget exports (convenience)
 export 'widgets.dart';
