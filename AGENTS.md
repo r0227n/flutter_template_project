@@ -177,9 +177,9 @@ include: package:flutter_lints/flutter.yaml
 
 linter:
   rules:
-    # Add additional lint rules here:
-    # avoid_print: false
-    # prefer_single_quotes: true
+# Add additional lint rules here:
+# avoid_print: false
+# prefer_single_quotes: true
 ```
 
 ### State Management

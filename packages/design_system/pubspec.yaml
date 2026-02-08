@@ -1,7 +1,7 @@
 name: design_system
 description: Shared design tokens and theme configuration.
 version: 1.0.0
-publish_to: 'none'
+publish_to: "none"
 
 environment:
   sdk: ^3.10.0

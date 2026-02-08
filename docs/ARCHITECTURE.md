@@ -57,24 +57,24 @@ workspace:
 
 Melos設定はルートの `pubspec.yaml` に統合されている。
 
-| コマンド | 説明 |
-|---------|------|
-| `melos run get` | 全パッケージの依存関係取得 |
-| `melos run gen` | コード生成（build_runner） |
-| `melos run gen:slang` | 翻訳コード生成 |
-| `melos run analyze` | 静的解析 |
-| `melos run analyze:slang` | Slang翻訳チェック |
-| `melos run test` | テスト実行（Flutter/Dart自動検出） |
-| `melos run format` | コードフォーマット |
+| コマンド                  | 説明                               |
+| ------------------------- | ---------------------------------- |
+| `melos run get`           | 全パッケージの依存関係取得         |
+| `melos run gen`           | コード生成（build_runner）         |
+| `melos run gen:slang`     | 翻訳コード生成                     |
+| `melos run analyze`       | 静的解析                           |
+| `melos run analyze:slang` | Slang翻訳チェック                  |
+| `melos run test`          | テスト実行（Flutter/Dart自動検出） |
+| `melos run format`        | コードフォーマット                 |
 
 ### CI専用コマンド
 
-| コマンド | 説明 |
-|---------|------|
-| `melos run ci:test` | JSONレポート付きテスト実行 |
-| `melos run ci:analyze-changed` | 変更パッケージのみ解析 |
-| `melos run ci:test-changed` | 変更パッケージのみテスト |
-| `melos run ci:format-changed` | 変更パッケージのみフォーマットチェック |
+| コマンド                       | 説明                                   |
+| ------------------------------ | -------------------------------------- |
+| `melos run ci:test`            | JSONレポート付きテスト実行             |
+| `melos run ci:analyze-changed` | 変更パッケージのみ解析                 |
+| `melos run ci:test-changed`    | 変更パッケージのみテスト               |
+| `melos run ci:format-changed`  | 変更パッケージのみフォーマットチェック |
 
 ---
 
@@ -311,17 +311,17 @@ dev_dependencies:
 
 ## 技術スタック
 
-| カテゴリ | 技術 | 用途 |
-|---------|------|------|
-| モノレポ管理 | Melos 7.3+ | パッケージ管理・スクリプト実行 |
-| 状態管理 | Riverpod 3.x | DI・リアクティブ状態管理 |
-| ルーティング | go_router 17.x | 型安全なナビゲーション |
-| データモデル | Freezed 3.x | イミュータブルモデル生成 |
-| 多言語対応 | Slang 4.x | 型安全な翻訳 |
-| ロギング | Talker 5.x | 構造化ログ |
-| データベース | DuckDB | 組み込みOLAPデータベース |
-| リント | yumemi_lints | コード品質管理 |
-| 開発環境 | mise | ツールバージョン管理 |
+| カテゴリ     | 技術           | 用途                           |
+| ------------ | -------------- | ------------------------------ |
+| モノレポ管理 | Melos 7.3+     | パッケージ管理・スクリプト実行 |
+| 状態管理     | Riverpod 3.x   | DI・リアクティブ状態管理       |
+| ルーティング | go_router 17.x | 型安全なナビゲーション         |
+| データモデル | Freezed 3.x    | イミュータブルモデル生成       |
+| 多言語対応   | Slang 4.x      | 型安全な翻訳                   |
+| ロギング     | Talker 5.x     | 構造化ログ                     |
+| データベース | DuckDB         | 組み込みOLAPデータベース       |
+| リント       | yumemi_lints   | コード品質管理                 |
+| 開発環境     | mise           | ツールバージョン管理           |
 
 ---
 
@@ -329,13 +329,13 @@ dev_dependencies:
 
 ### 使用ジェネレータ
 
-| ジェネレータ | 用途 |
-|-------------|------|
-| freezed | イミュータブルモデル |
-| json_serializable | JSON変換 |
-| riverpod_generator | Provider生成 |
-| go_router_builder | 型安全ルート |
-| slang_build_runner | 翻訳クラス |
+| ジェネレータ       | 用途                 |
+| ------------------ | -------------------- |
+| freezed            | イミュータブルモデル |
+| json_serializable  | JSON変換             |
+| riverpod_generator | Provider生成         |
+| go_router_builder  | 型安全ルート         |
+| slang_build_runner | 翻訳クラス           |
 
 ### 生成コマンド
 
@@ -368,7 +368,7 @@ melos run gen:slang
      - app
      - packages/core
      - packages/database
-     - packages/[name]  # 追加
+     - packages/[name] # 追加
    ```
 
 4. 依存関係解決
@@ -410,6 +410,7 @@ melos run ci:format-changed
 ### mise による環境管理
 
 `.mise.toml` で以下のツールを管理:
+
 - Flutter バージョン
 - Dart バージョン
 - その他開発ツール

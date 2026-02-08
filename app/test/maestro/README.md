@@ -119,9 +119,9 @@ appId: ${FULL_APP_ID}
 - launchApp
 
 # UI要素のテスト
-- assertVisible: '期待する要素'
-- tapOn: 'ボタン'
-- inputText: '入力テキスト'
+- assertVisible: "期待する要素"
+- tapOn: "ボタン"
+- inputText: "入力テキスト"
 ```
 
 ### 環境変数の動的生成
@@ -174,28 +174,28 @@ FULL_APP_ID=com.example.app.development  # APP_ID + APP_ID_SUFFIX
 appId: ${FULL_APP_ID}
 ---
 - launchApp
-- assertVisible: 'Flutter Demo Home Page'
-- assertVisible: 'カウンター: 0'
+- assertVisible: "Flutter Demo Home Page"
+- assertVisible: "カウンター: 0"
 - tapOn:
-    text: 'Increment'
-- assertVisible: 'カウンター: 1'
+    text: "Increment"
+- assertVisible: "カウンター: 1"
 - tapOn:
-    text: 'Increment'
-- assertVisible: 'カウンター: 2'
+    text: "Increment"
+- assertVisible: "カウンター: 2"
 ```
 
 ### 国際化対応
 
 ```yaml
 # 日本語UI要素のテスト
-- assertVisible: 'カウンター: 0'
+- assertVisible: "カウンター: 0"
 - tapOn:
-    text: 'Increment'
+    text: "Increment"
 
 # 英語UI要素のテスト（多言語対応）
-- assertVisible: 'Counter: 0'
+- assertVisible: "Counter: 0"
 - tapOn:
-    text: 'Increment'
+    text: "Increment"
 ```
 
 ## トラブルシューティング

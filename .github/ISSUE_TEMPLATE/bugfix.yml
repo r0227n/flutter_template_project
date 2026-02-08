@@ -1,7 +1,7 @@
 name: Bug Fix
 description: Report a bug for fixing using Claude Code and AI Review-First design
-title: '[BUG] '
-labels: ['bug', 'claude-code']
+title: "[BUG] "
+labels: [ "bug", "claude-code" ]
 assignees: []
 
 body:
@@ -18,7 +18,7 @@ body:
     attributes:
       label: Bug Title
       description: Clear and concise description of the bug
-      placeholder: 'Login form validation fails with special characters'
+      placeholder: "Login form validation fails with special characters"
     validations:
       required: true
 
@@ -29,8 +29,8 @@ body:
       description: |
         **What is the current problematic behavior?** Be specific and detailed.
       placeholder: |
-        When users enter passwords containing special characters (!, @, #, $), 
-        the login form validation incorrectly rejects them as invalid, 
+        When users enter passwords containing special characters (!, @, #, $),
+        the login form validation incorrectly rejects them as invalid,
         preventing successful authentication even with correct credentials.
     validations:
       required: true
@@ -48,10 +48,10 @@ body:
         4. Click "Login" button
         5. Observe validation error: "Invalid password format"
       value: |
-        1. 
-        2. 
-        3. 
-        4. 
+        1.
+        2.
+        3.
+        4.
         5.
     validations:
       required: true
@@ -63,7 +63,7 @@ body:
       description: |
         **What should happen instead?** Describe the correct behavior.
       placeholder: |
-        The login form should accept passwords with special characters 
+        The login form should accept passwords with special characters
         and proceed with authentication when credentials are valid.
         Special characters should be properly handled in validation logic.
     validations:
@@ -95,17 +95,17 @@ body:
         - [ ] Web (browser: )
 
         ### Device Information:
-        - Device model: 
-        - Screen size: 
-        - Orientation: 
+        - Device model:
+        - Screen size:
+        - Orientation:
 
         ### Flutter/App Information:
         - Flutter version: (check with `flutter --version`)
-        - App version: 
+        - App version:
         - Build mode: [ ] Debug [ ] Release [ ] Profile
 
         ### Additional Context:
-        - Network conditions: 
+        - Network conditions:
         - Data state:
     validations:
       required: true
@@ -124,13 +124,13 @@ body:
         - [ ] Low (minor inconvenience)
 
         ### User Impact:
-        - Affected users: 
-        - Frequency: 
+        - Affected users:
+        - Frequency:
         - Workaround available: [ ] Yes [ ] No
 
         ### Business Impact:
-        - User experience degradation: 
-        - Potential user loss: 
+        - User experience degradation:
+        - Potential user loss:
         - Security implications:
     validations:
       required: true
@@ -148,17 +148,17 @@ body:
         Related components: AuthController, LoginForm widget
       value: |
         ### Suspected Components:
-        - File: 
-        - Function/Class: 
-        - Line number: 
+        - File:
+        - Function/Class:
+        - Line number:
 
         ### Error Analysis:
-        - Error type: 
-        - Stack trace: 
-        - Related logs: 
+        - Error type:
+        - Stack trace:
+        - Related logs:
 
         ### Dependency Issues:
-        - Package versions: 
+        - Package versions:
         - Configuration conflicts:
     validations:
       required: false
@@ -259,7 +259,7 @@ body:
 
         ### Cross-Platform Validation:
         - [ ] Fix works on iOS
-        - [ ] Fix works on Android  
+        - [ ] Fix works on Android
         - [ ] Fix works on Web (if applicable)
         - [ ] Consistent behavior across platforms
     validations:

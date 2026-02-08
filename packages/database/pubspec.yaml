@@ -1,7 +1,7 @@
 name: database
 description: DuckDB database integration with Todo and Category models for the Flutter template project.
 version: 1.0.0
-publish_to: 'none'
+publish_to: "none"
 
 environment:
   sdk: ^3.10.0

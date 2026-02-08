@@ -1,8 +1,8 @@
 [tools]
 flutter = "3.38.5"
-bun = "1.2.17"
+dprint = "0.49.0"
 
-# Main workflow tasks 
+# Main workflow tasks
 [tasks.dev]
 description = "Complete development workflow"
 run = """
@@ -16,8 +16,7 @@ melos run test
 description = "Initial project setup"
 run = """
 melos bootstrap
-bun install
-bunx husky init
+git config gtr.defaultBranch develop
 claude mcp reset-project-choices
 """
 dir = "{{cwd}}"
@@ -42,7 +41,7 @@ if [ $? -ne 0 ]; then
 fi
 melos run analyze
 melos run test
-bun run ci:check
+mise run check:dprint
 """
 
 [tasks.analyze]
@@ -62,9 +61,278 @@ run = "melos run test"
 description = "Format all files"
 run = """
 melos run format
-bun run format
+mise run format:dprint
 """
 
-[tasks.clean-branch]
-description = "Clean git branches/worktrees"
-run = "./scripts/clean-branch.sh"
+[tasks."check:dprint"]
+description = "Check YAML/Markdown/TOML/CSS formatting"
+run = "dprint check"
+
+[tasks."format:dprint"]
+description = "Format YAML/Markdown files"
+run = "bunx dprint fmt"
+
+### Utility tasks ###
+#
+[tasks.clean-branches]
+description = "Clean branches/worktrees without PRs or local changes"
+run = """
+{% raw %}
+# Create and execute script inline
+SCRIPT=$(mktemp)
+trap 'rm -f "$SCRIPT"' EXIT
+
+cat > "$SCRIPT" << 'EOFSCRIPT'
+#!/usr/bin/env bash
+
+# clean-branches-no-pr.sh
+# Remove local branches and worktrees that don't have PRs and have no local changes
+
+set -e
+
+# Protected branches that should never be deleted
+PROTECTED_BRANCHES=("main" "master" "develop")
+
+# Arrays to store deletion candidates
+declare -a WORKTREES_TO_DELETE
+declare -a BRANCHES_TO_DELETE
+
+# Check if a branch is protected
+is_protected_branch() {
+  local branch="$1"
+  for protected in "${PROTECTED_BRANCHES[@]}"; do
+    if [ "$branch" = "$protected" ]; then
+      return 0
+    fi
+  done
+  return 1
+}
+
+# Check if a branch exists on remote
+has_remote_branch() {
+  local branch="$1"
+  # Use git ls-remote to check if the branch exists on origin
+  git ls-remote --exit-code --heads origin "$branch" &> /dev/null
+}
+
+# Get worktree path for a branch
+get_worktree_path() {
+  local branch="$1"
+  git worktree list --porcelain | awk -v branch="$branch" '
+    /^worktree / { path=$2 }
+    /^branch / {
+      sub("refs/heads/", "", $2)
+      if ($2 == branch) {
+        print path
+        exit
+      }
+    }
+  '
+}
+
+# Check if a worktree has uncommitted changes
+has_uncommitted_changes() {
+  local worktree_path="$1"
+  if [ -d "$worktree_path" ]; then
+    local current_dir=$(pwd)
+    cd "$worktree_path" 2>/dev/null || return 1
+    local changes=$(git status --porcelain 2>/dev/null)
+    cd "$current_dir"
+    [ -n "$changes" ]
+  else
+    return 1
+  fi
+}
+
+# Collect deletion candidates
+collect_deletion_candidates() {
+  echo "🔍 Scanning local branches..."
+
+  local current_branch=$(git rev-parse --abbrev-ref HEAD)
+  local branch_count=0
+  local protected_count=0
+  local remote_count=0
+  local changes_count=0
+
+  # Get all local branches
+  while IFS= read -r branch; do
+    ((branch_count++))
+
+    # Skip current branch
+    if [ "$branch" = "$current_branch" ]; then
+      continue
+    fi
+
+    # Skip protected branches
+    if is_protected_branch "$branch"; then
+      ((protected_count++))
+      continue
+    fi
+
+    # Skip branches that exist on remote
+    if has_remote_branch "$branch"; then
+      ((remote_count++))
+      continue
+    fi
+
+    # Check if branch has a worktree
+    local worktree_path=$(get_worktree_path "$branch")
+
+    if [ -n "$worktree_path" ]; then
+      # Branch has a worktree - check for uncommitted changes
+      if has_uncommitted_changes "$worktree_path"; then
+        ((changes_count++))
+        continue
+      fi
+      WORKTREES_TO_DELETE+=("$branch:$worktree_path")
+    else
+      # Regular branch without worktree
+      BRANCHES_TO_DELETE+=("$branch")
+    fi
+  done < <(git for-each-ref --format='%(refname:short)' refs/heads/)
+
+  echo "✓ Scanned $branch_count local branches"
+  echo "  - Protected: $protected_count (main/master/develop)"
+  echo "  - On remote: $remote_count"
+  echo "  - With changes: $changes_count"
+}
+
+# Display deletion candidates
+display_candidates() {
+  echo ""
+  echo "📋 Branches not on remote and no local changes:"
+  echo ""
+
+  if [ ${#WORKTREES_TO_DELETE[@]} -gt 0 ]; then
+    echo "Worktrees to remove:"
+    for item in "${WORKTREES_TO_DELETE[@]}"; do
+      local branch="${item%%:*}"
+      local path="${item#*:}"
+      echo "  - $branch (at: $path)"
+    done
+    echo ""
+  fi
+
+  if [ ${#BRANCHES_TO_DELETE[@]} -gt 0 ]; then
+    echo "Regular branches to delete:"
+    for branch in "${BRANCHES_TO_DELETE[@]}"; do
+      echo "  - $branch"
+    done
+    echo ""
+  fi
+
+  local total=$((${#WORKTREES_TO_DELETE[@]} + ${#BRANCHES_TO_DELETE[@]}))
+  echo "Total to delete: ${#WORKTREES_TO_DELETE[@]} worktrees, ${#BRANCHES_TO_DELETE[@]} branches"
+  echo ""
+}
+
+# Confirm deletion with user
+confirm_deletion() {
+  echo "⚠️  This action cannot be undone!"
+  read -p "Do you want to proceed with deletion? (y/N): " -n 1 -r
+  echo
+  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    echo "❌ Deletion cancelled"
+    exit 0
+  fi
+}
+
+# Delete a worktree and its branch
+delete_worktree() {
+  local branch="$1"
+  local path="$2"
+
+  echo "🗑️  Removing worktree: $path (branch: $branch)"
+
+  local current_dir=$(pwd)
+  cd "$(git rev-parse --show-toplevel)"
+
+  if git worktree remove "$path" --force 2>/dev/null; then
+    echo "   ✓ Worktree removed"
+  else
+    echo "   ⚠️  Failed to remove worktree (may already be gone)"
+  fi
+
+  if git branch -D "$branch" 2>/dev/null; then
+    echo "   ✓ Branch deleted"
+  else
+    echo "   ⚠️  Failed to delete branch"
+  fi
+
+  cd "$current_dir"
+}
+
+# Delete a regular branch
+delete_branch() {
+  local branch="$1"
+
+  echo "🗑️  Deleting branch: $branch"
+
+  if git branch -D "$branch" 2>/dev/null; then
+    echo "   ✓ Branch deleted"
+  else
+    echo "   ⚠️  Failed to delete branch"
+  fi
+}
+
+# Cleanup orphaned workspace directories
+cleanup_workspaces() {
+  if [ -d ".claude-workspaces" ]; then
+    echo "🧹 Cleaning up .claude-workspaces directory..."
+    find .claude-workspaces -type d -mindepth 1 -maxdepth 1 2>/dev/null | while read workspace_dir; do
+      if [ ! -d "$workspace_dir/.git" ]; then
+        workspace_name=$(basename "$workspace_dir")
+        echo "🗑️  Removing orphaned workspace: $workspace_name"
+        rm -rf "$workspace_dir" 2>/dev/null || true
+      fi
+    done
+  fi
+}
+
+# Main execution
+main() {
+  echo "🔍 Fetching remote information..."
+  git fetch --prune origin
+
+  collect_deletion_candidates
+
+  # Check if there are any candidates
+  local total=$((${#WORKTREES_TO_DELETE[@]} + ${#BRANCHES_TO_DELETE[@]}))
+  if [ $total -eq 0 ]; then
+    echo ""
+    echo "✅ No branches found for cleanup!"
+    exit 0
+  fi
+
+  display_candidates
+  confirm_deletion
+
+  echo ""
+  echo "🗑️  Deleting branches and worktrees..."
+
+  # Delete worktrees
+  for item in "${WORKTREES_TO_DELETE[@]}"; do
+    local branch="${item%%:*}"
+    local path="${item#*:}"
+    delete_worktree "$branch" "$path"
+  done
+
+  # Delete regular branches
+  for branch in "${BRANCHES_TO_DELETE[@]}"; do
+    delete_branch "$branch"
+  done
+
+  echo ""
+  cleanup_workspaces
+
+  echo ""
+  echo "✅ Branch and worktree cleanup completed!"
+}
+
+main "$@"
+EOFSCRIPT
+
+chmod +x "$SCRIPT"
+bash "$SCRIPT"
+{% endraw %}
+"""
