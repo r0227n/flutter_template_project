@@ -9,8 +9,6 @@ part 'category.g.dart';
 /// Each category has a name and a color for visual identification.
 @freezed
 sealed class Category with _$Category {
-  const Category._();
-
   const factory Category({
     /// Unique identifier for the category.
     required String id,
@@ -21,6 +19,8 @@ sealed class Category with _$Category {
     /// Color value as an integer (e.g., 0xFF2196F3).
     required int color,
   }) = _Category;
+
+  const Category._();
 
   factory Category.fromJson(Map<String, dynamic> json) =>
       _$CategoryFromJson(json);

@@ -1,6 +1,5 @@
 import 'package:dart_duckdb/dart_duckdb.dart';
-
-import '../schema/default_data.dart';
+import 'package:database/src/schema/default_data.dart';
 
 /// DuckDB database service for initialization and management.
 ///
@@ -60,7 +59,7 @@ class DatabaseService {
       'SELECT COUNT(*) as count FROM categories',
     );
     final rows = result.fetchAll();
-    final count = rows.first.first as int;
+    final count = (rows.first.first as num?)?.toInt() ?? 0;
 
     if (count == 0) {
       for (final category in defaultCategories) {

@@ -21,19 +21,28 @@ AppLogger appLogger(Ref ref) {
   return AppLogger.instance;
 }
 
-/// Mixin for easy logger access in Riverpod-based classes
+/// Mixin for easy logger access in Riverpod-based classes.
 mixin LoggerMixin {
+  /// Gets the AppLogger instance.
   AppLogger get logger => AppLogger.instance;
 
+  /// Logs an info message.
   void logInfo(String message, [Object? extra]) =>
       logger.info(message, _formatLogData(extra));
+
+  /// Logs a debug message.
   void logDebug(String message, [Object? extra]) =>
       logger.debug(message, _formatLogData(extra));
+
+  /// Logs a warning message.
   void logWarning(String message, [Object? extra]) =>
       logger.warning(message, _formatLogData(extra));
+
+  /// Logs an error message.
   void logError(String message, [Object? exception, StackTrace? stackTrace]) =>
       logger.error(message, _formatLogData(exception), stackTrace);
 
+  /// Logs a user action.
   void logUserAction(String action, [Map<String, dynamic>? metadata]) =>
       logger.logUserAction(action, metadata);
 

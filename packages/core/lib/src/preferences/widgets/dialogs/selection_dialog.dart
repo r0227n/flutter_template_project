@@ -1,7 +1,3 @@
-// Generic types with function parameters trigger unsafe_variance warnings
-// but this is the intended design for a reusable selection dialog component
-// ignore_for_file: unsafe_variance
-
 import 'package:flutter/material.dart';
 
 /// A generic selection dialog component
@@ -32,6 +28,7 @@ import 'package:flutter/material.dart';
 /// );
 /// ```
 class SelectionDialog<T> extends StatelessWidget {
+  /// Creates a selection dialog.
   const SelectionDialog({
     required String title,
     required List<SelectionOption<T>> options,
@@ -157,6 +154,7 @@ class SelectionDialog<T> extends StatelessWidget {
 /// Represents a single selectable item in a [SelectionDialog].
 /// Contains both the actual value and the display text shown to the user.
 class SelectionOption<T> {
+  /// Creates a selection option.
   const SelectionOption({
     required this.value,
     required this.displayText,

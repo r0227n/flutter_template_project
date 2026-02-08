@@ -15,6 +15,9 @@ sealed class Todo with _$Todo {
     /// Title of the todo (required, 1-100 characters).
     required String title,
 
+    /// Timestamp when the todo was created.
+    required DateTime createdAt,
+
     /// Optional detailed description (0-500 characters).
     String? description,
 
@@ -23,9 +26,6 @@ sealed class Todo with _$Todo {
 
     /// Optional category ID for grouping todos.
     String? categoryId,
-
-    /// Timestamp when the todo was created.
-    required DateTime createdAt,
 
     /// Timestamp when the todo was marked as completed.
     DateTime? completedAt,

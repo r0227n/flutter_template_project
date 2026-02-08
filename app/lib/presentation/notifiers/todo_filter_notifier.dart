@@ -14,8 +14,11 @@ class TodoFilterNotifier extends _$TodoFilterNotifier {
   @override
   TodoFilter build() => TodoFilter.all;
 
+  /// Gets the current filter.
+  TodoFilter get filter => state;
+
   /// Updates the current filter.
-  void setFilter(TodoFilter filter) {
-    state = filter;
+  set filter(TodoFilter newFilter) {
+    state = newFilter;
   }
 }

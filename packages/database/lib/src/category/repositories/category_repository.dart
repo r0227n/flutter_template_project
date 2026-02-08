@@ -1,4 +1,4 @@
-import '../models/category.dart';
+import 'package:database/src/category/models/category.dart';
 
 /// Interface for Category data access operations.
 ///

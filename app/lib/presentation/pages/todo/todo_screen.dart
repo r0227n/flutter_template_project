@@ -229,7 +229,7 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
             child: TodoFilterSegment(
               selected: filter,
               onSelectionChanged: (newFilter) {
-                ref.read(todoFilterProvider.notifier).setFilter(newFilter);
+                ref.read(todoFilterProvider.notifier).filter = newFilter;
               },
             ),
           ),

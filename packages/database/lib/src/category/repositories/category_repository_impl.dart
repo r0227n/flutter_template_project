@@ -1,9 +1,10 @@
-import '../../service/database_service.dart';
-import '../models/category.dart';
-import 'category_repository.dart';
+import 'package:database/src/category/models/category.dart';
+import 'package:database/src/category/repositories/category_repository.dart';
+import 'package:database/src/service/database_service.dart';
 
 /// DuckDB implementation of [CategoryRepository].
 class CategoryRepositoryImpl implements CategoryRepository {
+  /// Creates a category repository implementation.
   CategoryRepositoryImpl(this._db);
 
   final DatabaseService _db;
