@@ -34,8 +34,7 @@ class FakeTodoRepository implements TodoRepository {
   }
 
   @override
-  Future<void> delete(String id) async =>
-      _todos.removeWhere((t) => t.id == id);
+  Future<void> delete(String id) async => _todos.removeWhere((t) => t.id == id);
 
   @override
   Future<void> toggleCompletion(String id) async {
