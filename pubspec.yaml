@@ -127,8 +127,8 @@ melos:
         fi
 
   environment:
-    sdk: '>=3.10.0 <4.0.0'
-    flutter: '>=3.38.5'
+    sdk: ">=3.10.0 <4.0.0"
+    flutter: ">=3.38.5"
 
 # TODO: Flutter SDK が test_api 0.7.9+ を同梱するようになったら削除する
 dependency_overrides:

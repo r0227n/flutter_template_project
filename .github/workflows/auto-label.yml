@@ -2,7 +2,7 @@ name: Auto Label PR
 
 on:
   pull_request:
-    types: [opened, reopened]
+    types: [ opened, reopened ]
 
 concurrency:
   group: auto-label-${{ github.ref }}
@@ -35,7 +35,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             // Label configuration with colors and descriptions
-            const LABEL_CONFIG = {              
+            const LABEL_CONFIG = {
               // Directory-based labels
               CI: { color: 'e99695', description: 'Changes to CI/CD workflows and automation' },
               documentation: { color: '0075ca', description: 'Documentation updates and improvements' },
@@ -94,7 +94,7 @@ jobs:
                 // Add specific workspace labels
                 const workspaces = changedWorkspaces.trim().split(/\s+/).filter(Boolean);
                 workspaces.forEach(ws => labelsToAdd.add(ws));
-                
+
                 console.log(`📦 Detected workspaces: ${workspaces.join(', ')}`);
               }
 
@@ -102,7 +102,7 @@ jobs:
               if (changedTags && changedTags.trim()) {
                 const tags = changedTags.trim().split(/\s+/).filter(Boolean);
                 tags.forEach(tag => labelsToAdd.add(tag));
-                
+
                 console.log(`🏷️  Detected directory tags: ${tags.join(', ')}`);
               }
 
@@ -132,7 +132,7 @@ jobs:
               } else {
                 console.log('ℹ️  No component changes detected, no labels applied');
               }
-              
+
               console.log('=== Auto Label Complete ===');
             };
 

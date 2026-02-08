@@ -1,43 +1,43 @@
-name: 'Check File Changes'
-description: 'Check for specific file type changes in PR'
-author: 'r0227n'
+name: "Check File Changes"
+description: "Check for specific file type changes in PR"
+author: "r0227n"
 
 inputs:
   base_sha:
-    description: 'Base commit SHA for comparison'
+    description: "Base commit SHA for comparison"
     required: true
   head_sha:
-    description: 'Head commit SHA for comparison'
+    description: "Head commit SHA for comparison"
     required: true
 
 outputs:
   dart_changed:
-    description: 'Number of .dart files changed'
+    description: "Number of .dart files changed"
     value: ${{ steps.check_changes.outputs.dart_changed }}
   yml_changed:
-    description: 'Number of .yml files changed'
+    description: "Number of .yml files changed"
     value: ${{ steps.check_changes.outputs.yml_changed }}
   yaml_changed:
-    description: 'Number of .yaml files changed'
+    description: "Number of .yaml files changed"
     value: ${{ steps.check_changes.outputs.yaml_changed }}
   md_changed:
-    description: 'Number of .md files changed'
+    description: "Number of .md files changed"
     value: ${{ steps.check_changes.outputs.md_changed }}
   i18n_changed:
-    description: 'Number of .i18n.json files changed'
+    description: "Number of .i18n.json files changed"
     value: ${{ steps.check_changes.outputs.i18n_changed }}
   changed_workspaces:
-    description: 'List of changed workspaces (space-separated)'
+    description: "List of changed workspaces (space-separated)"
     value: ${{ steps.check_changes.outputs.changed_workspaces }}
   changed_tags:
-    description: 'List of directory-based tags (space-separated)'
+    description: "List of directory-based tags (space-separated)"
     value: ${{ steps.check_changes.outputs.changed_tags }}
   all_tags:
-    description: 'Combined list of workspaces and directory tags (space-separated)'
+    description: "Combined list of workspaces and directory tags (space-separated)"
     value: ${{ steps.check_changes.outputs.all_tags }}
 
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
     - name: Check for file changes
       id: check_changes

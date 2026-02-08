@@ -182,8 +182,8 @@ When Claude Code is asked to test or improve UI functionality:
    ---
    - launchApp
    - waitForAnimationToEnd
-   - assertVisible: 'Expected UI Element'
-   - tapOn: 'Button ID or Text'
+   - assertVisible: "Expected UI Element"
+   - tapOn: "Button ID or Text"
    ```
 
 2. **Use dynamic environment variables** based on JSON patterns:
@@ -229,10 +229,10 @@ When Claude Code is asked to test or improve UI functionality:
 appId: ${FULL_APP_ID}
 ---
 - launchApp
-- assertVisible: 'Expected UI Element'
+- assertVisible: "Expected UI Element"
 - tapOn:
-    text: 'Button Text'
-- assertVisible: 'Result State'
+    text: "Button Text"
+- assertVisible: "Result State"
 ```
 
 **Validation and Execution**:
@@ -252,14 +252,14 @@ appId: ${FULL_APP_ID}
 appId: ${FULL_APP_ID}
 ---
 - launchApp
-- assertVisible: 'Flutter Demo Home Page'
-- assertVisible: 'カウンター: 0'
+- assertVisible: "Flutter Demo Home Page"
+- assertVisible: "カウンター: 0"
 - tapOn:
-    text: 'Increment'
-- assertVisible: 'カウンター: 1'
+    text: "Increment"
+- assertVisible: "カウンター: 1"
 - tapOn:
-    text: 'Increment'
-- assertVisible: 'カウンター: 2'
+    text: "Increment"
+- assertVisible: "カウンター: 2"
 ```
 
 #### Debugging Failed Tests
