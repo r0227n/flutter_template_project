@@ -1,7 +1,8 @@
 import 'package:talker_flutter/talker_flutter.dart';
 
-/// Logger configuration for the application
+/// Logger configuration for the application.
 class LoggerConfig {
+  /// Creates a logger configuration.
   LoggerConfig({
     this.logLevel = LogLevel.debug,
     this.enableConsoleOutput = true,
@@ -28,11 +29,19 @@ class LoggerConfig {
     );
   }
 
+  /// Minimum log level to record.
   final LogLevel logLevel;
+
+  /// Whether to output logs to console.
   final bool enableConsoleOutput;
+
+  /// Whether to output logs to file.
   final bool enableFileOutput;
+
+  /// Talker settings.
   final TalkerSettings settings;
 
+  /// Creates a copy of this configuration with the given fields replaced.
   LoggerConfig copyWith({
     LogLevel? logLevel,
     bool? enableConsoleOutput,

@@ -1,9 +1,10 @@
-import '../../service/database_service.dart';
-import '../models/todo.dart';
-import 'todo_repository.dart';
+import 'package:database/src/service/database_service.dart';
+import 'package:database/src/todo/models/todo.dart';
+import 'package:database/src/todo/repositories/todo_repository.dart';
 
 /// DuckDB implementation of [TodoRepository].
 class TodoRepositoryImpl implements TodoRepository {
+  /// Creates a todo repository implementation.
   TodoRepositoryImpl(this._db);
 
   final DatabaseService _db;

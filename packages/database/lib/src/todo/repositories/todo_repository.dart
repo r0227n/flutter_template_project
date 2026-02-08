@@ -1,4 +1,4 @@
-import '../models/todo.dart';
+import 'package:database/src/todo/models/todo.dart';
 
 /// Interface for Todo data access operations.
 ///

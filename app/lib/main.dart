@@ -86,7 +86,9 @@ Future<void> main() async {
   );
 }
 
+/// Root application widget.
 class MyApp extends ConsumerWidget {
+  /// Creates the root application widget.
   const MyApp({super.key});
 
   @override

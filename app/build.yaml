@@ -8,7 +8,6 @@ targets:
           input_file_pattern: .i18n.json
           output_directory: lib/core/gen
           output_file_name: slang.g.dart
-          output_format: single_file
           locale_handling: true
           flutter_integration: true
           namespaces: false

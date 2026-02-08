@@ -60,7 +60,7 @@ final class TodoFilterNotifierProvider
 }
 
 String _$todoFilterNotifierHash() =>
-    r'35063fd0eb43b1c6990ca8e9f62a8c7ee655dedc';
+    r'fcff1350f1a12048dc914385427314192ac54219';
 
 /// Manages the current todo filter state.
 ///

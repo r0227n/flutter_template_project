@@ -2,14 +2,20 @@
 ///
 /// These categories are inserted when the database is first created.
 class DefaultCategory {
+  /// Creates a default category.
   const DefaultCategory({
     required this.id,
     required this.name,
     required this.color,
   });
 
+  /// Unique identifier for the category.
   final String id;
+
+  /// Display name of the category.
   final String name;
+
+  /// Color value as an integer.
   final int color;
 }
 
