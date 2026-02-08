@@ -1,3 +1,5 @@
+import 'package:design_system/src/theme/extensions/app_radius_theme.dart';
+import 'package:design_system/src/theme/extensions/app_spacing_theme.dart';
 import 'package:flutter/material.dart';
 
 /// Application theme configuration and management
@@ -23,6 +25,11 @@ class AppTheme {
   /// This constructor is const to allow for efficient instantiation
   /// and static access to theme configurations.
   const AppTheme();
+
+  static const List<ThemeExtension<dynamic>> _extensions = [
+    AppSpacingTheme(),
+    AppRadiusTheme(),
+  ];
 
   /// Gets the light theme configuration
   ///
@@ -61,6 +68,7 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       colorScheme: colorScheme,
+      extensions: _extensions,
       appBarTheme: AppBarTheme(
         backgroundColor: colorScheme.inversePrimary,
         foregroundColor: colorScheme.onSurface,
@@ -87,6 +95,7 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       colorScheme: colorScheme,
+      extensions: _extensions,
       appBarTheme: AppBarTheme(
         backgroundColor: colorScheme.inversePrimary,
         foregroundColor: colorScheme.onSurface,

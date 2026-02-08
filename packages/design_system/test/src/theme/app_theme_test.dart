@@ -33,5 +33,37 @@ void main() {
       expect(theme.appBarTheme.backgroundColor, isNotNull);
       expect(theme.appBarTheme.foregroundColor, isNotNull);
     });
+
+    test('lightTheme includes AppSpacingTheme extension', () {
+      final theme = AppTheme.lightTheme;
+      final spacing = theme.extension<AppSpacingTheme>();
+
+      expect(spacing, isNotNull);
+      expect(spacing!.m, AppSpacing.m);
+    });
+
+    test('lightTheme includes AppRadiusTheme extension', () {
+      final theme = AppTheme.lightTheme;
+      final radius = theme.extension<AppRadiusTheme>();
+
+      expect(radius, isNotNull);
+      expect(radius!.s, AppRadius.s);
+    });
+
+    test('darkTheme includes AppSpacingTheme extension', () {
+      final theme = AppTheme.darkTheme;
+      final spacing = theme.extension<AppSpacingTheme>();
+
+      expect(spacing, isNotNull);
+      expect(spacing!.m, AppSpacing.m);
+    });
+
+    test('darkTheme includes AppRadiusTheme extension', () {
+      final theme = AppTheme.darkTheme;
+      final radius = theme.extension<AppRadiusTheme>();
+
+      expect(radius, isNotNull);
+      expect(radius!.s, AppRadius.s);
+    });
   });
 }
