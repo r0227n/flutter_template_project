@@ -11,14 +11,14 @@ part of 'logger_providers.dart';
 /// Provider for the Talker instance for advanced usage
 
 @ProviderFor(talker)
-const talkerProvider = TalkerProvider._();
+final talkerProvider = TalkerProvider._();
 
 /// Provider for the Talker instance for advanced usage
 
 final class TalkerProvider extends $FunctionalProvider<Talker, Talker, Talker>
     with $Provider<Talker> {
   /// Provider for the Talker instance for advanced usage
-  const TalkerProvider._()
+  TalkerProvider._()
     : super(
         from: null,
         argument: null,
@@ -56,7 +56,7 @@ String _$talkerHash() => r'7ca7ab610f51f2b7b504f187daf9610046a6344f';
 /// Provider for the AppLogger instance
 
 @ProviderFor(appLogger)
-const appLoggerProvider = AppLoggerProvider._();
+final appLoggerProvider = AppLoggerProvider._();
 
 /// Provider for the AppLogger instance
 
@@ -64,7 +64,7 @@ final class AppLoggerProvider
     extends $FunctionalProvider<AppLogger, AppLogger, AppLogger>
     with $Provider<AppLogger> {
   /// Provider for the AppLogger instance
-  const AppLoggerProvider._()
+  AppLoggerProvider._()
     : super(
         from: null,
         argument: null,

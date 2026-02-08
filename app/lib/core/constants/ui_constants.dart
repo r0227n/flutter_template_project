@@ -1,16 +1,12 @@
-final class AppSpacing {
-  const AppSpacing._();
+import 'package:flutter/material.dart';
 
-  static const double xs = 4;
-  static const double s = 8;
-  static const double m = 16;
-  static const double l = 24;
-  static const double xl = 32;
-}
+/// UI constants for Todo-related pages.
+final class TodoUIConstants {
+  const TodoUIConstants._();
 
-final class AppRadius {
-  const AppRadius._();
+  /// Height of the filter segment control.
+  static const double filterSegmentHeight = 40;
 
-  static const double xs = 4;
-  static const double s = 8;
+  /// Padding for list views.
+  static const EdgeInsets listPadding = EdgeInsets.symmetric(horizontal: 16);
 }

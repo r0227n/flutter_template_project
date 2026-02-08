@@ -37,7 +37,62 @@ target 'Runner' do
 end
 
 post_install do |installer|
+  # Fix dart_duckdb: create simulator-compatible framework using vtool
+  duckdb_plugin = File.join(__dir__, '.symlinks', 'plugins', 'dart_duckdb', 'ios')
+  duckdb_lib = File.join(duckdb_plugin, 'Libraries', 'release')
+  device_binary = File.join(duckdb_lib, 'duckdb.framework', 'duckdb')
+  sim_dir = File.join(duckdb_lib, 'sim')
+
+  if File.exist?(device_binary)
+    sim_fw = File.join(sim_dir, 'duckdb.framework')
+    FileUtils.rm_rf(sim_dir)
+    FileUtils.mkdir_p(sim_dir)
+    FileUtils.cp_r(File.join(duckdb_lib, 'duckdb.framework'), sim_fw)
+    system("vtool -set-build-version 7 15.0 26.0 -replace -output '#{sim_fw}/duckdb.tmp' '#{device_binary}'")
+    FileUtils.mv("#{sim_fw}/duckdb.tmp", "#{sim_fw}/duckdb")
+    system("codesign --force --sign - '#{sim_fw}/duckdb'")
+  end
+
+  # Flutter engine framework paths for Swift module resolution
+  flutter_engine_dir = File.join(flutter_root, 'bin', 'cache', 'artifacts', 'engine', 'ios')
+  flutter_sim_fw = File.join(flutter_engine_dir, 'Flutter.xcframework', 'ios-arm64_x86_64-simulator')
+  flutter_device_fw = File.join(flutter_engine_dir, 'Flutter.xcframework', 'ios-arm64')
+
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
+
+    if target.name == 'dart_duckdb'
+      target.build_configurations.each do |config|
+        config.build_settings['FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]'] =
+          "\"#{sim_dir}\" \"#{flutter_sim_fw}\" $(inherited)"
+        config.build_settings['FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]'] =
+          "\"#{flutter_device_fw}\" $(inherited)"
+      end
+    end
+  end
+
+  # Fix Runner target: add sim_dir to FRAMEWORK_SEARCH_PATHS for simulator linking
+  runner_project_path = File.join(__dir__, 'Runner.xcodeproj')
+  runner_project = Xcodeproj::Project.open(runner_project_path)
+  runner_target = runner_project.targets.find { |t| t.name == 'Runner' }
+  if runner_target
+    runner_target.build_configurations.each do |config|
+      config.build_settings['FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]'] =
+        "\"#{sim_dir}\" $(inherited)"
+    end
+    runner_project.save
+  end
+
+  # Fix embed script: use sim framework when building for simulator
+  frameworks_script = File.join(__dir__, 'Pods', 'Target Support Files', 'Pods-Runner', 'Pods-Runner-frameworks.sh')
+  if File.exist?(frameworks_script)
+    content = File.read(frameworks_script)
+    device_fw_ref = '${PODS_ROOT}/../.symlinks/plugins/dart_duckdb/ios/Libraries/release/duckdb.framework'
+    sim_fw_ref = '${PODS_ROOT}/../.symlinks/plugins/dart_duckdb/ios/Libraries/release/sim/duckdb.framework'
+    content.gsub!(
+      "install_framework \"#{device_fw_ref}\"",
+      "if [[ \"${PLATFORM_NAME}\" == \"iphonesimulator\" ]]; then\n    install_framework \"#{sim_fw_ref}\"\n  else\n    install_framework \"#{device_fw_ref}\"\n  fi"
+    )
+    File.write(frameworks_script, content)
   end
 end

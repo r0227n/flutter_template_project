@@ -13,7 +13,7 @@ part of 'app_router.dart';
 /// This provider creates and configures the `GoRouter` instance for the app.
 
 @ProviderFor(appRouter)
-const appRouterProvider = AppRouterProvider._();
+final appRouterProvider = AppRouterProvider._();
 
 /// The application's router provider.
 ///
@@ -25,7 +25,7 @@ final class AppRouterProvider
   /// The application's router provider.
   ///
   /// This provider creates and configures the `GoRouter` instance for the app.
-  const AppRouterProvider._()
+  AppRouterProvider._()
     : super(
         from: null,
         argument: null,

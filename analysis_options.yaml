@@ -1,10 +1,18 @@
+include: package:very_good_analysis/analysis_options.yaml
+
 analyzer:
   exclude:
-    # Build / generated artifacts (these can contain third-party sources and
-    # should never be part of the repo-wide static analysis).
+    # Build / generated artifacts
     - '**/build/**'
     - '**/.dart_tool/**'
     - '**/.symlinks/**'
-
-    # Tooling / non-Dart sources.
+    # Tooling / non-Dart sources
     - 'node_modules/**'
+  errors:
+    invalid_annotation_target: ignore
+  plugins:
+    # TODO: custom_lint が analyzer ^9.0.0 に対応したら再追加する
+    # - custom_lint
+
+formatter:
+  trailing_commas: preserve

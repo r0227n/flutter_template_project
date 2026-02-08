@@ -53,38 +53,22 @@ echo "resolution: workspace" >> pubspec.yaml
 
 # 4. Add standard dependencies
 flutter pub add flutter_riverpod riverpod_annotation
-flutter pub add --dev build_runner riverpod_generator yumemi_lints
+flutter pub add --dev build_runner riverpod_generator
 
-# 5. Set up yumemi_lints configuration
-# Get Flutter version for lints compatibility
-FLUTTER_VERSION=$(flutter --version | head -n 1 | grep -o "[0-9]\+\.[0-9]\+\.[0-9]\+")
-
-# Create analysis_options.yaml
-cat > analysis_options.yaml << EOF
-include: package:yumemi_lints/flutter/\${FLUTTER_VERSION}/recommended.yaml
-
-analyzer:
-  errors:
-    invalid_annotation_target: ignore
-  plugins:
-    - custom_lint
-
-formatter:
-  trailing_commas: preserve
-EOF
-
-# 6. Register package in workspace
+# 5. Register package in workspace
 # Add to root pubspec.yaml workspace section:
 # workspace:
 #   - app
 #   - packages/app_preferences
 #   - packages/[package_name]  # Add this line
 
-# 7. Install dependencies and generate code
+# 6. Install dependencies and generate code
 cd ../../
 melos run get
 melos run gen
 ```
+
+> **Note**: `analysis_options.yaml` はルートで一元管理されているため、サブパッケージに作成する必要はありません。Dart analyzer がディレクトリを遡行してルートの設定を自動適用します。
 
 ### Automated Package Development with Linear Issues
 
@@ -134,17 +118,15 @@ Package development automatically includes:
 
 ### yumemi_lints Configuration
 
-All packages must include yumemi_lints for consistent code quality:
+yumemi_lints はルートの `analysis_options.yaml` で一元管理されており、全パッケージに自動適用されます。サブパッケージに個別の `analysis_options.yaml` を作成する必要はありません。
 
 ```yaml
-# analysis_options.yaml template for each package
-include: package:yumemi_lints/flutter/[FLUTTER_VERSION]/recommended.yaml
+# ルート analysis_options.yaml（参考）
+include: package:yumemi_lints/flutter/3.38/recommended.yaml
 
 analyzer:
   errors:
     invalid_annotation_target: ignore
-  plugins:
-    - custom_lint
 
 formatter:
   trailing_commas: preserve

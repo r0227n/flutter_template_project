@@ -3,6 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  dart_duckdb
   firebase_core
   share_plus
   url_launcher_windows
