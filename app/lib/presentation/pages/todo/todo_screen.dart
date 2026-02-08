@@ -250,9 +250,7 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
                         const SizedBox(height: 16),
                         Text(
                           'タスクがありません',
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleMedium
+                          style: Theme.of(context).textTheme.titleMedium
                               ?.copyWith(
                                 color: Theme.of(context).colorScheme.outline,
                               ),
@@ -295,10 +293,9 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
                     const SizedBox(height: 16),
                     Text(
                       'データの読み込みに失敗しました',
-                      style:
-                          Theme.of(context).textTheme.titleMedium?.copyWith(
-                                color: Theme.of(context).colorScheme.error,
-                              ),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.error,
+                      ),
                     ),
                     const SizedBox(height: 16),
                     FilledButton.icon(

@@ -1,24 +1,10 @@
 {
   "mcpServers": {
-    "dart": {
-      "command": "dart",
-      "args": ["mcp-server", "--force-roots-fallback"]
-    },
-    "serena": {
-      "command": "uvx",
-      "args": [
-        "--from",
-        "git+https://github.com/oraios/serena",
-        "serena-mcp-server",
-        "--context",
-        "ide-assistant"
-      ]
-    },
     "pencil": {
       "command": "/Applications/Pencil.app/Contents/Resources/app.asar.unpacked/out/mcp-server-darwin-arm64",
       "args": [
         "--ws-port",
-        "52036"
+        "52809"
       ],
       "env": {},
       "type": "stdio"
