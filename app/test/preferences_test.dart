@@ -73,13 +73,14 @@ void main() {
         ],
       );
       addTearDown(container.dispose);
+      await container.read(appPreferencesControllerProvider.future);
       await container
           .read(appPreferencesControllerProvider.notifier)
           .setTheme(AppThemePreference.dark);
       final state = container.read(appPreferencesControllerProvider);
-      expect(state.preferences.theme, AppThemePreference.system);
-      expect(state.saving, isFalse);
-      expect(state.saveFailed, isTrue);
+      expect(state.value?.theme, AppThemePreference.system);
+      expect(state.isLoading, isFalse);
+      expect(state.hasError, isTrue);
       expect(reporter.error, isA<StateError>());
     },
   );
@@ -95,11 +96,15 @@ void main() {
           errorReporterProvider.overrideWithValue(RecordingReporter()),
         ],
       );
+      await container.read(appPreferencesControllerProvider.future);
       final controller = container.read(
         appPreferencesControllerProvider.notifier,
       );
       final pending = controller.setTheme(AppThemePreference.dark);
-      expect(container.read(appPreferencesControllerProvider).saving, isTrue);
+      expect(
+        container.read(appPreferencesControllerProvider).isLoading,
+        isTrue,
+      );
       await controller.setTheme(AppThemePreference.light);
       expect(repository.saves, 1);
       container.dispose();

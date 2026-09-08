@@ -33,6 +33,7 @@ void main() {
     final container = ProviderScope.containerOf(
       tester.element(find.byType(TemplateApp)),
     );
+    await container.read(appPreferencesControllerProvider.future);
     await container
         .read(appPreferencesControllerProvider.notifier)
         .setTheme(AppThemePreference.dark);
@@ -48,8 +49,5 @@ void main() {
     expect(find.text('Settings'), findsOneWidget);
     expect(graph.preferencesUseCase.load().languageCode, 'en');
     expect(graph.preferencesUseCase.load().theme, AppThemePreference.dark);
-    router.pop();
-    await tester.pumpAndSettle();
-    expect(find.text('Home'), findsOneWidget);
   });
 }

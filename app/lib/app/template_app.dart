@@ -15,15 +15,17 @@ class TemplateApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(
       appPreferencesControllerProvider.select(
-        (value) => value.preferences.languageCode,
+        (value) => value.value?.languageCode,
       ),
       (_, code) {
-        unawaited(LocaleSettings.setLocaleRaw(code));
+        if (code != null) {
+          unawaited(LocaleSettings.setLocaleRaw(code));
+        }
       },
     );
-    final preferences = ref.watch(
-      appPreferencesControllerProvider.select((value) => value.preferences),
-    );
+    final preferences =
+        ref.watch(appPreferencesControllerProvider).value ??
+        const AppPreferences();
     final locale = AppLocale.values.firstWhere(
       (locale) => locale.languageCode == preferences.languageCode,
     );
