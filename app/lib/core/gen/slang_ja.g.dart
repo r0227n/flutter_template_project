@@ -35,11 +35,16 @@ class Translations with BaseTranslations<AppLocale, Translations> {
              overrides: overrides ?? {},
              cardinalResolver: cardinalResolver,
              ordinalResolver: ordinalResolver,
-           );
+           ) {
+    $meta.setFlatMapFunction(_flatMapFunction);
+  }
 
   /// Metadata for the translations of <ja>.
   @override
   final TranslationMetadata<AppLocale, Translations> $meta;
+
+  /// Access flat map
+  dynamic operator [](String key) => $meta.getTranslation(key);
 
   late final Translations _root = this; // ignore: unused_field
 
@@ -48,47 +53,57 @@ class Translations with BaseTranslations<AppLocale, Translations> {
   }) => Translations(meta: meta ?? this.$meta);
 
   // Translations
-  late final TranslationsSettingsJa settings = TranslationsSettingsJa._(_root);
-}
 
-// Path: settings
-class TranslationsSettingsJa {
-  TranslationsSettingsJa._(this._root);
+  /// ja: 'Flutter Template'
+  String get appName => 'Flutter Template';
 
-  final Translations _root; // ignore: unused_field
+  /// ja: 'ホーム'
+  String get home => 'ホーム';
 
-  // Translations
+  /// ja: 'アプリの開発を始めましょう'
+  String get welcome => 'アプリの開発を始めましょう';
 
   /// ja: '設定'
-  String get title => '設定';
-
-  /// ja: '言語'
-  String get language => '言語';
+  String get settings => '設定';
 
   /// ja: 'テーマ'
   String get theme => 'テーマ';
 
-  /// ja: 'バージョン'
-  String get version => 'バージョン';
+  /// ja: '端末に合わせる'
+  String get system => '端末に合わせる';
 
-  /// ja: 'ライセンス'
-  String get licenses => 'ライセンス';
+  /// ja: 'ライト'
+  String get light => 'ライト';
 
-  late final TranslationsSettingsSectionsJa sections =
-      TranslationsSettingsSectionsJa._(_root);
+  /// ja: 'ダーク'
+  String get dark => 'ダーク';
+
+  /// ja: '言語'
+  String get language => '言語';
+
+  /// ja: '設定を保存できませんでした。もう一度お試しください。'
+  String get saveFailed => '設定を保存できませんでした。もう一度お試しください。';
 }
 
-// Path: settings.sections
-class TranslationsSettingsSectionsJa {
-  TranslationsSettingsSectionsJa._(this._root);
-
-  final Translations _root; // ignore: unused_field
-
-  // Translations
-
-  /// ja: 'アプリ設定'
-  String get appSettings => 'アプリ設定';
-
-  /// ja: 'その他'
-  String get other => 'その他';
+/// The flat map containing all translations for locale <ja>.
+/// Only for edge cases! For simple maps, use the map function of this library.
+///
+/// The Dart AOT compiler has issues with very large switch statements,
+/// so the map is split into smaller functions (512 entries each).
+extension on Translations {
+  dynamic _flatMapFunction(String path) {
+    return switch (path) {
+      'appName' => 'Flutter Template',
+      'home' => 'ホーム',
+      'welcome' => 'アプリの開発を始めましょう',
+      'settings' => '設定',
+      'theme' => 'テーマ',
+      'system' => '端末に合わせる',
+      'light' => 'ライト',
+      'dark' => 'ダーク',
+      'language' => '言語',
+      'saveFailed' => '設定を保存できませんでした。もう一度お試しください。',
+      _ => null,
+    };
+  }
 }

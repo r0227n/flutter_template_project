@@ -1,5 +1,5 @@
 [tools]
-flutter = "3.38.5"
+flutter = "3.44.6"
 dprint = "0.49.0"
 
 # Main workflow tasks

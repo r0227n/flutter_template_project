@@ -1,13 +1,12 @@
 {
-  "settings": {
-    "title": "Settings",
-    "language": "Language",
-    "theme": "Theme",
-    "version": "Version",
-    "licenses": "Licenses",
-    "sections": {
-      "appSettings": "App Settings",
-      "other": "Other"
-    }
-  }
+  "appName": "Flutter Template",
+  "home": "Home",
+  "welcome": "Start building your app",
+  "settings": "Settings",
+  "theme": "Theme",
+  "system": "System",
+  "light": "Light",
+  "dark": "Dark",
+  "language": "Language",
+  "saveFailed": "Could not save settings. Please try again."
 }
