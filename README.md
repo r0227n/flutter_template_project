@@ -12,9 +12,16 @@ Flutter のバージョンは `.mise.toml` の 3.44.6、Dart は ^3.12.0 です�
 mise install
 flutter pub get
 dart run melos run gen
+cp app/.dart_define/sample.json app/.dart_define/development.json
 cd app
-flutter run
+flutter run --dart-define-from-file=.dart_define/development.json
 ```
+
+`app/.dart_define/development.json` の `APP_ID`、`APP_ID_SUFFIX`、`APP_NAME` は、
+Android の application ID とランチャー名、iOS の bundle ID と表示名へ反映されます。
+`APP_ID_SUFFIX` は空文字列、または `.dev` のような suffix を指定します。
+実プロジェクト用 JSON は Git 管理から除外され、`sample.json` だけをテンプレートとして管理します。
+VS Code の development / staging / production 起動設定も、それぞれ同名の JSON を読み込みます。
 
 ホームから設定画面へ移動し、テーマと日本語・英語を切り替えられます。
 設定は端末へ保存され、次回起動時に復元されます。
@@ -58,5 +65,4 @@ dart run melos run ci:format
 mise run check:dprint
 ```
 
-アプリを配布する際は `app` 配下の各プラットフォームのアプリ名、bundle ID、
-署名設定を利用先の値に変更してください。
+アプリを配布する際は `.dart_define` の値と署名設定を利用先の値に変更してください。
