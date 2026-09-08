@@ -6,7 +6,6 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    final t = Translations.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(t.home),

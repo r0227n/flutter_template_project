@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:app/application/application.dart';
 import 'package:app/core/gen/slang.g.dart';
 import 'package:app/presentation/shared/controllers/app_preferences_controller.dart';
@@ -9,9 +10,10 @@ class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final t = Translations.of(context);
-    final state = ref.watch(appPreferencesControllerProvider);
+    final preferences = ref.watch(appPreferencesControllerProvider);
     final controller = ref.read(appPreferencesControllerProvider.notifier);
+    final value = preferences.value ?? const AppPreferences();
+
     return Scaffold(
       appBar: AppBar(title: Text(t.settings)),
       body: ListView(
@@ -19,7 +21,7 @@ class SettingsScreen extends ConsumerWidget {
           ListTile(
             title: Text(t.theme),
             trailing: DropdownButton<AppThemePreference>(
-              value: state.preferences.theme,
+              value: value.theme,
               items: [
                 DropdownMenuItem(
                   value: AppThemePreference.system,
@@ -34,7 +36,7 @@ class SettingsScreen extends ConsumerWidget {
                   child: Text(t.dark),
                 ),
               ],
-              onChanged: state.saving
+              onChanged: preferences.isLoading
                   ? null
                   : (value) {
                       if (value != null) unawaited(controller.setTheme(value));
@@ -44,12 +46,12 @@ class SettingsScreen extends ConsumerWidget {
           ListTile(
             title: Text(t.language),
             trailing: DropdownButton<String>(
-              value: state.preferences.languageCode,
+              value: value.languageCode,
               items: const [
                 DropdownMenuItem(value: 'ja', child: Text('日本語')),
                 DropdownMenuItem(value: 'en', child: Text('English')),
               ],
-              onChanged: state.saving
+              onChanged: preferences.isLoading
                   ? null
                   : (value) {
                       if (value != null) {
@@ -58,8 +60,8 @@ class SettingsScreen extends ConsumerWidget {
                     },
             ),
           ),
-          if (state.saving) const LinearProgressIndicator(),
-          if (state.saveFailed)
+          if (preferences.isLoading) const LinearProgressIndicator(),
+          if (preferences.hasError)
             ListTile(
               leading: const Icon(Icons.error_outline),
               title: Text(t.saveFailed),

@@ -13,7 +13,7 @@ part of 'app_preferences_controller.dart';
 final appPreferencesControllerProvider = AppPreferencesControllerProvider._();
 
 final class AppPreferencesControllerProvider
-    extends $NotifierProvider<AppPreferencesController, PreferencesState> {
+    extends $AsyncNotifierProvider<AppPreferencesController, AppPreferences> {
   AppPreferencesControllerProvider._()
     : super(
         from: null,
@@ -31,30 +31,23 @@ final class AppPreferencesControllerProvider
   @$internal
   @override
   AppPreferencesController create() => AppPreferencesController();
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(PreferencesState value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<PreferencesState>(value),
-    );
-  }
 }
 
 String _$appPreferencesControllerHash() =>
-    r'4d0d7aff94a10aa3876c1bb5bd8d435b21cfbf69';
+    r'3600fce5c1199c819fae923d9f5414371a70df78';
 
-abstract class _$AppPreferencesController extends $Notifier<PreferencesState> {
-  PreferencesState build();
+abstract class _$AppPreferencesController
+    extends $AsyncNotifier<AppPreferences> {
+  FutureOr<AppPreferences> build();
   @$mustCallSuper
   @override
   WhenComplete runBuild() {
-    final ref = this.ref as $Ref<PreferencesState, PreferencesState>;
+    final ref = this.ref as $Ref<AsyncValue<AppPreferences>, AppPreferences>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<PreferencesState, PreferencesState>,
-              PreferencesState,
+              AnyNotifier<AsyncValue<AppPreferences>, AppPreferences>,
+              AsyncValue<AppPreferences>,
               Object?,
               Object?
             >;

@@ -1,6 +1,6 @@
 # Flutter Template
 
-Oshiki の責務分割を基にした Flutter アプリのテンプレートです。
+Flutter アプリのテンプレートです。
 Firebase、Crashlytics、Sentry のアカウントや設定ファイルなしで起動できます。
 
 ## 起動
@@ -38,11 +38,8 @@ flutter run
 
 Riverpod、Freezed、GoRouter、Slang、SharedPreferences、Talker と関連 generator を使用します。
 GoRouter builder は 4.4 以降の生成 API 変更を避けるため、4.3 系に制限しています。
-Oshiki の汎用依存である intl、Lucide、package_info_plus、path_provider、permission_handler、url_launcher、
-Marionette、Patrol も `app/pubspec.yaml` に用意しています。
 Marionette のランタイム接続と Patrol の端末別設定は、利用先アプリに合わせて追加してください。
 
-カメラ、画像選択・保存、画像処理・編集・補正、編集用の絵文字・色選択は含みません。
 Firebase Analytics / Core / Crashlytics と Sentry は依存・初期化ともに含みません。
 Talker は Flutter の例外、未処理の非同期例外、Riverpod のイベントを記録します。
 ログの外部送信は設定していません。

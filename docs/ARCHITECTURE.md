@@ -24,9 +24,9 @@ feature 同士は直接 import せず、共有する責務を application また
 外部 instance → adapter → use case の順で作成し、presentation の必須 Provider token を override します。
 未注入の token は即座に失敗し、暗黙の本番実装に fallback しません。
 
-`AppPreferencesController` は表示用設定状態の唯一の所有者です。
-保存中は操作を直列化し、成功後に保存先を読み直して表示を更新します。
-失敗時は以前の設定を維持し、エラー状態と ErrorReporter の両方へ通知します。
+`AppPreferencesController` の `AsyncValue<AppPreferences>` は表示用設定状態の唯一の所有者です。
+保存中は `AsyncLoading` で操作を直列化し、成功後に保存先を読み直して `AsyncData` を更新します。
+失敗時は以前の設定値を保持した `AsyncError` と ErrorReporter の両方へ通知します。
 非同期完了後は `ref.mounted` を確認します。
 
 永続化キーは adapter の `app.theme` と `app.language` です。
