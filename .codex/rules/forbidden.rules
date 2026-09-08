@@ -1,0 +1,70 @@
+# Oshiki exec policy: irreversible or destructive commands.
+# Derived from Entire session logs (.entire/logs/, .entire/metadata/).
+
+prefix_rule(
+    pattern = ["git", "reset", "--hard"],
+    decision = "forbidden",
+    justification = "Prevent irreversible local history changes. Run manually if needed.",
+    match = [
+        "git reset --hard HEAD~1",
+        "git reset --hard origin/main",
+    ],
+)
+
+prefix_rule(
+    pattern = ["git", "push", "--force"],
+    decision = "forbidden",
+    justification = "Force push is forbidden in this repository.",
+    match = [
+        "git push --force origin main",
+    ],
+)
+
+prefix_rule(
+    pattern = ["git", "push", "--force-with-lease"],
+    decision = "forbidden",
+    justification = "Force-with-lease push is forbidden in this repository.",
+    match = [
+        "git push --force-with-lease origin feature/foo",
+    ],
+)
+
+prefix_rule(
+    pattern = ["git", "clean", "-fd"],
+    decision = "forbidden",
+    justification = "Bulk deletion of untracked files is forbidden. Use IDE or manual cleanup.",
+    match = [
+        "git clean -fd",
+    ],
+)
+
+prefix_rule(
+    pattern = ["git", "clean", "-fdx"],
+    decision = "forbidden",
+    justification = "Bulk deletion including ignored files is forbidden.",
+    match = [
+        "git clean -fdx",
+    ],
+)
+
+prefix_rule(
+    pattern = ["rm", "-rf"],
+    decision = "forbidden",
+    justification = "Recursive deletion is forbidden. Use git clean or IDE instead.",
+    match = [
+        "rm -rf /Users/r0227n/Dev/oshiki/app/build",
+        "rm -rf app/build",
+    ],
+)
+
+prefix_rule(
+    pattern = ["sed", "-i"],
+    decision = "forbidden",
+    justification = "In-place sed edits are forbidden. Use the editor or patch tools instead.",
+    match = [
+        "sed -i '' 's/foo/bar/' file.dart",
+    ],
+    not_match = [
+        "sed -n '1,220p' docs/ARCHITECTURE.md",
+    ],
+)

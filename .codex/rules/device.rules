@@ -1,0 +1,80 @@
+# Oshiki exec policy: device, simulator, and Marionette tooling.
+# Aligns with .codex/config.toml MCP servers and environment.toml actions.
+
+prefix_rule(
+    pattern = ["flutter", "run"],
+    decision = "allow",
+    justification = "Run the Oshiki app on a device or simulator.",
+    match = [
+        "flutter run -d iPhone",
+        "flutter run --flavor dev --dart-define-from-file=.dart_define/development.json",
+    ],
+)
+
+prefix_rule(
+    pattern = ["flutter", "build", "ios", "--simulator"],
+    decision = "allow",
+    justification = "Build the iOS simulator app for manual or MCP testing.",
+    match = [
+        "flutter build ios --simulator",
+    ],
+)
+
+prefix_rule(
+    pattern = ["xcrun", "simctl"],
+    decision = "allow",
+    justification = "Control the iOS simulator for Oshiki testing.",
+    match = [
+        "xcrun simctl io booted screenshot /tmp/oshiki.png",
+        "xcrun simctl launch booted com.example.oshiki",
+        "xcrun simctl install booted app/build/ios/Debug-iphonesimulator/Runner.app",
+        "xcrun simctl listapps booted",
+    ],
+)
+
+prefix_rule(
+    pattern = ["agent-mobile", "--session", "oshiki-spec"],
+    decision = "allow",
+    justification = "Oshiki iOS spec session for agent-mobile testing.",
+    match = [
+        "agent-mobile --session oshiki-spec app list",
+        "agent-mobile --session oshiki-spec session show -f json",
+    ],
+)
+
+prefix_rule(
+    pattern = ["agent-mobile", "--session", "oshiki-android-spec"],
+    decision = "allow",
+    justification = "Oshiki Android spec session for agent-mobile testing.",
+    match = [
+        "agent-mobile --session oshiki-android-spec session show -f json",
+        "agent-mobile --session oshiki-android-spec snapshot -i",
+    ],
+)
+
+prefix_rule(
+    pattern = ["dart", "mcp-server"],
+    decision = "allow",
+    justification = "Start the Dart MCP server configured in .codex/config.toml.",
+    match = [
+        "dart mcp-server",
+    ],
+)
+
+prefix_rule(
+    pattern = ["marionette_mcp"],
+    decision = "allow",
+    justification = "Start the Marionette MCP server configured in .codex/config.toml.",
+    match = [
+        "marionette_mcp",
+    ],
+)
+
+prefix_rule(
+    pattern = ["./gradlew"],
+    decision = "prompt",
+    justification = "Android Gradle builds can be slow and environment-dependent.",
+    match = [
+        "./gradlew assembleDebug",
+    ],
+)

@@ -1,0 +1,103 @@
+# Oshiki exec policy: git read (allow) and write (prompt).
+# Entire logs show frequent git status/diff; writes require explicit approval.
+
+prefix_rule(
+    pattern = ["git", "status"],
+    decision = "allow",
+    justification = "Read-only git status for Oshiki development.",
+    match = [
+        "git status --short",
+        "git status --short app/lib/main.dart",
+    ],
+)
+
+prefix_rule(
+    pattern = ["git", "diff"],
+    decision = "allow",
+    justification = "Read-only git diff for Oshiki development.",
+    match = [
+        "git diff -- app/lib/bootstrap.dart",
+        "git diff --cached",
+        "git diff --stat",
+    ],
+)
+
+prefix_rule(
+    pattern = ["git", "log"],
+    decision = "allow",
+    justification = "Read-only git log for history inspection.",
+    match = [
+        "git log --oneline -10",
+        "git log --format='%H %s' -5 -- app/lib/main.dart",
+    ],
+)
+
+prefix_rule(
+    pattern = ["git", "show"],
+    decision = "allow",
+    justification = "Read-only git show for commit inspection.",
+    match = [
+        "git show HEAD",
+        "git show abc1234 --stat",
+    ],
+)
+
+prefix_rule(
+    pattern = ["git", "branch"],
+    decision = "allow",
+    justification = "Read-only git branch listing.",
+    match = [
+        "git branch",
+        "git branch -a",
+    ],
+)
+
+prefix_rule(
+    pattern = ["git", "add"],
+    decision = "prompt",
+    justification = "Staging changes requires explicit approval.",
+    match = [
+        "git add app/lib/main.dart",
+        "git add .",
+    ],
+)
+
+prefix_rule(
+    pattern = ["git", "commit"],
+    decision = "prompt",
+    justification = "Commits require explicit approval per project policy.",
+    match = [
+        "git commit -m \"refactor: extract bootstrap\"",
+        "git commit -m \"feat: add scan settings\"",
+    ],
+)
+
+prefix_rule(
+    pattern = ["git", "push"],
+    decision = "prompt",
+    justification = "Pushing to remote requires explicit approval.",
+    match = [
+        "git push -u origin HEAD",
+        "git push origin feature/refactor",
+    ],
+)
+
+prefix_rule(
+    pattern = ["git", "switch"],
+    decision = "prompt",
+    justification = "Branch switching can discard local context; confirm first.",
+    match = [
+        "git switch -c feature/refactor",
+        "git switch develop",
+    ],
+)
+
+prefix_rule(
+    pattern = ["git", "checkout"],
+    decision = "prompt",
+    justification = "Checkout can change working tree state; confirm first.",
+    match = [
+        "git checkout develop",
+        "git checkout -b feature/refactor",
+    ],
+)
