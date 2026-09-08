@@ -1,57 +1,32 @@
-import java.util.Base64
-
 plugins {
     id("com.android.application")
-    id("kotlin-android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
 
-val dartDefines = if (project.hasProperty("dart-defines")) {
-    project.property("dart-defines")
-        .toString()
-        .split(",")
-        .associate { entry ->
-            val pair = String(Base64.getDecoder().decode(entry), Charsets.UTF_8).split("=")
-            // valueがemptyの時にlastがkeyになるので、lengthが2でなければ空のmapにする
-            if (pair.size == 2) pair[0] to pair[1] else "" to ""
-        }
-        .filterKeys { it.isNotEmpty() }
-} else {
-    emptyMap<String, String>()
-}
-
-val copySources by tasks.registering(Copy::class) {
-    from("src/${dartDefines["FLAVOR"]}/res")
-    into("src/main/res")
-}
-
 android {
-    namespace = "com.template.app"
+    namespace = "com.example.app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     defaultConfig {
-        applicationId = dartDefines["APP_ID"]
-        dartDefines["APP_ID_SUFFIX"]?.let {
-            applicationIdSuffix = it
-        }
+        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        applicationId = "com.example.app"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
+        // Uses the version code from pubspec.yaml. When using split APKs, 1000 * ABI_VERSION
+        // is added automatically by Flutter. (https://developer.android.com/studio/build/configure-apk-splits#configure-APK-versions)
+        // You can force using the value of versionCode by specifying the `-P force-version-code-ignoring-abi=true`
+        // flag during build.
         versionCode = flutter.versionCode
         versionName = flutter.versionName
-        resValue("string", "app_name", dartDefines["APP_NAME"] ?: "")
     }
 
     buildTypes {
@@ -60,6 +35,12 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
         }
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
     }
 }
 

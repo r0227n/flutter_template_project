@@ -11,6 +11,7 @@ analyzer:
 
   errors:
     invalid_annotation_target: ignore
+    public_member_api_docs: ignore
   plugins:
     riverpod_lint: ^3.1.3
 

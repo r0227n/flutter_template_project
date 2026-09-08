@@ -1,8 +1,2 @@
-/// Domain layer exports.
-///
-/// This barrel file exports all domain layer components including:
-/// - Exceptions: Domain-specific exceptions
-/// - Models: Domain models
-/// - Services: Domain services
-/// - Usecases: Application use cases
-library;
+// Export business entities and value objects here as features are added.
+// Preferences are application configuration, not business domain rules.

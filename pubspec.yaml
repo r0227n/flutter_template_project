@@ -2,7 +2,7 @@ name: workspace
 publish_to: none
 
 environment:
-  sdk: ^3.10.0
+  sdk: ^3.12.0
 
 dev_dependencies:
   melos: ^7.3.0
@@ -11,8 +11,6 @@ dev_dependencies:
 
 workspace:
   - app
-  - packages/core
-  - packages/database
   - packages/design_system
 
 melos:
@@ -32,7 +30,7 @@ melos:
     gen:
       description: Run build_runner for all packages
       run: |
-        melos exec --depends-on="build_runner" -- "dart run build_runner build --delete-conflicting-outputs"
+        melos exec --depends-on="build_runner" -- "dart run build_runner build"
 
     gen:slang:
       description: Run slang for all packages
@@ -52,12 +50,15 @@ melos:
     # Check slang translations
     analyze:slang:
       description: Analyze slang translations
-      run: melos exec -- "dart run slang analyze"
+      run: melos exec --depends-on="slang" -- "dart run slang analyze"
 
     # Format all packages
     format:
       description: Format all packages
       run: melos exec -- "dart format ."
+
+    ci:format:
+      run: melos exec -- "dart format --output=none --set-exit-if-changed ."
 
     # Run tests for all packages (auto-detects Flutter vs Dart)
     test:
@@ -128,10 +129,5 @@ melos:
         fi
 
   environment:
-    sdk: ">=3.10.0 <4.0.0"
-    flutter: ">=3.38.5"
-
-# TODO: Flutter SDK が test_api 0.7.9+ を同梱するようになったら削除する
-dependency_overrides:
-  test: 1.29.0
-  test_api: 0.7.9
+    sdk: ">=3.12.0 <4.0.0"
+    flutter: ">=3.44.6"

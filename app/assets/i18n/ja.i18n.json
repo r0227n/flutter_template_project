@@ -1,13 +1,12 @@
 {
-  "settings": {
-    "title": "設定",
-    "language": "言語",
-    "theme": "テーマ",
-    "version": "バージョン",
-    "licenses": "ライセンス",
-    "sections": {
-      "appSettings": "アプリ設定",
-      "other": "その他"
-    }
-  }
+  "appName": "Flutter Template",
+  "home": "ホーム",
+  "welcome": "アプリの開発を始めましょう",
+  "settings": "設定",
+  "theme": "テーマ",
+  "system": "端末に合わせる",
+  "light": "ライト",
+  "dark": "ダーク",
+  "language": "言語",
+  "saveFailed": "設定を保存できませんでした。もう一度お試しください。"
 }
