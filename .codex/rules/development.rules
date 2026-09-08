@@ -1,0 +1,156 @@
+# Oshiki exec policy: Melos, Dart, Flutter, dprint, mise toolchain.
+# Matches AGENTS.md, pubspec.yaml melos scripts, and Entire session usage.
+
+prefix_rule(
+    pattern = ["melos", "run", ["analyze", "test", "gen", "gen:slang", "analyze:slang", "get", "format"]],
+    decision = "allow",
+    justification = "Standard Oshiki Melos scripts for CI-aligned development.",
+    match = [
+        "melos run analyze",
+        "melos run test",
+        "melos run gen:slang",
+        "melos run analyze:slang",
+        "melos run gen",
+        "melos run get",
+        "melos run format",
+    ],
+)
+
+prefix_rule(
+    pattern = ["melos", "exec"],
+    decision = "allow",
+    justification = "Scoped Melos exec for workspace analyze/test/codegen.",
+    match = [
+        "melos exec --scope=app -- \"dart analyze --fatal-infos\"",
+        "melos exec --scope=app --dir-exists=test -- \"flutter test\"",
+        "melos exec --depends-on=\"build_runner\" -- \"dart run build_runner build --delete-conflicting-outputs\"",
+    ],
+)
+
+prefix_rule(
+    pattern = ["melos", "bootstrap"],
+    decision = "allow",
+    justification = "Bootstrap the Melos workspace after dependency changes.",
+    match = [
+        "melos bootstrap",
+    ],
+)
+
+prefix_rule(
+    pattern = ["dart", "analyze"],
+    decision = "allow",
+    justification = "Static analysis for Oshiki Dart workspaces.",
+    match = [
+        "dart analyze --fatal-infos",
+        "dart analyze app/lib/main.dart",
+    ],
+)
+
+prefix_rule(
+    pattern = ["dart", "format"],
+    decision = "allow",
+    justification = "Format Dart sources in Oshiki workspaces.",
+    match = [
+        "dart format app/lib/main.dart",
+        "dart format lib test",
+    ],
+)
+
+prefix_rule(
+    pattern = ["dart", "run", "build_runner"],
+    decision = "allow",
+    justification = "Generate Freezed, Riverpod, and go_router code.",
+    match = [
+        "dart run build_runner build --delete-conflicting-outputs",
+    ],
+)
+
+prefix_rule(
+    pattern = ["dart", "run", "slang"],
+    decision = "allow",
+    justification = "Generate or analyze Slang i18n files.",
+    match = [
+        "dart run slang",
+        "dart run slang analyze",
+    ],
+)
+
+prefix_rule(
+    pattern = ["dart", "test"],
+    decision = "allow",
+    justification = "Run pure Dart package tests.",
+    match = [
+        "dart test",
+        "dart test test/architecture/",
+    ],
+)
+
+prefix_rule(
+    pattern = ["flutter", "test"],
+    decision = "allow",
+    justification = "Run Flutter app and package tests.",
+    match = [
+        "flutter test --no-pub",
+        "flutter test test/architecture/layer_dependencies_test.dart",
+    ],
+)
+
+prefix_rule(
+    pattern = ["flutter", "analyze"],
+    decision = "allow",
+    justification = "Run Flutter static analysis.",
+    match = [
+        "flutter analyze",
+    ],
+)
+
+prefix_rule(
+    pattern = ["flutter", "pub", "get"],
+    decision = "allow",
+    justification = "Resolve Flutter/Dart dependencies.",
+    match = [
+        "flutter pub get",
+    ],
+)
+
+prefix_rule(
+    pattern = ["flutter", "pub", ["add", "remove"]],
+    decision = "prompt",
+    justification = "Dependency changes affect lockfiles and CI; confirm first.",
+    match = [
+        "flutter pub add riverpod_annotation",
+        "flutter pub remove unused_package",
+    ],
+)
+
+prefix_rule(
+    pattern = ["dprint", ["check", "fmt"]],
+    decision = "allow",
+    justification = "Format or check Markdown, YAML, TOML, and CSS per project CI.",
+    match = [
+        "dprint check",
+        "dprint check docs/ARCHITECTURE.md",
+        "dprint fmt",
+    ],
+)
+
+prefix_rule(
+    pattern = ["mise", "run", ["check:dprint", "analyze", "test", "quality", "format", "analyze-slang", "ci-check"]],
+    decision = "allow",
+    justification = "Run Oshiki mise tasks aligned with .mise.toml.",
+    match = [
+        "mise run check:dprint",
+        "mise run analyze",
+        "mise run test",
+        "mise run quality",
+    ],
+)
+
+prefix_rule(
+    pattern = ["codex", "execpolicy", "check"],
+    decision = "allow",
+    justification = "Validate exec policy rules for this repository.",
+    match = [
+        "codex execpolicy check --pretty --rules .codex/rules/development.rules -- melos run analyze",
+    ],
+)

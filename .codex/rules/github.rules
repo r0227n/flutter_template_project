@@ -1,0 +1,61 @@
+# Oshiki exec policy: GitHub CLI (gh).
+# External API access and repo mutations require approval.
+
+prefix_rule(
+    pattern = ["gh", "auth", "status"],
+    decision = "allow",
+    justification = "Check GitHub authentication state without side effects.",
+    match = [
+        "gh auth status",
+    ],
+)
+
+prefix_rule(
+    pattern = ["gh", "pr", "view"],
+    decision = "prompt",
+    justification = "Viewing pull requests contacts GitHub; confirm first.",
+    match = [
+        "gh pr view 123",
+        "gh pr view --json title,body,comments",
+    ],
+    not_match = [
+        "gh pr --repo owner/repo view 123",
+    ],
+)
+
+prefix_rule(
+    pattern = ["gh", "pr", "create"],
+    decision = "prompt",
+    justification = "Creating pull requests modifies GitHub state.",
+    match = [
+        "gh pr create --title \"feat: add layout presets\" --body \"Summary\"",
+    ],
+)
+
+prefix_rule(
+    pattern = ["gh", "pr", "merge"],
+    decision = "prompt",
+    justification = "Merging pull requests modifies GitHub state.",
+    match = [
+        "gh pr merge 123 --squash",
+    ],
+)
+
+prefix_rule(
+    pattern = ["gh", "run", "view"],
+    decision = "prompt",
+    justification = "Viewing CI runs contacts GitHub; confirm first.",
+    match = [
+        "gh run view 123456789",
+        "gh run view --log",
+    ],
+)
+
+prefix_rule(
+    pattern = ["gh", "run", "list"],
+    decision = "prompt",
+    justification = "Listing CI runs contacts GitHub; confirm first.",
+    match = [
+        "gh run list --limit 5",
+    ],
+)

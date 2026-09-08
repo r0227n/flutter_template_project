@@ -1,0 +1,98 @@
+# Oshiki exec policy: read-only exploration commands.
+# Highest-frequency category in Entire session logs (rg, sed, find, etc.).
+
+prefix_rule(
+    pattern = ["rg"],
+    decision = "allow",
+    justification = "Search the codebase with ripgrep.",
+    match = [
+        "rg --files app",
+        "rg -n \"SharedPreferences\" app packages",
+        "rg --files -g '*.dart' app/lib",
+    ],
+)
+
+prefix_rule(
+    pattern = ["sed"],
+    decision = "allow",
+    justification = "Read file sections with sed.",
+    match = [
+        "sed -n '1,220p' docs/ARCHITECTURE.md",
+        "sed -n '1,260p' app/lib/app/bootstrap.dart",
+    ],
+)
+
+prefix_rule(
+    pattern = ["cat"],
+    decision = "allow",
+    justification = "Read file contents.",
+    match = [
+        "cat pubspec.yaml",
+        "cat app/pubspec.yaml",
+    ],
+)
+
+prefix_rule(
+    pattern = ["find"],
+    decision = "allow",
+    justification = "Locate files during exploration.",
+    match = [
+        "find app/lib -maxdepth 3 -type f",
+        "find . -name '*.rules'",
+    ],
+)
+
+prefix_rule(
+    pattern = ["ls"],
+    decision = "allow",
+    justification = "List directories during exploration.",
+    match = [
+        "ls -la app/lib",
+        "ls .codex/rules",
+    ],
+)
+
+prefix_rule(
+    pattern = ["head"],
+    decision = "allow",
+    justification = "Read the beginning of files or command output.",
+    match = [
+        "head -50 .entire/logs/entire.log",
+    ],
+)
+
+prefix_rule(
+    pattern = ["tail"],
+    decision = "allow",
+    justification = "Read the end of files or command output.",
+    match = [
+        "tail -20 .entire/logs/entire.log",
+    ],
+)
+
+prefix_rule(
+    pattern = ["wc"],
+    decision = "allow",
+    justification = "Count lines or bytes in files.",
+    match = [
+        "wc -l app/lib/main.dart",
+    ],
+)
+
+prefix_rule(
+    pattern = ["pwd"],
+    decision = "allow",
+    justification = "Print working directory.",
+    match = [
+        "pwd",
+    ],
+)
+
+prefix_rule(
+    pattern = ["nl"],
+    decision = "allow",
+    justification = "Show numbered file sections.",
+    match = [
+        "nl -ba docs/ARCHITECTURE.md",
+    ],
+)

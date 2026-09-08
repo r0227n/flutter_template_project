@@ -1,0 +1,58 @@
+[shell_environment_policy]
+inherit = "core"
+
+[shell_environment_policy.set]
+ENABLE_EXPERIMENTAL_MCP_CLI = "false"
+ENABLE_TOOL_SEARCH = "true"
+
+[mcp_servers.marionette]
+command = "marionette_mcp"
+args = []
+enabled_tools = [
+  "connect",
+  "disconnect",
+  "get_interactive_elements",
+  "get_logs",
+  "scroll_to",
+  "tap",
+  "double_tap",
+  "long_press",
+  "enter_text",
+  "swipe",
+  "pinch_zoom",
+  "press_back_button",
+  "take_screenshots",
+  "list_custom_extensions",
+  "call_custom_extension",
+]
+
+[mcp_servers.dart-mcp]
+command = "dart"
+args = ["mcp-server"]
+env = {}
+enabled_tools = [
+  "launch_app",
+  "stop_app",
+  "get_app_logs",
+  "list_running_apps",
+  "connect_dart_tooling_daemon",
+  "hot_reload",
+  "hot_restart",
+  "get_widget_tree",
+  "get_runtime_errors",
+]
+
+[mcp_servers.patrol]
+command = "bash"
+args = ["./scripts/run-patrol.sh"]
+env = { PROJECT_ROOT = "./app", PATROL_FLAGS = "", SHOW_TERMINAL = "false" }
+enabled_tools = ["run", "quit", "status", "screenshot", "native-tree"]
+
+[mcp_servers.sentry]
+url = "https://mcp.sentry.dev/mcp"
+
+[features]
+hooks = true
+
+[features.context_management]
+experimental_mode = true
