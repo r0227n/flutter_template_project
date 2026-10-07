@@ -54,6 +54,42 @@ Talker は Flutter の例外、未処理の非同期例外、Riverpod のイベ�
 ## 検証
 
 プロジェクトルートで実行します。
+Python 3 と、セットアップ済みの Flutter / Dart / dprint が必要です。
+runner は root の依存解決に含まれる Melos と Slang を使用し、global activation は不要です。
+
+```sh
+mise run quality     # staged / unstaged / untracked の変更を検証
+mise run ci-check    # 全 workspace と文書・設定を検証
+python3 -B -m unittest discover -s scripts/tests -v  # SDK 不要の tooling fixture
+```
+
+両 task は format check、fatal-infos 分析、Slang 分析、test、dprint check を共有します。
+共有 package の変更も全 workspace を検証し、利用側を取りこぼしません。
+hook / runner は install、pub get、コード生成、ソースの自動修正を行いません。
+依存を変更した場合は明示的に `flutter pub get --enforce-lockfile` を実行してから確認します。
+未準備の環境は診断を出して失敗し、検証済みとは扱いません。
+manifest / lockfile より古い依存解決も実行前に拒否します。
+`pubspec_overrides.yaml` も検出します。package 実行は既存の package config と Dart VM を使い、
+`dart run` の暗黙依存解決を通しません。
+mise の自動 install は repo 設定と runner の子環境で無効にしています。
+初回は `mise install` と依存解決、`dprint check` を明示的なセットアップとして用意してください。
+
+Codex の Stop hook は `.codex/hooks.json` で定義しています。
+対応する Codex で `/hooks` から内容を確認して信頼すると有効になります。
+初回 Stop で品質確認し、失敗は一度だけ継続を求めます。
+`stop_hook_active` が true の継続では再実行せず、手動再検証と未解決の報告を求めます。
+ログは stderr、hook の stdout は JSON だけです。転送・自己書換・許可拡張は行いません。
+hook は補助であり、CI と実施した検証の報告を置き換えません。
+仕様は [公式 Hooks ドキュメント](https://learn.chatgpt.com/docs/hooks) を参照してください。
+未設定 MCP server と汎用の command 自動許可は初期設定に含めません。
+破壊的操作の既存 guardrail は維持し、承認は利用環境とユーザー依頼に従います。
+
+PR Check は同じ runner を使い、root lockfile、依存・生成・解析設定、翻訳、
+`.mise.toml`、CI / scripts の変更も Dart 検証対象とします。
+文書だけの変更では Flutter を用意せず dprint と tooling fixture を実行します。
+すべて標準 `ubuntu-24.04` runner を使い、外部サービスの資格情報は不要です。
+
+生成入力を変えた場合は、必要な generator を先に実行します。
 
 ```sh
 dart run melos run gen

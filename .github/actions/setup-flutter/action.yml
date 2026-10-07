@@ -1,5 +1,5 @@
-name: "Setup Flutter"
-description: "Sets up Flutter with mise and caches dependencies"
+name: "Setup Flutter Workspace"
+description: "Cache dependencies and resolve the committed Flutter workspace lockfile"
 
 runs:
   using: "composite"
@@ -13,28 +13,6 @@ runs:
         restore-keys: |
           pub-${{ runner.os }}-
 
-    # melos version取得
-    - name: Get melos version
-      id: melos-version
+    - name: Resolve the committed workspace lockfile
       shell: bash
-      run: |
-        MELOS_VERSION=$(grep "melos:" pubspec.yaml | head -1 | awk '{print $2}' | sed 's/\^//')
-        if [ -z "$MELOS_VERSION" ]; then
-          echo "Error: Failed to extract melos version from pubspec.yaml"
-          echo "Make sure pubspec.yaml contains a line like 'melos: ^7.3.0'"
-          exit 1
-        fi
-        echo "version=$MELOS_VERSION" >> $GITHUB_OUTPUT
-
-    # melos インストール (Flutter環境で実行)
-    - name: Install melos
-      shell: bash
-      run: flutter pub global activate melos ${{ steps.melos-version.outputs.version }}
-
-    - name: Add pub-cache to PATH
-      shell: bash
-      run: echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
-
-    - name: Bootstrap melos
-      shell: bash
-      run: melos bootstrap
+      run: flutter pub get --enforce-lockfile
