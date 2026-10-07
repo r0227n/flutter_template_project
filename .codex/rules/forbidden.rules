@@ -1,5 +1,5 @@
-# Oshiki exec policy: irreversible or destructive commands.
-# Derived from Entire session logs (.entire/logs/, .entire/metadata/).
+# Template guardrails for destructive commands.
+# Other actions follow the execution environment and user authorization.
 
 prefix_rule(
     pattern = ["git", "reset", "--hard"],
@@ -50,9 +50,8 @@ prefix_rule(
 prefix_rule(
     pattern = ["rm", "-rf"],
     decision = "forbidden",
-    justification = "Recursive deletion is forbidden. Use git clean or IDE instead.",
+    justification = "Recursive deletion is forbidden. Review individual task-owned files instead.",
     match = [
-        "rm -rf /Users/r0227n/Dev/oshiki/app/build",
         "rm -rf app/build",
     ],
 )
