@@ -83,6 +83,24 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 
   /// ja: '設定を保存できませんでした。もう一度お試しください。'
   String get saveFailed => '設定を保存できませんでした。もう一度お試しください。';
+
+  /// ja: 'アプリを起動できませんでした。もう一度お試しください。'
+  String get bootstrapFailed => 'アプリを起動できませんでした。もう一度お試しください。';
+
+  /// ja: '再試行'
+  String get retry => '再試行';
+
+  /// ja: '日本語'
+  String get languageJapanese => '日本語';
+
+  /// ja: 'English'
+  String get languageEnglish => 'English';
+
+  /// ja: '設定を保存中'
+  String get saving => '設定を保存中';
+
+  /// ja: '予期しないエラーが発生しました。もう一度お試しください。'
+  String get unexpectedError => '予期しないエラーが発生しました。もう一度お試しください。';
 }
 
 /// The flat map containing all translations for locale <ja>.
@@ -103,6 +121,12 @@ extension on Translations {
       'dark' => 'ダーク',
       'language' => '言語',
       'saveFailed' => '設定を保存できませんでした。もう一度お試しください。',
+      'bootstrapFailed' => 'アプリを起動できませんでした。もう一度お試しください。',
+      'retry' => '再試行',
+      'languageJapanese' => '日本語',
+      'languageEnglish' => 'English',
+      'saving' => '設定を保存中',
+      'unexpectedError' => '予期しないエラーが発生しました。もう一度お試しください。',
       _ => null,
     };
   }

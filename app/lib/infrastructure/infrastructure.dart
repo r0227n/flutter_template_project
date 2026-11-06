@@ -1,1 +1,1 @@
-export 'persistence/local_app_preferences_repository.dart';
+export 'persistence/shared_preferences/local_app_preferences_repository.dart';

@@ -8,12 +8,15 @@ part of 'app_preferences_controller.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
+/// 設定変更を操作順に保存し、成功した値だけを画面へ公開する。
 
 @ProviderFor(AppPreferencesController)
 final appPreferencesControllerProvider = AppPreferencesControllerProvider._();
 
+/// 設定変更を操作順に保存し、成功した値だけを画面へ公開する。
 final class AppPreferencesControllerProvider
-    extends $AsyncNotifierProvider<AppPreferencesController, AppPreferences> {
+    extends $NotifierProvider<AppPreferencesController, AppPreferences> {
+  /// 設定変更を操作順に保存し、成功した値だけを画面へ公開する。
   AppPreferencesControllerProvider._()
     : super(
         from: null,
@@ -31,23 +34,32 @@ final class AppPreferencesControllerProvider
   @$internal
   @override
   AppPreferencesController create() => AppPreferencesController();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AppPreferences value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AppPreferences>(value),
+    );
+  }
 }
 
 String _$appPreferencesControllerHash() =>
-    r'3600fce5c1199c819fae923d9f5414371a70df78';
+    r'678741168af9ad5b03089c03fa6ebeb703de0d5a';
 
-abstract class _$AppPreferencesController
-    extends $AsyncNotifier<AppPreferences> {
-  FutureOr<AppPreferences> build();
+/// 設定変更を操作順に保存し、成功した値だけを画面へ公開する。
+
+abstract class _$AppPreferencesController extends $Notifier<AppPreferences> {
+  AppPreferences build();
   @$mustCallSuper
   @override
   WhenComplete runBuild() {
-    final ref = this.ref as $Ref<AsyncValue<AppPreferences>, AppPreferences>;
+    final ref = this.ref as $Ref<AppPreferences, AppPreferences>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<AsyncValue<AppPreferences>, AppPreferences>,
-              AsyncValue<AppPreferences>,
+              AnyNotifier<AppPreferences, AppPreferences>,
+              AppPreferences,
               Object?,
               Object?
             >;

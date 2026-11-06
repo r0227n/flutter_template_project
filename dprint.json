@@ -40,6 +40,7 @@
   ],
 
   "excludes": [
+    ".codex",
     "node_modules",
     "dist",
     "coverage",

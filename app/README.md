@@ -1,17 +1,13 @@
 # app
 
-A new Flutter project.
+Flutter テンプレートの実行アプリです。初期化の入口は `lib/main.dart`、
+起動と依存注入は `lib/app/` にあります。
 
-## Getting Started
+セットアップ、命名変更、生成・検証は [ルート README](../README.md) を参照してください。
+[アーキテクチャ](../docs/ARCHITECTURE.md) と [画面仕様](../docs/specs/SPECS_INDEX_SPEC.md) に従って拡張します。
 
-This project is a starting point for a Flutter application.
+ルートで `mise run setup` を実行した後、このディレクトリで起動します。
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```sh
+flutter run --dart-define-from-file=.dart_define/sample.json
+```

@@ -8,9 +8,12 @@ part of 'application_providers.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
+/// Presentation が利用する入力境界。具象値は composition root が注入する。
 
 @ProviderFor(appPreferencesUseCase)
 final appPreferencesUseCaseProvider = AppPreferencesUseCaseProvider._();
+
+/// Presentation が利用する入力境界。具象値は composition root が注入する。
 
 final class AppPreferencesUseCaseProvider
     extends
@@ -20,6 +23,7 @@ final class AppPreferencesUseCaseProvider
           AppPreferencesUseCase
         >
     with $Provider<AppPreferencesUseCase> {
+  /// Presentation が利用する入力境界。具象値は composition root が注入する。
   AppPreferencesUseCaseProvider._()
     : super(
         from: null,
@@ -55,45 +59,58 @@ final class AppPreferencesUseCaseProvider
 }
 
 String _$appPreferencesUseCaseHash() =>
-    r'a7be61bb90b05868c8cd7d608edb6eca6c242ea2';
+    r'328b60f14493bbadecd7912357f9f2e60c345aed';
 
-@ProviderFor(errorReporter)
-final errorReporterProvider = ErrorReporterProvider._();
+/// 起動時に一度だけ取得した設定。必ず root scope へ注入する。
 
-final class ErrorReporterProvider
-    extends $FunctionalProvider<ErrorReporter, ErrorReporter, ErrorReporter>
-    with $Provider<ErrorReporter> {
-  ErrorReporterProvider._()
+@ProviderFor(initialAppPreferencesSnapshot)
+final initialAppPreferencesSnapshotProvider =
+    InitialAppPreferencesSnapshotProvider._();
+
+/// 起動時に一度だけ取得した設定。必ず root scope へ注入する。
+
+final class InitialAppPreferencesSnapshotProvider
+    extends
+        $FunctionalProvider<
+          AppPreferencesSnapshot,
+          AppPreferencesSnapshot,
+          AppPreferencesSnapshot
+        >
+    with $Provider<AppPreferencesSnapshot> {
+  /// 起動時に一度だけ取得した設定。必ず root scope へ注入する。
+  InitialAppPreferencesSnapshotProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'errorReporterProvider',
+        name: r'initialAppPreferencesSnapshotProvider',
         isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$errorReporterHash();
+  String debugGetCreateSourceHash() => _$initialAppPreferencesSnapshotHash();
 
   @$internal
   @override
-  $ProviderElement<ErrorReporter> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+  $ProviderElement<AppPreferencesSnapshot> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
-  ErrorReporter create(Ref ref) {
-    return errorReporter(ref);
+  AppPreferencesSnapshot create(Ref ref) {
+    return initialAppPreferencesSnapshot(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(ErrorReporter value) {
+  Override overrideWithValue(AppPreferencesSnapshot value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<ErrorReporter>(value),
+      providerOverride: $SyncValueProvider<AppPreferencesSnapshot>(value),
     );
   }
 }
 
-String _$errorReporterHash() => r'5d48c67a74fc7f1b4036416abfa01af92e46faaa';
+String _$initialAppPreferencesSnapshotHash() =>
+    r'd583be4cc40f66e6e73772888c4db4e3ad6d27a7';
