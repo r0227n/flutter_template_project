@@ -4,7 +4,7 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 20 (10 per locale)
+/// Strings: 32 (16 per locale)
 
 // coverage:ignore-file
 // ignore_for_file: type=lint, unused_import
@@ -15,7 +15,7 @@ import 'package:slang/generated.dart';
 import 'package:slang_flutter/slang_flutter.dart';
 export 'package:slang_flutter/slang_flutter.dart';
 
-import 'slang_en.g.dart' deferred as l_en;
+import 'slang_en.g.dart' as l_en;
 part 'slang_ja.g.dart';
 
 /// Supported locales.
@@ -47,21 +47,11 @@ enum AppLocale with BaseAppLocale<AppLocale, Translations> {
     PluralResolver? cardinalResolver,
     PluralResolver? ordinalResolver,
   }) async {
-    switch (this) {
-      case AppLocale.ja:
-        return TranslationsJa(
-          overrides: overrides,
-          cardinalResolver: cardinalResolver,
-          ordinalResolver: ordinalResolver,
-        );
-      case AppLocale.en:
-        await l_en.loadLibrary();
-        return l_en.TranslationsEn(
-          overrides: overrides,
-          cardinalResolver: cardinalResolver,
-          ordinalResolver: ordinalResolver,
-        );
-    }
+    return buildSync(
+      overrides: overrides,
+      cardinalResolver: cardinalResolver,
+      ordinalResolver: ordinalResolver,
+    );
   }
 
   @override
@@ -139,7 +129,11 @@ extension BuildContextTranslationsExtension on BuildContext {
 /// Manages all translation instances and the current locale
 class LocaleSettings
     extends BaseFlutterLocaleSettings<AppLocale, Translations> {
-  LocaleSettings._() : super(utils: AppLocaleUtils.instance, lazy: true);
+  LocaleSettings._()
+    : super(
+        utils: AppLocaleUtils.instance,
+        lazy: false,
+      );
 
   static final instance = LocaleSettings._();
 
@@ -202,7 +196,10 @@ class LocaleSettings
 /// Provides utility functions without any side effects.
 class AppLocaleUtils extends BaseAppLocaleUtils<AppLocale, Translations> {
   AppLocaleUtils._()
-    : super(baseLocale: AppLocale.ja, locales: AppLocale.values);
+    : super(
+        baseLocale: AppLocale.ja,
+        locales: AppLocale.values,
+      );
 
   static final instance = AppLocaleUtils._();
 

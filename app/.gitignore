@@ -46,3 +46,7 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
+
+# Slang analysis reports
+/assets/i18n/_missing_translations.json
+/assets/i18n/_unused_translations.json

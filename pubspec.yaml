@@ -16,117 +16,38 @@ workspace:
 melos:
   name: flutter_template_project
 
-  packages:
-    - app/
-    - packages/**
-
-  command:
-    clean:
-      hooks:
-        pre: melos exec -- "flutter clean"
-
   scripts:
-    # Generate code for all packages using build_runner
     gen:
-      description: Run build_runner for all packages
-      run: |
-        melos exec --depends-on="build_runner" -- "dart run build_runner build"
+      description: Generate annotated source in all workspace packages
+      run: dart run melos exec --depends-on=build_runner -- "dart run build_runner build"
 
     gen:slang:
-      description: Run slang for all packages
-      run: |
-        melos exec --depends-on="slang_build_runner" -- "dart run slang"
+      description: Generate translations from Slang JSON
+      run: dart run melos exec --depends-on=slang_build_runner -- "dart run slang"
 
-    # Clean and get dependencies for all packages
     get:
-      description: Get dependencies for all packages
-      run: melos exec -- "flutter pub get"
+      description: Resolve the Pub workspace
+      run: flutter pub get
 
-    # Analyze all packages
     analyze:
-      description: Analyze all packages
-      run: melos exec -- "dart analyze --fatal-infos"
+      description: Analyze all workspace packages
+      run: dart run melos exec -- "dart analyze --fatal-infos"
 
-    # Check slang translations
     analyze:slang:
-      description: Analyze slang translations
-      run: melos exec --depends-on="slang" -- "dart run slang analyze"
+      description: Validate translation coverage
+      run: dart run melos exec --depends-on=slang -- "dart run slang analyze --exit-if-changed"
 
-    # Format all packages
     format:
-      description: Format all packages
-      run: melos exec -- "dart format ."
+      description: Format Dart source in all workspace packages
+      run: dart run melos exec -- "dart format ."
 
     ci:format:
-      run: melos exec -- "dart format --output=none --set-exit-if-changed ."
+      description: Check Dart formatting without changing files
+      run: dart run melos exec -- "dart format --output=none --set-exit-if-changed ."
 
-    # Run tests for all packages (auto-detects Flutter vs Dart)
     test:
-      description: Run tests for all packages (auto-detects Flutter vs Dart)
-      run: |
-        melos exec --fail-fast --concurrency=1 --dir-exists=test -- \
-          "if grep -q \"flutter:\" pubspec.yaml 2>/dev/null; then \
-             echo \"Flutter project detected, using flutter test\"; \
-             flutter test; \
-           else \
-             echo \"Pure Dart project detected, using dart test\"; \
-             dart test; \
-           fi"
-
-    # CI test with JSON reporting (auto-detects Flutter vs Dart)
-    ci:test:
-      description: Report test results (auto-detects Flutter vs Dart)
-      run: |
-        melos exec --fail-fast --concurrency=1 --dir-exists=test -- \
-          "if grep -q \"flutter:\" pubspec.yaml 2>/dev/null; then \
-             echo \"Flutter project detected, using flutter test\"; \
-             flutter test --no-pub --machine > test-report.json; \
-           else \
-             echo \"Pure Dart project detected, using dart test\"; \
-             dart test --reporter=json --file-reporter=json:test-report.json; \
-           fi"
-
-    # CI commands with workspace detection
-    ci:analyze-changed:
-      description: Analyze changed workspaces or all if none specified
-      run: |
-        if [ -n "$CHANGED_WORKSPACES" ]; then
-          for workspace in $CHANGED_WORKSPACES; do
-            melos exec --scope="$workspace" -- "dart analyze --fatal-infos"
-          done
-        else
-          melos run analyze
-        fi
-
-    ci:test-changed:
-      description: Test changed workspaces or all if none specified (auto-detects Flutter vs Dart)
-      run: |
-        if [ -n "$CHANGED_WORKSPACES" ]; then
-          for workspace in $CHANGED_WORKSPACES; do
-            echo "Running tests for workspace: $workspace"
-            melos exec --scope="$workspace" --dir-exists=test -- \
-              "if grep -q \"flutter:\" pubspec.yaml 2>/dev/null; then \
-                 echo \"Flutter project detected, using flutter test\"; \
-                 flutter test --no-pub --machine > test-report.json; \
-               else \
-                 echo \"Pure Dart project detected, using dart test\"; \
-                 dart test --reporter=json --file-reporter=json:test-report.json; \
-               fi"
-          done
-        else
-          melos run ci:test
-        fi
-
-    ci:format-changed:
-      description: Format check changed workspaces or all if none specified
-      run: |
-        if [ -n "$CHANGED_WORKSPACES" ]; then
-          for workspace in $CHANGED_WORKSPACES; do
-            melos exec --scope="$workspace" -- "dart format --output=none --set-exit-if-changed ."
-          done
-        else
-          melos run ci:format
-        fi
+      description: Run all workspace tests
+      run: dart run melos exec --fail-fast --concurrency=1 --dir-exists=test -- "flutter test"
 
   environment:
     sdk: ">=3.12.0 <4.0.0"

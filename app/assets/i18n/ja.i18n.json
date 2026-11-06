@@ -8,5 +8,11 @@
   "light": "ライト",
   "dark": "ダーク",
   "language": "言語",
-  "saveFailed": "設定を保存できませんでした。もう一度お試しください。"
+  "saveFailed": "設定を保存できませんでした。もう一度お試しください。",
+  "bootstrapFailed": "アプリを起動できませんでした。もう一度お試しください。",
+  "retry": "再試行",
+  "languageJapanese": "日本語",
+  "languageEnglish": "English",
+  "saving": "設定を保存中",
+  "unexpectedError": "予期しないエラーが発生しました。もう一度お試しください。"
 }
