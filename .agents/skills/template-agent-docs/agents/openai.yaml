@@ -1,0 +1,4 @@
+interface:
+  display_name: "Template Agent Docs"
+  short_description: "実装とコマンドに一致するAgent指示・スキル・参照導線を整備"
+  default_prompt: "$template-agent-docs を使い、実装と開発コマンドに合わせてAgent向け指示を整えてください。"

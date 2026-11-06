@@ -1,0 +1,4 @@
+interface:
+  display_name: "Template Code Review"
+  short_description: "テンプレートの差分を依存境界・非同期・UIの観点からレビュー"
+  default_prompt: "$template-code-review を使い、この変更の具体的な不具合と不足する検証を確認してください。"

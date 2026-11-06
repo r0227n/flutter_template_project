@@ -1,0 +1,4 @@
+interface:
+  display_name: "Template Dogfood"
+  short_description: "ホーム・設定・復元を実際に操作して画面と再現手順で品質を確認"
+  default_prompt: "$template-dogfood を使い、ホームと設定の主要操作を確認して観察結果を報告してください。"
