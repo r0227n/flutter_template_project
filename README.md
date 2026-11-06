@@ -17,7 +17,7 @@ cd app
 flutter run --dart-define-from-file=.dart_define/development.json
 ```
 
-Melos は常に `dart run melos` で workspace の固定版を使います。グローバルへのインストールは不要です。
+Melos は Oshiki と同じ `8.9.0` に固定し、常に `dart run melos` で実行します。グローバルへのインストールは不要です。
 VS Code の development / staging / production 起動設定では、対応する `.dart_define/*.json` を用意してください。
 実プロジェクト用 JSON は Git 管理から除外され、`sample.json` だけを管理します。
 
@@ -57,6 +57,12 @@ packages/design_system/          # テーマとトークンのみ
 
 詳細は [アーキテクチャ](docs/ARCHITECTURE.md)、[画面仕様](docs/specs/SPECS_INDEX_SPEC.md)、
 [採用した設計判断](docs/specs/ADR-0001-template-architecture.md) を参照してください。
+
+## Agent 向けの作業手順
+
+`.agents/skills/` に、設計・レビュー・不具合調査・ドメイン設計・画面 QA・PR 作成・Agent 文書整備の
+project skill を配置しています。Oshiki の手順を参考に、このテンプレートの構成と利用可能な機能に合わせて作成しています。
+用途と管理方針は [Agent skills](docs/agent-skills.md)、共通規約は [AGENTS.md](AGENTS.md) を参照してください。
 
 ## 設定とエラー
 

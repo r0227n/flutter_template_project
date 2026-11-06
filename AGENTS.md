@@ -11,6 +11,7 @@ Oshiki の命名と設計境界を採用しますが、業務機能や外部サ�
 - 責務配置・公開 API・依存注入・状態所有: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)。
 - 画面仕様: [docs/specs/SPECS_INDEX_SPEC.md](docs/specs/SPECS_INDEX_SPEC.md)。
 - 長期的な設計判断: `docs/specs/ADR-*.md`。
+- 作業別の project skill: [.agents/skills](.agents/skills)。用途と管理方針は [docs/agent-skills.md](docs/agent-skills.md)。
 - 文書とコードに不一致があれば現行挙動を確認し、明示的な依頼を優先して同じ変更で整合させます。
 
 ## 設計境界
@@ -43,7 +44,7 @@ Oshiki の命名と設計境界を採用しますが、業務機能や外部サ�
 
 ## 生成と検証
 
-Melos はグローバル版を使わず、ルートから `dart run melos` で実行します。
+Melos はルート `pubspec.yaml` の固定版を使い、ルートから `dart run melos` で実行します。
 利用可能なら Dart の format / fix / analyze / test ツールを使い、なければ CLI を使います。
 
 ```sh

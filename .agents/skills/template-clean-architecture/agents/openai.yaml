@@ -1,0 +1,4 @@
+interface:
+  display_name: "Template Architecture"
+  short_description: "テンプレートの責務配置・依存注入・状態所有を揃えて実装する"
+  default_prompt: "$template-clean-architecture を使い、依存方向と状態の所有者を確認して変更を実装してください。"
