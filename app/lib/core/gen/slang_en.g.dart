@@ -71,6 +71,18 @@ class TranslationsEn
   String get language => 'Language';
   @override
   String get saveFailed => 'Could not save settings. Please try again.';
+  @override
+  String get bootstrapFailed => 'The app could not start. Please try again.';
+  @override
+  String get retry => 'Retry';
+  @override
+  String get languageJapanese => '日本語';
+  @override
+  String get languageEnglish => 'English';
+  @override
+  String get saving => 'Saving settings';
+  @override
+  String get unexpectedError => 'Something went wrong. Please try again.';
 }
 
 /// The flat map containing all translations for locale <en>.
@@ -91,6 +103,12 @@ extension on TranslationsEn {
       'dark' => 'Dark',
       'language' => 'Language',
       'saveFailed' => 'Could not save settings. Please try again.',
+      'bootstrapFailed' => 'The app could not start. Please try again.',
+      'retry' => 'Retry',
+      'languageJapanese' => '日本語',
+      'languageEnglish' => 'English',
+      'saving' => 'Saving settings',
+      'unexpectedError' => 'Something went wrong. Please try again.',
       _ => null,
     };
   }

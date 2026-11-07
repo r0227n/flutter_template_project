@@ -1,104 +1,28 @@
 import 'package:design_system/src/theme/extensions/app_radius_theme.dart';
 import 'package:design_system/src/theme/extensions/app_spacing_theme.dart';
+import 'package:design_system/src/tokens/colors.dart';
 import 'package:flutter/material.dart';
 
-/// Application theme configuration and management
-///
-/// This class provides a centralized way to define and manage the application's
-/// theme configuration for both light and dark modes. It uses Material 3 design
-/// principles and provides consistent theming across the application.
-///
-/// The theme is built using a seed color (deep purple) that generates a
-/// cohesive color scheme for both light and dark variants.
-///
-/// Example usage:
-/// ```dart
-/// MaterialApp(
-///   theme: AppTheme.lightTheme,
-///   darkTheme: AppTheme.darkTheme,
-///   themeMode: ThemeMode.system,
-/// )
-/// ```
-class AppTheme {
-  /// Creates an instance of [AppTheme]
-  ///
-  /// This constructor is const to allow for efficient instantiation
-  /// and static access to theme configurations.
-  const AppTheme();
+/// アプリの機能に依存しない Material 3 のテーマ。
+abstract final class AppTheme {
+  /// ライトテーマ。テーマ定義は一度だけ生成する。
+  static final ThemeData lightTheme = _build(Brightness.light);
 
-  static const List<ThemeExtension<dynamic>> _extensions = [
-    AppSpacingTheme(),
-    AppRadiusTheme(),
-  ];
+  /// ダークテーマ。ライトテーマと同じトークンを共有する。
+  static final ThemeData darkTheme = _build(Brightness.dark);
 
-  /// Gets the light theme configuration
-  ///
-  /// Returns a pre-configured [ThemeData] for light mode using Material 3
-  /// design principles. The theme is generated from a deep purple seed color.
-  ///
-  /// Returns:
-  /// A [ThemeData] configured for light mode
-  static ThemeData get lightTheme => const AppTheme().toLightTheme();
-
-  /// Gets the dark theme configuration
-  ///
-  /// Returns a pre-configured [ThemeData] for dark mode using Material 3
-  /// design principles. The theme is generated from a deep purple seed color
-  /// with dark brightness.
-  ///
-  /// Returns:
-  /// A [ThemeData] configured for dark mode
-  static ThemeData get darkTheme => const AppTheme().toDarkTheme();
-
-  /// Converts the theme configuration to light theme data
-  ///
-  /// Creates a complete [ThemeData] configuration for light mode with:
-  /// - Material 3 design system enabled
-  /// - Color scheme generated from deep purple seed color
-  /// - Custom AppBar theme with inverse primary background
-  /// - Consistent foreground colors
-  ///
-  /// Returns:
-  /// A fully configured [ThemeData] for light mode
-  ThemeData toLightTheme() {
+  static ThemeData _build(Brightness brightness) {
     final colorScheme = ColorScheme.fromSeed(
-      seedColor: Colors.deepPurple,
+      seedColor: AppColors.seed,
+      brightness: brightness,
     );
-
     return ThemeData(
-      useMaterial3: true,
       colorScheme: colorScheme,
-      extensions: _extensions,
+      extensions: const [AppSpacingTheme(), AppRadiusTheme()],
       appBarTheme: AppBarTheme(
-        backgroundColor: colorScheme.inversePrimary,
+        backgroundColor: colorScheme.surface,
         foregroundColor: colorScheme.onSurface,
-      ),
-    );
-  }
-
-  /// Converts the theme configuration to dark theme data
-  ///
-  /// Creates a complete [ThemeData] configuration for dark mode with:
-  /// - Material 3 design system enabled
-  /// - Color scheme generated from deep purple seed color with dark brightness
-  /// - Custom AppBar theme with inverse primary background
-  /// - Consistent foreground colors optimized for dark mode
-  ///
-  /// Returns:
-  /// A fully configured [ThemeData] for dark mode
-  ThemeData toDarkTheme() {
-    final colorScheme = ColorScheme.fromSeed(
-      seedColor: Colors.deepPurple,
-      brightness: Brightness.dark,
-    );
-
-    return ThemeData(
-      useMaterial3: true,
-      colorScheme: colorScheme,
-      extensions: _extensions,
-      appBarTheme: AppBarTheme(
-        backgroundColor: colorScheme.inversePrimary,
-        foregroundColor: colorScheme.onSurface,
+        centerTitle: false,
       ),
     );
   }

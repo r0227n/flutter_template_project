@@ -1,9 +1,13 @@
 targets:
   $default:
     builders:
+      freezed:
+        options:
+          format: true
       slang_build_runner:
         options:
           base_locale: ja
+          lazy: false
           input_directory: assets/i18n
           input_file_pattern: .i18n.json
           output_directory: lib/core/gen

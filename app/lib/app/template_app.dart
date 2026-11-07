@@ -1,5 +1,3 @@
-import 'dart:async';
-import 'package:app/application/application.dart';
 import 'package:app/core/gen/slang.g.dart';
 import 'package:app/presentation/shared/controllers/app_preferences_controller.dart';
 import 'package:design_system/design_system.dart';
@@ -8,41 +6,32 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+/// 翻訳・テーマ・ルーティングを接続するアプリの root widget。
 class TemplateApp extends ConsumerWidget {
+  /// Router の生存期間は呼び出し元が管理する。
   const TemplateApp({required this.router, super.key});
+
+  /// 起動時に一度だけ生成する router。
   final GoRouter router;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen(
-      appPreferencesControllerProvider.select(
-        (value) => value.value?.languageCode,
-      ),
-      (_, code) {
-        if (code != null) {
-          unawaited(LocaleSettings.setLocaleRaw(code));
-        }
-      },
+    final locale = ref.watch(
+      appPreferencesControllerProvider.select((value) => value.locale),
     );
-    final preferences =
-        ref.watch(appPreferencesControllerProvider).value ??
-        const AppPreferences();
-    final locale = AppLocale.values.firstWhere(
-      (locale) => locale.languageCode == preferences.languageCode,
+    final themeMode = ref.watch(
+      appPreferencesControllerProvider.select((value) => value.themeMode),
     );
     return TranslationProvider(
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
         onGenerateTitle: (context) => Translations.of(context).appName,
-        locale: locale.flutterLocale,
+        locale: locale,
         supportedLocales: AppLocaleUtils.supportedLocales,
         localizationsDelegates: GlobalMaterialLocalizations.delegates,
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
-        themeMode: switch (preferences.theme) {
-          AppThemePreference.system => ThemeMode.system,
-          AppThemePreference.light => ThemeMode.light,
-          AppThemePreference.dark => ThemeMode.dark,
-        },
+        themeMode: themeMode,
         routerConfig: router,
       ),
     );
