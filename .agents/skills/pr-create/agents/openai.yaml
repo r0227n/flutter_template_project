@@ -1,0 +1,4 @@
+interface:
+  display_name: "Pull Request"
+  short_description: "テンプレートの検証結果をまとめてdevelop向けPRを作成・更新"
+  default_prompt: "$pr-create を使い、変更を検証して develop 向けのPRを作成または更新してください。"

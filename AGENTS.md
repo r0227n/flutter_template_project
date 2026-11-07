@@ -12,6 +12,7 @@ Oshiki の命名と設計境界を採用しますが、業務機能や外部サ�
 - 画面仕様: [docs/specs/SPECS_INDEX_SPEC.md](docs/specs/SPECS_INDEX_SPEC.md)。
 - 長期的な設計判断: `docs/specs/ADR-*.md`。
 - 作業別の project skill: [.agents/skills](.agents/skills)。用途と管理方針は [docs/agent-skills.md](docs/agent-skills.md)。
+- Melos 公式 skill は Dart skills CLI と `.config/dart_skills/skills_config.json` で管理し、本文・manifest を手編集しません。
 - 文書とコードに不一致があれば現行挙動を確認し、明示的な依頼を優先して同じ変更で整合させます。
 
 ## 設計境界

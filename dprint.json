@@ -41,6 +41,7 @@
 
   "excludes": [
     ".codex",
+    ".agents/skills/melos-*/**",
     "node_modules",
     "dist",
     "coverage",

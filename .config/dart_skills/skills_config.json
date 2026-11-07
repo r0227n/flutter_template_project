@@ -1,0 +1,41 @@
+{
+  "version": 2,
+  "installations": {
+    "generic": {
+      "package:melos": {
+        "skills": [
+          {
+            "name": "melos-migration",
+            "installedAt": "2026-11-07T09:48:55.594373Z",
+            "contentHash": "ZYx27nayuIGfgutpUeBEBg==",
+            "path": "skills/melos-migration"
+          },
+          {
+            "name": "melos-versioning",
+            "installedAt": "2026-11-07T09:48:55.595057Z",
+            "contentHash": "dQLTWyVMDY9lcvDuvyYLWQ==",
+            "path": "skills/melos-versioning"
+          },
+          {
+            "name": "melos-scripts",
+            "installedAt": "2026-11-07T09:48:55.595645Z",
+            "contentHash": "2kvcZVStbdT/bLipxAvN+w==",
+            "path": "skills/melos-scripts"
+          },
+          {
+            "name": "melos-commands",
+            "installedAt": "2026-11-07T09:48:55.596222Z",
+            "contentHash": "bm3s3vGzVfOSBw5LRdhbQA==",
+            "path": "skills/melos-commands"
+          },
+          {
+            "name": "melos-workspace-setup",
+            "installedAt": "2026-11-07T09:48:55.596816Z",
+            "contentHash": "BHvWLd5HwiyS6x1VuR9I2g==",
+            "path": "skills/melos-workspace-setup"
+          }
+        ]
+      }
+    }
+  }
+}

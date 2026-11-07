@@ -42,6 +42,11 @@ run = "dart run melos run analyze:slang"
 description = "Test all workspace packages"
 run = "dart run melos run test"
 
+[tasks.skills]
+description = "Manage project skills with the Dart skills CLI"
+run = "dart run skills@1.0.4"
+dir = "{{config_root}}"
+
 [tasks.format]
 description = "Format source and documentation"
 run = """
