@@ -1,0 +1,4 @@
+interface:
+  display_name: "Bug Diagnosis"
+  short_description: "保存・状態競合・表示の不具合を再現条件と回帰テストで解決する"
+  default_prompt: "$diagnosing-bugs を使い、不具合を再現して原因を絞り、依頼範囲で修正してください。"

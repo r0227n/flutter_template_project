@@ -1,0 +1,4 @@
+interface:
+  display_name: "Domain Modeling"
+  short_description: "新しいアプリの業務要件から純粋なルールと責務境界を設計する"
+  default_prompt: "$domain-modeling を使い、この機能の用語・不変条件・責務境界を整理してください。"
