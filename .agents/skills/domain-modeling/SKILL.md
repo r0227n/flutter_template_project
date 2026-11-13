@@ -1,21 +1,74 @@
 ---
 name: domain-modeling
-description: テンプレートから作るアプリの業務用語・不変条件・境界・ADRを整理する。具体的な新規機能の設計やドメインモデルの検討を依頼されたときに使う。
+description: Build and sharpen a project's domain model. Use when discussing codebase terminology, writing or editing a GLOSSARY.md, or recording or editing an ADR.
 ---
 
-# 業務要件から境界を決める
+# Domain Modeling
 
-このテンプレートは業務 entity を持たない。[設計書](../../../docs/ARCHITECTURE.md) と
-[既存 ADR](../../../docs/specs/ADR-0001-template-architecture.md) を読み、
-具体的な利用者・操作・成功条件・失敗条件から必要なルールを取り出す。
-設定モデルを業務 entity に置き換えたり、将来用の repository を先に増やしたりしない。
+Actively build and sharpen the project's domain model as you design. This is the *active* discipline: challenging terms, inventing edge-case scenarios, and writing the glossary and decisions down the moment they crystallise. (Merely *reading* `GLOSSARY.md` for vocabulary is not this skill: that's a one-line habit any skill can do. This skill is for when you're changing the model, not just consuming it.)
 
-業務用語、識別子、不変条件、状態遷移と、その判断に必要な入力を整理する。
-端末や表示に依存しない判断を domain、外部 I/O を伴う手順を application、
-plugin・保存形式を infrastructure、表示上の一時状態を presentation に配置する。
-複数案がある場合は利用側のコードとテスト例で比較し、選んだ境界の理由を示す。
+## File structure
 
-長期判断が必要なら `docs/specs/ADR-*.md` の既存形式に沿って、背景・決定・代替案・結果を記す。
-画面要件は `docs/specs/` へ追加し、SPECS_INDEX_SPEC から辿れるようにする。
-実装も依頼されている場合は呼び出し元・DI・テストまで接続し、
-設計案のみの依頼ではコード生成や外部サービス導入を開始しない。
+Most repos have a single context:
+
+```
+/
+├── GLOSSARY.md
+├── docs/
+│   └── adr/
+│       ├── 0001-event-sourced-orders.md
+│       └── 0002-postgres-for-write-model.md
+└── src/
+```
+
+If a `GLOSSARY-MAP.md` exists at the root, the repo has multiple contexts. The map points to where each one lives:
+
+```
+/
+├── GLOSSARY-MAP.md
+├── docs/
+│   └── adr/                          ← system-wide decisions
+├── src/
+│   ├── ordering/
+│   │   ├── GLOSSARY.md
+│   │   └── docs/adr/                 ← context-specific decisions
+│   └── billing/
+│       ├── GLOSSARY.md
+│       └── docs/adr/
+```
+
+Create files lazily: only when you have something to write. If no `GLOSSARY.md` exists, create one when the first term is resolved. If no `docs/adr/` exists, create it when the first ADR is needed.
+
+## During the session
+
+### Challenge against the glossary
+
+When the user uses a term that conflicts with the existing language in `GLOSSARY.md`, call it out immediately. "Your glossary defines 'cancellation' as X, but you seem to mean Y. Which is it?"
+
+### Sharpen fuzzy language
+
+When the user uses vague or overloaded terms, propose a precise canonical term. "You're saying 'account': do you mean the Customer or the User? Those are different things."
+
+### Discuss concrete scenarios
+
+When domain relationships are being discussed, stress-test them with specific scenarios. Invent scenarios that probe edge cases and force the user to be precise about the boundaries between concepts.
+
+### Cross-reference with code
+
+When the user states how something works, check whether the code agrees. If you find a contradiction, surface it: "Your code cancels entire Orders, but you just said partial cancellation is possible. Which is right?"
+
+### Update GLOSSARY.md inline
+
+When a term is resolved, update `GLOSSARY.md` right there. Don't batch these up: capture them as they happen. Use the format in [GLOSSARY-FORMAT.md](./GLOSSARY-FORMAT.md).
+
+`GLOSSARY.md` should be totally devoid of implementation details. Do not treat `GLOSSARY.md` as a spec, a scratch pad, or a repository for implementation decisions. It is a glossary and nothing else.
+
+### Offer ADRs sparingly
+
+Only offer to create an ADR when all three are true:
+
+1. **Hard to reverse**: the cost of changing your mind later is meaningful
+2. **Surprising without context**: a future reader will wonder "why did they do it this way?"
+3. **The result of a real trade-off**: there were genuine alternatives and you picked one for specific reasons
+
+If any of the three is missing, skip the ADR. Use the format in [ADR-FORMAT.md](./ADR-FORMAT.md).

@@ -2,40 +2,304 @@
   "version": 2,
   "installations": {
     "generic": {
+      "https://github.com/mattpocock/skills.git": {
+        "skills": [
+          {
+            "name": "setup-pre-commit",
+            "installedAt": "2026-11-13T14:49:03.881360Z",
+            "isInstalled": false,
+            "path": "skills/misc/setup-pre-commit"
+          },
+          {
+            "name": "git-guardrails-claude-code",
+            "installedAt": "2026-11-13T14:49:03.881360Z",
+            "isInstalled": false,
+            "path": "skills/misc/git-guardrails-claude-code"
+          },
+          {
+            "name": "scaffold-exercises",
+            "installedAt": "2026-11-13T14:49:03.881360Z",
+            "isInstalled": false,
+            "path": "skills/misc/scaffold-exercises"
+          },
+          {
+            "name": "migrate-to-shoehorn",
+            "installedAt": "2026-11-13T14:49:03.881360Z",
+            "isInstalled": false,
+            "path": "skills/misc/migrate-to-shoehorn"
+          },
+          {
+            "name": "setup-ts-deep-modules",
+            "installedAt": "2026-11-13T14:49:03.881361Z",
+            "isInstalled": false,
+            "path": "skills/in-progress/setup-ts-deep-modules"
+          },
+          {
+            "name": "loop-me",
+            "installedAt": "2026-11-13T14:49:03.881361Z",
+            "isInstalled": false,
+            "path": "skills/in-progress/loop-me"
+          },
+          {
+            "name": "chief-of-staff",
+            "installedAt": "2026-11-13T14:49:03.881361Z",
+            "isInstalled": false,
+            "path": "skills/in-progress/chief-of-staff"
+          },
+          {
+            "name": "writing-fragments",
+            "installedAt": "2026-11-13T14:49:03.881361Z",
+            "isInstalled": false,
+            "path": "skills/in-progress/writing-fragments"
+          },
+          {
+            "name": "writing-shape",
+            "installedAt": "2026-11-13T14:49:03.881361Z",
+            "isInstalled": false,
+            "path": "skills/in-progress/writing-shape"
+          },
+          {
+            "name": "claude-handoff",
+            "installedAt": "2026-11-13T14:49:03.881362Z",
+            "isInstalled": false,
+            "path": "skills/in-progress/claude-handoff"
+          },
+          {
+            "name": "writing-beats",
+            "installedAt": "2026-11-13T14:49:03.881362Z",
+            "isInstalled": false,
+            "path": "skills/in-progress/writing-beats"
+          },
+          {
+            "name": "research",
+            "installedAt": "2026-11-13T14:49:03.883901Z",
+            "contentHash": "5tg8WewyoPVlcXaX8QWJqQ==",
+            "path": "skills/engineering/research"
+          },
+          {
+            "name": "domain-modeling",
+            "installedAt": "2026-11-13T14:49:03.887969Z",
+            "contentHash": "Kd+7YHurm2LfMq1/VX8iGg==",
+            "path": "skills/engineering/domain-modeling"
+          },
+          {
+            "name": "wayfinder",
+            "installedAt": "2026-11-13T14:49:03.887990Z",
+            "isInstalled": false,
+            "path": "skills/engineering/wayfinder"
+          },
+          {
+            "name": "setup-matt-pocock-skills",
+            "installedAt": "2026-11-13T14:49:03.892986Z",
+            "contentHash": "wSUgam4eIy0SWL/zvFKpPg==",
+            "path": "skills/engineering/setup-matt-pocock-skills"
+          },
+          {
+            "name": "diagnosing-bugs",
+            "installedAt": "2026-11-13T14:49:03.895361Z",
+            "contentHash": "8iDf+ZkzhvPXczNBy5ys5g==",
+            "path": "skills/engineering/diagnosing-bugs"
+          },
+          {
+            "name": "code-review",
+            "installedAt": "2026-11-13T14:49:03.896800Z",
+            "contentHash": "uPUV2b/O4/ETo0aKYY/2AQ==",
+            "path": "skills/engineering/code-review"
+          },
+          {
+            "name": "to-tickets",
+            "installedAt": "2026-11-13T14:49:03.896803Z",
+            "isInstalled": false,
+            "path": "skills/engineering/to-tickets"
+          },
+          {
+            "name": "ask-matt",
+            "installedAt": "2026-11-13T14:49:03.896803Z",
+            "isInstalled": false,
+            "path": "skills/engineering/ask-matt"
+          },
+          {
+            "name": "wizard",
+            "installedAt": "2026-11-13T14:49:03.896803Z",
+            "isInstalled": false,
+            "path": "skills/engineering/wizard"
+          },
+          {
+            "name": "improve-codebase-architecture",
+            "installedAt": "2026-11-13T14:49:03.896803Z",
+            "isInstalled": false,
+            "path": "skills/engineering/improve-codebase-architecture"
+          },
+          {
+            "name": "to-spec",
+            "installedAt": "2026-11-13T14:49:03.896803Z",
+            "isInstalled": false,
+            "path": "skills/engineering/to-spec"
+          },
+          {
+            "name": "codebase-design",
+            "installedAt": "2026-11-13T14:49:03.899004Z",
+            "contentHash": "vOmXIgz/ZBANq/VUP9DYXQ==",
+            "path": "skills/engineering/codebase-design"
+          },
+          {
+            "name": "triage",
+            "installedAt": "2026-11-13T14:49:03.899006Z",
+            "isInstalled": false,
+            "path": "skills/engineering/triage"
+          },
+          {
+            "name": "prototype",
+            "installedAt": "2026-11-13T14:49:03.899006Z",
+            "isInstalled": false,
+            "path": "skills/engineering/prototype"
+          },
+          {
+            "name": "pr",
+            "installedAt": "2026-11-13T14:49:03.899007Z",
+            "isInstalled": false,
+            "path": "skills/engineering/pr"
+          },
+          {
+            "name": "grill-with-docs",
+            "installedAt": "2026-11-13T14:49:03.900253Z",
+            "contentHash": "6RF7nL70Z56d/PJmY4k4BQ==",
+            "path": "skills/engineering/grill-with-docs"
+          },
+          {
+            "name": "retro",
+            "installedAt": "2026-11-13T14:49:03.901410Z",
+            "contentHash": "UiqoRN8+ebiB1u82y6Un8g==",
+            "path": "skills/engineering/retro"
+          },
+          {
+            "name": "implement",
+            "installedAt": "2026-11-13T14:49:03.901413Z",
+            "isInstalled": false,
+            "path": "skills/engineering/implement"
+          },
+          {
+            "name": "implement-spec",
+            "installedAt": "2026-11-13T14:49:03.901413Z",
+            "isInstalled": false,
+            "path": "skills/engineering/implement-spec"
+          },
+          {
+            "name": "tdd",
+            "installedAt": "2026-11-13T14:49:03.901413Z",
+            "isInstalled": false,
+            "path": "skills/engineering/tdd"
+          },
+          {
+            "name": "writing-for-agents",
+            "installedAt": "2026-11-13T14:49:03.902948Z",
+            "contentHash": "anrdYoJdUHHQAPfRV4IPfg==",
+            "path": "skills/productivity/writing-for-agents"
+          },
+          {
+            "name": "wait-what",
+            "installedAt": "2026-11-13T14:49:03.902950Z",
+            "isInstalled": false,
+            "path": "skills/productivity/wait-what"
+          },
+          {
+            "name": "handoff",
+            "installedAt": "2026-11-13T14:49:03.902950Z",
+            "isInstalled": false,
+            "path": "skills/productivity/handoff"
+          },
+          {
+            "name": "to-questionnaire",
+            "installedAt": "2026-11-13T14:49:03.902950Z",
+            "isInstalled": false,
+            "path": "skills/productivity/to-questionnaire"
+          },
+          {
+            "name": "teach",
+            "installedAt": "2026-11-13T14:49:03.902950Z",
+            "isInstalled": false,
+            "path": "skills/productivity/teach"
+          },
+          {
+            "name": "grill-me",
+            "installedAt": "2026-11-13T14:49:03.902950Z",
+            "isInstalled": false,
+            "path": "skills/productivity/grill-me"
+          },
+          {
+            "name": "grilling",
+            "installedAt": "2026-11-13T14:49:03.904094Z",
+            "contentHash": "HMvAA4yfPN5fF3ZZYKXP8w==",
+            "path": "skills/productivity/grilling"
+          }
+        ]
+      },
+      "https://github.com/leancodepl/patrol.git": {
+        "skills": [
+          {
+            "name": "patrol-test-architecture",
+            "installedAt": "2026-11-06T17:23:23.779130Z",
+            "contentHash": "ngN82mU4DYhbgqT7WHQ+xg==",
+            "path": "skills/patrol-test-architecture"
+          },
+          {
+            "name": "patrol-write-test",
+            "installedAt": "2026-11-06T17:23:23.779130Z",
+            "contentHash": "mCkeCiZkrKeTXYmwSqLWCg==",
+            "path": "skills/patrol-write-test"
+          },
+          {
+            "name": "patrol-migrate-from-maestro",
+            "installedAt": "2026-11-13T14:49:03.905444Z",
+            "contentHash": "6U2JyH41c9DT6aVDoJEQcQ==",
+            "path": "skills/patrol-migrate-from-maestro"
+          },
+          {
+            "name": "patrol-setup",
+            "installedAt": "2026-11-13T14:49:03.906094Z",
+            "contentHash": "/2f9vPzxHOCmS0l8xmFnbg==",
+            "path": "skills/patrol-setup"
+          }
+        ]
+      },
       "package:melos": {
         "skills": [
           {
             "name": "melos-migration",
-            "installedAt": "2026-11-07T09:48:55.594373Z",
-            "contentHash": "ZYx27nayuIGfgutpUeBEBg==",
+            "installedAt": "2026-11-13T14:49:03.878485Z",
+            "isInstalled": false,
             "path": "skills/melos-migration"
           },
           {
             "name": "melos-versioning",
-            "installedAt": "2026-11-07T09:48:55.595057Z",
-            "contentHash": "dQLTWyVMDY9lcvDuvyYLWQ==",
+            "installedAt": "2026-11-13T14:49:03.878486Z",
+            "isInstalled": false,
             "path": "skills/melos-versioning"
           },
           {
             "name": "melos-scripts",
-            "installedAt": "2026-11-07T09:48:55.595645Z",
-            "contentHash": "2kvcZVStbdT/bLipxAvN+w==",
+            "installedAt": "2026-11-13T14:49:03.878486Z",
+            "isInstalled": false,
             "path": "skills/melos-scripts"
           },
           {
             "name": "melos-commands",
-            "installedAt": "2026-11-07T09:48:55.596222Z",
-            "contentHash": "bm3s3vGzVfOSBw5LRdhbQA==",
+            "installedAt": "2026-11-13T14:49:03.878486Z",
+            "isInstalled": false,
             "path": "skills/melos-commands"
           },
           {
             "name": "melos-workspace-setup",
-            "installedAt": "2026-11-07T09:48:55.596816Z",
-            "contentHash": "BHvWLd5HwiyS6x1VuR9I2g==",
+            "installedAt": "2026-11-13T14:49:03.878486Z",
+            "isInstalled": false,
             "path": "skills/melos-workspace-setup"
           }
         ]
       }
     }
-  }
+  },
+  "suggestedRepos": [
+    "https://github.com/dart-lang/skills.git",
+    "https://github.com/flutter/agent-plugins.git"
+  ]
 }
